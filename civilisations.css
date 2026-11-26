@@ -1,0 +1,15 @@
+.lesson-list { padding-inline-start: 1.75rem; }
+.lesson-list > li { margin-block: .85rem; }
+.lesson-list button { text-align: left; }
+.lesson > p, .lesson > ol { max-inline-size: 72ch; }
+.lesson > ol > li { margin-block: .65rem; overflow-wrap: anywhere; }
+.lesson-table { overflow-x: auto; margin-block: 1.5rem .5rem; }
+.lesson-table table { width: 100%; border-collapse: collapse; }
+.lesson-table caption { text-align: left; font-weight: 700; padding-block-end: .75rem; }
+.lesson-table :is(td, th) { text-align: left; padding: .65rem; border: 1px solid #cddbd5; vertical-align: top; }
+.lesson-table thead { color: white; background: #183b38; }
+.lesson-table tbody th { background: #e8f1ee; }
+.lesson fieldset { border: 1px solid #cddbd5; margin: 1.25rem 0 .5rem; border-radius: .5rem; min-inline-size: 0; }
+.lesson fieldset legend { font-weight: 600; }
+.quiz-option { display: block; margin-block: .45rem; }
+.lesson + nav { position: static; flex-wrap: wrap; }
