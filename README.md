@@ -21,10 +21,10 @@ exportées depuis le carnet.
 ### Avancement par rapport à la charte fondatrice
 
 La V0.6.0 ouvre une introduction à chacune des huit matières de l’année 1.
-Les années 2 à 4 ont un programme prévisionnel, avec rédaction des cours à venir.
+Les années 2 à 4 disposent de leurs programmes et de 24 leçons d’ouverture.
 Le catalogue des matières n’équivaut pas à un cursus intégralement rédigé.
 
-Le planning propose 40 leçons sur 40 semaines et un bilan intermédiaire toutes les dix leçons.
+Le planning propose 50 leçons sur 40 semaines et une reprise toutes les dix semaines.
 Les volumes de 120, 240 ou 400 heures incluent le temps personnel indiqué dans
 la charte. Les trois rythmes suggèrent des activités dont la durée reste indicative.
 L’onglet Espaces du campus donne accès aux ateliers et au rappel actif à J+2,
@@ -37,3 +37,5 @@ indépendante sont des travaux à poursuivre avant de qualifier le cursus
 de complet.
 
 Le Carnet permet aussi un export JSON des seules notes et un import avec conservation de la version locale en cas de conflit.
+
+La V0.10.0 ajoute vingt-quatre leçons d’ouverture aux années 2 à 4 et quatre travaux de synthèse pour l’année 1. La page « Suivi de la charte » présente la couverture et les validations encore à mener.

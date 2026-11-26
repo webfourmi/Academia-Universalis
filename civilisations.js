@@ -18,7 +18,8 @@ function showCourse(course) {
   const complete = lessons.filter(lesson => S.history?.[lessonProgressKey(key, lesson.id)]).length;
   v.innerHTML = `
     <h2>${title}</h2>
-    <p>Année 1</p>
+    <p>Année ${course.year || 1}${course.year ? ' · Leçon d’ouverture' : ''}</p>
+    ${course.year ? `<p><button onclick="go(${course.year})">Retour aux matières</button></p>` : ''}
     <article class="card">
       <h3>Ce que vous saurez faire</h3>
       <p>${introduction}</p>
@@ -48,7 +49,7 @@ function lessonProgressKey(courseKey, lessonId) {
 function showLesson(course, index) {
   const {key, lessons} = course;
   const lesson = lessons[index];
-  const [caption, columns, rows] = lesson.diagram;
+  const [caption, columns, rows] = lesson.diagram || [];
   const [question, options, answer, rationale] = lesson.quiz;
   const seminar = key === 'histoire' ? historySeminars[lesson.id] : undefined;
   const [level, duration, guidance] = studyLevels[studyLevel()];
@@ -68,12 +69,12 @@ function showLesson(course, index) {
       <p><strong>Prérequis.</strong> ${lesson.prerequisite}</p>
       ${lesson.overview ? cite(lesson.overview) : ''}
       ${lesson.sections.map(([heading, paragraph]) => `<h3>${heading}</h3><p>${cite(paragraph)}</p>`).join('')}
-      <div class="lesson-table" tabindex="0" role="region" aria-label="${e(caption)}">
+      ${lesson.diagram ? `<div class="lesson-table" tabindex="0" role="region" aria-label="${e(caption)}">
         <table><caption>${caption}</caption>
           <thead><tr>${columns.map(column => `<th scope="col">${column}</th>`).join('')}</tr></thead>
           <tbody>${rows.map(([label, ...cells]) => `<tr><th scope="row">${label}</th>${cells.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody>
         </table>
-      </div>
+      </div>` : ''}
     </article>
     <article class="card lesson">
       <h3>Dossier commenté</h3><p>${cite(lesson.dossier)}</p>
@@ -107,7 +108,7 @@ function showLesson(course, index) {
       <h3>Bibliographie</h3>
       <ol>${lesson.sources.map(([author, title, year, url, evidence, language], sourceIndex) => `
         <li id="source-${sourceIndex+1}" tabindex="-1">${author} (${year}). <a href="${url}" target="_blank" rel="noopener">${title}</a>
-        <br><small>${evidence} · ${language || 'anglais'} · consulté le 26/11/2026. Lien externe.</small><div class="source-return"></div></li>`).join('')}</ol>
+        <br><small>${evidence} · ${language || 'anglais'} · consulté le ${course.year ? '27/11/2026' : '26/11/2026'}. Lien externe.</small><div class="source-return"></div></li>`).join('')}</ol>
     </article>
     <nav aria-label="Navigation des leçons">
       ${index > 0 ? '<button id="history-prev">Leçon précédente</button>' : ''}

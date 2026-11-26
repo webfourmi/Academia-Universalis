@@ -28,7 +28,7 @@ function assessmentOptions() {
 function showAssessments() {
   v.innerHTML = `<h2>Évaluations et révisions</h2>
     <p>Vérifie ton raisonnement avec un bilan de parcours ou entraîne-toi sur les cas de synthèse. Les corrigés s’affichent à la fin.</p>
-    <button id="assessment-reviews">Accéder aux révisions programmées</button>
+    <button id="assessment-reviews">Accéder aux révisions programmées</button> <button onclick="showWrittenProjects()">Travaux de synthèse · Année 1</button>
     <div class="grid">${assessmentOptions().map(({key,title,items}) => {
       const saved = S.assessments?.[key];
       return `<article class="card"><h3>${title}</h3><p>${items.length} questions</p>

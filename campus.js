@@ -68,7 +68,7 @@ function showCampus() {
 }
 
 function spaceLesson(courseKey, lessonId) {
-  const course=campusCatalog().find(item=>item.key===courseKey);
+  const course=allStudyCourses().find(item=>item.key===courseKey);
   const index=course?.lessons.findIndex(lesson=>lesson.id===lessonId);
   if (index>=0) showLesson(course,index);
 }
@@ -79,15 +79,17 @@ function spaceButton(courseKey, lessonId, label) {
 
 function showSpace(name) {
   const catalog=campusCatalog();
-  const due=catalog.flatMap(course=>course.lessons.filter(lesson=>{
+  const due=allStudyCourses().flatMap(course=>course.lessons.filter(lesson=>{
     const review=S.reviews?.[lessonProgressKey(course.key,lesson.id)];
     return review && reviewDue(review);
   }).map(lesson=>spaceButton(course.key,lesson.id,'Réviser · '+lesson.title)));
   const lessons=catalog.flatMap(course=>course.lessons.map(lesson=>({course,lesson})));
-  const weeklyPlan=lessons.slice(0,40).map((item,index)=>{
-    const label=spaceButton(item.course.key,item.lesson.id,item.lesson.title);
-    const recap=(index+1)%10===0 ? ' <small>· Refaire un exercice des semaines précédentes et revoir ses notes.</small>' : '';
-    return '<li>'+label+recap+'</li>';
+  const weeklyPlan=Array.from({length:40}, (_, index)=>{
+    const first=Math.floor(index*lessons.length/40);
+    const last=Math.floor((index+1)*lessons.length/40);
+    const labels=lessons.slice(first,last).map(item=>spaceButton(item.course.key,item.lesson.id,item.lesson.title));
+    const recap=(index+1)%10===0 ? '<p><small>Revoir ses notes et refaire un exercice des semaines précédentes.</small></p>' : '';
+    return '<li>'+labels.join(' ')+recap+'</li>';
   }).join('');
   const activities={
     Planning: '<h3>Ton rythme</h3><p>40 semaines · volumes cibles de travail personnel.</p><label>Heures par semaine <select id="campus-hours">'+[3,6,10].map(hours=>'<option value="'+hours+'" '+(S.hours===hours?'selected':'')+'>'+hours+'</option>').join('')+'</select></label><p>'+S.hours*40+' heures sur l’année au rythme choisi.</p><p>Commence par une leçon, puis réserve une courte séance à la relecture et au rappel actif.</p><button onclick="openGuidedLesson()" '+(!guidedJourney().next?'disabled':'')+'>Ouvrir la prochaine leçon</button><h3>Révisions à faire · J+2, J+7 et J+30</h3>'+(due.length?due.map(button=>'<p>'+button+'</p>').join(''):'<p>Aucune révision à échéance. Répondre au quiz d’une leçon l’inscrit à la révision. Une réponse correcte à échéance valide le rappel.</p>')+'<details><summary>Voir le calendrier sur 40 semaines</summary><p>Un ordre conseillé, à adapter à ton rythme. Chaque ligne correspond à une semaine.</p><ol>'+weeklyPlan+'</ol></details>',
