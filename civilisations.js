@@ -48,6 +48,7 @@ function showLesson(course, index) {
   const lesson = lessons[index];
   const [caption, columns, rows] = lesson.diagram;
   const [question, options, answer, rationale] = lesson.quiz;
+  const seminar = key === 'histoire' ? historySeminars[lesson.id] : undefined;
   const noteKey = `${key}:${lesson.id}`;
   v.innerHTML = `
     <button id="history-back">${key === 'histoire' ? 'Retour au cycle d’histoire' : 'Retour au parcours'}</button>
@@ -80,6 +81,17 @@ function showLesson(course, index) {
       <textarea id="history-notes">${e(S.notes[noteKey])}</textarea>
       <p><label><input type="checkbox" id="history-done" ${S.history?.[lessonProgressKey(key, lesson.id)] ? 'checked' : ''}> Leçon terminée</label></p>
     </article>
+    ${seminar ? `<article class="card lesson">
+      <details>
+        <summary>Approfondissement universitaire</summary>
+        <h3>${seminar.title}</h3>
+        ${seminar.method.map(paragraph => `<p>${paragraph}</p>`).join('')}
+        <p><a href="${lesson.sources[seminar.source][3]}" target="_blank" rel="noopener">Lecture guidée · ${lesson.sources[seminar.source][1]}</a></p>
+        <h3>Travail écrit</h3><p>${seminar.task}</p>
+        <h3>Barème sur 20</h3><ul>${seminar.rubric.map(criterion => `<li>${criterion}</li>`).join('')}</ul>
+        <details><summary>Consulter le corrigé ou le plan indicatif</summary><p>${seminar.answer}</p></details>
+      </details>
+    </article>` : ''}
     <article class="card lesson">
       <h3>Bibliographie</h3>
       <ol>${lesson.sources.map(([author, title, year, url, evidence, language]) => `
