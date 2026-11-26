@@ -24,7 +24,7 @@ const studyLevels = [
 ];
 
 function campusCatalog() {
-  return [histoire, antiquite, ...Object.values(firstYearCourses)];
+  return [histoire, antiquite, ...Object.values(firstYearCourses), studyMethods];
 }
 
 function studyLevel() {
@@ -88,7 +88,7 @@ function showSpace(name) {
     const item=lessons[index];
     const label=item
       ? spaceButton(item.course.key,item.lesson.id,item.lesson.title)
-      : ['Relire les notes d’histoire et reprendre la dissertation','Relire les notes de philosophie et de littérature','Refaire les exercices de physique','Revoir méthodes, perception et mémoire','Refaire les exercices d’économie et de logique','Relire les échanges en chinois et le dossier Qin','Faire le bilan et sélectionner les notions à retravailler'][index-lessons.length];
+      : ['Comparer les sources d’histoire, de philosophie et de littérature','Revoir les exercices de physique et de psychologie','Refaire les exercices d’économie, de logique et de chinois','Faire le bilan et sélectionner les notions à retravailler'][index-lessons.length];
     return '<li>'+label+'</li>';
   }).join('');
   const activities={
@@ -99,7 +99,7 @@ function showSpace(name) {
     Atelier:'<h3>Reconstituer et produire</h3><p>Choisis une tâche. Annote une prémisse implicite ou compose un échange de trois répliques. Vérifie ensuite ta réponse avec le corrigé de la leçon.</p>'+spaceButton('logique','premisses','Atelier d’argumentation')+' '+spaceButton('chinois','saluer','Atelier de mandarin'),
     Musée:'<h3>Lire une notice d’objet</h3><p>Sépare la matière, la datation et la provenance de l’usage proposé par le catalogue. Pour chaque information, indique si tu l’as observée ou lue dans la notice.</p><p><a href="https://www.metmuseum.org/fr/essays/the-origins-of-writing">Metropolitan Museum of Art · The Origins of Writing</a></p>'+spaceButton('histoire','uruk','Étudier une tablette d’Uruk'),
     Observatoire:'<h3>Observer le ciel et documenter une mesure</h3><p>Dans la représentation de la NASA, compare deux planètes en lisant les unités avant d’estimer un rapport de distances. Indique si la vue est à l’échelle ou schématique et garde une trace de la date de consultation.</p><p><a href="https://science.nasa.gov/solar-system/">NASA · Solar System Exploration (anglais, en ligne)</a></p>'+spaceButton('physique','mesures','Revoir les unités et les mesures'),
-    'Cabinet de recherche':'<h3>Construire une enquête</h3><ol><li>Formule une question et une hypothèse réfutable.</li><li>Repère une publication primaire et une synthèse. Note auteur, titre, date, accès, droits et proposition soutenue.</li><li>Distingue ce que la source observe de ce qu’elle extrapole et cherche un contre-exemple.</li><li>Si tu utilises une IA, conserve une trace de son rôle et remonte aux documents originaux avant de citer.</li></ol><p><a href="docs/controle-editorial.html">Contrôle éditorial et grille de relecture</a></p>'+spaceButton('psychologie','methodes','Concevoir un test causal')
+    'Cabinet de recherche':'<h3>Construire une enquête</h3><ol><li>Formule une question et une hypothèse réfutable.</li><li>Repère une publication primaire et une synthèse. Note auteur, titre, date, accès, droits et proposition soutenue.</li><li>Distingue ce que la source observe de ce qu’elle extrapole et cherche un contre-exemple.</li><li>Si tu utilises une IA, conserve une trace de son rôle et remonte aux documents originaux avant de citer.</li></ol><p><a href="docs/controle-editorial.html">Contrôle éditorial et grille de relecture</a></p>'+spaceButton('methode','verification','Vérifier une affirmation')+' '+spaceButton('methode','lecture','Lire une publication')+' '+spaceButton('methode','synthese-documentee','Rédiger une synthèse documentée')+' '+spaceButton('psychologie','methodes','Concevoir un test causal')
   };
   v.innerHTML='<button onclick="showCampus()">Retour aux espaces</button><h2>'+name+'</h2><article class="card">'+activities[name]+'</article>';
   v.querySelectorAll('[data-course]').forEach(button=>button.onclick=()=>spaceLesson(button.dataset.course,button.dataset.lessonId));

@@ -52,6 +52,12 @@ function showLesson(course, index) {
   const [question, options, answer, rationale] = lesson.quiz;
   const seminar = key === 'histoire' ? historySeminars[lesson.id] : undefined;
   const [level, duration, guidance] = studyLevels[studyLevel()];
+  let citationIndex = 0;
+  const cite = text => text.replace(/\[(\d+(?:, *\d+)*)\]/g, (match, numbers) => {
+    const refs = numbers.split(',').map(Number);
+    if (refs.some(number => !lesson.sources[number-1])) return match;
+    return refs.map(number => `<a class="citation-ref" id="citation-${++citationIndex}" href="#source-${number}" aria-label="Voir la référence ${number}">[${number}]</a>`).join(' ');
+  });
   const noteKey = `${key}:${lesson.id}`;
   v.innerHTML = `
     <button id="history-back">${key === 'histoire' ? 'Retour au cycle d’histoire' : 'Retour au parcours'}</button>
@@ -60,7 +66,8 @@ function showLesson(course, index) {
       <p><strong>Objectif.</strong> ${lesson.goal}</p>
       <p><strong>Rythme ${level} · ${duration}.</strong> ${guidance}</p>
       <p><strong>Prérequis.</strong> ${lesson.prerequisite}</p>
-      ${lesson.sections.map(([heading, paragraph]) => `<h3>${heading}</h3><p>${paragraph}</p>`).join('')}
+      ${lesson.overview ? cite(lesson.overview) : ''}
+      ${lesson.sections.map(([heading, paragraph]) => `<h3>${heading}</h3><p>${cite(paragraph)}</p>`).join('')}
       <div class="lesson-table" tabindex="0" role="region" aria-label="${e(caption)}">
         <table><caption>${caption}</caption>
           <thead><tr>${columns.map(column => `<th scope="col">${column}</th>`).join('')}</tr></thead>
@@ -69,7 +76,7 @@ function showLesson(course, index) {
       </div>
     </article>
     <article class="card lesson">
-      <h3>Dossier commenté</h3><p>${lesson.dossier}</p>
+      <h3>Dossier commenté</h3><p>${cite(lesson.dossier)}</p>
       <h3>Exercice</h3><p>${lesson.activity}</p>
       <details><summary>Lire la correction</summary><p>${lesson.correction}</p></details>
       <form id="history-quiz">
@@ -89,7 +96,7 @@ function showLesson(course, index) {
       <details>
         <summary>Approfondissement universitaire</summary>
         <h3>${seminar.title}</h3>
-        ${seminar.method.map(paragraph => `<p>${paragraph}</p>`).join('')}
+        ${seminar.method.map(paragraph => `<p>${cite(paragraph)}</p>`).join('')}
         <p><a href="${lesson.sources[seminar.source][3]}" target="_blank" rel="noopener">Lecture guidée · ${lesson.sources[seminar.source][1]}</a></p>
         <h3>Travail écrit</h3><p>${seminar.task}</p>
         <h3>Barème sur 20</h3><ul>${seminar.rubric.map(criterion => `<li>${criterion}</li>`).join('')}</ul>
@@ -98,15 +105,32 @@ function showLesson(course, index) {
     </article>` : ''}
     <article class="card lesson">
       <h3>Bibliographie</h3>
-      <ol>${lesson.sources.map(([author, title, year, url, evidence, language]) => `
-        <li>${author} (${year}). <a href="${url}" target="_blank" rel="noopener">${title}</a>
-        <br><small>${evidence} · ${language || 'anglais'} · consulté le 26/11/2026. Lien externe.</small></li>`).join('')}</ol>
+      <ol>${lesson.sources.map(([author, title, year, url, evidence, language], sourceIndex) => `
+        <li id="source-${sourceIndex+1}" tabindex="-1">${author} (${year}). <a href="${url}" target="_blank" rel="noopener">${title}</a>
+        <br><small>${evidence} · ${language || 'anglais'} · consulté le 26/11/2026. Lien externe.</small><div class="source-return"></div></li>`).join('')}</ol>
     </article>
     <nav aria-label="Navigation des leçons">
       ${index > 0 ? '<button id="history-prev">Leçon précédente</button>' : ''}
       ${index < lessons.length - 1 ? '<button id="history-next">Leçon suivante</button>' : ''}
     </nav>`;
   v.querySelector('h2').focus();
+  v.querySelectorAll('.citation-ref').forEach(link => {
+    link.onclick = event => {
+      event.preventDefault();
+      const reference = v.querySelector(link.getAttribute('href'));
+      const container = reference.querySelector('.source-return');
+      const back = document.createElement('button');
+      back.type = 'button';
+      back.textContent = 'Retour au passage';
+      back.onclick = () => {
+        link.focus({preventScroll:true});
+        link.scrollIntoView({block:'center'});
+      };
+      container.replaceChildren(back);
+      reference.focus({preventScroll:true});
+      reference.scrollIntoView({block:'center'});
+    };
+  });
   v.querySelector('#history-back').onclick = () => showCourse(course);
   v.querySelector('#history-prev')?.addEventListener('click', () => showLesson(course, index - 1));
   v.querySelector('#history-next')?.addEventListener('click', () => showLesson(course, index + 1));
@@ -129,7 +153,7 @@ function showLesson(course, index) {
 }
 
 function guidedJourney() {
-  const plan = [histoire, antiquite, ...Object.values(firstYearCourses)].flatMap(course =>
+  const plan = campusCatalog().flatMap(course =>
     course.lessons.map((lesson, index) => ({course, lesson, index}))
   );
   const remaining = plan.filter(({course, lesson}) =>

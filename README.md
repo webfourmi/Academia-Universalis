@@ -24,7 +24,7 @@ La V0.6.0 ouvre une introduction à chacune des huit matières de l’année 1.
 Les années 2 à 4 ont un programme prévisionnel, avec rédaction des cours à venir.
 Le catalogue des matières n’équivaut pas à un cursus intégralement rédigé.
 
-Le planning articule les 33 leçons disponibles et sept semaines de reprise.
+Le planning articule les 36 leçons disponibles et quatre semaines de reprise.
 Les volumes de 120, 240 ou 400 heures incluent le temps personnel indiqué dans
 la charte. Les trois rythmes suggèrent des activités dont la durée reste indicative.
 L’onglet Espaces du campus donne accès aux ateliers et au rappel actif à J+2,
