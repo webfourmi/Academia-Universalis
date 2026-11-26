@@ -110,3 +110,38 @@ function showLesson(course, index) {
     save();
   };
 }
+
+function guidedJourney() {
+  const plan = [histoire, ...Object.values(firstYearCourses)].flatMap(course =>
+    course.lessons.map((lesson, index) => ({course, lesson, index}))
+  );
+  const remaining = plan.filter(({course, lesson}) =>
+    !S.history?.[lessonProgressKey(course.key, lesson.id)]
+  );
+  return {next: remaining[0], total: plan.length, completed: plan.length - remaining.length};
+}
+
+function openGuidedLesson() {
+  const {next} = guidedJourney();
+  if (next) showLesson(next.course, next.index);
+}
+
+function guidedJourneyCard() {
+  const {next, total, completed} = guidedJourney();
+  return `<article class="card">
+    <h3>Commencer mes cours</h3>
+    <p>${completed} sur ${total} leçons publiées terminées.</p>
+    <progress aria-label="Progression dans les leçons publiées" value="${completed}" max="${total}"></progress>
+    ${next ? `<p>Prochaine leçon conseillée · <strong>${next.lesson.title}</strong></p>
+      <button onclick="openGuidedLesson()">${completed ? 'Continuer le parcours' : 'Commencer le parcours'}</button>`
+      : '<p>Tu as terminé les leçons publiées. Tu peux les revoir depuis les rubriques ci-dessous.</p>'}
+    <details><summary>Comment suivre une leçon ?</summary>
+      <ol>
+        <li>Lis le cours et note une idée dans « Mes notes ».</li>
+        <li>Essaie l’exercice avant d’ouvrir le corrigé, puis réponds au quiz.</li>
+        <li>Coche « Leçon terminée » quand tu souhaites passer à la suite.</li>
+      </ol>
+      <p>Le parcours conseillé commence par l’histoire, puis propose la philosophie, la littérature, la physique et la psychologie. Tu peux ouvrir directement la matière qui t’intéresse. L’onglet Carnet rassemble tes notes et permet de sauvegarder ta progression.</p>
+    </details>
+  </article>`;
+}
