@@ -1,0 +1,5 @@
+const C='academia-v022';const ASSETS=['./','./index.html','./manifest.json','./icon.svg','./icon-192.png','./icon-512.png','./pwa.js','./docs/Academia_Universalis_charte.pdf'];
+self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(ASSETS))));
+self.addEventListener('message',e=>{if(e.data==='SKIP_WAITING')self.skipWaiting()});
+self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>/^academia-v[0-9]+$/.test(k)&&k!==C).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
+self.addEventListener('fetch',e=>{if(e.request.method!=='GET'||new URL(e.request.url).origin!==location.origin)return;e.respondWith(caches.open(C).then(async c=>{const url=new URL(e.request.url);if(e.request.mode==='navigate'&&['./','./index.html'].some(path=>new URL(path,self.registration.scope).pathname===url.pathname))return (await c.match('./index.html'))||fetch(e.request);return (await c.match(e.request))||fetch(e.request)}))});
