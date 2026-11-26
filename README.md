@@ -17,3 +17,21 @@ s’ouvrent en ligne. Les données du campus restent sur l’appareil et peuvent
 exportées depuis le carnet.
 
 [Programmes consultés et contrôle éditorial](docs/controle-editorial.html)
+
+### Avancement par rapport à la charte fondatrice
+
+La V0.6.0 ouvre une introduction à chacune des huit matières de l’année 1.
+Les années 2 à 4 ont un programme prévisionnel, avec rédaction des cours à venir.
+Le catalogue des matières n’équivaut pas à un cursus intégralement rédigé.
+
+Le planning articule les 33 leçons disponibles et sept semaines de reprise.
+Les volumes de 120, 240 ou 400 heures incluent le temps personnel indiqué dans
+la charte. Les trois rythmes suggèrent des activités dont la durée reste indicative.
+L’onglet Espaces du campus donne accès aux ateliers et au rappel actif à J+2,
+J+7 et J+30. Les échéances et les données d’étude sont locales et exportables.
+
+La bibliothèque contient des notices de départ sur les cinq régions, en plus
+de l’Atlas de prospection. La couverture des références de la charte, la
+rédaction des cours avancés, les évaluations de fin d’année et la relecture
+indépendante sont des travaux à poursuivre avant de qualifier le cursus
+de complet.

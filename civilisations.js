@@ -51,12 +51,14 @@ function showLesson(course, index) {
   const [caption, columns, rows] = lesson.diagram;
   const [question, options, answer, rationale] = lesson.quiz;
   const seminar = key === 'histoire' ? historySeminars[lesson.id] : undefined;
+  const [level, duration, guidance] = studyLevels[studyLevel()];
   const noteKey = `${key}:${lesson.id}`;
   v.innerHTML = `
     <button id="history-back">${key === 'histoire' ? 'Retour au cycle d’histoire' : 'Retour au parcours'}</button>
     <h2 tabindex="-1">${lesson.title}</h2>
     <article class="card lesson">
       <p><strong>Objectif.</strong> ${lesson.goal}</p>
+      <p><strong>Rythme ${level} · ${duration}.</strong> ${guidance}</p>
       <p><strong>Prérequis.</strong> ${lesson.prerequisite}</p>
       ${lesson.sections.map(([heading, paragraph]) => `<h3>${heading}</h3><p>${paragraph}</p>`).join('')}
       <div class="lesson-table" tabindex="0" role="region" aria-label="${e(caption)}">
@@ -112,6 +114,7 @@ function showLesson(course, index) {
     event.preventDefault();
     const selected = Number(new FormData(event.currentTarget).get('answer'));
     const result = selected === answer ? 'Réponse correcte.' : `Réponse attendue : ${options[answer]}.`;
+    recordReview(course, lesson, selected === answer);
     v.querySelector('#quiz-result').textContent = `${result} ${rationale}`;
   };
   v.querySelector('#history-notes').oninput = event => {
@@ -155,7 +158,7 @@ function guidedJourneyCard() {
         <li>Essaie l’exercice avant d’ouvrir le corrigé, puis réponds au quiz.</li>
         <li>Coche « Leçon terminée » quand tu souhaites passer à la suite.</li>
       </ol>
-      <p>Le parcours conseillé commence par l’histoire, puis propose la philosophie, la littérature, la physique et la psychologie. Tu peux ouvrir directement la matière qui t’intéresse. L’onglet Carnet rassemble tes notes et permet de sauvegarder ta progression.</p>
+      <p>Le parcours conseillé commence par l’histoire, puis propose la philosophie, la littérature, la physique, la psychologie, l’économie, la logique et le chinois. Tu peux ouvrir directement la matière qui t’intéresse. L’onglet Carnet rassemble tes notes et permet de sauvegarder ta progression.</p>
     </details>
   </article>`;
 }
