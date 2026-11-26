@@ -24,7 +24,7 @@ La V0.6.0 ouvre une introduction à chacune des huit matières de l’année 1.
 Les années 2 à 4 disposent de leurs programmes et de 24 leçons d’ouverture.
 Le catalogue des matières n’équivaut pas à un cursus intégralement rédigé.
 
-Le planning propose 50 leçons sur 40 semaines et une reprise toutes les dix semaines.
+Le planning propose 51 leçons sur 40 semaines et une reprise toutes les dix semaines.
 Les volumes de 120, 240 ou 400 heures incluent le temps personnel indiqué dans
 la charte. Les trois rythmes suggèrent des activités dont la durée reste indicative.
 L’onglet Espaces du campus donne accès aux ateliers et au rappel actif à J+2,

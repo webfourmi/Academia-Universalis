@@ -18,7 +18,7 @@ function showCourse(course) {
   const complete = lessons.filter(lesson => S.history?.[lessonProgressKey(key, lesson.id)]).length;
   v.innerHTML = `
     <h2>${title}</h2>
-    <p>Année ${course.year || 1}${course.year ? ' · Leçon d’ouverture' : ''}</p>
+    <p>Année ${course.year || 1}${course.year ? (lessons.length > 1 ? ' · Cycle en développement' : ' · Leçon d’ouverture') : ''}</p>
     ${course.year ? `<p><button onclick="go(${course.year})">Retour aux matières</button></p>` : ''}
     <article class="card">
       <h3>Ce que vous saurez faire</h3>

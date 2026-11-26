@@ -108,14 +108,20 @@ function showSpace(name) {
 }
 
 function showCampusLibrary() {
+  const resources = [...campusResources,...libraryAdditions];
+  const regions = [...new Set(resources.map(resource=>resource.region))];
   v.innerHTML='<h2>Bibliothèque universitaire</h2><label>Région <select id="library-region"><option value="">Toutes</option>'+
-    campusResources.map(resource=>'<option>'+resource.region+'</option>').join('')+'</select></label><div id="library-records"></div>';
+    regions.map(region=>'<option>'+region+'</option>').join('')+'</select></label><div id="library-records"></div>';
   const picker=v.querySelector('#library-region');
   function showRecords() {
-    v.querySelector('#library-records').innerHTML=campusResources.filter(resource=>!picker.value||resource.region===picker.value)
-      .map(resource=>'<article class="card"><h3><a href="'+resource.url+'">'+resource.title+'</a></h3><p>'+resource.author+' · '+resource.year+' · '+resource.region+' · '+resource.language+' · '+resource.level+'</p><p>'+resource.evidence+'</p><p>'+resource.access+' · '+resource.rights+' · consulté le 26/11/2026.</p></article>').join('');
+    v.querySelector('#library-records').innerHTML=resources.filter(resource=>!picker.value||resource.region===picker.value)
+      .map(resource=>'<article class="card"><h3><a href="'+resource.url+'">'+resource.title+'</a></h3><p>'+resource.author+' · '+resource.year+' · '+resource.region+' · '+resource.language+' · '+resource.level+'</p><p>'+resource.evidence+'</p><p>'+resource.access+' · '+resource.rights+' · consulté le '+(resource.consulted||'26/11/2026')+'.</p>'+(resource.courseKey?spaceButton(resource.courseKey,resource.lessonId,'Étudier avec cette ressource'):'')+'</article>').join('');
   }
   v.insertAdjacentHTML('beforeend','<details><summary>Autres catalogues à explorer</summary><ul><li><a href="https://pll.harvard.edu/catalog/free">Harvard</a></li><li><a href="https://oyc.yale.edu/courses">Open Yale Courses</a></li><li><a href="https://ocw.mit.edu/">MIT OpenCourseWare</a></li><li><a href="https://www.college-de-france.fr/">Collège de France</a></li><li><a href="https://podcasts.ox.ac.uk/">Oxford Podcasts</a></li></ul></details>');
+  v.querySelector('#library-records').onclick = event => {
+    const button = event.target.closest('[data-course]');
+    if (button) spaceLesson(button.dataset.course, button.dataset.lessonId);
+  };
   picker.onchange=showRecords;
   showRecords();
 }

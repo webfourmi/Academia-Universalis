@@ -324,6 +324,7 @@ function upperYearCourse(year, index) {
   const entry = upperYears[year-1]?.[index];
   if (!entry) return undefined;
   const {key,title,goal,sections,task,answer,quiz,source} = entry;
+  const continuation = cycleContinuations[key];
   return {
     year:year+1,
     key, title, introduction:goal,
@@ -333,7 +334,7 @@ function upperYearCourse(year, index) {
       activity:task, correction:answer, quiz, sources:[source],
       seminar:'Présente ton raisonnement et défends une limite de ta réponse à partir du cours et de la lecture.',
       review:'À J+2, refais l’exercice sans le corrigé. À J+7, change une hypothèse et vérifie ce qui se modifie dans ta réponse.'
-    }]
+    }, ...(continuation ? [continuation] : [])]
   };
 }
 
