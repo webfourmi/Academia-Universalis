@@ -13,9 +13,11 @@ button.onclick = async () => {
   status.textContent = 'Vérification de la version disponible…';
   try {
     const scope = new URL('./', location.href).href;
-    const registration = await navigator.serviceWorker.register('./sw.js', {scope, updateViaCache:'none'});
-    await registration.update();
-    const worker = registration.waiting || registration.installing;
+    const scriptURL = new URL('./sw.js?recovery=031', scope).href;
+    const registration = await navigator.serviceWorker.register(scriptURL, {scope, updateViaCache:'none'});
+    const worker = [registration.installing, registration.waiting, registration.active]
+      .find(candidate => candidate?.scriptURL === scriptURL);
+    if (!worker) throw new Error('Mise à jour introuvable');
     if (worker) {
       await new Promise((resolve, reject) => {
         const timeout = setTimeout(() => finish(new Error('Délai dépassé')), 25000);
@@ -33,10 +35,26 @@ button.onclick = async () => {
         advance();
       });
     }
+    if (navigator.serviceWorker.controller?.scriptURL !== scriptURL) {
+      await new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => {
+          navigator.serviceWorker.removeEventListener('controllerchange', verify);
+          reject(new Error('Application non actualisée'));
+        }, 7000);
+        function verify() {
+          if (navigator.serviceWorker.controller?.scriptURL !== scriptURL) return;
+          clearTimeout(timeout);
+          navigator.serviceWorker.removeEventListener('controllerchange', verify);
+          resolve();
+        }
+        navigator.serviceWorker.addEventListener('controllerchange', verify);
+        verify();
+      });
+    }
     const response = await fetch('./index.html', {cache:'no-store'});
     const html = await response.text();
     if (!response.ok || !html.includes('id="updates"')) throw new Error('Version précédente détectée');
-    status.textContent = 'Le campus est à jour. Tu peux rouvrir l’application installée.';
+    status.textContent = 'Le campus est à jour dans ce navigateur. Ouvre le campus ci-dessous pour vérifier le numéro de version.';
   } catch {
     status.textContent = 'La mise à jour n’a pas abouti. Vérifie la connexion et réessaie dans le navigateur utilisé pour installer le campus.';
   } finally {
