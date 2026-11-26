@@ -33,6 +33,8 @@ function showCourse(course) {
     <ol class="lesson-list">${lessons.map((lesson, index) => `
       <li class="card"><h3>${lesson.title}</h3><p>${lesson.goal}</p>
       <button data-lesson="${index}">${S.history?.[lessonProgressKey(key, lesson.id)] ? 'Revoir' : 'Ouvrir'} · ${lesson.title}</button></li>`).join('')}</ol>
+    ${key === 'histoire' ? '<article class="card"><h3>Deuxième cycle · Grèce et Rome</h3><button onclick="showCourse(antiquite)">Voir les leçons de Grèce et Rome</button></article>' : ''}
+    ${key === 'antiquite' ? '<p><button onclick="showCivilisations()">Retour au premier cycle d’histoire</button></p>' : ''}
     ${links.map(([url, label]) => `<p><a href="${url}">${label}</a></p>`).join('')}`;
   v.querySelectorAll('[data-lesson]').forEach(button => {
     button.addEventListener('click', () => showLesson(course, Number(button.dataset.lesson)));
@@ -124,7 +126,7 @@ function showLesson(course, index) {
 }
 
 function guidedJourney() {
-  const plan = [histoire, ...Object.values(firstYearCourses)].flatMap(course =>
+  const plan = [histoire, antiquite, ...Object.values(firstYearCourses)].flatMap(course =>
     course.lessons.map((lesson, index) => ({course, lesson, index}))
   );
   const remaining = plan.filter(({course, lesson}) =>
