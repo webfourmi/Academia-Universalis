@@ -1,4 +1,4 @@
-const C='academia-v030';const ASSETS=['./','./index.html','./manifest.json','./icon.svg','./icon-192.png','./icon-512.png','./pwa.js','./civilisations.css','./civilisations.js','./civilisations-data.js','./docs/controle-editorial.html','./docs/chronologie.html','./docs/Academia_Universalis_charte.pdf'];
+const C='academia-v031';const ASSETS=['./','./index.html','./manifest.json','./icon.svg','./icon-192.png','./icon-512.png','./pwa.js','./civilisations.css','./civilisations.js','./civilisations-data.js','./docs/controle-editorial.html','./docs/chronologie.html','./docs/Academia_Universalis_charte.pdf'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(ASSETS))));
 self.addEventListener('message',e=>{if(e.data==='SKIP_WAITING')self.skipWaiting()});
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>/^academia-v[0-9]+$/.test(k)&&k!==C).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
