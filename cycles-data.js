@@ -64,7 +64,7 @@ const upperYears = [
       task:'Choisissez un exemple illustré dans [1]. Relevez trois traits visibles, puis défendez une hypothèse sur le trajet du regard en 150 mots.',
       answer:'Une bonne réponse localise les trois indices et montre leur relation. Elle distingue direction du regard et sens historique, qui peuvent demander une notice, une comparaison ou des archives distinctes.',
       quiz:['Quelle phrase relève de la description ?',['Le peintre voulait inquiéter le public.','Un cercle clair est placé au centre d’un fond sombre.','L’œuvre condamne une institution.'],1,'Le placement et le contraste sont observables.'],
-      source:['Smarthistory','Understanding art, an introduction','s. d.','https://smarthistory.org/introduction-to-art-historical-analysis','Exemples d’analyse visuelle et d’interprétation.']
+      source:['J. Paul Getty Museum','Understanding Formal Analysis','s. d.','https://www.getty.edu/education/teachers/building_lessons/formal_analysis.html','Éléments de l’art et analyse de la composition.']
     },
     {
       key:'musicologie',title:'Musicologie · Entendre la pulsation et la mesure',
