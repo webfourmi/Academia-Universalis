@@ -1,36 +1,56 @@
+const histoire = {
+  title: 'La naissance des civilisations',
+  introduction: 'Interpréter un vestige, comparer des trajectoires régionales et défendre une thèse sur les effets de l’urbanisation.',
+  key: 'histoire',
+  lessons: civilisations,
+  links: [
+    ['docs/chronologie.html', 'Frise des premières villes'],
+    ['docs/controle-editorial.html', 'Programmes consultés et contrôle éditorial']
+  ]
+};
+
 function showCivilisations() {
-  const complete = civilisations.filter(lesson => S.history?.[lesson.id]).length;
+  showCourse(histoire);
+}
+
+function showCourse(course) {
+  const {title, introduction, key, lessons, links = []} = course;
+  const complete = lessons.filter(lesson => S.history?.[lessonProgressKey(key, lesson.id)]).length;
   v.innerHTML = `
-    <h2>La naissance des civilisations</h2>
-    <p>Premier cycle d’histoire · Année 1</p>
+    <h2>${title}</h2>
+    <p>Année 1</p>
     <article class="card">
       <h3>Ce que vous saurez faire</h3>
-      <p>Interpréter un vestige, comparer des trajectoires régionales et défendre une thèse sur les effets de l’urbanisation.</p>
-      <label for="history-progress">${complete} leçon${complete === 1 ? '' : 's'} sur ${civilisations.length} terminée${complete === 1 ? '' : 's'}</label>
-      <progress id="history-progress" value="${complete}" max="${civilisations.length}"></progress>
+      <p>${introduction}</p>
+      <label for="history-progress">${complete} leçon${complete === 1 ? '' : 's'} sur ${lessons.length} terminée${complete === 1 ? '' : 's'}</label>
+      <progress id="history-progress" value="${complete}" max="${lessons.length}"></progress>
       <details><summary>Choisir mon rythme</summary>
         <ul><li>Essentiel · 30 à 45 min. Lire le cours, interpréter le schéma et faire le quiz.</li>
           <li>Universitaire · 1 h 30 à 2 h. Ajouter le dossier et l’exercice écrit.</li>
           <li>Recherche · 3 à 5 h. Comparer une deuxième source et préparer une réponse argumentée au séminaire.</li></ul>
       </details>
     </article>
-    <ol class="lesson-list">${civilisations.map((lesson, index) => `
+    <ol class="lesson-list">${lessons.map((lesson, index) => `
       <li class="card"><h3>${lesson.title}</h3><p>${lesson.goal}</p>
-      <button data-lesson="${index}">${S.history?.[lesson.id] ? 'Revoir' : 'Ouvrir'} · ${lesson.title}</button></li>`).join('')}</ol>
-    <p><a href="docs/chronologie.html">Frise des premières villes</a></p>
-    <p><a href="docs/controle-editorial.html">Programmes consultés et contrôle éditorial</a></p>`;
+      <button data-lesson="${index}">${S.history?.[lessonProgressKey(key, lesson.id)] ? 'Revoir' : 'Ouvrir'} · ${lesson.title}</button></li>`).join('')}</ol>
+    ${links.map(([url, label]) => `<p><a href="${url}">${label}</a></p>`).join('')}`;
   v.querySelectorAll('[data-lesson]').forEach(button => {
-    button.addEventListener('click', () => showHistoryLesson(Number(button.dataset.lesson)));
+    button.addEventListener('click', () => showLesson(course, Number(button.dataset.lesson)));
   });
 }
 
-function showHistoryLesson(index) {
-  const lesson = civilisations[index];
+function lessonProgressKey(courseKey, lessonId) {
+  return courseKey === 'histoire' ? lessonId : `${courseKey}:${lessonId}`;
+}
+
+function showLesson(course, index) {
+  const {key, lessons} = course;
+  const lesson = lessons[index];
   const [caption, columns, rows] = lesson.diagram;
   const [question, options, answer, rationale] = lesson.quiz;
-  const noteKey = `histoire:${lesson.id}`;
+  const noteKey = `${key}:${lesson.id}`;
   v.innerHTML = `
-    <button id="history-back">Retour au cycle d’histoire</button>
+    <button id="history-back">${key === 'histoire' ? 'Retour au cycle d’histoire' : 'Retour au parcours'}</button>
     <h2 tabindex="-1">${lesson.title}</h2>
     <article class="card lesson">
       <p><strong>Objectif.</strong> ${lesson.goal}</p>
@@ -58,7 +78,7 @@ function showHistoryLesson(index) {
       <h3>Révision espacée</h3><p>${lesson.review}</p>
       <label for="history-notes">Mes notes</label>
       <textarea id="history-notes">${e(S.notes[noteKey])}</textarea>
-      <p><label><input type="checkbox" id="history-done" ${S.history?.[lesson.id] ? 'checked' : ''}> Leçon terminée</label></p>
+      <p><label><input type="checkbox" id="history-done" ${S.history?.[lessonProgressKey(key, lesson.id)] ? 'checked' : ''}> Leçon terminée</label></p>
     </article>
     <article class="card lesson">
       <h3>Bibliographie</h3>
@@ -68,12 +88,12 @@ function showHistoryLesson(index) {
     </article>
     <nav aria-label="Navigation des leçons">
       ${index > 0 ? '<button id="history-prev">Leçon précédente</button>' : ''}
-      ${index < civilisations.length - 1 ? '<button id="history-next">Leçon suivante</button>' : ''}
+      ${index < lessons.length - 1 ? '<button id="history-next">Leçon suivante</button>' : ''}
     </nav>`;
   v.querySelector('h2').focus();
-  v.querySelector('#history-back').onclick = () => go(10);
-  v.querySelector('#history-prev')?.addEventListener('click', () => showHistoryLesson(index - 1));
-  v.querySelector('#history-next')?.addEventListener('click', () => showHistoryLesson(index + 1));
+  v.querySelector('#history-back').onclick = () => showCourse(course);
+  v.querySelector('#history-prev')?.addEventListener('click', () => showLesson(course, index - 1));
+  v.querySelector('#history-next')?.addEventListener('click', () => showLesson(course, index + 1));
   v.querySelector('#history-quiz').onsubmit = event => {
     event.preventDefault();
     const selected = Number(new FormData(event.currentTarget).get('answer'));
@@ -86,7 +106,7 @@ function showHistoryLesson(index) {
   };
   v.querySelector('#history-done').onchange = event => {
     S.history ??= {};
-    S.history[lesson.id] = event.target.checked;
+    S.history[lessonProgressKey(key, lesson.id)] = event.target.checked;
     save();
   };
 }
