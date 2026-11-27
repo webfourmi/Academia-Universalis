@@ -62,3 +62,7 @@ assert.equal(vm.runInContext('validLibraryShelf({"javascript:alert(1)":"read"})'
 assert.equal(vm.runInContext('editorialStatus({})',sandbox),'Structure à compléter');
 assert.equal(vm.runInContext('editorialStatus({goal:"g",prerequisite:"p",sections:[["titre","texte [1]"]],activity:"a",correction:"c",quiz:["q",["r"],0,"j"],sources:[["a","t","2026","https://example.org","preuve"]],review:"r"})',sandbox),'Structure complète');
 assert.equal(vm.runInContext('editorialChecks({sections:[["t","[2]"]],sources:[["a","t","2026","https://example.org","p"]]}).find(x=>x[0].startsWith("Renvois"))[1]',sandbox),false);
+
+assert.equal(vm.runInContext('validPracticeProjects(undefined)',sandbox),true);
+assert.equal(vm.runInContext('validPracticeProjects([{id:"1",kind:"Laboratoire",title:"Test",steps:["","","",""],status:"draft"}])',sandbox),true);
+assert.equal(vm.runInContext('validPracticeProjects([{id:"1",kind:"Laboratoire",title:"Test",steps:[],status:"draft"}])',sandbox),false);
