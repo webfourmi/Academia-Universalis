@@ -14,6 +14,7 @@ function showCivilisations() {
 }
 
 function showCourse(course) {
+  if (course.key!=='methode' || tab!==9) rememberCampusRoute('course',{key:course.key});
   const {title, introduction, key, lessons, links = []} = course;
   const complete = lessons.filter(lesson => S.history?.[lessonProgressKey(key, lesson.id)]).length;
   v.innerHTML = `
@@ -50,6 +51,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
   saveReading();
   const {key, lessons} = course;
   const lesson = lessons[index];
+  rememberCampusRoute('lesson',{key,id:lesson.id,...(fromNote?{fromNote}:{})});
   const [caption, columns, rows] = lesson.diagram || [];
   const [question, options, answer, rationale] = lesson.quiz;
   const seminar = key === 'histoire' ? historySeminars[lesson.id] : undefined;

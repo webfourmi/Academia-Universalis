@@ -78,6 +78,7 @@ function spaceButton(courseKey, lessonId, label) {
 }
 
 function showSpace(name) {
+  rememberCampusRoute('space',{name});
   const catalog=campusCatalog();
   const due=allStudyCourses().flatMap(course=>course.lessons.filter(lesson=>{
     const review=S.reviews?.[lessonProgressKey(course.key,lesson.id)];
@@ -101,7 +102,7 @@ function showSpace(name) {
     Observatoire:'<h3>Observer le ciel et documenter une mesure</h3><p>Dans la représentation de la NASA, compare deux planètes en lisant les unités avant d’estimer un rapport de distances. Indique si la vue est à l’échelle ou schématique et garde une trace de la date de consultation.</p><p><a href="https://science.nasa.gov/solar-system/">NASA · Solar System Exploration (anglais, en ligne)</a></p>'+spaceButton('physique','mesures','Revoir les unités et les mesures'),
     'Cabinet de recherche':'<h3>Construire une enquête</h3><ol><li>Formule une question et une hypothèse réfutable.</li><li>Repère une publication primaire et une synthèse. Note auteur, titre, date, accès, droits et proposition soutenue.</li><li>Distingue ce que la source observe de ce qu’elle extrapole et cherche un contre-exemple.</li><li>Si tu utilises une IA, conserve une trace de son rôle et remonte aux documents originaux avant de citer.</li></ol><p><a href="docs/controle-editorial.html">Contrôle éditorial et grille de relecture</a></p>'+spaceButton('methode','verification','Vérifier une affirmation')+' '+spaceButton('methode','lecture','Lire une publication')+' '+spaceButton('methode','synthese-documentee','Rédiger une synthèse documentée')+' '+spaceButton('psychologie','methodes','Concevoir un test causal')
   };
-  v.innerHTML='<button onclick="showCampus()">Retour aux espaces</button><h2>'+name+'</h2><article class="card">'+activities[name]+'</article>';
+  v.innerHTML='<button onclick="go(11)">Retour aux espaces</button><h2>'+name+'</h2><article class="card">'+activities[name]+'</article>';
   v.querySelectorAll('[data-course]').forEach(button=>button.onclick=()=>spaceLesson(button.dataset.course,button.dataset.lessonId));
   const hours=v.querySelector('#campus-hours');
   if(hours) hours.onchange=()=>{S.hours=Number(hours.value);save();showSpace(name);};

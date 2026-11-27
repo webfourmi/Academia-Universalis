@@ -26,6 +26,7 @@ const writtenProjects = [
 ];
 
 function showWrittenProjects() {
+  rememberCampusRoute('projects');
   v.innerHTML = '<button onclick="showAssessments()">Retour aux évaluations</button><h2>Travaux de synthèse · Année 1</h2><p>Prépare les travaux à ton rythme, relis les leçons et compare ton brouillon avec le barème et le plan indicatif. Le Carnet conserve tes brouillons.</p>'+
     writtenProjects.map(project => `<article class="card"><details><summary>${project.title}</summary>
       <p>${project.question}</p><h3>Barème sur 20</h3><ul>${project.rubric.map(item=>`<li>${item}</li>`).join('')}</ul>

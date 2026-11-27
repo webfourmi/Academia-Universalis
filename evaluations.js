@@ -39,13 +39,14 @@ function assessmentSection(options) {
 }
 
 function showAssessments() {
-  showProgress();
+  go(13);
   const heading = v.querySelector('#assessment-title');
   heading.focus({preventScroll:true});
   heading.scrollIntoView({block:'center'});
 }
 
 function showAssessment(assessment) {
+  rememberCampusRoute('assessment',{key:assessment.key});
   const {title, items} = assessment;
   v.innerHTML = `<button onclick="showAssessments()">Retour aux évaluations</button><h2 tabindex="-1">${title}</h2>
     <p>Choisis une réponse par question. Tu peux refaire ce bilan à tout moment.</p>
@@ -66,22 +67,25 @@ function showAssessment(assessment) {
 
 function showAssessmentResult(assessment, selections) {
   const {key, title, items} = assessment;
+  rememberCampusRoute('assessment-result',{key,selections});
   const score = items.filter(({quiz}, index) => selections[index]===quiz[2]).length;
-  S.assessments ??= {};
-  const previous = S.assessments[key];
+  const previous = S.assessments?.[key];
   const total = items.length;
   const best = previous?.total === total ? Math.max(score, previous.best) : score;
-  S.assessments[key] = {last:score,best,total};
-  items.forEach(({course, lesson, quiz}, index) => {
-    // Le résultat d’un bilan inscrit la notion à revoir, sans simuler un rappel différé.
-    if (selections[index] !== quiz[2]) {
-      const reviewKey = lessonProgressKey(course.key, lesson.id);
-      const today = localStudyDate();
-      S.reviews ??= {};
-      S.reviews[reviewKey] = {date:today,step:0,last:today,correct:false};
-    }
-  });
-  save();
+  if (!restoringCampusRoute) {
+    S.assessments ??= {};
+    S.assessments[key] = {last:score,best,total};
+    items.forEach(({course, lesson, quiz}, index) => {
+      // Le résultat d’un bilan inscrit la notion à revoir, sans simuler un rappel différé.
+      if (selections[index] !== quiz[2]) {
+        const reviewKey = lessonProgressKey(course.key, lesson.id);
+        const today = localStudyDate();
+        S.reviews ??= {};
+        S.reviews[reviewKey] = {date:today,step:0,last:today,correct:false};
+      }
+    });
+    save();
+  }
   v.innerHTML = `<button onclick="showAssessments()">Retour aux évaluations</button><h2 tabindex="-1">Résultat · ${title}</h2>
     <p role="status"><strong>${score} sur ${total}</strong> · Meilleur résultat : ${best}/${total}</p>
     ${score < total ? '<p>Les leçons liées aux réponses à reprendre sont inscrites au planning de révision à partir de J+2.</p>' : ''}
