@@ -68,6 +68,20 @@ const qs=[['Que date la thermoluminescence du silex ?',['La dernière chauffe su
 return '<h3>Quiz complémentaire</h3>'+qs.map(([q,opts,a,why],i)=>'<fieldset><legend>'+e(q)+'</legend>'+opts.map((o,j)=>'<label class="quiz-option"><input type="radio" name="evo-extra-'+i+'" value="'+j+'"> '+e(o)+'</label>').join('')+'<button type="button" data-evo-answer="'+a+'" data-evo-why="'+e(why)+'">Vérifier</button><p role="status"></p></fieldset>').join('');
 }
 
+function migrationFlashcards(lesson){
+ if(lesson.id!=='migrations-humaines')return '';
+ const cards=[["Que prouve une occupation datée ?","Une présence locale, pas une filiation ni un itinéraire."],["Où se trouve Dmanisi ?","Dans le Caucase, en Géorgie."],["Âge des occupations de Dmanisi selon l’étude de 2022 ?","Environ 1,80–1,76 Ma."],["Volume endocrânien de D4500 ?","546 cm³."],["Que désigne le Sahul ?","Australie et Nouvelle-Guinée réunies lors des bas niveaux marins."],["Quel fossile a été découvert à Misliya ?","Un maxillaire attribué à Homo sapiens."],["Datation proposée de Misliya ?","194–177 ka, estimation discutée."],["Datation proposée de Madjedbebe ?","Environ 65 ka, estimation discutée."],["Que trouve-t-on à White Sands ?","Des empreintes humaines datées vers 23–21 ka."],["Que mesure la luminescence OSL ?","Le temps depuis la dernière exposition lumineuse des grains."],["Quel biais affecte les graines aquatiques ?","Le carbone ancien peut augmenter leur âge apparent."],["1,80 Ma équivaut à combien de ka ?","1 800 ka."]];
+ return '<section class="card" id="migration-flashcards"><h3>Flashcards · rappel actif</h3><p>Formulez votre réponse avant de retourner la carte.</p><p id="migration-card-count" role="status"></p><h4 id="migration-card-question"></h4><details id="migration-card-answer"><summary>Retourner la carte</summary><p></p></details><div><button type="button" id="migration-card-prev">Précédente</button> <button type="button" id="migration-card-next">Suivante</button></div><script type="application/json" id="migration-card-data">'+JSON.stringify(cards)+'</script></section>';
+}
+function bindMigrationFlashcards(v){
+ const root=v.querySelector('#migration-flashcards');if(!root)return;
+ const cards=JSON.parse(root.querySelector('#migration-card-data').textContent);let i=0;
+ const answer=root.querySelector('#migration-card-answer');
+ function render(){root.querySelector('#migration-card-count').textContent=(i+1)+' / '+cards.length;root.querySelector('#migration-card-question').textContent=cards[i][0];answer.querySelector('p').textContent=cards[i][1];answer.open=false;}
+ root.querySelector('#migration-card-prev').onclick=()=>{i=(i+cards.length-1)%cards.length;render();};
+ root.querySelector('#migration-card-next').onclick=()=>{i=(i+1)%cards.length;render();};render();
+}
+
 function migrationMap(lesson){
  if(lesson.id!=='migrations-humaines')return '';
  const sites=[['Dmanisi',41.33,44.34,1800,'1,80–1,76 Ma','Outils et fossiles',1],['Misliya',32.74,34.97,194,'194–177 ka, discuté','Maxillaire',4],['Madjedbebe',-12.5,132.9,65,'65 ka, discuté','Outils et sédiments',6],['White Sands',32.8,-106.2,23,'23–21 ka','Empreintes et datations indépendantes',7]];
@@ -141,7 +155,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
       </form>
       ${lesson.id==='evolution-humaine'?evolutionQuiz():''}
       <h3>Séminaire</h3><p>${lesson.seminar}</p>
-      <h3>Révision espacée</h3><p>${lesson.review}</p>
+      <h3>Révision espacée</h3><p>${lesson.review}</p>${migrationFlashcards(lesson)}
       <label for="history-notes">Mes notes</label>
       <textarea id="history-notes">${e(S.notes[noteKey])}</textarea>
       <p><label><input type="checkbox" id="history-done" ${S.history?.[lessonProgressKey(key, lesson.id)] ? 'checked' : ''}> Leçon terminée</label></p>
@@ -172,6 +186,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
   });
   v.querySelectorAll('[data-evo-answer]').forEach(button=>button.onclick=()=>{const field=button.closest('fieldset');const selected=field.querySelector('input:checked');field.querySelector('[role=status]').textContent=selected?((selected.value===button.dataset.evoAnswer?'Correct. ':'À revoir. ')+button.dataset.evoWhy):'Choisissez une réponse.';});
   bindMigrationMap(v);
+  bindMigrationFlashcards(v);
   installReadingTools(course,lesson);
   const heading = v.querySelector('h2');
   heading.focus({preventScroll:offset!==undefined});
