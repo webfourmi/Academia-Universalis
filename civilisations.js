@@ -132,6 +132,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
   v.querySelectorAll('[data-jump]').forEach(button=>{
     button.onclick=()=>jumpToStudySection(button.dataset.jump);
   });
+  installReadingTools(course,lesson);
   const heading = v.querySelector('h2');
   heading.focus({preventScroll:offset!==undefined});
   rememberLesson(heading,course,lesson,offset);
@@ -242,4 +243,89 @@ function guidedJourneyCard() {
     <progress aria-label="Progression dans les leçons du parcours conseillé" value="${journey.completed}" max="${journey.total}"></progress>
     <p>${journey.completed} sur ${journey.total} leçons du parcours conseillé terminées</p>
   </article>`;
+}
+
+function validReadingTools(value) {
+  return value===undefined || Boolean(value && typeof value==='object' && !Array.isArray(value) &&
+    ['light','sepia','dark'].includes(value.theme) && [100,115,130,150].includes(value.size) &&
+    value.marks && typeof value.marks==='object' && !Array.isArray(value.marks) &&
+    Object.values(value.marks).every(mark=>mark && typeof mark==='object' && typeof mark.highlight==='boolean' && typeof mark.note==='string' && mark.note.length<=10000));
+}
+function installReadingTools(course,lesson) {
+  const article=v.querySelector('#lesson-reading');
+  const prefs=validReadingTools(S.readingTools)&&S.readingTools?S.readingTools:{theme:'light',size:100,marks:{}};
+  const panel=document.createElement('details');panel.className='card reading-tools';
+  panel.innerHTML=`<summary>Outils de lecture</summary><div class="reading-controls"><label>Thème <select data-theme><option value="light">Clair</option><option value="sepia">Sépia</option><option value="dark">Sombre</option></select></label><label>Taille <select data-size>${[100,115,130,150].map(n=>`<option value="${n}">${n} %</option>`).join('')}</select></label><button type="button" data-focus aria-pressed="false">Lecture immersive</button><button type="button" data-speak>Écouter</button><button type="button" data-stop>Arrêter</button></div><p role="status"></p>`;
+  article.before(panel);
+  panel.append(glossaryPanel());
+  panel.append(bookmarkPanel());
+  const theme=panel.querySelector('[data-theme]'),size=panel.querySelector('[data-size]'),status=panel.querySelector('[role=status]');
+  theme.value=prefs.theme;size.value=String(prefs.size);
+  function persist(){try{S.readingTools=prefs;save();status.textContent='Préférences enregistrées.';}catch{status.textContent='Enregistrement impossible.';}}
+  function apply(){article.dataset.readingTheme=prefs.theme;article.style.fontSize=prefs.size+'%';}
+  theme.onchange=()=>{prefs.theme=theme.value;apply();persist();};size.onchange=()=>{prefs.size=Number(size.value);apply();persist();};apply();
+  const focus=panel.querySelector('[data-focus]');
+  focus.onclick=()=>{const active=article.classList.toggle('reading-immersive');focus.setAttribute('aria-pressed',String(active));focus.textContent=active?'Quitter la lecture immersive':'Lecture immersive';v.querySelectorAll(':scope > article:not(#lesson-reading), :scope > nav').forEach(el=>{el.hidden=active;});};
+  const speech=window.speechSynthesis;
+  const speak=panel.querySelector('[data-speak]'),stop=panel.querySelector('[data-stop]');
+  const localVoice=()=>speech?.getVoices().find(voice=>voice.localService&&voice.lang.toLowerCase().startsWith('fr'));
+  speak.disabled=!speech;stop.disabled=!speech;
+  speak.onclick=()=>{const voice=localVoice();if(!voice){status.textContent='Aucune voix française locale disponible sur cet appareil.';return;}speech.cancel();const text=[...article.querySelectorAll('p,h3')].map(el=>el.textContent).join('. ');const utterance=new SpeechSynthesisUtterance(text);utterance.voice=voice;utterance.lang='fr-FR';speech.speak(utterance);};
+  stop.onclick=()=>speech?.cancel();
+  article.querySelectorAll('h3[id^="lesson-section-"]').forEach((heading,index)=>{
+    const paragraph=heading.nextElementSibling;if(!paragraph||paragraph.tagName!=='P')return;
+    const key=course.key+':'+lesson.id+':'+index;
+    const mark=prefs.marks[key]||{highlight:false,note:''};
+    const controls=document.createElement('details');controls.className='passage-tools';
+    controls.innerHTML='<summary>Annoter ce passage</summary><label><input type="checkbox"> Surligner le passage</label><label>Annotation personnelle<textarea maxlength="10000" rows="3"></textarea></label><button type="button">Enregistrer</button>';
+    const check=controls.querySelector('input'),note=controls.querySelector('textarea');check.checked=mark.highlight;note.value=mark.note;paragraph.classList.toggle('passage-highlight',mark.highlight);
+    controls.querySelector('button').onclick=()=>{prefs.marks[key]={highlight:check.checked,note:note.value};paragraph.classList.toggle('passage-highlight',check.checked);persist();};
+    const bookmark=document.createElement('button');bookmark.type='button';
+    const entry={courseKey:course.key,lessonId:lesson.id,section:index,title:heading.textContent};
+    function refresh(){const active=(S.bookmarks||[]).some(b=>sameBookmark(b,entry));bookmark.textContent=active?'Retirer le signet':'Ajouter un signet';bookmark.setAttribute('aria-pressed',String(active));}
+    bookmark.onclick=()=>{const list=validBookmarks(S.bookmarks)?(S.bookmarks||[]):[];S.bookmarks=list.some(b=>sameBookmark(b,entry))?list.filter(b=>!sameBookmark(b,entry)):[...list,entry];persist();refresh();};
+    controls.append(bookmark);refresh();
+    paragraph.after(controls);
+  });
+}
+
+function sameBookmark(a,b){return a.courseKey===b.courseKey&&a.lessonId===b.lessonId&&a.section===b.section;}
+function validBookmarks(value){return value===undefined||Array.isArray(value)&&value.length<=10000&&value.every(b=>b&&typeof b.courseKey==='string'&&typeof b.lessonId==='string'&&Number.isInteger(b.section)&&b.section>=0&&typeof b.title==='string'&&b.title.length<=1000);}
+function bookmarkPanel(){
+ const panel=document.createElement('details');panel.className='card';panel.innerHTML='<summary>Mes signets</summary><div></div>';
+ const body=panel.querySelector('div');
+ panel.ontoggle=()=>{
+ if(!panel.open)return;
+ const list=validBookmarks(S.bookmarks)?(S.bookmarks||[]):[];
+ body.replaceChildren();
+ if(!list.length){body.textContent='Aucun signet enregistré.';return;}
+ list.forEach(b=>{
+ const target=locateLesson(b.courseKey,b.lessonId);
+ const row=document.createElement('div');row.className='bookmark-row';
+ const open=document.createElement('button');open.type='button';open.className='title-action';open.textContent=(target?.lesson.title||b.lessonId)+' · '+b.title;
+ open.disabled=!target;
+ open.onclick=()=>{showLesson(target.course,target.index);const section=target.lesson.sections[b.section];jumpToStudySection(section&&section[0]===b.title?'lesson-section-'+b.section:'lesson-reading');};
+ const remove=document.createElement('button');remove.type='button';remove.textContent='Retirer';remove.onclick=()=>{S.bookmarks=(S.bookmarks||[]).filter(item=>!sameBookmark(item,b));save();panel.ontoggle();};
+ row.append(open,remove);body.append(row);
+ });
+ };
+ return panel;
+}
+const universityGlossary=[
+ ['Hypothèse','Proposition explicative provisoire dont on peut confronter les conséquences aux observations.'],
+ ['Corrélation','Association entre variables, qui ne suffit pas à établir un lien causal.'],
+ ['Biais de confirmation','Tendance à privilégier les éléments favorables à une conviction et à négliger ceux qui la contredisent.'],
+ ['Variable indépendante','Facteur manipulé dans une expérience pour étudier ses effets.'],
+ ['Variable dépendante','Résultat mesuré pour apprécier les effets du facteur étudié.'],
+ ['Échantillon','Sous-ensemble de la population étudiée.'],
+ ['Réfutabilité','Possibilité de mettre une proposition en défaut par des observations incompatibles avec elle.'],
+ ['Théorie','Ensemble structuré de propositions expliquant des phénomènes observés.'],
+ ['Validité','Degré auquel une mesure saisit effectivement ce qu’elle vise à mesurer.'],
+ ['Réplication','Nouvelle réalisation d’une étude afin de vérifier si ses résultats se retrouvent.']
+];
+function glossaryPanel(){
+ const panel=document.createElement('details');panel.className='card';panel.innerHTML='<summary>Glossaire universitaire</summary><label>Rechercher une notion <input type="search"></label><p role="status"></p><dl></dl><p><a href="https://openstax.org/books/psychology-2e/pages/2-key-terms" target="_blank" rel="noopener">Source : OpenStax, Psychology 2e, chapitre 2</a> · Définitions reformulées en français.</p>';
+ const input=panel.querySelector('input'),list=panel.querySelector('dl');
+ function draw(){const q=searchableText(input.value.trim());const terms=universityGlossary.filter(([term,def])=>searchableText(term+' '+def).includes(q));list.replaceChildren();terms.forEach(([term,def])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=term;dd.textContent=def;list.append(dt,dd);});panel.querySelector('[role=status]').textContent=terms.length+' notions';}
+ input.oninput=draw;draw();return panel;
 }
