@@ -186,3 +186,17 @@ main { max-width: 1080px; }
 .library-record h3 a{white-space:normal;overflow-wrap:anywhere}.library-record details button{display:block;text-align:left;white-space:normal;margin-block:.5rem}.library-filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:.75rem}.library-filters label{display:grid;min-width:0}.library-filters select{max-width:100%;min-width:0}
 
 .practice-dossier form label{display:block;margin-block:.8rem}.practice-dossier textarea{display:block;width:100%;box-sizing:border-box}.practice-dossier summary{overflow-wrap:anywhere}.practice-dossier button{margin:.3rem}
+
+/* V0.27.1 : couples fond / texte explicites dans les encadrés de lecture. */
+#lesson-reading[data-reading-theme="light"]{background:#fff;color:#233b36;color-scheme:light;--reading-panel:#f2f7f5;--reading-ink:#233b36;--reading-link:#17665b;--reading-line:#39766a}
+#lesson-reading[data-reading-theme="sepia"]{color-scheme:light;--reading-panel:#eee0c3;--reading-ink:#382d20;--reading-link:#65451e;--reading-line:#80643b}
+#lesson-reading[data-reading-theme="dark"]{--reading-panel:#293936;--reading-ink:#f0f3ed;--reading-link:#a7e4d4;--reading-line:#86b9aa}
+#lesson-reading[data-reading-theme] :is(.history-overview,.card,blockquote,pre,details){background:var(--reading-panel);color:var(--reading-ink)}
+#lesson-reading[data-reading-theme] :is(small,figcaption,.study-timeline span){color:var(--reading-ink)}
+#lesson-reading[data-reading-theme] :is(a,.citation-ref){color:var(--reading-link)}
+#lesson-reading[data-reading-theme] .study-timeline div{border-color:var(--reading-line)}
+#lesson-reading[data-reading-theme] :is(textarea,select,input:not([type=checkbox]):not([type=radio]),button){background:var(--reading-panel);color:var(--reading-ink);border-color:var(--reading-line)}
+#lesson-reading[data-reading-theme] :is(th,td){background:var(--reading-panel);color:var(--reading-ink);border-color:var(--reading-line)}
+#lesson-reading[data-reading-theme] .passage-highlight{background:#f8e6a1;color:#302a17}
+#lesson-reading[data-reading-theme] .passage-highlight :is(a,small,strong,em){color:#302a17}
+#lesson-reading[data-reading-theme] :focus-visible{outline-color:var(--reading-link)}
