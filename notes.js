@@ -15,13 +15,23 @@ function backup() {
   downloadBackup(S,'academia-sauvegarde.json');
 }
 
+function safeBackupTree(value, depth = 0) {
+  if (depth > 40) return false;
+  if (value === null || typeof value !== 'object') return true;
+  return Object.keys(value).every(key =>
+    !['__proto__','constructor','prototype'].includes(key) &&
+    safeBackupTree(value[key], depth + 1));
+}
+
 async function restore(input) {
   const file = input.files[0];
   if (!file) return;
   const status = v.querySelector('#notes-import-status');
   let data;
   try {
+    if (file.size > 10 * 1024 * 1024) throw new Error('Fichier trop volumineux');
     data = JSON.parse((await file.text()).replace(/^\uFEFF/,''));
+    if (!safeBackupTree(data)) throw new Error('Structure invalide');
   } catch {
     status.textContent = 'Choisis le fichier .json téléchargé depuis Academia Universalis.';
     input.value = '';
@@ -44,12 +54,14 @@ async function restore(input) {
       return;
     }
     if (!confirm('Remplacer les notes, la progression et le rythme sur cet appareil par cette sauvegarde ?')) return;
+    const previous = JSON.stringify(S);
+    localStorage.setItem('au-before-restore', previous);
     localStorage.au = JSON.stringify(data);
     S = data;
     render();
     v.querySelector('#notes-import-status')?.append('Sauvegarde restaurée.');
   } catch {
-    status.textContent = 'Impossible d’enregistrer la sauvegarde sur cet appareil.';
+    if (status) status.textContent = 'Impossible de terminer la restauration. Une copie préalable est conservée si son enregistrement a réussi.';
   } finally {
     input.value = '';
   }
@@ -60,7 +72,9 @@ async function importNotes(input, parsedData) {
   const file = input.files[0];
   if (!file) return;
   try {
+    if (file.size > 10 * 1024 * 1024) throw new Error('Fichier trop volumineux');
     const data = parsedData ?? JSON.parse((await file.text()).replace(/^\uFEFF/,''));
+    if (!safeBackupTree(data)) throw new Error('Structure invalide');
     const notes = data?.notes;
     const supported = data?.format === 'academia-notes'
       ? data.version === 1
