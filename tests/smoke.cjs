@@ -134,3 +134,12 @@ vm.runInContext(fs.readFileSync('sciences-data.js','utf8'),sandbox);
 assert.equal(vm.runInContext('physique.slice(0,6).map(l=>l.id).join(",")',sandbox),'intro-physique,mesures,maths-physicien,referentiels,vitesse-acceleration,prevoir-mouvement');
 assert.ok(vm.runInContext('physique.slice(0,6).every(l=>l.flashcards.length>=12&&l.correction&&l.sources.length)',sandbox));
 assert.equal(vm.runInContext('new Set(physique.map(l=>l.id)).size',sandbox),8);
+
+const physLabSource=fs.readFileSync('civilisations.js','utf8').split('function physicsModel(')[1].split('function bindPhysicsLab(')[0];
+const pm=vm.runInNewContext('(function physicsModel('+physLabSource.trim()+')');
+assert.ok(Math.abs(pm('intro-physique',.8,3)/pm('intro-physique',.2,3)-2)<1e-10);
+assert.ok(Math.abs(pm('mesures',.2,3)-15.3)<1e-10);
+assert.equal(pm('maths-physicien',3,3),11);
+assert.equal(pm('referentiels',2,3),2);
+assert.equal(pm('vitesse-acceleration',2,3),6);
+assert.equal(pm('prevoir-mouvement',2,3),12);
