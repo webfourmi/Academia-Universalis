@@ -44,7 +44,7 @@ async function restore(input) {
   const records = (value,type) => value && typeof value === 'object' &&
     !Array.isArray(value) && Object.values(value).every(entry=>typeof entry === type);
   try {
-    if (!validMemoryCards(data?.memoryCards) || !validBookmarks(data?.bookmarks) || !validReadingTools(data?.readingTools) || !validStudyMinutes(data?.studyMinutes) || !validAssessments(data?.assessments) || !validReviews(data?.reviews) ||
+    if (!validLibraryShelf(data?.libraryShelf) || !validMemoryCards(data?.memoryCards) || !validBookmarks(data?.bookmarks) || !validReadingTools(data?.readingTools) || !validStudyMinutes(data?.studyMinutes) || !validAssessments(data?.assessments) || !validReviews(data?.reviews) ||
         !records(data?.done,'boolean') || !records(data.notes,'string') ||
         (data.history !== undefined && !records(data.history,'boolean')) ||
         (data.lessonRevisions !== undefined && (!records(data.lessonRevisions,'number') ||
