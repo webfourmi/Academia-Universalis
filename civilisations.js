@@ -74,7 +74,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
   v.innerHTML = `
     ${fromNote ? '<button type="button" id="return-to-note">Retour à la note</button>' : ''}
     <button id="history-back">${key === 'histoire' ? 'Retour au cycle d’histoire' : 'Retour au parcours'}</button>
-    <h2 class="reading-title" tabindex="-1">${lesson.title}</h2>
+    <h2 class="reading-title" tabindex="-1">${lesson.title}</h2><details class="card"><summary>Qualité éditoriale · ${editorialStatus(lesson)}</summary><p>Contrôle automatique de structure, sans validation scientifique indépendante attestée.</p><ul>${editorialChecks(lesson).map(([label,ok])=>`<li>${ok?"Présent":"À vérifier"} : ${e(label)}</li>`).join("")}</ul><a href="docs/controle-editorial.html">Protocole éditorial</a></details>
     <nav class="lesson-jumps" aria-label="Sommaire de la leçon">
       <button type="button" data-jump="lesson-reading">Cours</button><button type="button" data-jump="lesson-exercise">Exercice</button><button type="button" data-jump="history-quiz">Quiz</button><button type="button" data-jump="history-notes">Notes</button>
     </nav>
