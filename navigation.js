@@ -2,7 +2,8 @@ const campusShortcuts = [
   [0,'Accueil','M3 10 12 3l9 7v11h-6v-7H9v7H3z'],
   [5,'Bibliothèque','M4 4h6v16H4zM13 5l5-1 3 15-5 1z'],
   [6,'Carnet','M6 4h14v16H6zM4 8h4m-4 4h4m-4 4h4m3-7h6m-6 4h6'],
-  [13,'Ma progression','M4 20h16M6 16v-4m6 4V8m6 8V4']
+  [13,'Ma progression','M4 20h16M6 16v-4m6 4V8m6 8V4'],
+  [14,'Rechercher','M15 15l5 5M16 10a6 6 0 1 1-12 0 6 6 0 0 1 12 0z']
 ];
 
 function updateCampusNavigation() {

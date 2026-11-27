@@ -65,14 +65,18 @@ function showNotebook() {
   v.innerHTML = `<h2>Mon carnet</h2>
     ${entries.length ? '' : '<p>Tes notes de cours et tes brouillons apparaîtront ici.</p>'}
     <div id="notebook-entries">${entries.map(([key,note],index)=>`
-      <article class="card note-entry"><h3>${e(noteTitle(key))}</h3>
+      <article class="card note-entry" tabindex="-1" data-note-key="${e(key)}"><h3>${e(noteTitle(key))}</h3>
       <p class="note-text">${e(note)}</p>
-      <button type="button" data-edit-note="${index}">Modifier</button></article>`).join('')}</div>
+      <button type="button" data-edit-note="${index}">Modifier</button>
+      ${lessonForNote(key)?`<button type="button" data-note-lesson="${index}">Ouvrir la leçon</button>`:''}</article>`).join('')}</div>
     <details class="card"><summary>Sauvegarder mes notes</summary><p><button onclick="exportNotes()">Exporter mes notes</button></p>
       <label>Importer des notes <input type="file" accept=".json,application/json" onchange="importNotes(this)"></label>
     </details>
     <p id="notes-import-status" role="status"></p>
     <p><button onclick="backup()">Exporter ma sauvegarde</button> <label>Importer <input type="file" accept=".json" onchange="restore(this)"></label></p>`;
+  v.querySelectorAll('[data-note-lesson]').forEach(button=>{
+    button.onclick=()=>openNotebookLesson(entries[Number(button.dataset.noteLesson)][0]);
+  });
   v.querySelectorAll('[data-edit-note]').forEach(button=>button.onclick=()=>{
     const index = Number(button.dataset.editNote);
     const [key] = entries[index];

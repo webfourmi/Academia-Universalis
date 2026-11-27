@@ -46,7 +46,8 @@ function lessonProgressKey(courseKey, lessonId) {
   return courseKey === 'histoire' ? lessonId : `${courseKey}:${lessonId}`;
 }
 
-function showLesson(course, index) {
+function showLesson(course, index, {offset,fromNote} = {}) {
+  saveReading();
   const {key, lessons} = course;
   const lesson = lessons[index];
   const [caption, columns, rows] = lesson.diagram || [];
@@ -61,6 +62,7 @@ function showLesson(course, index) {
   });
   const noteKey = `${key}:${lesson.id}`;
   v.innerHTML = `
+    ${fromNote ? '<button type="button" id="return-to-note">Retour à la note</button>' : ''}
     <button id="history-back">${key === 'histoire' ? 'Retour au cycle d’histoire' : 'Retour au parcours'}</button>
     <h2 tabindex="-1">${lesson.title}</h2>
     <article class="card lesson">
@@ -114,7 +116,10 @@ function showLesson(course, index) {
       ${index > 0 ? '<button id="history-prev">Leçon précédente</button>' : ''}
       ${index < lessons.length - 1 ? '<button id="history-next">Leçon suivante</button>' : ''}
     </nav>`;
-  v.querySelector('h2').focus();
+  const heading = v.querySelector('h2');
+  heading.focus({preventScroll:offset!==undefined});
+  rememberLesson(heading,course,lesson,offset);
+  v.querySelector('#return-to-note')?.addEventListener('click',()=>returnToNotebookNote(fromNote));
   v.querySelectorAll('.citation-ref').forEach(link => {
     link.onclick = event => {
       event.preventDefault();
@@ -132,9 +137,9 @@ function showLesson(course, index) {
       reference.scrollIntoView({block:'center'});
     };
   });
-  v.querySelector('#history-back').onclick = () => showCourse(course);
-  v.querySelector('#history-prev')?.addEventListener('click', () => showLesson(course, index - 1));
-  v.querySelector('#history-next')?.addEventListener('click', () => showLesson(course, index + 1));
+  v.querySelector('#history-back').onclick = () => {saveReading();showCourse(course);};
+  v.querySelector('#history-prev')?.addEventListener('click', () => showLesson(course, index - 1, {fromNote}));
+  v.querySelector('#history-next')?.addEventListener('click', () => showLesson(course, index + 1, {fromNote}));
   v.querySelector('#history-quiz').onsubmit = event => {
     event.preventDefault();
     const selected = Number(new FormData(event.currentTarget).get('answer'));
