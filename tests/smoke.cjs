@@ -88,8 +88,11 @@ assert.ok(migrationSource.includes('bindMigrationMap(v);'));
 assert.ok(migrationSource.includes('data-migration-pin'));
 
 assert.ok(migrationSource.includes('function migrationFlashcards(lesson)'));
-assert.ok(migrationSource.includes('bindMigrationFlashcards(v);'));
+assert.ok(migrationSource.includes('bindMigrationFlashcards(v,course,lesson);'));
 
-assert.ok(migrationSource.includes('migrationCardKey(i)'));
+assert.ok(migrationSource.includes('lessonCardKey(course,lesson,i)'));
 assert.ok(migrationSource.includes('nextMemoryReview(S.reviews[key],correct,localStudyDate())'));
 assert.ok(fs.readFileSync('campus.js','utf8').includes('...builtinDue.map'));
+
+assert.ok(migrationSource.includes('function lessonCardDefinitions(lesson)'));
+assert.ok(migrationSource.includes('function builtinStudyCards()'));
