@@ -46,6 +46,7 @@ function showCourse(course) {
     ${key === 'histoire' ? '<article class="card"><h3><button class="title-action" onclick="showCourse(antiquite)">Deuxième cycle · Grèce et Rome</button></h3></article>' : ''}
     ${key === 'antiquite' ? '<p><button onclick="showCivilisations()">Retour au premier cycle d’histoire</button></p>' : ''}
     ${links.map(([url, label]) => `<p><a href="${url}">${label}</a></p>`).join('')}`;
+  v.querySelector('.lesson-list').before(offlineCourseControls(course));
   v.querySelectorAll('[data-lesson]').forEach(button => {
     button.addEventListener('click', () => showLesson(course, Number(button.dataset.lesson)));
   });

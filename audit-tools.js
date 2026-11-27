@@ -337,7 +337,9 @@ function tutorPanel(course,lesson) {
 const atlasPaths = [
   ['Qu’est-ce que l’humain ?', 'Évolution, migrations, pensée critique, récit et cognition', [['evolution-humaine','migrations-humaines'],['uruk'],['odyssee'],['methodes'],['intro-physique']], ['philosophie']],
   ['Comment établir une preuve ?', 'Archéologie, expérience, mesure et raisonnement', [['uruk'],['methodes'],['mesures'],['premisses']], []],
-  ['Qui raconte le passé ?', 'Ulysse, Athènes, Antiquité grecque, Auguste et mémoire', [['odyssee'],['athenes','auguste'],['achebe']], []]
+  ['Qui raconte le passé ?', 'Ulysse, Athènes, Antiquité grecque, Auguste et mémoire', [['odyssee'],['athenes','auguste'],['achebe']], []],
+  ['Comment mesurer le changement ?', 'Mouvement, perception et comparaison des observations', [['mesures','vitesse-acceleration','methodes']], []],
+  ['Comment les sociétés s’organisent-elles ?', 'Premières villes, pouvoir impérial et institutions', [['uruk','comparaison','auguste','athenes']], []]
 ];
 
 function showTransversalAtlas() {
@@ -346,6 +348,15 @@ function showTransversalAtlas() {
   panel.innerHTML='<h3>Parcours transversaux</h3><label>Explorer <input type="search" placeholder="Œuvre, personnage, époque, notion…"></label><div data-atlas-results></div>';
   const all=studyItems();
   const input=panel.querySelector('input');
+  const filter=document.createElement('label');
+  filter.innerHTML=`Année <select><option value="">Toutes les années</option>${[1,2,3,4].map(year=>`<option>${year}</option>`).join('')}</select>`;
+  input.parentElement.after(' ',filter);
+  const year=filter.querySelector('select');
+  panel.insertAdjacentHTML('beforeend','<details><summary>Index des leçons</summary><p data-atlas-count role="status"></p><ul data-atlas-index></ul><button data-atlas-more>Afficher plus de leçons</button></details>');
+  const index=panel.querySelector('[data-atlas-index]');
+  const more=panel.querySelector('[data-atlas-more]');
+  let limit=20;
+  const searchCorpus=all.map(i=>({item:i,text:searchableText([i.lesson.title,i.lesson.goal,i.course.title,...(i.lesson.sections||[]).map(section=>section[0])].join(' '))}));
   const results=panel.querySelector('[data-atlas-results]');
   function draw(){
     results.replaceChildren();
@@ -360,8 +371,21 @@ function showTransversalAtlas() {
       results.append(section);
     });
     if(!results.children.length) results.textContent='Aucun parcours trouvé.';
+    const matches=searchCorpus.filter(({item,text})=>(!year.value||Number(year.value)===(item.course.year||1))&&query.every(word=>text.includes(word)));
+    panel.querySelector('[data-atlas-count]').textContent=matches.length+' leçons trouvées';
+    index.innerHTML=matches.slice(0,limit).map(({item},i)=>`<li><button class="title-action" data-result="${i}">${e(item.lesson.title)}</button> · ${e(item.course.title)} · Année ${item.course.year||1}</li>`).join('');
+    index.querySelectorAll('button').forEach(button=>button.onclick=()=>{
+      const {item}=matches[Number(button.dataset.result)];
+      showLesson(item.course,item.index);
+    });
+    more.hidden=matches.length<=limit;
   }
-  input.oninput=draw;
+  input.oninput=year.onchange=()=>{
+    limit=20;
+    if(input.value.trim()||year.value)index.closest('details').open=true;
+    draw();
+  };
+  more.onclick=()=>{limit+=20;draw();};
   draw();
   v.prepend(panel);
 }
@@ -404,5 +428,132 @@ function addDisciplineWorkshops(name) {
   panel.className='card';
   panel.innerHTML='<h3>Ateliers disciplinaires</h3><ol>'+choices.map(([, , label],i)=>`<li><button class="title-action" data-workshop="${i}">${label}</button></li>`).join('')+'</ol>';
   panel.querySelectorAll('button').forEach(b=>b.onclick=()=>spaceLesson(...choices[Number(b.dataset.workshop)]));
+  campusWorkshopCases.filter(item=>item.kind===name).forEach((item,index)=>panel.append(workshopActivity(item,index)));
   v.append(panel);
+}
+
+const offlineCourseCache='academia-packs-v1';
+
+function offlineCourseURL(course) {
+  return new URL('cours-hors-ligne/'+encodeURIComponent(course.key)+'.html',location.href);
+}
+
+function offlineCourseDocument(course) {
+  const text=value=>{
+    const template=document.createElement('template');
+    template.innerHTML=String(value??'');
+    return e(template.content.textContent);
+  };
+  const lessons=course.lessons.map((lesson,index)=>{
+    const [caption,columns,rows]=lesson.diagram||[];
+    const table=lesson.diagram?`<table><caption>${text(caption)}</caption><thead><tr>${columns.map(col=>`<th scope="col">${text(col)}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>`<tr>${row.map(cell=>`<td>${text(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table>`:'';
+    const quiz=lesson.quiz?`<h3>Quiz</h3><p>${text(lesson.quiz[0])}</p><ol>${lesson.quiz[1].map(option=>`<li>${text(option)}</li>`).join('')}</ol><details><summary>Réponse</summary><p>${text(lesson.quiz[1][lesson.quiz[2]])} · ${text(lesson.quiz[3])}</p></details>`:'';
+    const sources=(lesson.sources||[]).map(([author,title,year,url])=>`<li>${text(author)} · ${text(title)} (${text(year)})${/^https?:\/\//i.test(url)?` · <a href="${e(url)}">${e(url)}</a>`:''}</li>`).join('');
+    return `<article id="lecon-${index+1}"><h2>${text(lesson.title)}</h2><p>${text(lesson.goal)}</p><p>${text(lesson.overview)}</p>
+      ${lesson.sections.map(([title,body])=>`<h3>${text(title)}</h3><p>${text(body)}</p>`).join('')}${table}
+      ${lesson.dossier?`<h3>Dossier</h3><p>${text(lesson.dossier)}</p>`:''}
+      ${lesson.activity?`<h3>Exercice</h3><p>${text(lesson.activity)}</p><details><summary>Corrigé</summary><p>${text(lesson.correction)}</p></details>`:''}
+      ${quiz}${sources?`<h3>Références</h3><ol>${sources}</ol>`:''}
+      <p><a href="#sommaire">Retour au sommaire</a></p></article>`;
+  }).join('');
+  return `<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${text(course.title)} · Academia Universalis</title>
+    <style>body{color:#183b38;background:#f4f6f5;font:1rem/1.65 system-ui,sans-serif;max-width:56rem;margin:auto;padding:1rem}article{border-top:1px solid #b8cbc5;padding-block:1rem}a{color:#17665b;overflow-wrap:anywhere}td,th{padding:.35rem;text-align:left;border:1px solid #b8cbc5;overflow-wrap:anywhere}table{border-collapse:collapse;width:100%;table-layout:fixed}summary{cursor:pointer}</style>
+    <h1>${text(course.title)}</h1><p>Academia Universalis · Année ${course.year||1} · Copie du ${localStudyDate()}</p><p>Les références externes s’ouvrent avec Internet. Pour retrouver tes notes et enregistrer ta progression, ouvre le campus.</p>
+    <h2 id="sommaire">Sommaire</h2><ol>${course.lessons.map((lesson,index)=>`<li><a href="#lecon-${index+1}">${text(lesson.title)}</a></li>`).join('')}</ol>${lessons}</html>`;
+}
+
+function offlineCourseControls(course) {
+  const panel=document.createElement('section');
+  panel.className='card';
+  panel.innerHTML='<h3>Lecture hors connexion</h3><button data-save-pack>Enregistrer sur cet appareil</button> <button data-download-pack>Télécharger le fichier HTML</button> <a data-open-pack hidden>Lire la copie enregistrée</a> <button data-remove-pack hidden>Retirer la copie</button><p role="status"></p>';
+  const save=panel.querySelector('[data-save-pack]');
+  const remove=panel.querySelector('[data-remove-pack]');
+  const link=panel.querySelector('a');
+  const status=panel.querySelector('[role=status]');
+  const url=offlineCourseURL(course);
+  link.href=url.href;
+  link.target='_blank';
+  link.rel='noopener';
+  function mark(available){
+    link.hidden=remove.hidden=!available;
+    save.textContent=available?'Actualiser la copie':'Enregistrer sur cet appareil';
+    status.textContent=available?'Copie disponible hors connexion sur cet appareil.':'Aucune copie enregistrée pour ce cours.';
+  }
+  async function cache(){
+    if(!navigator.serviceWorker?.controller) throw new Error('Service worker unavailable');
+    return caches.open(offlineCourseCache);
+  }
+  function initialize(){
+    cache().then(async store=>mark(Boolean(await store.match(url.href)))).catch(()=>{
+      save.disabled=true;
+      status.textContent='Le fichier HTML reste disponible au téléchargement.';
+    });
+  }
+  initialize();
+  if(!navigator.serviceWorker?.controller)navigator.serviceWorker?.addEventListener('controllerchange',()=>{save.disabled=false;initialize();},{once:true});
+  async function change(write){
+    save.disabled=remove.disabled=true;
+    try{
+      const store=await cache();
+      if(write)await store.put(url.href,new Response(offlineCourseDocument(course),{headers:{'Content-Type':'text/html; charset=utf-8'}}));
+      else await store.delete(url.href);
+      mark(write);
+    }catch{status.textContent='Impossible de modifier la copie sur cet appareil.';}
+    finally{save.disabled=remove.disabled=false;}
+  }
+  save.onclick=()=>change(true);
+  remove.onclick=()=>change(false);
+  panel.querySelector('[data-download-pack]').onclick=()=>{
+    const download=URL.createObjectURL(new Blob([offlineCourseDocument(course)],{type:'text/html;charset=utf-8'}));
+    const a=document.createElement('a');
+    a.href=download;
+    a.download='academia-'+course.key+'.html';
+    a.click();
+    setTimeout(()=>URL.revokeObjectURL(download),1000);
+  };
+  return panel;
+}
+
+const campusWorkshopCases = [
+  {
+    kind:'Laboratoire',title:'Forces · retrouver une accélération signée',course:'physique',lesson:'forces',
+    prompt:'Un chariot de 2 kg reçoit une poussée de 6 N vers la droite et un frottement de 10 N vers la gauche. La droite est le sens positif. Quelle est son accélération ?',
+    choices:['+8 m/s²','−2 m/s²','+2 m/s²'],answer:1,
+    feedback:'La force résultante vaut 6 − 10 = −4 N. La masse de 2 kg donne une accélération de −2 m/s².'
+  },
+  {
+    kind:'Atelier',title:'Histoire · comparer deux chronologies',course:'histoire',lesson:'uruk',
+    prompt:'Sur une frise d’exercice, une couche contenant une tablette est datée entre 3400 et 3200 avant notre ère. Une couche d’un autre site contenant un sceau est datée entre 3300 et 3100 avant notre ère. Quelle conclusion respecte les deux intervalles ?',
+    choices:['La tablette est forcément plus ancienne.','Le sceau est forcément plus ancien.','Les intervalles se recouvrent entre 3300 et 3200 avant notre ère.'],answer:2,
+    feedback:'Les deux datations sont compatibles avec des événements contemporains. Pour établir un ordre strict, il faudrait des données plus précises.'
+  },
+  {
+    kind:'Atelier',title:'Philosophie · chercher la prémisse manquante',course:'logique',lesson:'premisses',
+    prompt:'« Cette décision déplaît à la majorité, donc elle est injuste. » Quelle prémisse suffirait à relier la raison donnée à la conclusion ?',
+    choices:['Toute décision qui déplaît à la majorité est injuste.','Certaines décisions sont difficiles à prendre.','Toute décision injuste déplaît à la majorité.'],answer:0,
+    feedback:'La première prémisse permet la déduction. Sa vérité reste à discuter. Cherche un exemple de décision juste qui déplaît à la majorité.'
+  },
+  {
+    kind:'Atelier',title:'Littérature · comparer deux rendus d’une scène',course:'litterature',lesson:'odyssee',
+    prompt:'Deux reformulations libres du même épisode donnent « Je me nomme Personne » et « Personne est mon nom ». Quel effet la seconde formulation produit-elle ?',
+    choices:['Elle annonce « Personne » dès le début de la phrase.','Elle supprime la première personne dans tout le récit.','Elle transforme le discours direct en résumé indirect.'],answer:0,
+    feedback:'L’antéposition expose immédiatement le mot-clé. Vérifie ensuite, dans les éditions liées au dossier, où les traducteurs placent ce mot et comment la ruse est reprise.'
+  }
+];
+
+function workshopActivity(item,index) {
+  const panel=document.createElement('details');
+  panel.className='card';
+  panel.innerHTML=`<summary>${e(item.title)}</summary><form><fieldset><legend>${e(item.prompt)}</legend>
+    ${item.choices.map((choice,n)=>`<p><label><input type="radio" name="atelier-${index}" value="${n}" required> ${e(choice)}</label></p>`).join('')}
+    </fieldset><button>Vérifier mon raisonnement</button><p role="status"></p></form>
+    <button type="button">Relire la leçon associée</button>`;
+  const form=panel.querySelector('form');
+  form.onsubmit=event=>{
+    event.preventDefault();
+    const selected=Number(new FormData(form).get('atelier-'+index));
+    form.querySelector('[role=status]').textContent=(selected===item.answer?'Correct. ':'À revoir. ')+item.feedback;
+  };
+  panel.lastElementChild.onclick=()=>spaceLesson(item.course,item.lesson);
+  return panel;
 }

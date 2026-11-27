@@ -38,13 +38,13 @@ Depuis la racine du dépôt, lancer `python3 -m http.server 8000` puis ouvrir ht
 | B. Séance | Quatre étapes, chronomètre, pause, reprise après rechargement, correction des minutes et journal. | Distinguer le temps passé sur chaque étape. |
 | C. Compétences | Résultats des quiz et autoévaluation des exercices écrits avec réponse conservée, corrigé et trois critères explicites. | Modèle de compétences transversal et évaluation externe et suivi des travaux de synthèse. |
 | D. Erreurs | Dernière erreur par quiz, passage du cours et examen personnalisé. | Historique de toutes les tentatives et questions inédites. |
-| E. Ateliers | Entrées disciplinaires vers les simulations et activités du corpus. | Chronologies comparées, nouveaux scénarios physiques et comparaison de traductions. |
-| F. Atlas | Trois parcours filtrables reliant les leçons. | Index transversal exhaustif et enrichissement documentaire. |
+| E. Ateliers | Simulations et quatre ateliers interactifs corrigés en histoire, physique, philosophie et littérature. | Chronologies comparées, nouveaux scénarios physiques et comparaison de traductions. |
+| F. Atlas | Cinq parcours thématiques et index filtrable des leçons par notion et année. | Index transversal exhaustif et enrichissement documentaire. |
 | G. Tuteur | Sept modes et prompt contextualisé à copier depuis les leçons. | — |
 | H. Vie du campus | Première sélection avec conférence, livre, séminaire et découverte, fondée sur les ressources déjà référencées dans le campus. | Renouveler les sélections au fil des versions. |
 | Qualité académique | Fiche de contrôle en neuf points et quatre statuts. | Documenter chaque contrôle, compléter les métadonnées et obtenir des relectures indépendantes. |
 | Sauvegardes | Espace Mes données, export daté, restauration validée et transfert manuel entre appareils. | Étudier IndexedDB et la synchronisation selon les besoins de capacité et de mobilité. |
-| Performances et PWA | Pagination du catalogue et scénarios Chromium sur deux formats. | Mesures sur téléphone réel et téléchargement hors connexion par matière, qui suppose de découpler les scripts de données. |
+| Performances et PWA | Pagination du catalogue et scénarios Chromium sur deux formats. | Mesures sur téléphone réel. Chaque cours propose une copie HTML autonome à enregistrer ou télécharger. La PWA conserve aussi son cache historique. |
 | V1.0 | Les outils avancent sur le corpus disponible. | Première année complète, évaluations de synthèse et contrôle scientifique du corpus. |
 
 ## Vérification
