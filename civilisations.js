@@ -132,6 +132,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
   v.querySelectorAll('[data-jump]').forEach(button=>{
     button.onclick=()=>jumpToStudySection(button.dataset.jump);
   });
+  installReadingTools(course,lesson);
   const heading = v.querySelector('h2');
   heading.focus({preventScroll:offset!==undefined});
   rememberLesson(heading,course,lesson,offset);
@@ -242,4 +243,41 @@ function guidedJourneyCard() {
     <progress aria-label="Progression dans les leçons du parcours conseillé" value="${journey.completed}" max="${journey.total}"></progress>
     <p>${journey.completed} sur ${journey.total} leçons du parcours conseillé terminées</p>
   </article>`;
+}
+
+function validReadingTools(value) {
+  return value===undefined || Boolean(value && typeof value==='object' && !Array.isArray(value) &&
+    ['light','sepia','dark'].includes(value.theme) && [100,115,130,150].includes(value.size) &&
+    value.marks && typeof value.marks==='object' && !Array.isArray(value.marks) &&
+    Object.values(value.marks).every(mark=>mark && typeof mark==='object' && typeof mark.highlight==='boolean' && typeof mark.note==='string' && mark.note.length<=10000));
+}
+function installReadingTools(course,lesson) {
+  const article=v.querySelector('#lesson-reading');
+  const prefs=validReadingTools(S.readingTools)&&S.readingTools?S.readingTools:{theme:'light',size:100,marks:{}};
+  const panel=document.createElement('details');panel.className='card reading-tools';
+  panel.innerHTML=`<summary>Outils de lecture</summary><div class="reading-controls"><label>Thème <select data-theme><option value="light">Clair</option><option value="sepia">Sépia</option><option value="dark">Sombre</option></select></label><label>Taille <select data-size>${[100,115,130,150].map(n=>`<option value="${n}">${n} %</option>`).join('')}</select></label><button type="button" data-focus aria-pressed="false">Lecture immersive</button><button type="button" data-speak>Écouter</button><button type="button" data-stop>Arrêter</button></div><p role="status"></p>`;
+  article.before(panel);
+  const theme=panel.querySelector('[data-theme]'),size=panel.querySelector('[data-size]'),status=panel.querySelector('[role=status]');
+  theme.value=prefs.theme;size.value=String(prefs.size);
+  function persist(){try{S.readingTools=prefs;save();status.textContent='Préférences enregistrées.';}catch{status.textContent='Enregistrement impossible.';}}
+  function apply(){article.dataset.readingTheme=prefs.theme;article.style.fontSize=prefs.size+'%';}
+  theme.onchange=()=>{prefs.theme=theme.value;apply();persist();};size.onchange=()=>{prefs.size=Number(size.value);apply();persist();};apply();
+  const focus=panel.querySelector('[data-focus]');
+  focus.onclick=()=>{const active=article.classList.toggle('reading-immersive');focus.setAttribute('aria-pressed',String(active));focus.textContent=active?'Quitter la lecture immersive':'Lecture immersive';v.querySelectorAll(':scope > article:not(#lesson-reading), :scope > nav').forEach(el=>{el.hidden=active;});};
+  const speech=window.speechSynthesis;
+  const speak=panel.querySelector('[data-speak]'),stop=panel.querySelector('[data-stop]');
+  const localVoice=()=>speech?.getVoices().find(voice=>voice.localService&&voice.lang.toLowerCase().startsWith('fr'));
+  speak.disabled=!speech;stop.disabled=!speech;
+  speak.onclick=()=>{const voice=localVoice();if(!voice){status.textContent='Aucune voix française locale disponible sur cet appareil.';return;}speech.cancel();const text=[...article.querySelectorAll('p,h3')].map(el=>el.textContent).join('. ');const utterance=new SpeechSynthesisUtterance(text);utterance.voice=voice;utterance.lang='fr-FR';speech.speak(utterance);};
+  stop.onclick=()=>speech?.cancel();
+  article.querySelectorAll('h3[id^="lesson-section-"]').forEach((heading,index)=>{
+    const paragraph=heading.nextElementSibling;if(!paragraph||paragraph.tagName!=='P')return;
+    const key=course.key+':'+lesson.id+':'+index;
+    const mark=prefs.marks[key]||{highlight:false,note:''};
+    const controls=document.createElement('details');controls.className='passage-tools';
+    controls.innerHTML='<summary>Annoter ce passage</summary><label><input type="checkbox"> Surligner le passage</label><label>Annotation personnelle<textarea maxlength="10000" rows="3"></textarea></label><button type="button">Enregistrer</button>';
+    const check=controls.querySelector('input'),note=controls.querySelector('textarea');check.checked=mark.highlight;note.value=mark.note;paragraph.classList.toggle('passage-highlight',mark.highlight);
+    controls.querySelector('button').onclick=()=>{prefs.marks[key]={highlight:check.checked,note:note.value};paragraph.classList.toggle('passage-highlight',check.checked);persist();};
+    paragraph.after(controls);
+  });
 }
