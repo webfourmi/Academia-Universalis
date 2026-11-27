@@ -34,3 +34,10 @@ assert.equal(vm.runInContext('validStudyMinutes(undefined)',sandbox),true);
 assert.equal(vm.runInContext('studentWeek(new Date(2026,10,29,12))[0]',sandbox),'2026-11-23');
 assert.ok(html.includes('studentDesk()'));
 console.log('Contrôles du bureau étudiant réussis');
+
+const readingSource=fs.readFileSync('civilisations.js','utf8');
+vm.runInContext(readingSource.slice(readingSource.indexOf('function validReadingTools('),readingSource.indexOf('function installReadingTools(')),sandbox);
+assert.equal(vm.runInContext('validReadingTools(undefined)',sandbox),true);
+assert.equal(vm.runInContext('validReadingTools({theme:"sepia",size:115,marks:{a:{highlight:true,note:"test"}}})',sandbox),true);
+assert.equal(vm.runInContext('validReadingTools({theme:"invalid",size:115,marks:{}})',sandbox),false);
+console.log('Contrôles des préférences de lecture réussis');
