@@ -23,6 +23,7 @@ function restoreCampusRoute(entry) {
     tab = route.tab;
     render();
     switch (route.kind) {
+      case 'tools': toggleInstallation(true); break;
       case 'course': {
         const item = allStudyCourses().find(course=>course.key===route.key);
         if (item) showCourse(item);
