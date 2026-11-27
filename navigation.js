@@ -1,6 +1,6 @@
 const campusShortcuts = [
   [0,'Accueil','M3 10 12 3l9 7v11h-6v-7H9v7H3z'],
-  [5,'Bibliothèque','M4 4h6v16H4zM13 5l5-1 3 15-5 1z'],
+  [12,'Cours','M4 5h6l2 2 2-2h6v14h-6l-2 2-2-2H4z'],
   [6,'Carnet','M6 4h14v16H6zM4 8h4m-4 4h4m-4 4h4m3-7h6m-6 4h6'],
   [13,'Suivi','M4 20h16M6 16v-4m6 4V8m6 8V4'],
   [14,'Rechercher','M15 15l5 5M16 10a6 6 0 1 1-12 0 6 6 0 0 1 12 0z']
@@ -15,7 +15,7 @@ function updateCampusNavigation() {
     ).join('');
   }
   document.querySelectorAll('#campus-shortcuts [data-tab], #campus-tools [data-tab]').forEach(button => {
-    if (Number(button.dataset.tab) === tab) button.setAttribute('aria-current','page');
+    if (Number(button.dataset.tab) === tab || (Number(button.dataset.tab)===12 && tab>=1 && tab<=4)) button.setAttribute('aria-current','page');
     else button.removeAttribute('aria-current');
   });
   const subjects = document.querySelector('#subject-nav');
@@ -66,8 +66,8 @@ function renderTopTools() {
   const bar = document.querySelector('#campus-tools');
   if (bar.children.length) return;
   bar.innerHTML = `
-    <button type="button" id="campus-installation" aria-controls="pwa" aria-expanded="false">${campusIcon('M4 4h16v12H4zM8 21h8m-4-5v5m0-15v6m-3-3 3 3 3-3')}<span>Installation</span></button>
-    <button type="button" data-tab="15" onclick="openTopTool(15)">${campusIcon('M4 3h13l3 3v15H4zM8 3v6h8V3M8 21v-7h8v7')}<span>Sauvegarde</span></button>
+    <button type="button" id="campus-installation" aria-controls="pwa" aria-expanded="false">${campusIcon('M4 4h16v12H4zM8 21h8m-4-5v5m0-15v6m-3-3 3 3 3-3')}<span>Outils</span></button>
+    <button type="button" data-tab="5" onclick="openTopTool(5)">${campusIcon('M4 4h6v16H4zM13 5l5-1 3 15-5 1z')}<span>Bibliothèque</span></button>
     <button type="button" data-tab="11" onclick="openTopTool(11)">${campusIcon('M3 9l9-6 9 6zM4 21h16M6 10v8m6-8v8m6-8v8')}<span>Campus</span></button>`;
   bar.querySelector('#campus-installation').onclick=()=>toggleInstallation();
 }
@@ -79,7 +79,7 @@ function openTopTool(id) {
 }
 
 function initializeTitleSizing() {
-  const selector = 'h2, h3 > .title-action:not(.lesson-title), h4 > .title-action, h3 > a, .lesson-name';
+  const selector = 'h2:not(.reading-title), h3 > .title-action:not(.lesson-title), h4 > .title-action, h3 > a, .lesson-name';
   let frame;
   const fit = () => {
     cancelAnimationFrame(frame);

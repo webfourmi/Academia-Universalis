@@ -104,16 +104,43 @@ async function importNotes(input, parsedData) {
   }
 }
 
+function notebookCategory(key) {
+  const lesson = lessonForNote(key);
+  if (lesson) return [lesson.course.year || 1,lesson.course.title.split(' · ')[0]];
+  const archive = /^(\d+)-(\d+)-\d+$/.exec(key);
+  if (archive && raw[archive[1]]?.[archive[2]]) return [Number(archive[1])+1,raw[archive[1]][archive[2]][0]];
+  return key.startsWith('synthese:') ? [1,'Travaux de synthèse'] : [0,'Autres notes'];
+}
+
 function showNotebook() {
   const entries = Object.entries(S.notes).filter(([,note])=>note.trim());
+  const categories=entries.map(([key])=>notebookCategory(key));
+  const subjects=[...new Set(categories.map(([,subject])=>subject))].sort((a,b)=>a.localeCompare(b,'fr'));
   v.innerHTML = `<h2>Mon carnet</h2>
-    ${entries.length ? '' : '<p>Tes notes de cours et tes brouillons apparaîtront ici.</p>'}
+    ${entries.length ? `<div class="library-filters"><div><label for="note-year">Année</label><select id="note-year"><option value="">Toutes</option>
+      ${years.map((_,index)=>`<option value="${index+1}">Année ${index+1}</option>`).join('')}<option value="0">Autres notes</option></select></div>
+      <div><label for="note-subject">Matière</label><select id="note-subject"><option value="">Toutes</option>${subjects.map(subject=>`<option>${e(subject)}</option>`).join('')}</select></div></div>
+      <p id="note-count" role="status"></p>` : '<p>Tes notes de cours et tes brouillons apparaîtront ici.</p>'}
     <div id="notebook-entries">${entries.map(([key,note],index)=>`
       <article class="card note-entry" tabindex="-1" data-note-key="${e(key)}"><h3>${lessonForNote(key)?`<button class="title-action" type="button" data-note-lesson="${index}">${e(noteTitle(key))}</button>`:e(noteTitle(key))}</h3>
-      <p class="note-text">${e(note)}</p>
-      <button type="button" data-edit-note="${index}">Modifier</button>
-      </article>`).join('')}</div>
+      <p class="note-text">${e(note)}</p><button type="button" data-edit-note="${index}">Modifier</button></article>`).join('')}</div>
     ${backupControls()}`;
+  if (entries.length) {
+    const year=v.querySelector('#note-year');
+    const subject=v.querySelector('#note-subject');
+    const cards=[...v.querySelectorAll('.note-entry')];
+    const filter=()=>{
+      let count=0;
+      cards.forEach((card,index)=>{
+        const [entryYear,entrySubject]=categories[index];
+        card.hidden=Boolean((year.value && Number(year.value)!==entryYear)||(subject.value && subject.value!==entrySubject));
+        if (!card.hidden) count++;
+      });
+      v.querySelector('#note-count').textContent=count ? `${count} note${count===1?'':'s'}` : 'Aucune note pour ces filtres.';
+    };
+    year.onchange=subject.onchange=filter;
+    filter();
+  }
   v.querySelectorAll('[data-note-lesson]').forEach(button=>{
     button.onclick=()=>openNotebookLesson(entries[Number(button.dataset.noteLesson)][0]);
   });

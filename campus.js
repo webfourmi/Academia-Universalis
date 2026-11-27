@@ -63,7 +63,7 @@ function recordReview(course, lesson, correct) {
 
 function showCampus() {
   v.innerHTML='<h2>Espaces du campus</h2><div class="grid">'+Object.entries(campusSpaces)
-    .map(([name, purpose])=>'<article class="card"><h3><button class="title-action" data-space="'+name+'">'+name+'</button></h3><p>'+purpose+'</p></article>').join('')+'</div>';
+    .map(([name, purpose])=>'<article class="card"><h3><button class="title-action" data-space="'+name+'">'+name+'</button></h3><p>'+purpose+'</p></article>').join('')+'</div><nav class="lesson-jumps" aria-label="Repères du campus"><button type="button" onclick="go(7)">Charte</button><button type="button" onclick="go(8)">Atlas</button><button type="button" onclick="go(9)">Méthode</button></nav>';
   v.querySelectorAll('[data-space]').forEach(button=>button.onclick=()=>showSpace(button.dataset.space));
 }
 
@@ -134,7 +134,8 @@ function showCampusLibrary() {
     const course = catalog.find(entry=>entry.key===resource.courseKey);
     const lesson = course?.lessons.find(entry=>entry.id===resource.lessonId);
     const searchText = searchableText([resource.title,resource.author,resource.evidence,theme,course?.title,lesson?.title].join(' '));
-    return {...resource,theme,searchText};
+    const type = /pdf/i.test(resource.access) ? 'PDF' : /programme|descriptif/i.test(resource.access) ? 'Programme' : /vidéo|conférence/i.test(resource.access) ? 'Conférence' : /simulation/i.test(resource.access) ? 'Simulation' : 'Ressource en ligne';
+    return {...resource,theme,searchText,type,lessonTitle:lesson?.title};
   });
   const regions = [...new Set(resources.map(resource=>resource.region))];
   const themes = [...new Set(resources.map(resource=>resource.theme))].sort((a,b)=>a.localeCompare(b,'fr'));
@@ -155,7 +156,7 @@ function showCampusLibrary() {
     });
     v.querySelector('#library-count').textContent=matches.length+' '+(matches.length===1?'ressource':'ressources');
     v.querySelector('#library-records').innerHTML=matches.map(resource=>
-      '<article class="card"><h3><a href="'+resource.url+'">'+resource.title+'</a></h3><p>'+resource.theme+' · '+resource.author+' · '+resource.year+' · '+resource.region+' · '+resource.language+' · '+resource.level+'</p><p>'+resource.evidence+'</p><p>'+resource.access+' · '+resource.rights+' · consulté le '+(resource.consulted||'26/11/2026')+'.</p>'+(resource.courseKey?spaceButton(resource.courseKey,resource.lessonId,'Leçon associée'):'')+'</article>'
+      '<article class="card"><h3><a href="'+resource.url+'">'+resource.title+'</a></h3><p>'+resource.theme+' · '+resource.author+' · '+resource.year+' · '+resource.region+' · '+resource.language+' · '+resource.type+' · '+resource.level+'</p><p>'+resource.evidence+'</p><p>'+resource.access+' · '+resource.rights+' · consulté le '+(resource.consulted||'26/11/2026')+'.</p>'+(resource.lessonTitle?spaceButton(resource.courseKey,resource.lessonId,'Leçon · '+e(resource.lessonTitle)):'')+'</article>'
     ).join('') || '<p>Aucun résultat. Essaie un autre mot ou ajuste les filtres.</p>';
   }
   v.insertAdjacentHTML('beforeend','<details><summary>Autres catalogues à explorer</summary><ul><li><a href="https://pll.harvard.edu/catalog/free">Harvard</a></li><li><a href="https://oyc.yale.edu/courses">Open Yale Courses</a></li><li><a href="https://ocw.mit.edu/">MIT OpenCourseWare</a></li><li><a href="https://www.college-de-france.fr/">Collège de France</a></li><li><a href="https://podcasts.ox.ac.uk/">Oxford Podcasts</a></li></ul></details>');

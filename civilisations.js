@@ -74,13 +74,16 @@ function showLesson(course, index, {offset,fromNote} = {}) {
   v.innerHTML = `
     ${fromNote ? '<button type="button" id="return-to-note">Retour à la note</button>' : ''}
     <button id="history-back">${key === 'histoire' ? 'Retour au cycle d’histoire' : 'Retour au parcours'}</button>
-    <h2 tabindex="-1">${lesson.title}</h2>
-    <article class="card lesson">
+    <h2 class="reading-title" tabindex="-1">${lesson.title}</h2>
+    <nav class="lesson-jumps" aria-label="Sommaire de la leçon">
+      <button type="button" data-jump="lesson-reading">Cours</button><button type="button" data-jump="lesson-exercise">Exercice</button><button type="button" data-jump="history-quiz">Quiz</button><button type="button" data-jump="history-notes">Notes</button>
+    </nav>
+    <article class="card lesson" id="lesson-reading" tabindex="-1">
       <p><strong>Objectif.</strong> ${lesson.goal}</p>
       <p><strong>Rythme ${level} · ${duration}.</strong> ${guidance}</p>
       <p><strong>Prérequis.</strong> ${lesson.prerequisite}</p>
       ${lesson.overview ? cite(lesson.overview) : ''}
-      ${lesson.sections.map(([heading, paragraph]) => `<h3>${heading}</h3><p>${cite(paragraph)}</p>`).join('')}
+      ${lesson.sections.map(([heading, paragraph],section) => `<h3 id="lesson-section-${section}" tabindex="-1">${heading}</h3><p>${cite(paragraph)}</p>`).join('')}
       ${lesson.diagram ? `<div class="lesson-table" tabindex="0" role="region" aria-label="${e(caption)}">
         <table><caption>${caption}</caption>
           <thead><tr>${columns.map(column => `<th scope="col">${column}</th>`).join('')}</tr></thead>
@@ -90,9 +93,9 @@ function showLesson(course, index, {offset,fromNote} = {}) {
     </article>
     <article class="card lesson">
       <h3>Dossier commenté</h3><p>${cite(lesson.dossier)}</p>
-      <h3>Exercice</h3><p>${lesson.activity}</p>
+      <h3 id="lesson-exercise" tabindex="-1">Exercice</h3><p>${lesson.activity}</p>
       <details><summary>Lire la correction</summary><p>${lesson.correction}</p></details>
-      <form id="history-quiz">
+      <form id="history-quiz" tabindex="-1">
         <fieldset><legend>${question}</legend>
           ${options.map((option, n) => `<label class="quiz-option"><input type="radio" name="answer" value="${n}" required> ${option}</label>`).join('')}
         </fieldset>
@@ -126,6 +129,9 @@ function showLesson(course, index, {offset,fromNote} = {}) {
       ${index > 0 ? '<button id="history-prev">Leçon précédente</button>' : ''}
       ${index < lessons.length - 1 ? '<button id="history-next">Leçon suivante</button>' : ''}
     </nav>`;
+  v.querySelectorAll('[data-jump]').forEach(button=>{
+    button.onclick=()=>jumpToStudySection(button.dataset.jump);
+  });
   const heading = v.querySelector('h2');
   heading.focus({preventScroll:offset!==undefined});
   rememberLesson(heading,course,lesson,offset);
@@ -155,7 +161,15 @@ function showLesson(course, index, {offset,fromNote} = {}) {
     const selected = Number(new FormData(event.currentTarget).get('answer'));
     const result = selected === answer ? 'Réponse correcte.' : `Réponse attendue : ${options[answer]}.`;
     recordReview(course, lesson, selected === answer);
-    v.querySelector('#quiz-result').textContent = `${result} ${rationale}`;
+    const feedback = v.querySelector('#quiz-result');
+    feedback.textContent = `${result} ${rationale}`;
+    if (selected !== answer) {
+      const link = document.createElement('button');
+      link.type = 'button';
+      link.textContent = 'Relire le passage du cours';
+      link.onclick = ()=>jumpToStudySection(quizReadingTarget(lesson));
+      feedback.append(' ',link);
+    }
   };
   v.querySelector('#history-notes').oninput = event => {
     S.notes[noteKey] = event.target.value;
@@ -190,21 +204,42 @@ function openGuidedLesson() {
   if (next) showLesson(next.course, next.index);
 }
 
+function jumpToStudySection(id) {
+  const section = document.getElementById(id);
+  if (!section) return;
+  section.focus({preventScroll:true});
+  section.scrollIntoView({block:'start'});
+}
+
+function quizReadingTarget(lesson) {
+  const words = text=>[...new Set(searchableText(text).match(/[a-z]{5,}/g)||[])];
+  const [question,options,answer,rationale] = lesson.quiz;
+  const terms = words([question,options[answer],rationale].join(' '));
+  let bestScore = 0;
+  let target = 'lesson-reading';
+  lesson.sections.forEach(([title,text],index)=>{
+    const section = new Set(words(title+' '+text));
+    const score = terms.filter(term=>section.has(term)).length;
+    if (score>bestScore) {
+      bestScore=score;
+      target='lesson-section-'+index;
+    }
+  });
+  return target;
+}
+
 function guidedJourneyCard() {
-  const {next, total, completed} = guidedJourney();
-  return `<article class="card">
-    <h3>${next ? '<button class="title-action" onclick="openGuidedLesson()">Commencer mes cours</button>' : 'Commencer mes cours'}</h3>
-    <p>${completed} sur ${total} leçons publiées terminées.</p>
-    <progress aria-label="Progression dans les leçons publiées" value="${completed}" max="${total}"></progress>
-    ${next ? `<p>Prochaine leçon conseillée · <strong>${next.lesson.title}</strong></p>`
-      : '<p>Tu as terminé les leçons publiées. Tu peux les revoir depuis les rubriques ci-dessous.</p>'}
-    <details><summary>Comment suivre une leçon ?</summary>
-      <ol>
-        <li>Lis le cours et note une idée dans « Mes notes ».</li>
-        <li>Essaie l’exercice avant d’ouvrir le corrigé, puis réponds au quiz.</li>
-        <li>Coche « Leçon terminée » quand tu souhaites passer à la suite.</li>
-      </ol>
-      <p>Le parcours conseillé commence par l’histoire, puis propose la philosophie, la littérature, la physique, la psychologie, l’économie, la logique et le chinois. Tu peux ouvrir directement la matière qui t’intéresse. L’onglet Carnet rassemble tes notes et permet de sauvegarder ta progression.</p>
-    </details>
+  const record = readingPosition();
+  const bookmark = record && locateLesson(record.courseKey,record.lessonId);
+  const resume = bookmark && !S.history?.[lessonProgressKey(bookmark.course.key,bookmark.lesson.id)];
+  const journey = guidedJourney();
+  const target = resume ? bookmark : journey.next;
+  return `<article class="card next-session">
+    <p class="session-label">Ma prochaine séance</p>
+    ${target ? `<h3><button class="title-action" onclick="${resume?'resumeReading()':'openGuidedLesson()'}">${e(target.lesson.title)}</button></h3>
+    <p>${e(target.course.title)} · ${studyLevels[studyLevel()][1]}</p>
+    <p>${resume?'Reprendre ma lecture':'Leçon conseillée'}</p>` : '<h3>Parcours conseillé terminé</h3><p>Explore les cours ou consulte tes révisions dans Suivi.</p>'}
+    <progress aria-label="Progression dans les leçons du parcours conseillé" value="${journey.completed}" max="${journey.total}"></progress>
+    <p>${journey.completed} sur ${journey.total} leçons du parcours conseillé terminées</p>
   </article>`;
 }

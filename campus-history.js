@@ -33,6 +33,11 @@ function restoreCampusRoute(entry) {
         if (target) showLesson(target.course,target.index,{fromNote:route.fromNote});
         break;
       }
+      case 'review': {
+        const target = locateLesson(route.key,route.id);
+        if (target) showQuickReview(target.course,target.index);
+        break;
+      }
       case 'subject': course(route.year,route.index,route.archives); break;
       case 'space': showSpace(route.name); break;
       case 'projects': showWrittenProjects(); break;

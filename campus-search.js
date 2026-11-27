@@ -49,13 +49,6 @@ function rememberLesson(heading,course,lesson,offset) {
   saveReading();
 }
 
-function bookmarkCard() {
-  const record = readingPosition();
-  const target = record && locateLesson(record.courseKey,record.lessonId);
-  return target ? `<article class="card"><h3><button class="title-action" onclick="resumeReading()">${e(target.lesson.title)}</button></h3>
-    <p>Reprendre ma lecture</p></article>` : '';
-}
-
 function resumeReading() {
   const record = readingPosition();
   const target = record && locateLesson(record.courseKey,record.lessonId);
