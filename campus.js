@@ -38,27 +38,24 @@ function localStudyDate(date = new Date()) {
   return year+'-'+month+'-'+day;
 }
 
-function reviewDue(entry, date = new Date()) {
-  const offset = [2, 7, 30][entry.step];
-  if (offset === undefined) return false;
-  const due = new Date(entry.date+'T12:00:00');
-  due.setDate(due.getDate()+offset);
-  return localStudyDate(due)<=localStudyDate(date);
+const memoryIntervals=[2,7,30,60,120];
+function reviewDate(entry){
+ if(entry.due)return entry.due;
+ const date=new Date(entry.date+'T12:00:00');date.setDate(date.getDate()+memoryIntervals[Math.min(entry.step,4)]);return localStudyDate(date);
 }
-
-function recordReview(course, lesson, correct) {
-  const key=lessonProgressKey(course.key,lesson.id);
-  const today=localStudyDate();
-  S.reviews ??= {};
-  const previous=S.reviews[key];
-  if (!previous) {
-    S.reviews[key]={date:today, step:0, last:today, correct};
-  } else {
-    if (correct && previous.last!==today && reviewDue(previous)) previous.step++;
-    previous.last = today;
-    previous.correct = correct;
-  }
-  save();
+function reviewDue(entry,date=new Date()){return reviewDate(entry)<=localStudyDate(date);}
+function nextMemoryReview(previous,correct,today){
+ let step=previous?.step??0;
+ if(!correct)step=0;
+ else if(previous&&previous.last!==today&&previous.correct&&reviewDate(previous)<=today)step=Math.min(4,step+1);
+ else if(previous&&previous.last===today)return {...previous,correct:previous.correct&&correct};
+ else if(previous&&previous.correct&&reviewDate(previous)>today)return previous;
+ const date=new Date(today+'T12:00:00');date.setDate(date.getDate()+(correct?memoryIntervals[step]:1));
+ return {date:previous?.date||today,last:today,step,correct,due:localStudyDate(date)};
+}
+function recordReview(course,lesson,correct){
+ const key=lessonProgressKey(course.key,lesson.id);S.reviews??={};
+ S.reviews[key]=nextMemoryReview(S.reviews[key],correct,localStudyDate());save();
 }
 
 function showCampus() {
@@ -173,7 +170,7 @@ function showCampusLibrary() {
 function validReviews(reviews) {
   return reviews===undefined || Boolean(reviews && typeof reviews==='object' && !Array.isArray(reviews) &&
     Object.values(reviews).every(entry=>entry && /^\d{4}-\d{2}-\d{2}$/.test(entry.date) &&
-      /^\d{4}-\d{2}-\d{2}$/.test(entry.last) && Number.isInteger(entry.step) && entry.step>=0 && entry.step<=3 &&
+      /^\d{4}-\d{2}-\d{2}$/.test(entry.last) && Number.isInteger(entry.step) && entry.step>=0 && entry.step<=4 && (entry.due===undefined || /^\d{4}-\d{2}-\d{2}$/.test(entry.due)) &&
       typeof entry.correct==='boolean'));
 }
 
@@ -203,8 +200,30 @@ function studentDesk() {
   <form id="desk-time"><label for="desk-minutes">Temps total étudié aujourd’hui (minutes)</label><input id="desk-minutes" type="number" min="0" max="1440" step="1" required value="${log[today]||0}"><button>Enregistrer</button><p role="status"></p></form>
   <details><summary>Planning de la semaine</summary><p>Répartis librement tes ${target} minutes. Priorité aux révisions à échéance, puis à la prochaine leçon.</p><ol>${week.map(day=>`<li>${e(day)} · ${log[day]||0} min déclarées</li>`).join('')}</ol><button onclick="showSpace('Planning')">Calendrier du campus</button></details></section>
   <article class="card"><h3><button class="title-action" onclick="go(12)">Explorer les matières</button></h3><p>Les quatre années du campus</p></article>`;
-  v.append(bookmarkPanel(),glossaryPanel());
+  v.append(memoryPanel(),bookmarkPanel(),glossaryPanel());
   v.querySelectorAll('[data-desk-review]').forEach(button=>button.onclick=()=>{const item=due[Number(button.dataset.deskReview)];showQuickReview(item.course,item.index);});
   v.querySelector('#desk-hours').onchange=event=>{S.hours=Number(event.target.value);save();studentDesk();};
   v.querySelector('#desk-time').onsubmit=event=>{event.preventDefault();const n=Number(v.querySelector('#desk-minutes').value);if(!Number.isInteger(n)||n<0||n>1440)return;const next={...S,studyMinutes:{...log,[today]:n}};try{localStorage.au=JSON.stringify(next);S=next;studentDesk();v.querySelector('#desk-time [role="status"]').textContent='Temps enregistré.';}catch{v.querySelector('#desk-time [role="status"]').textContent='Enregistrement impossible.';}};
+}
+
+function validMemoryCards(cards){
+ return cards===undefined||Array.isArray(cards)&&cards.length<=5000&&cards.every(c=>c&&typeof c.question==='string'&&c.question.length<=2000&&typeof c.answer==='string'&&c.answer.length<=10000&&validReviews(c.review?{card:c.review}:undefined));
+}
+function memoryPanel(){
+ const panel=document.createElement('section');panel.className='card';
+ const entries=allStudyCourses().flatMap(course=>course.lessons.map((lesson,index)=>({course,lesson,index,review:S.reviews?.[lessonProgressKey(course.key,lesson.id)]}))).filter(x=>x.review);
+ const cards=validMemoryCards(S.memoryCards)?S.memoryCards||[]:[];
+ const due=entries.filter(x=>reviewDue(x.review)).sort((a,b)=>Number(a.review.correct)-Number(b.review.correct)||reviewDate(a.review).localeCompare(reviewDate(b.review)));
+ const personal=cards.filter(x=>!x.review||reviewDue(x.review));
+ panel.innerHTML=`<h3>Mémoire adaptative</h3><p>${due.length+personal.length} rappels à faire · ${entries.filter(x=>!x.review.correct).length} notions fragiles (dernier quiz incorrect)</p><details><summary>Calendrier des rappels</summary><ul>${entries.slice().sort((a,b)=>reviewDate(a.review).localeCompare(reviewDate(b.review))).map(x=>`<li>${e(reviewDate(x.review))} · ${e(x.lesson.title)} · niveau ${x.review.step+1}/5</li>`).join('')}${cards.map(x=>`<li>${e(x.review?reviewDate(x.review):localStudyDate())} · ${e(x.question)}</li>`).join('')}</ul></details><div data-memory-session></div><details><summary>Créer une carte personnelle</summary><form><label>Question<textarea name="question" required maxlength="2000"></textarea></label><label>Réponse<textarea name="answer" required maxlength="10000"></textarea></label><label>Depuis mes annotations <select data-annotation><option value="">Choisir une annotation</option></select></label><button>Ajouter la carte</button></form></details><details><summary>Mes cartes personnelles</summary><div data-personal></div></details><p><small>Les niveaux sont des repères de rappel, pas une mesure de maîtrise globale. Intervalles heuristiques inspirés du rappel actif et de la pratique espacée : <a href="https://pubmed.ncbi.nlm.nih.gov/26173288/">Dunlosky et al., 2013</a>.</small></p>`;
+ const form=panel.querySelector('form'),select=panel.querySelector('[data-annotation]');
+ const annotations=Object.entries(S.readingTools?.marks||{}).filter(([,m])=>typeof m.note==='string'&&m.note.trim());
+ annotations.forEach(([key,m],i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=key+' · '+m.note.slice(0,60);select.append(option);});
+ select.onchange=()=>{if(select.value!=='')form.elements.answer.value=annotations[Number(select.value)][1].note;};
+ form.onsubmit=event=>{event.preventDefault();const question=form.elements.question.value.trim(),answer=form.elements.answer.value.trim();if(!question||!answer||cards.length>=5000)return;S.memoryCards=[...cards,{question,answer}];save();panel.replaceWith(memoryPanel());};
+ cards.forEach((card,i)=>{const row=document.createElement('p');row.textContent=card.question+' ';const remove=document.createElement('button');remove.type='button';remove.textContent='Supprimer';remove.onclick=()=>{if(!confirm('Supprimer cette carte ?'))return;S.memoryCards=cards.filter((_,n)=>n!==i);save();panel.replaceWith(memoryPanel());};row.append(remove);panel.querySelector('[data-personal]').append(row);});
+ const queue=[...due.map(x=>({question:x.lesson.quiz[0],answer:x.lesson.quiz[1][x.lesson.quiz[2]]+' · '+x.lesson.quiz[3],record:correct=>recordReview(x.course,x.lesson,correct)})),...personal.map(x=>({question:x.question,answer:x.answer,record:correct=>{x.review=nextMemoryReview(x.review,correct,localStudyDate());S.memoryCards=cards;save();}}))];
+ const session=panel.querySelector('[data-memory-session]');
+ function draw(){session.replaceChildren();const x=queue[0];if(!x){session.textContent='Aucun rappel en attente.';return;}const q=document.createElement('p');q.textContent=x.question;const reveal=document.createElement('button');reveal.type='button';reveal.textContent='Afficher la réponse';session.append(q,reveal);reveal.onclick=()=>{reveal.remove();const a=document.createElement('p');a.textContent=x.answer;session.append(a);for(const correct of [false,true]){const b=document.createElement('button');b.type='button';b.textContent=correct?'Retrouvé sans aide':'À revoir';b.onclick=()=>{x.record(correct);queue.shift();draw();};session.append(b);}};}
+ draw();return panel;
 }
