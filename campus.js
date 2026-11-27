@@ -176,3 +176,34 @@ function validReviews(reviews) {
       /^\d{4}-\d{2}-\d{2}$/.test(entry.last) && Number.isInteger(entry.step) && entry.step>=0 && entry.step<=3 &&
       typeof entry.correct==='boolean'));
 }
+
+/* Bureau étudiant : temps déclaré, sans surveillance ni service externe. */
+function validStudyMinutes(value) {
+  return value === undefined || Boolean(value && typeof value==='object' && !Array.isArray(value) &&
+    Object.entries(value).every(([day,minutes])=>/^\d{4}-\d{2}-\d{2}$/.test(day) && Number.isInteger(minutes) && minutes>=0 && minutes<=1440));
+}
+function studentWeek(date=new Date()) {
+  const monday=new Date(date); monday.setDate(monday.getDate()-(monday.getDay()+6)%7);
+  return Array.from({length:7},(_,i)=>{const day=new Date(monday);day.setDate(day.getDate()+i);return localStudyDate(day);});
+}
+function studentDesk() {
+  const today=localStudyDate(), week=studentWeek();
+  const log=validStudyMinutes(S.studyMinutes)?(S.studyMinutes||{}):{};
+  const minutes=week.filter(day=>day<=today).reduce((sum,day)=>sum+(log[day]||0),0);
+  const target=S.hours*60;
+  const due=allStudyCourses().flatMap(course=>course.lessons.map((lesson,index)=>({course,lesson,index,review:S.reviews?.[lessonProgressKey(course.key,lesson.id)]}))).filter(item=>item.review&&reviewDue(item.review));
+  due.sort((a,b)=>Number(a.review.correct)-Number(b.review.correct)||a.review.date.localeCompare(b.review.date));
+  v.innerHTML=`<h2>Mon bureau</h2><p class="session-label">${e(new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'}))}</p>
+  ${guidedJourneyCard()}
+  <section class="card"><h3>Révisions prioritaires · ${due.length}</h3>
+  ${due.length?due.slice(0,3).map((item,i)=>`<h4><button class="title-action" data-desk-review="${i}">${e(item.lesson.title)}</button></h4><p>${e(item.course.title)}</p>`).join(''):'<p>Aucune révision à échéance.</p>'}
+  ${due.length>3?'<button onclick="go(13)">Toutes les révisions</button>':''}</section>
+  <section class="card"><h3>Ma semaine</h3><label>Rythme <select id="desk-hours">${[3,6,10].map(h=>`<option value="${h}" ${S.hours===h?'selected':''}>${h} h / semaine</option>`).join('')}</select></label>
+  <p>${minutes} / ${target} minutes déclarées</p><progress aria-label="Temps déclaré cette semaine" value="${Math.min(minutes,target)}" max="${target}"></progress>
+  <form id="desk-time"><label for="desk-minutes">Temps total étudié aujourd’hui (minutes)</label><input id="desk-minutes" type="number" min="0" max="1440" step="1" required value="${log[today]||0}"><button>Enregistrer</button><p role="status"></p></form>
+  <details><summary>Planning de la semaine</summary><p>Répartis librement tes ${target} minutes. Priorité aux révisions à échéance, puis à la prochaine leçon.</p><ol>${week.map(day=>`<li>${e(day)} · ${log[day]||0} min déclarées</li>`).join('')}</ol><button onclick="showSpace('Planning')">Calendrier du campus</button></details></section>
+  <article class="card"><h3><button class="title-action" onclick="go(12)">Explorer les matières</button></h3><p>Les quatre années du campus</p></article>`;
+  v.querySelectorAll('[data-desk-review]').forEach(button=>button.onclick=()=>{const item=due[Number(button.dataset.deskReview)];showQuickReview(item.course,item.index);});
+  v.querySelector('#desk-hours').onchange=event=>{S.hours=Number(event.target.value);save();studentDesk();};
+  v.querySelector('#desk-time').onsubmit=event=>{event.preventDefault();const n=Number(v.querySelector('#desk-minutes').value);if(!Number.isInteger(n)||n<0||n>1440)return;const next={...S,studyMinutes:{...log,[today]:n}};try{localStorage.au=JSON.stringify(next);S=next;studentDesk();v.querySelector('#desk-time [role="status"]').textContent='Temps enregistré.';}catch{v.querySelector('#desk-time [role="status"]').textContent='Enregistrement impossible.';}};
+}
