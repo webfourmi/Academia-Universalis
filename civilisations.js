@@ -106,7 +106,7 @@ function evolutionExtras(lesson){
  const species=[['Sahelanthropus',7,6],['Orrorin',6.1,5.7],['Ardipithecus kadabba',5.8,5.2],['Ardipithecus ramidus',4.4,4.4],['A. anamensis',4.2,3.8],['A. afarensis',3.85,2.95],['A. africanus',3.3,2.1],['P. boisei',2.3,1.2],['H. habilis',2.4,1.4],['H. erectus',1.89,.11],['H. heidelbergensis',.7,.2],['Néandertal',.4,.04],['H. naledi',.335,.236],['H. floresiensis',.1,.06],['H. sapiens',.3,0]];
  const timeline=max=>'<svg viewBox="0 0 340 350" width="100%" role="img" aria-label="Chronologie des fossiles, millions d’années avant le présent"><text x="145" y="12" fill="currentColor" font-size="10">'+max+' Ma</text><text x="325" y="12" fill="currentColor" font-size="10">0</text>'+species.filter(s=>s[2]<max).map((s,i)=>'<text x="2" y="'+(32+i*21)+'" font-size="10" fill="currentColor">'+e(s[0])+'</text><rect x="'+(145+185*(1-Math.min(max,s[1])/max))+'" y="'+(22+i*21)+'" width="'+Math.max(2,185*(Math.min(max,s[1])-s[2])/max)+'" height="12" rx="2" fill="#39766a" stroke="currentColor" stroke-width=".5"/>').join('')+'</svg>';
  
- return evolutionAnatomy()+evolutionFossils()+'<h3>Chronologie graphique</h3><figure class="history-overview">'+timeline(7)+'<figcaption>Intervalles fossiles indicatifs, non filiations. Source : Smithsonian [7].</figcaption><details><summary>Zoom sur le dernier million d’années</summary>'+timeline(1)+'</details></figure><h3>Révision active</h3>'+cards.map(([q,a])=>'<details><summary>'+e(q)+'</summary><p>'+e(a)+'</p></details>').join('');
+ return evolutionAnatomy()+evolutionFossils()+'<h3>Chronologie graphique</h3><figure class="history-overview">'+timeline(7)+'<figcaption>Intervalles fossiles indicatifs, non filiations. Source : Smithsonian [7].</figcaption><details><summary>Zoom sur le dernier million d’années</summary>'+timeline(1)+'</details></figure>';
 }
 
 function showLesson(course, index, {offset,fromNote} = {}) {
@@ -116,7 +116,8 @@ function showLesson(course, index, {offset,fromNote} = {}) {
   rememberCampusRoute('lesson',{key,id:lesson.id,...(fromNote?{fromNote}:{})});
   const [caption, columns, rows] = lesson.diagram || [];
   const [question, options, answer, rationale] = lesson.quiz;
-  const seminar = key === 'histoire' ? historySeminars[lesson.id] : undefined;
+  const candidate = key === 'histoire' ? historySeminars[lesson.id] : undefined;
+  const seminar = candidate && lesson.sources?.[candidate.source] ? candidate : undefined;
   const [level, duration, guidance] = studyLevels[studyLevel()];
   let citationIndex = 0;
   const cite = text => text.replace(/\[(\d+(?:, *\d+)*)\]/g, (match, numbers) => {
