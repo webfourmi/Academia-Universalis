@@ -46,3 +46,40 @@ libraryAdditions.push(...[
   region,author,title,year,url,evidence,courseKey,lessonId,language:'anglais',level:'premier cycle',
   access:'lecture publique',rights:'Conditions de réutilisation indiquées par la source',consulted:'27/11/2026'
 })));
+
+const compositionSource=['J. Paul Getty Museum','Understanding Formal Analysis · Principles of Design','s. d.','https://www.getty.edu/education/teachers/building_lessons/principles_design.pdf','Équilibre, accentuation et mouvement du regard.'];
+const cycleSource=['OpenStax','Biology 2e · Biogeochemical Cycles','2018','https://openstax.org/books/biology-2e/pages/46-3-biogeochemical-cycles','Réservoirs et transferts du cycle de l’azote.'];
+const playtestSource=['MIT OpenCourseWare','Introduction to Game Design Methods · Syllabus','2016','https://ocw.mit.edu/courses/cms-301-introduction-to-game-design-methods-spring-2016/pages/syllabus/','Prototypage rapide, tests avec des joueurs et itération.'];
+
+Object.assign(cycleContinuations,{
+  art:consolidationLesson('composition','Histoire de l’art · Suivre le regard','Justifier une lecture de composition par deux indices visuels.',[
+    ['Repérer l’accent','Un contraste de valeur, une grande forme ou un détail isolé peut attirer l’attention. Sur une image, décrivez d’abord le contraste et sa position, puis demandez dans quelle mesure d’autres éléments lui disputent la priorité. [1]'],
+    ['Éprouver une interprétation','Esquissez la distribution des masses sans le détail. Puis cachez la zone qui attire votre regard. Si une diagonale reste perceptible, elle contribue à la composition indépendamment de la figure masquée. Ce test aide à formuler une lecture argumentée.'],
+    ['Distinguer structure et intention','Décrire un effet visuel s’appuie sur des éléments de l’œuvre. Attribuer cet effet à une intention documentée suppose des sources supplémentaires, par exemple un dessin préparatoire ou un texte contemporain.']
+  ],'Comparez deux miniatures fictives : une tache claire au milieu d’un fond sombre, puis trois taches claires de même taille alignées. Justifiez une différence de lecture.',
+  'Dans la première, l’isolement renforce l’accent central. Dans la seconde, la répétition peut distribuer l’attention le long de l’axe. Un contraste supplémentaire ou la proximité d’un bord pourrait modifier cet effet.',
+  ['Quel indice soutient directement une analyse de composition ?', ['La position relative des trois taches.', 'Le nom du propriétaire seul.', 'Une date de restauration sans description.'],0,'La relation spatiale entre les éléments peut être vérifiée dans l’image.'],compositionSource),
+  ecologie:consolidationLesson('azote','Écologie · Suivre l’azote dans un écosystème','Distinguer réservoir, transfert interne et sortie d’un système.',[
+    ['Délimiter le système','Un bassin versant peut contenir de l’azote dans des sols, des organismes et des eaux. Pour établir son bilan, annoncez un périmètre et une durée. Un transfert du sol à une plante modifie la répartition dans le bassin si les deux y sont inclus. [1]'],
+    ['Décrire une sortie','L’azote transporté par une rivière qui quitte le bassin franchit la frontière choisie. Une transformation chimique peut modifier la forme de l’azote, tandis qu’un transfert franchissant la frontière modifie la quantité comptabilisée. Ces questions doivent être suivies séparément. [1]'],
+    ['Fermer un bilan fictif','Si 14 unités arrivent et 9 quittent le bassin pendant une année, le stock total augmente de 5 unités dans ce modèle à flux exhaustifs. Le calcul ne permet pas de localiser l’accumulation sans mesures des réservoirs.']
+  ],'Un bassin reçoit 18 unités et en exporte 11. Les plantes absorbent aussi 6 unités présentes dans son sol. Calculez la variation totale et expliquez le traitement de ces 6 unités.',
+  'Le stock augmente de 7 unités si tous les flux d’entrée et de sortie sont comptabilisés. L’absorption des 6 unités est un transfert interne, donc elle ne s’ajoute pas aux entrées.',
+  ['Quel flux réduit directement le stock du bassin ?', ['L’export par la rivière à sa sortie.', 'Le transfert local du sol aux racines.', 'Le déplacement entre deux parcelles du bassin.'],0,'L’export franchit la frontière du système étudié.'],cycleSource),
+  jeu:consolidationLesson('observation','Game design · Mener un test de jeu','Distinguer une observation de test et une décision de conception.',[
+    ['Définir une question de test','Choisissez une règle de votre prototype et la conduite attendue. Si une règle doit créer un arbitrage, relevez les options réellement envisagées. Préparez le même scénario de départ afin de comparer plusieurs essais. [1]'],
+    ['Observer avant d’intervenir','Notez les premiers choix, les hésitations et les erreurs de compréhension. Si vous devez expliquer une règle, indiquez le moment de votre intervention. Un court entretien après la partie permet de vérifier pourquoi la personne a agi ainsi.'],
+    ['Préparer une itération','Un comportement peut venir du coût de l’action ou d’un manque de lisibilité. Choisissez une hypothèse, modifiez un seul élément et testez à nouveau. Conservez un exemple qui contredit votre attente pour guider la suite. [1]']
+  ],'Trois joueurs ignorent une action de secours. Écrivez deux hypothèses et un plan de test qui mesure séparément visibilité et intérêt.',
+  'Vérifiez d’abord si les joueurs peuvent décrire l’action après lecture. Comparez ensuite, dans des situations similaires, leur usage avec le même affichage et un coût différent. Une option connue mais rarement rentable suggère une autre intervention qu’une option passée inaperçue.',
+  ['Quelle note constitue une observation directe ?', ['Deux joueurs n’ont jamais utilisé l’action de secours.', 'L’action est inutile dans tous les cas.', 'Les joueurs détestent cette règle.'],0,'La fréquence observée ne présuppose pas les motivations ni une conclusion générale.'],playtestSource)
+});
+
+libraryAdditions.push(...[
+  [compositionSource,'art','composition'],
+  [cycleSource,'ecologie','azote'],
+  [playtestSource,'jeu','observation']
+].map(([[author,title,year,url,evidence],courseKey,lessonId])=>({
+  region:'Amériques',author,title,year,url,evidence,courseKey,lessonId,language:'anglais',
+  level:'premier cycle',access:'lecture publique',rights:'Conditions de réutilisation indiquées par la source',consulted:'27/11/2026'
+})));
