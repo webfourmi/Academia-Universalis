@@ -1,4 +1,133 @@
 const civilisations = [
+{
+  "id": "evolution-humaine",
+  "title": "L’évolution humaine : un arbre, non une échelle",
+  "goal": "Expliquer divergence, coexistence et évolution en mosaïque ; interpréter deux datations.",
+  "prerequisite": "Aucun. Durée indicative : 2 heures, hors séminaire.",
+  "sections": [
+    [
+      "Parentés",
+      "Humains, chimpanzés et bonobos partagent un ancêtre commun. Les humains ne descendent pas des chimpanzés actuels. L’évolution est ramifiée, non une marche vers la perfection. [1]"
+    ],
+    [
+      "Les preuves",
+      "Fossiles, empreintes, outils et ADN ancien apportent des indices complémentaires. Un outil ne permet pas toujours d’identifier son fabricant. La conservation différentielle limite les inférences."
+    ],
+    [
+      "Chronologie indicative",
+      "En millions d’années avant le présent : Sahelanthropus 7–6 ; Orrorin 6,1–5,7 ; Ardipithecus kadabba 5,8–5,2 ; A. ramidus 4,4 ; Australopithecus anamensis 4,2–3,8 ; A. afarensis 3,85–2,95 ; A. africanus 3,3–2,1 ; Paranthropus boisei 2,3–1,2 ; Homo habilis 2,4–1,4 ; H. erectus 1,89–0,11 ; H. heidelbergensis 0,7–0,2 (classification discutée) ; Néandertal 0,4–0,04 ; H. naledi 0,335–0,236 ; H. floresiensis 0,1–0,06 ; H. sapiens environ 0,3 à aujourd’hui. Intervalles fossiles arrondis, non dates exactes de spéciation. [7]"
+    ],
+    [
+      "Jebel Irhoud : anatomie",
+      "Les fossiles marocains associent une face relativement moderne et une boîte crânienne plus allongée. Cette évolution en mosaïque soutient une attribution à une phase ancienne de Sapiens. [3]"
+    ],
+    [
+      "Jebel Irhoud : datation",
+      "La thermoluminescence des silex chauffés mesure le temps depuis leur dernière chauffe : 315 000 ± 34 000 ans. La résonance de spin électronique couplée aux séries de l’uranium sur une dent donne 286 000 ± 32 000 ans. Le contexte stratigraphique relie les silex aux fossiles. [4]"
+    ],
+    [
+      "Populations et échanges",
+      "Les génomes anciens montrent des échanges entre Sapiens et Néandertal ; un individu avait une mère néandertalienne et un père denisovien. [2, 5] Omo I possède une ancienneté minimale liée à une éruption datée de 233 000 ± 22 000 ans. [6] Une origine africaine ne désigne pas un lieu de naissance unique."
+    ],
+    [
+      "Glossaire",
+      "Phylogénie : relations évolutives. Stratigraphie : relations entre couches. Taphonomie : transformations des restes après la mort. Introgression : transfert génétique par hybridation et croisements ultérieurs. Évolution en mosaïque : rythmes différents selon les caractères."
+    ]
+  ],
+  "diagram": [
+    "Jebel Irhoud : comparer les estimations",
+    [
+      "Méthode",
+      "Estimation (ans)",
+      "Intervalle (ans)"
+    ],
+    [
+      [
+        "Thermoluminescence",
+        "315 000 ± 34 000",
+        "281 000–349 000"
+      ],
+      [
+        "Dent : ESR/U",
+        "286 000 ± 32 000",
+        "254 000–318 000"
+      ]
+    ]
+  ],
+  "dossier": "Comparez les résumés [3] et [4] : distinguez attribution anatomique et datation. Les publications originales ne sont pas toutes intégralement accessibles.",
+  "activity": "Calculez les intervalles des deux datations. Se recouvrent-ils ? Pourquoi un silex ne date-t-il pas directement un fossile ? Pourquoi ne peut-on identifier un lieu de naissance unique de Sapiens ?",
+  "correction": "Recouvrement : 281 000–318 000 ans. Le silex date une chauffe, son association dépend de la stratigraphie. Le registre fossile incomplet ne permet pas d’identifier le premier individu ni une origine géographique unique.",
+  "quiz": [
+    "Quel modèle décrit le mieux l’évolution humaine ?",
+    [
+      "Une échelle de perfection",
+      "Un arbre ramifié",
+      "Une succession obligatoire"
+    ],
+    1,
+    "Plusieurs lignées ont coexisté et parfois échangé des gènes."
+  ],
+  "seminar": "400 à 600 mots : pourquoi la marche progressive est-elle trompeuse ? Barème sur 20 : exactitude 6, parentés 5, preuves 5, argumentation 4. Corrigé indicatif : divergence depuis un ancêtre commun, coexistence des lignées, évolution en mosaïque, fossiles et génétique avec leurs limites.",
+  "review": "J+2 : définir divergence et mosaïque. J+7 : expliquer les deux datations et leurs limites. J+30 : reconstruire une chronologie et expliquer les échanges génétiques.",
+  "sources": [
+    [
+      "Brunet et al.",
+      "A new hominid from the Upper Miocene of Chad, Central Africa",
+      "2002",
+      "https://doi.org/10.1038/nature00879",
+      "Toumaï et débat sur les origines",
+      "anglais"
+    ],
+    [
+      "Green et al.",
+      "A Draft Sequence of the Neandertal Genome",
+      "2010",
+      "https://doi.org/10.1126/science.1188021",
+      "Échanges génétiques",
+      "anglais"
+    ],
+    [
+      "Hublin et al.",
+      "New fossils from Jebel Irhoud, Morocco and the pan-African origin of Homo sapiens",
+      "2017",
+      "https://doi.org/10.1038/nature22336",
+      "Anatomie",
+      "anglais"
+    ],
+    [
+      "Richter et al.",
+      "The age of the hominin fossils from Jebel Irhoud, Morocco, and the origins of the Middle Stone Age",
+      "2017",
+      "https://doi.org/10.1038/nature22335",
+      "Datations",
+      "anglais"
+    ],
+    [
+      "Slon et al.",
+      "The genome of the offspring of a Neanderthal mother and a Denisovan father",
+      "2018",
+      "https://doi.org/10.1038/s41586-018-0455-x",
+      "Parentés génétiques",
+      "anglais"
+    ],
+    [
+      "Vidal et al.",
+      "Age of the oldest known Homo sapiens from eastern Africa",
+      "2022",
+      "https://doi.org/10.1038/s41586-021-04275-8",
+      "Omo I",
+      "anglais"
+    ],
+    [
+      "Smithsonian Institution",
+      "Human Family Tree",
+      "s.d.",
+      "https://humanorigins.si.edu/evidence/human-family-tree",
+      "Chronologie indicative",
+      "anglais"
+    ]
+  ]
+},
   {
     id: 'mobilites', title: 'Chasseurs-cueilleurs et mobilités',
     goal: 'Construire deux hypothèses sur la durée d’occupation d’un site et proposer un indice capable de les départager.',
