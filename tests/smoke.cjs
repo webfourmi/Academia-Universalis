@@ -41,3 +41,8 @@ assert.equal(vm.runInContext('validReadingTools(undefined)',sandbox),true);
 assert.equal(vm.runInContext('validReadingTools({theme:"sepia",size:115,marks:{a:{highlight:true,note:"test"}}})',sandbox),true);
 assert.equal(vm.runInContext('validReadingTools({theme:"invalid",size:115,marks:{}})',sandbox),false);
 console.log('Contrôles des préférences de lecture réussis');
+
+vm.runInContext(readingSource.slice(readingSource.indexOf('function sameBookmark('),readingSource.indexOf('function bookmarkPanel(')),sandbox);
+assert.equal(vm.runInContext('validBookmarks(undefined)',sandbox),true);
+assert.equal(vm.runInContext('validBookmarks([{courseKey:"a",lessonId:"b",section:0,title:"Titre"}])',sandbox),true);
+assert.equal(vm.runInContext('validBookmarks([{courseKey:"a",lessonId:"b",section:-1,title:"Titre"}])',sandbox),false);
