@@ -105,3 +105,10 @@ assert.equal(vm.runInContext('civilisations.find(l=>l.id==="neolithiques").flash
 assert.equal(vm.runInContext('civilisations.filter(l=>l.id==="neolithiques").length',sandbox),1);
 assert.equal(vm.runInContext('civilisations.find(l=>l.id==="neolithiques").sources.length',sandbox),5);
 assert.ok(vm.runInContext('civilisations.find(l=>l.id==="neolithiques").flashcards.every(c=>c.length===2&&c.every(t=>typeof t==="string"&&t.length))',sandbox));
+
+// Execute the actual lesson-specific rendering, not merely a source-string check.
+const extrasStart=readingSource.indexOf('function evolutionExtras(');
+const extrasEnd=readingSource.indexOf('function showLesson(',extrasStart);
+vm.runInContext('function e(x){return String(x)};function evolutionAnatomy(){return ""};function evolutionFossils(){return ""};'+readingSource.slice(extrasStart,extrasEnd),sandbox);
+assert.ok(vm.runInContext('evolutionExtras(civilisations[0]).includes("Chronologie graphique")',sandbox));
+assert.equal(vm.runInContext('evolutionExtras(civilisations[1])',sandbox),'');
