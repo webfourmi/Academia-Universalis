@@ -69,19 +69,20 @@ return '<h3>Quiz complémentaire</h3>'+qs.map(([q,opts,a,why],i)=>'<fieldset><le
 }
 
 function migrationCardDefinitions(){return [["Que prouve une occupation datée ?","Une présence locale, pas une filiation ni un itinéraire."],["Où se trouve Dmanisi ?","Dans le Caucase, en Géorgie."],["Âge des occupations de Dmanisi selon l’étude de 2022 ?","Environ 1,80–1,76 Ma."],["Volume endocrânien de D4500 ?","546 cm³."],["Que désigne le Sahul ?","Australie et Nouvelle-Guinée réunies lors des bas niveaux marins."],["Quel fossile a été découvert à Misliya ?","Un maxillaire attribué à Homo sapiens."],["Datation proposée de Misliya ?","194–177 ka, estimation discutée."],["Datation proposée de Madjedbebe ?","Environ 65 ka, estimation discutée."],["Que trouve-t-on à White Sands ?","Des empreintes humaines datées vers 23–21 ka."],["Que mesure la luminescence OSL ?","Le temps depuis la dernière exposition lumineuse des grains."],["Quel biais affecte les graines aquatiques ?","Le carbone ancien peut augmenter leur âge apparent."],["1,80 Ma équivaut à combien de ka ?","1 800 ka."]];}
-function migrationCardKey(i){return 'builtin:migrations-humaines:'+i;}
+function lessonCardDefinitions(lesson){return lesson.flashcards || (lesson.id==='migrations-humaines'?migrationCardDefinitions():lesson.id==='evolution-humaine'?[['Pourquoi un arbre plutôt qu’une échelle ?','Divergence, coexistence et échanges génétiques.'],['Évolution en mosaïque ?','Caractères évoluant à des rythmes différents.'],['Âge des silex ?','315 000 ± 34 000 ans.'],['Un fossile date-t-il la naissance de son espèce ?','Non, il atteste sa présence.'],['Parents de l’individu étudié en 2018 ?','Mère néandertalienne et père denisovien.'],['Modèle panafricain ?','Participation possible de plusieurs populations africaines.']]:lesson.quiz?[[lesson.quiz[0],lesson.quiz[1][lesson.quiz[2]]+' · '+lesson.quiz[3]]]:[]);}
+function lessonCardKey(course,lesson,i){return lesson.id==='migrations-humaines'?'builtin:migrations-humaines:'+i:'builtin:'+course.key+':'+lesson.id+':'+i;}
+function builtinStudyCards(){return allStudyCourses().flatMap(course=>course.lessons.flatMap(lesson=>lessonCardDefinitions(lesson).map(([question,answer],i)=>({question,answer,key:lessonCardKey(course,lesson,i)}))));}
 function migrationFlashcards(lesson){
- if(lesson.id!=='migrations-humaines')return '';
- const cards=migrationCardDefinitions();
+ const cards=lessonCardDefinitions(lesson);if(!cards.length)return '';
  return '<section class="card" id="migration-flashcards"><h3>Flashcards · rappel actif</h3><p>Formulez votre réponse avant de retourner la carte.</p><p id="migration-card-count" role="status"></p><h4 id="migration-card-question"></h4><details id="migration-card-answer"><summary>Retourner la carte</summary><p></p></details><p id="migration-card-level"></p><div><button type="button" id="migration-card-missed">À revoir</button> <button type="button" id="migration-card-known">Retrouvé sans aide</button></div><div><button type="button" id="migration-card-prev">Précédente</button> <button type="button" id="migration-card-next">Suivante</button></div><script type="application/json" id="migration-card-data">'+JSON.stringify(cards)+'</script></section>';
 }
-function bindMigrationFlashcards(v){
+function bindMigrationFlashcards(v,course,lesson){
  const root=v.querySelector('#migration-flashcards');if(!root)return;
  const cards=JSON.parse(root.querySelector('#migration-card-data').textContent);let i=0;
  const answer=root.querySelector('#migration-card-answer');
- function render(){root.querySelector('#migration-card-count').textContent=(i+1)+' / '+cards.length;root.querySelector('#migration-card-question').textContent=cards[i][0];answer.querySelector('p').textContent=cards[i][1];answer.open=false;const review=S.reviews?.[migrationCardKey(i)];root.querySelector('#migration-card-level').textContent=review?'Niveau '+(review.step+1)+'/5 · prochain rappel '+reviewDate(review):'Non évaluée';root.querySelector('#migration-card-known').disabled=true;root.querySelector('#migration-card-missed').disabled=true;}
+ function render(){root.querySelector('#migration-card-count').textContent=(i+1)+' / '+cards.length;root.querySelector('#migration-card-question').textContent=cards[i][0];answer.querySelector('p').textContent=cards[i][1];answer.open=false;const review=S.reviews?.[lessonCardKey(course,lesson,i)];root.querySelector('#migration-card-level').textContent=review?'Niveau '+(review.step+1)+'/5 · prochain rappel '+reviewDate(review):'Non évaluée';root.querySelector('#migration-card-known').disabled=true;root.querySelector('#migration-card-missed').disabled=true;}
  answer.ontoggle=()=>{root.querySelector('#migration-card-known').disabled=!answer.open;root.querySelector('#migration-card-missed').disabled=!answer.open;};
- for(const [id,correct] of [['migration-card-known',true],['migration-card-missed',false]])root.querySelector('#'+id).onclick=()=>{if(!answer.open)return;S.reviews??={};const key=migrationCardKey(i);S.reviews[key]=nextMemoryReview(S.reviews[key],correct,localStudyDate());save();i=(i+1)%cards.length;render();};
+ for(const [id,correct] of [['migration-card-known',true],['migration-card-missed',false]])root.querySelector('#'+id).onclick=()=>{if(!answer.open)return;S.reviews??={};const key=lessonCardKey(course,lesson,i);S.reviews[key]=nextMemoryReview(S.reviews[key],correct,localStudyDate());save();i=(i+1)%cards.length;render();};
  root.querySelector('#migration-card-prev').onclick=()=>{i=(i+cards.length-1)%cards.length;render();};
  root.querySelector('#migration-card-next').onclick=()=>{i=(i+1)%cards.length;render();};render();
 }
@@ -104,7 +105,7 @@ function evolutionExtras(lesson){
  if(lesson.id!=='evolution-humaine')return '';
  const species=[['Sahelanthropus',7,6],['Orrorin',6.1,5.7],['Ardipithecus kadabba',5.8,5.2],['Ardipithecus ramidus',4.4,4.4],['A. anamensis',4.2,3.8],['A. afarensis',3.85,2.95],['A. africanus',3.3,2.1],['P. boisei',2.3,1.2],['H. habilis',2.4,1.4],['H. erectus',1.89,.11],['H. heidelbergensis',.7,.2],['Néandertal',.4,.04],['H. naledi',.335,.236],['H. floresiensis',.1,.06],['H. sapiens',.3,0]];
  const timeline=max=>'<svg viewBox="0 0 340 350" width="100%" role="img" aria-label="Chronologie des fossiles, millions d’années avant le présent"><text x="145" y="12" fill="currentColor" font-size="10">'+max+' Ma</text><text x="325" y="12" fill="currentColor" font-size="10">0</text>'+species.filter(s=>s[2]<max).map((s,i)=>'<text x="2" y="'+(32+i*21)+'" font-size="10" fill="currentColor">'+e(s[0])+'</text><rect x="'+(145+185*(1-Math.min(max,s[1])/max))+'" y="'+(22+i*21)+'" width="'+Math.max(2,185*(Math.min(max,s[1])-s[2])/max)+'" height="12" rx="2" fill="#39766a" stroke="currentColor" stroke-width=".5"/>').join('')+'</svg>';
- const cards=[['Pourquoi un arbre plutôt qu’une échelle ?','Divergence, coexistence et échanges génétiques.'],['Évolution en mosaïque ?','Caractères évoluant à des rythmes différents.'],['Âge des silex ?','315 000 ± 34 000 ans.'],['Un fossile date-t-il la naissance de son espèce ?','Non, il atteste sa présence.'],['Parents de l’individu étudié en 2018 ?','Mère néandertalienne et père denisovien.'],['Modèle panafricain ?','Participation possible de plusieurs populations africaines.']];
+ 
  return evolutionAnatomy()+evolutionFossils()+'<h3>Chronologie graphique</h3><figure class="history-overview">'+timeline(7)+'<figcaption>Intervalles fossiles indicatifs, non filiations. Source : Smithsonian [7].</figcaption><details><summary>Zoom sur le dernier million d’années</summary>'+timeline(1)+'</details></figure><h3>Révision active</h3>'+cards.map(([q,a])=>'<details><summary>'+e(q)+'</summary><p>'+e(a)+'</p></details>').join('');
 }
 
@@ -190,7 +191,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
   });
   v.querySelectorAll('[data-evo-answer]').forEach(button=>button.onclick=()=>{const field=button.closest('fieldset');const selected=field.querySelector('input:checked');field.querySelector('[role=status]').textContent=selected?((selected.value===button.dataset.evoAnswer?'Correct. ':'À revoir. ')+button.dataset.evoWhy):'Choisissez une réponse.';});
   bindMigrationMap(v);
-  bindMigrationFlashcards(v);
+  bindMigrationFlashcards(v,course,lesson);
   installReadingTools(course,lesson);
   const heading = v.querySelector('h2');
   heading.focus({preventScroll:offset!==undefined});
