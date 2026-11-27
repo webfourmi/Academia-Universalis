@@ -77,3 +77,7 @@ assert.equal(vm.runInContext('civilisations.filter(l=>l.id==="evolution-humaine"
 assert.equal(vm.runInContext('civilisations.find(l=>l.id==="evolution-humaine").sources.length',sandbox),7);
 assert.ok(readingSource.includes("function evolutionQuiz()"));
 assert.ok(readingSource.includes("function evolutionAnatomy()"));
+
+assert.equal(vm.runInContext('civilisations[1].id',sandbox),'migrations-humaines');
+assert.equal(vm.runInContext('civilisations[1].sources.length',sandbox),8);
+assert.equal(vm.runInContext('civilisations[1].quiz[2]',sandbox),1);
