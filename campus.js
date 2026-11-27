@@ -124,47 +124,68 @@ function searchableText(value) {
   return value.normalize('NFD').replace(/\p{M}/gu,'').toLowerCase();
 }
 
-function showCampusLibrary() {
-  const catalog = allStudyCourses();
-  const resources = [...campusResources,...libraryAdditions].map(resource=>{
-    const theme = libraryTheme(resource);
-    const course = catalog.find(entry=>entry.key===resource.courseKey);
-    const lesson = course?.lessons.find(entry=>entry.id===resource.lessonId);
-    const searchText = searchableText([resource.title,resource.author,resource.evidence,theme,course?.title,lesson?.title].join(' '));
-    const type = /pdf/i.test(resource.access) ? 'PDF' : /programme|descriptif/i.test(resource.access) ? 'Programme' : /vidéo|conférence/i.test(resource.access) ? 'Conférence' : /simulation/i.test(resource.access) ? 'Simulation' : 'Ressource en ligne';
-    return {...resource,theme,searchText,type,lessonTitle:lesson?.title};
+function validLibraryShelf(value){
+ return value===undefined||Boolean(value&&typeof value==='object'&&!Array.isArray(value)&&Object.entries(value).every(([url,status])=>/^https?:\/\//i.test(url)&&['saved','reading','read'].includes(status)));
+}
+function libraryCatalog(){
+ const records=new Map();
+ function add(resource,link){
+  if(typeof resource.url!=='string'||!/^https?:\/\//i.test(resource.url))return;
+  const key=resource.url;
+  if(!records.has(key))records.set(key,{...resource,links:[]});
+  const item=records.get(key);
+  if(link&&!item.links.some(x=>x.courseKey===link.courseKey&&x.lessonId===link.lessonId))item.links.push(link);
+ }
+ const courses=allStudyCourses();
+ for(const resource of [...campusResources,...libraryAdditions]){
+  const course=courses.find(x=>x.key===resource.courseKey),lesson=course?.lessons.find(x=>x.id===resource.lessonId);
+  add({...resource,theme:libraryTheme(resource)},lesson?{courseKey:course.key,lessonId:lesson.id,title:lesson.title,discipline:course.title,year:course.year||1}:null);
+ }
+ for(const course of courses)for(const lesson of course.lessons)for(const [author,title,year,url,evidence,language] of lesson.sources||[]){
+  add({author,title,year,url,evidence,language:language||'Non renseignée',region:'Non renseignée',level:'Non renseigné',access:'Accès à vérifier',rights:'Droits à vérifier',theme:libraryTheme({courseKey:course.key})},{courseKey:course.key,lessonId:lesson.id,title:lesson.title,discipline:course.title,year:course.year||1});
+ }
+ return [...records.values()].map(item=>({...item,type:item.type||(/programme|descriptif/i.test(item.access)?'Programme':/simulation/i.test(item.access)?'Simulation':/vidéo|conférence/i.test(item.access)?'Conférence':'Non classé')})).sort((a,b)=>a.title.localeCompare(b.title,'fr'));
+}
+function showCampusLibrary(){
+ const resources=libraryCatalog();
+ const filters=[['theme','Thème'],['region','Région'],['language','Langue'],['type','Type'],['level','Niveau'],['access','Accès'],['author','Auteur / organisme'],['discipline','Discipline'],['year','Année du cursus'],['status','Ma bibliothèque']];
+ const values=(r,key)=>key==='discipline'?r.links.map(x=>x.discipline):key==='year'?r.links.map(x=>String(x.year)):key==='status'?[S.libraryShelf?.[r.url]||'none']:[String(r[key]||'Non renseigné')];
+ v.innerHTML='<h2>Bibliothèque scientifique</h2><p>Références des cours et catalogues universitaires. Les métadonnées manquantes restent à vérifier.</p><label>Rechercher <input type="search" id="library-search" placeholder="Titre, auteur, notion…"></label><details><summary>Filtres du catalogue</summary><div class="library-filters"></div></details><p role="status" id="library-count"></p><button id="library-export">Exporter les références affichées</button><div id="library-records"></div>';
+ const controls=v.querySelector('.library-filters'),search=v.querySelector('#library-search'),list=v.querySelector('#library-records');
+ const statusLabels={none:'Non enregistré',saved:'Favori',reading:'En cours',read:'Lu'};
+ const picks=filters.map(([key,label])=>{
+  const wrap=document.createElement('label'),select=document.createElement('select');wrap.textContent=label+' ';wrap.append(select);controls.append(wrap);
+  const all=document.createElement('option');all.value='';all.textContent='Tous';select.append(all);
+  const options=key==='status'?Object.keys(statusLabels):[...new Set(resources.flatMap(r=>values(r,key)))].sort((a,b)=>a.localeCompare(b,'fr'));
+  options.forEach(value=>{const option=document.createElement('option');option.value=value;option.textContent=key==='status'?statusLabels[value]:value;select.append(option);});
+  select.onchange=draw;return {key,select};
+ });
+ let matches=[];
+ function draw(){
+  const terms=searchableText(search.value.trim()).split(/\s+/).filter(Boolean);
+  matches=resources.filter(r=>picks.every(({key,select})=>!select.value||values(r,key).includes(select.value))&&terms.every(t=>searchableText([r.title,r.author,r.evidence,r.theme,...r.links.map(x=>x.title+' '+x.discipline)].join(' ')).includes(t)));
+  v.querySelector('#library-count').textContent=matches.length+' références sur '+resources.length;
+  list.replaceChildren();
+  matches.forEach(r=>{
+   const card=document.createElement('article');card.className='card library-record';
+   const h=document.createElement('h3'),a=document.createElement('a');a.href=r.url;a.target='_blank';a.rel='noopener';a.textContent=r.title;h.append(a);card.append(h);
+   for(const line of [[r.author,r.year,r.language,r.region,r.type,r.level].filter(Boolean).join(' · '),r.evidence,[r.access,r.rights,r.consulted?'Consulté le '+r.consulted:'Date de consultation non renseignée'].filter(Boolean).join(' · ')]){
+    const p=document.createElement('p');p.textContent=line||'';card.append(p);
+   }
+   const label=document.createElement('label'),select=document.createElement('select');label.textContent='Ma lecture ';label.append(select);
+   Object.entries(statusLabels).forEach(([value,text])=>{const option=document.createElement('option');option.value=value;option.textContent=text;select.append(option);});
+   select.value=S.libraryShelf?.[r.url]||'none';
+   select.onchange=()=>{S.libraryShelf??={};if(select.value==='none')delete S.libraryShelf[r.url];else S.libraryShelf[r.url]=select.value;save();draw();};card.append(label);
+   const links=document.createElement('details');const summary=document.createElement('summary');summary.textContent='Leçons associées ('+r.links.length+')';links.append(summary);
+   r.links.forEach(link=>{const button=document.createElement('button');button.type='button';button.className='title-action';button.textContent=link.title;button.onclick=()=>spaceLesson(link.courseKey,link.lessonId);links.append(button);});card.append(links);list.append(card);
   });
-  const regions = [...new Set(resources.map(resource=>resource.region))];
-  const themes = [...new Set(resources.map(resource=>resource.theme))].sort((a,b)=>a.localeCompare(b,'fr'));
-  v.innerHTML = `<h2>Bibliothèque universitaire</h2><div class="library-filters">
-    <label>Rechercher <input id="library-search" type="search" placeholder="Thème, auteur, titre…"></label>
-    <div><label for="library-theme">Thème</label><select id="library-theme"><option value="">Tous</option>${themes.map(theme=>`<option>${theme}</option>`).join('')}</select></div>
-    <div><label for="library-region">Région</label><select id="library-region"><option value="">Toutes</option>${regions.map(region=>`<option>${region}</option>`).join('')}</select></div>
-    </div><p id="library-count" role="status"></p><div id="library-records"></div>`;
-  const picker=v.querySelector('#library-region');
-  const themePicker=v.querySelector('#library-theme');
-  const search=v.querySelector('#library-search');
-  function showRecords() {
-    const terms=searchableText(search.value.trim()).split(/\s+/).filter(Boolean);
-    const matches=resources.filter(resource=>{
-      if (picker.value && resource.region!==picker.value) return false;
-      if (themePicker.value && resource.theme!==themePicker.value) return false;
-      return terms.every(term=>resource.searchText.includes(term));
-    });
-    v.querySelector('#library-count').textContent=matches.length+' '+(matches.length===1?'ressource':'ressources');
-    v.querySelector('#library-records').innerHTML=matches.map(resource=>
-      '<article class="card"><h3><a href="'+resource.url+'">'+resource.title+'</a></h3><p>'+resource.theme+' · '+resource.author+' · '+resource.year+' · '+resource.region+' · '+resource.language+' · '+resource.type+' · '+resource.level+'</p><p>'+resource.evidence+'</p><p>'+resource.access+' · '+resource.rights+' · consulté le '+(resource.consulted||'26/11/2026')+'.</p>'+(resource.lessonTitle?spaceButton(resource.courseKey,resource.lessonId,'Leçon · '+e(resource.lessonTitle)):'')+'</article>'
-    ).join('') || '<p>Aucun résultat. Essaie un autre mot ou ajuste les filtres.</p>';
-  }
-  v.insertAdjacentHTML('beforeend','<details><summary>Autres catalogues à explorer</summary><ul><li><a href="https://pll.harvard.edu/catalog/free">Harvard</a></li><li><a href="https://oyc.yale.edu/courses">Open Yale Courses</a></li><li><a href="https://ocw.mit.edu/">MIT OpenCourseWare</a></li><li><a href="https://www.college-de-france.fr/">Collège de France</a></li><li><a href="https://podcasts.ox.ac.uk/">Oxford Podcasts</a></li></ul></details>');
-  v.querySelector('#library-records').onclick = event => {
-    const button = event.target.closest('[data-course]');
-    if (button) spaceLesson(button.dataset.course, button.dataset.lessonId);
-  };
-  picker.onchange=showRecords;
-  themePicker.onchange=showRecords;
-  search.oninput=showRecords;
-  showRecords();
+ }
+ search.oninput=draw;
+ v.querySelector('#library-export').onclick=()=>{
+  const text=matches.map(r=>[r.author,r.year,r.title,r.url,r.access,r.rights].filter(Boolean).join(' · ')).join('\n\n');
+  const url=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='academia-bibliographie.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ };
+ draw();
 }
 
 function validReviews(reviews) {
