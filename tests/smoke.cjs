@@ -86,3 +86,6 @@ const migrationSource=fs.readFileSync('civilisations.js','utf8');
 assert.ok(migrationSource.includes('function migrationMap(lesson)'));
 assert.ok(migrationSource.includes('bindMigrationMap(v);'));
 assert.ok(migrationSource.includes('data-migration-pin'));
+
+assert.ok(migrationSource.includes('function migrationFlashcards(lesson)'));
+assert.ok(migrationSource.includes('bindMigrationFlashcards(v);'));
