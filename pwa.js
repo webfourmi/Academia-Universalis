@@ -9,6 +9,6 @@ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();prompt=e;in
 function waiting(){if(reg.waiting){update.hidden=false;updatesLabel.textContent='Mises à jour · Nouvelle version';document.querySelector('#campus-installation').dataset.updateAvailable='true';sayUpdate('Nouvelle version disponible. Tes notes sont conservées sur cet appareil.')}}
 update.onclick=()=>{if(reg?.waiting){reload=true;reg.waiting.postMessage('SKIP_WAITING')}};
 if(!('serviceWorker'in navigator)||!isSecureContext||location.protocol==='file:'){say('Aperçu local : installation et mises à jour nécessitent un site HTTPS.');check.disabled=true;return;}
-navigator.serviceWorker.addEventListener('controllerchange',()=>{if(reload||!update.hidden)location.reload()});
+navigator.serviceWorker.addEventListener('controllerchange',()=>{if(reload)location.reload()});
 navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).then(r=>{reg=r;waiting();r.addEventListener('updatefound',()=>{const w=r.installing;w?.addEventListener('statechange',()=>{if(w.state==='installed'&&navigator.serviceWorker.controller)waiting()})});check.onclick=async()=>{try{await r.update();if(r.waiting)waiting();else sayUpdate(r.installing?'Téléchargement de la mise à jour…':'Aucune nouvelle version détectée.')}catch{sayUpdate('Vérification impossible. Réessaie avec Internet.')}}}).catch(()=>say('Installation hors ligne indisponible sur ce navigateur.'));
 })();
