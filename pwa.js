@@ -6,7 +6,7 @@ const sayUpdate=text=>updateStatus.textContent=text;
 const say=t=>status.textContent=t; const connection=()=>say(navigator.onLine?'Connecté · campus disponible':'Hors connexion · contenu intégré disponible si déjà mis en cache');
 window.addEventListener('online',connection);window.addEventListener('offline',connection);connection();
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();prompt=e;install.hidden=false});install.onclick=async()=>{if(prompt){await prompt.prompt();await prompt.userChoice;prompt=null;install.hidden=true}};window.addEventListener('appinstalled',()=>{install.hidden=true;say('Application installée')});
-function waiting(){if(reg.waiting){update.hidden=false;updatesLabel.textContent='Mises à jour · Nouvelle version';sayUpdate('Nouvelle version disponible. Tes notes sont conservées sur cet appareil.')}}
+function waiting(){if(reg.waiting){update.hidden=false;updatesLabel.textContent='Mises à jour · Nouvelle version';document.querySelector('#campus-installation').dataset.updateAvailable='true';sayUpdate('Nouvelle version disponible. Tes notes sont conservées sur cet appareil.')}}
 update.onclick=()=>{if(reg?.waiting){reload=true;reg.waiting.postMessage('SKIP_WAITING')}};
 if(!('serviceWorker'in navigator)||!isSecureContext||location.protocol==='file:'){say('Aperçu local : installation et mises à jour nécessitent un site HTTPS.');check.disabled=true;return;}
 navigator.serviceWorker.addEventListener('controllerchange',()=>{if(reload||!update.hidden)location.reload()});

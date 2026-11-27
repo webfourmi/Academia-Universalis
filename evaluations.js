@@ -25,21 +25,24 @@ function assessmentOptions() {
   return [...assessments, {key:'synthese',title:'Bilan transversal de l’Année 1',items}];
 }
 
-function showAssessments() {
-  v.innerHTML = `<h2>Évaluations et révisions</h2>
-    <p>Vérifie ton raisonnement avec un bilan de parcours ou entraîne-toi sur les cas de synthèse. Les corrigés s’affichent à la fin.</p>
-    <button id="assessment-reviews">Accéder aux révisions programmées</button> <button onclick="showWrittenProjects()">Travaux de synthèse · Année 1</button>
-    <div class="grid">${assessmentOptions().map(({key,title,items}) => {
+function assessmentSection(options) {
+  return `<section id="assessment-section" aria-labelledby="assessment-title">
+    <h3 id="assessment-title" tabindex="-1">Évaluations</h3>
+    <p>Les corrigés s’affichent à la fin du bilan.</p>
+    <button onclick="showWrittenProjects()">Travaux de synthèse · Année 1</button>
+    <div class="grid">${options.map(({key,title,items}) => {
       const saved = S.assessments?.[key];
-      return `<article class="card"><h3>${title}</h3><p>${items.length} questions</p>
+      return `<article class="card"><h4>${title}</h4><p>${items.length} questions</p>
       ${saved ? `<p>Dernier score : ${saved.last}/${saved.total} · Meilleur : ${saved.best}/${saved.total}</p>` : ''}
       <button data-assessment="${key}">Commencer · ${title}</button></article>`;
-    }).join('')}</div>`;
-  v.querySelector('#assessment-reviews').onclick = () => showSpace('Planning');
-  const options = assessmentOptions();
-  v.querySelectorAll('[data-assessment]').forEach(button => {
-    button.onclick = () => showAssessment(options.find(entry => entry.key === button.dataset.assessment));
-  });
+    }).join('')}</div></section>`;
+}
+
+function showAssessments() {
+  showProgress();
+  const heading = v.querySelector('#assessment-title');
+  heading.focus({preventScroll:true});
+  heading.scrollIntoView({block:'center'});
 }
 
 function showAssessment(assessment) {

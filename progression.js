@@ -15,15 +15,21 @@ function showProgress() {
     const review=S.reviews?.[lessonProgressKey(course.key,lesson.id)];
     return review && reviewDue(review);
   }).length,0);
-  const marks = assessmentOptions().filter(option=>S.assessments?.[option.key]).map(option=>{
-    const result=S.assessments[option.key];
-    return `<li>${option.title} · dernier ${result.last}/${result.total}, meilleur ${result.best}/${result.total}</li>`;
-  }).join('');
-  v.innerHTML=`<h2>Ma progression</h2><p>Les leçons cochées « Leçon terminée » alimentent le suivi. Les bilans et les révisions donnent des repères sur ce que tu comprends et retiens.</p>
+  const options = assessmentOptions();
+  v.innerHTML=`<h2>Progression et évaluations</h2>
+    <p>Retrouve tes leçons terminées, tes scores et les révisions en attente.</p>
+    <button type="button" id="jump-to-assessment">Aller aux évaluations</button>
     <div class="grid">${yearCards}</div>
-    <article class="card"><h3>Résultats des bilans</h3>${marks?`<ul>${marks}</ul>`:'<p>Aucun bilan enregistré.</p>'}
-    <button onclick="go(12)">Ouvrir les évaluations</button></article>
     <article class="card"><h3>Révisions</h3><p>${due} à faire aujourd’hui ou en retard.</p>
-    <button id="progress-planning">Ouvrir le planning</button></article>`;
+    <button id="progress-planning">Ouvrir le planning</button></article>
+    ${assessmentSection(options)}`;
+  v.querySelector('#jump-to-assessment').onclick=()=>{
+    const heading=v.querySelector('#assessment-title');
+    heading.focus({preventScroll:true});
+    heading.scrollIntoView({block:'center'});
+  };
+  v.querySelectorAll('[data-assessment]').forEach(button=>{
+    button.onclick=()=>showAssessment(options.find(entry=>entry.key===button.dataset.assessment));
+  });
   v.querySelector('#progress-planning').onclick=()=>{go(11);showSpace('Planning');};
 }

@@ -44,10 +44,10 @@ async function importNotes(input) {
       localStorage.au = JSON.stringify(next);
       S = next;
     }
-    if (tab !== 6) return;
+    if (tab !== 6 && tab !== 15) return;
     if (added) {
       render();
-      v.querySelector('details.card').open = true;
+      v.querySelector('#notes-backup-panel').open = true;
     }
     const message = added === 1 ? '1 note ajoutée.' : added+' notes ajoutées.';
     const retained = conflicts === 1 ? ' 1 note différente a été conservée dans sa version locale.'
@@ -69,11 +69,7 @@ function showNotebook() {
       <p class="note-text">${e(note)}</p>
       <button type="button" data-edit-note="${index}">Modifier</button>
       ${lessonForNote(key)?`<button type="button" data-note-lesson="${index}">Ouvrir la leçon</button>`:''}</article>`).join('')}</div>
-    <details class="card"><summary>Sauvegarder mes notes</summary><p><button onclick="exportNotes()">Exporter mes notes</button></p>
-      <label>Importer des notes <input type="file" accept=".json,application/json" onchange="importNotes(this)"></label>
-    </details>
-    <p id="notes-import-status" role="status"></p>
-    <p><button onclick="backup()">Exporter ma sauvegarde</button> <label>Importer <input type="file" accept=".json" onchange="restore(this)"></label></p>`;
+    ${backupControls()}`;
   v.querySelectorAll('[data-note-lesson]').forEach(button=>{
     button.onclick=()=>openNotebookLesson(entries[Number(button.dataset.noteLesson)][0]);
   });
@@ -119,4 +115,19 @@ function showNotebook() {
       }
     };
   });
+}
+
+
+function backupControls() {
+  return `<details id="notes-backup-panel" class="card"><summary>Sauvegarder mes notes</summary><p><button onclick="exportNotes()">Exporter mes notes</button></p>
+    <label>Importer des notes <input type="file" accept=".json,application/json" onchange="importNotes(this)"></label>
+  </details>
+  <p id="notes-import-status" role="status"></p>
+  <p><button onclick="backup()">Exporter ma sauvegarde</button> <label>Importer <input type="file" accept=".json" onchange="restore(this)"></label></p>`;
+}
+
+function showBackup() {
+  v.innerHTML=`<h2>Sauvegarde</h2>
+    <p>La sauvegarde complète contient tes notes, ta progression et tes évaluations. Tu peux aussi exporter uniquement tes notes.</p>
+    ${backupControls()}`;
 }
