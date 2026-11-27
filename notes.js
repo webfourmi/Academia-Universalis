@@ -203,12 +203,26 @@ function showNotebook() {
 }
 
 
+function recoverPreviousBackup() {
+  const status = v.querySelector('#notes-import-status');
+  try {
+    const raw = localStorage.getItem('au-before-restore');
+    if (!raw) { status.textContent = 'Aucune copie précédente disponible.'; return; }
+    const previous = JSON.parse(raw);
+    if (!safeBackupTree(previous) || !previous || typeof previous.notes !== 'object' || !previous.notes || typeof previous.done !== 'object' || !previous.done) throw new Error('Copie invalide');
+    downloadBackup(previous, 'academia-sauvegarde-precedente.json');
+    status.textContent = 'Copie précédente exportée. Pour la restaurer, utilise le bouton Importer.';
+  } catch {
+    status.textContent = 'Impossible de récupérer la copie précédente.';
+  }
+}
+
 function backupControls() {
   return `<details id="notes-backup-panel" class="card"><summary>Sauvegarder mes notes</summary><p><button onclick="exportNotes()">Exporter mes notes</button></p>
     <label>Importer des notes <input type="file" accept=".json,application/json" onchange="importNotes(this)"></label>
   </details>
   <p id="notes-import-status" role="status"></p>
-  <p><button onclick="backup()">Exporter ma sauvegarde</button> <label>Importer <input type="file" accept=".json,application/json" onchange="restore(this)"></label></p>`;
+  <p><button type="button" onclick="recoverPreviousBackup()">Récupérer la sauvegarde précédente</button></p><p><button onclick="backup()">Exporter ma sauvegarde</button> <label>Importer <input type="file" accept=".json,application/json" onchange="restore(this)"></label></p>`;
 }
 
 function showBackup() {
