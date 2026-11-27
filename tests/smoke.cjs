@@ -128,7 +128,6 @@ assert.ok(vm.runInContext('philosophie[0].flashcards.every(c=>c.length===2&&c.ev
 assert.equal(vm.runInContext('philosophie.length',sandbox),6);
 assert.ok(vm.runInContext('philosophie.every(l=>l.flashcards.length>=12&&l.sources.length&&l.correction)',sandbox));
 
-vm.runInContext('var firstYearCourses = {};',sandbox);
 vm.runInContext(fs.readFileSync('sciences-data.js','utf8'),sandbox);
 
 assert.equal(vm.runInContext('physique.slice(0,6).map(l=>l.id).join(",")',sandbox),'intro-physique,mesures,maths-physicien,referentiels,vitesse-acceleration,prevoir-mouvement');
