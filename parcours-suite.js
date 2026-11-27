@@ -38,7 +38,7 @@ Object.assign(cycleContinuations, {
 });
 
 libraryAdditions.push(...[
-  ['Amériques',elasticitySource,'économie','elasticite'],
+  ['Amériques',elasticitySource,'economie','elasticite'],
   ['International',syncopationSource,'musicologie','syncope'],
   ['Amériques',colorSource,'astronomie','couleur'],
   ['Europe',focalizationSource,'narratologie','focalisation']

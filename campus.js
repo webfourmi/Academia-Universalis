@@ -107,15 +107,55 @@ function showSpace(name) {
   if(hours) hours.onchange=()=>{S.hours=Number(hours.value);save();showSpace(name);};
 }
 
+const libraryThemes = {
+  anthropologie:'Sociétés et histoire', archeologie:'Sociétés et histoire', histoire:'Sociétés et histoire',
+  physique:'Sciences et environnement', astronomie:'Sciences et environnement', ecologie:'Sciences et environnement',
+  pedagogie:'Enseignement et recherche', methode:'Enseignement et recherche',
+  art:'Arts, langues et littérature', musicologie:'Arts, langues et littérature', narratologie:'Arts, langues et littérature',
+  ia:'Informatique et technologie', robotique:'Informatique et technologie', applications:'Informatique et technologie',
+  jeu:'Informatique et technologie', economie:'Économie'
+};
+
+function libraryTheme(resource) {
+  if (resource.level==='catalogue') return 'Catalogues universitaires';
+  if (resource.level==='méthode de recherche') return 'Enseignement et recherche';
+  return libraryThemes[resource.courseKey] || 'Sociétés et histoire';
+}
+
+function searchableText(value) {
+  return value.normalize('NFD').replace(/\p{M}/gu,'').toLowerCase();
+}
+
 function showCampusLibrary() {
-  const resources = [...campusResources,...libraryAdditions];
+  const catalog = allStudyCourses();
+  const resources = [...campusResources,...libraryAdditions].map(resource=>{
+    const theme = libraryTheme(resource);
+    const course = catalog.find(entry=>entry.key===resource.courseKey);
+    const lesson = course?.lessons.find(entry=>entry.id===resource.lessonId);
+    const searchText = searchableText([resource.title,resource.author,resource.evidence,theme,course?.title,lesson?.title].join(' '));
+    return {...resource,theme,searchText};
+  });
   const regions = [...new Set(resources.map(resource=>resource.region))];
-  v.innerHTML='<h2>Bibliothèque universitaire</h2><label>Région <select id="library-region"><option value="">Toutes</option>'+
-    regions.map(region=>'<option>'+region+'</option>').join('')+'</select></label><div id="library-records"></div>';
+  const themes = [...new Set(resources.map(resource=>resource.theme))].sort((a,b)=>a.localeCompare(b,'fr'));
+  v.innerHTML = `<h2>Bibliothèque universitaire</h2><div class="library-filters">
+    <label>Rechercher <input id="library-search" type="search" placeholder="Thème, auteur, titre…"></label>
+    <div><label for="library-theme">Thème</label><select id="library-theme"><option value="">Tous</option>${themes.map(theme=>`<option>${theme}</option>`).join('')}</select></div>
+    <div><label for="library-region">Région</label><select id="library-region"><option value="">Toutes</option>${regions.map(region=>`<option>${region}</option>`).join('')}</select></div>
+    </div><p id="library-count" role="status"></p><div id="library-records"></div>`;
   const picker=v.querySelector('#library-region');
+  const themePicker=v.querySelector('#library-theme');
+  const search=v.querySelector('#library-search');
   function showRecords() {
-    v.querySelector('#library-records').innerHTML=resources.filter(resource=>!picker.value||resource.region===picker.value)
-      .map(resource=>'<article class="card"><h3><a href="'+resource.url+'">'+resource.title+'</a></h3><p>'+resource.author+' · '+resource.year+' · '+resource.region+' · '+resource.language+' · '+resource.level+'</p><p>'+resource.evidence+'</p><p>'+resource.access+' · '+resource.rights+' · consulté le '+(resource.consulted||'26/11/2026')+'.</p>'+(resource.courseKey?spaceButton(resource.courseKey,resource.lessonId,'Étudier avec cette ressource'):'')+'</article>').join('');
+    const terms=searchableText(search.value.trim()).split(/\s+/).filter(Boolean);
+    const matches=resources.filter(resource=>{
+      if (picker.value && resource.region!==picker.value) return false;
+      if (themePicker.value && resource.theme!==themePicker.value) return false;
+      return terms.every(term=>resource.searchText.includes(term));
+    });
+    v.querySelector('#library-count').textContent=matches.length+' '+(matches.length===1?'ressource':'ressources');
+    v.querySelector('#library-records').innerHTML=matches.map(resource=>
+      '<article class="card"><h3><a href="'+resource.url+'">'+resource.title+'</a></h3><p>'+resource.theme+' · '+resource.author+' · '+resource.year+' · '+resource.region+' · '+resource.language+' · '+resource.level+'</p><p>'+resource.evidence+'</p><p>'+resource.access+' · '+resource.rights+' · consulté le '+(resource.consulted||'26/11/2026')+'.</p>'+(resource.courseKey?spaceButton(resource.courseKey,resource.lessonId,'Étudier avec cette ressource'):'')+'</article>'
+    ).join('') || '<p>Aucun résultat. Essaie un autre mot ou ajuste les filtres.</p>';
   }
   v.insertAdjacentHTML('beforeend','<details><summary>Autres catalogues à explorer</summary><ul><li><a href="https://pll.harvard.edu/catalog/free">Harvard</a></li><li><a href="https://oyc.yale.edu/courses">Open Yale Courses</a></li><li><a href="https://ocw.mit.edu/">MIT OpenCourseWare</a></li><li><a href="https://www.college-de-france.fr/">Collège de France</a></li><li><a href="https://podcasts.ox.ac.uk/">Oxford Podcasts</a></li></ul></details>');
   v.querySelector('#library-records').onclick = event => {
@@ -123,6 +163,8 @@ function showCampusLibrary() {
     if (button) spaceLesson(button.dataset.course, button.dataset.lessonId);
   };
   picker.onchange=showRecords;
+  themePicker.onchange=showRecords;
+  search.oninput=showRecords;
   showRecords();
 }
 

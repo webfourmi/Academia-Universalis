@@ -45,7 +45,10 @@ async function importNotes(input) {
       S = next;
     }
     if (tab !== 6) return;
-    if (added) render();
+    if (added) {
+      render();
+      v.querySelector('details.card').open = true;
+    }
     const message = added === 1 ? '1 note ajoutée.' : added+' notes ajoutées.';
     const retained = conflicts === 1 ? ' 1 note différente a été conservée dans sa version locale.'
       : conflicts ? ' '+conflicts+' notes différentes ont été conservées dans leur version locale.' : '';
@@ -55,4 +58,61 @@ async function importNotes(input) {
   } finally {
     input.value = '';
   }
+}
+
+function showNotebook() {
+  const entries = Object.entries(S.notes).filter(([,note])=>note.trim());
+  v.innerHTML = `<h2>Mon carnet</h2>
+    ${entries.length ? '' : '<p>Tes notes de cours et tes brouillons apparaîtront ici.</p>'}
+    <div id="notebook-entries">${entries.map(([key,note],index)=>`
+      <article class="card note-entry"><h3>${e(noteTitle(key))}</h3>
+      <p class="note-text">${e(note)}</p>
+      <button type="button" data-edit-note="${index}">Modifier</button></article>`).join('')}</div>
+    <details class="card"><summary>Sauvegarder mes notes</summary><p><button onclick="exportNotes()">Exporter mes notes</button></p>
+      <label>Importer des notes <input type="file" accept=".json,application/json" onchange="importNotes(this)"></label>
+    </details>
+    <p id="notes-import-status" role="status"></p>
+    <p><button onclick="backup()">Exporter ma sauvegarde</button> <label>Importer <input type="file" accept=".json" onchange="restore(this)"></label></p>`;
+  v.querySelectorAll('[data-edit-note]').forEach(button=>button.onclick=()=>{
+    const index = Number(button.dataset.editNote);
+    const [key] = entries[index];
+    const card = button.closest('article');
+    const form = document.createElement('form');
+    form.innerHTML = `<label for="note-edit-${index}">Texte de la note</label>
+      <textarea id="note-edit-${index}" rows="6" required></textarea>
+      <button>Enregistrer</button> <button type="button" data-cancel>Annuler</button>
+      <p role="status"></p>`;
+    const input = form.querySelector('textarea');
+    input.value = S.notes[key];
+    const preview = card.querySelector('.note-text');
+    preview.hidden = true;
+    button.hidden = true;
+    card.append(form);
+    input.focus();
+    function closeEditor() {
+      preview.hidden = false;
+      button.hidden = false;
+      form.remove();
+      button.focus();
+    }
+    form.querySelector('[data-cancel]').onclick = closeEditor;
+    form.onsubmit = event => {
+      event.preventDefault();
+      if (!input.value.trim()) {
+        form.querySelector('[role="status"]').textContent = 'Écris une note avant de l’enregistrer.';
+        input.focus();
+        return;
+      }
+      try {
+        const next = {...S,notes:{...S.notes,[key]:input.value}};
+        localStorage.au = JSON.stringify(next);
+        S = next;
+        preview.textContent = input.value;
+        closeEditor();
+        v.querySelector('#notes-import-status').textContent = 'Note enregistrée.';
+      } catch {
+        form.querySelector('[role="status"]').textContent = 'Impossible d’enregistrer la note. Ton texte est toujours dans le champ.';
+      }
+    };
+  });
 }
