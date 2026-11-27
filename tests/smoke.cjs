@@ -118,3 +118,8 @@ assert.equal(vm.runInContext('civilisations[5].id',sandbox),'methodes-archeologi
 assert.equal(vm.runInContext('civilisations[4].flashcards.length',sandbox),20);
 assert.equal(vm.runInContext('civilisations[5].flashcards.length',sandbox),28);
 assert.equal(vm.runInContext('new Set(civilisations.map(l=>l.id)).size',sandbox),vm.runInContext('civilisations.length',sandbox));
+
+assert.equal(vm.runInContext('philosophie[0].id',sandbox),'introduction-philosophie');
+assert.equal(vm.runInContext('philosophie[1].id',sandbox),'socrate');
+assert.equal(vm.runInContext('philosophie[0].flashcards.length',sandbox),30);
+assert.ok(vm.runInContext('philosophie[0].flashcards.every(c=>c.length===2&&c.every(s=>typeof s==="string"&&s.length>0))',sandbox));
