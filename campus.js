@@ -7,6 +7,7 @@ const campusResources = [
 ];
 
 const campusSpaces = {
+  'Qualité scientifique': 'Consulter les contrôles structurels des leçons et les vérifications restant à effectuer.',
   'Planning': 'Répartir son temps sur 40 semaines et ouvrir les révisions arrivées à échéance.',
   'Amphithéâtre': 'Suivre une conférence ou une lecture de cours.',
   'Séminaires': 'Préparer une argumentation ou un devoir comparatif.',
@@ -76,6 +77,7 @@ function spaceButton(courseKey, lessonId, label) {
 
 function showSpace(name) {
   rememberCampusRoute('space',{name});
+  if(name==='Qualité scientifique'){showEditorialQuality();return;}
   const catalog=campusCatalog();
   const due=allStudyCourses().flatMap(course=>course.lessons.filter(lesson=>{
     const review=S.reviews?.[lessonProgressKey(course.key,lesson.id)];
@@ -247,4 +249,33 @@ function memoryPanel(){
  const session=panel.querySelector('[data-memory-session]');
  function draw(){session.replaceChildren();const x=queue[0];if(!x){session.textContent='Aucun rappel en attente.';return;}const q=document.createElement('p');q.textContent=x.question;const reveal=document.createElement('button');reveal.type='button';reveal.textContent='Afficher la réponse';session.append(q,reveal);reveal.onclick=()=>{reveal.remove();const a=document.createElement('p');a.textContent=x.answer;session.append(a);for(const correct of [false,true]){const b=document.createElement('button');b.type='button';b.textContent=correct?'Retrouvé sans aide':'À revoir';b.onclick=()=>{x.record(correct);queue.shift();draw();};session.append(b);}};}
  draw();return panel;
+}
+
+function editorialChecks(lesson){
+ const sources=Array.isArray(lesson.sources)?lesson.sources:[];
+ const text=[lesson.overview,...(lesson.sections||[]).map(s=>s[1]),lesson.dossier].join(' ');
+ const citations=[...text.matchAll(/\[(\d+(?:, *\d+)*)\]/g)].flatMap(m=>m[1].split(',').map(Number));
+ return [
+ ['Objectif et prérequis',Boolean(lesson.goal&&lesson.prerequisite)],
+ ['Contenu structuré',Boolean(lesson.sections?.length&&lesson.sections.every(s=>s[0]&&s[1]))],
+ ['Exercice et corrigé',Boolean(lesson.activity&&lesson.correction)],
+ ['Quiz et justification',Boolean(lesson.quiz?.[0]&&Array.isArray(lesson.quiz[1])&&Number.isInteger(lesson.quiz[2])&&lesson.quiz[2]>=0&&lesson.quiz[2]<lesson.quiz[1].length&&lesson.quiz[3])],
+ ['Bibliographie renseignée',sources.length>0&&sources.every(s=>s[0]&&s[1]&&s[2]&&/^https?:\/\//i.test(s[3])&&s[4])],
+ ['Renvois bibliographiques présents et valides',citations.length>0&&citations.every(n=>n>=1&&n<=sources.length)],
+ ['Consigne de révision',Boolean(lesson.review)]
+ ];
+}
+function editorialStatus(lesson){return editorialChecks(lesson).every(x=>x[1])?'Structure complète':'Structure à compléter';}
+function showEditorialQuality(){
+ const rows=allStudyCourses().flatMap(course=>course.lessons.map((lesson,index)=>({course,lesson,index,checks:editorialChecks(lesson)})));
+ const complete=rows.filter(x=>x.checks.every(c=>c[1])).length;
+ v.innerHTML='<h2>Qualité éditoriale et scientifique</h2><p>Contrôles automatiques de structure uniquement. Ils ne vérifient ni la vérité des affirmations, ni la pertinence des références, ni les droits, ni la disponibilité des liens.</p><section class="card"><h3>État du corpus</h3><p>'+complete+' / '+rows.length+' leçons satisfont les sept contrôles structurels.</p><progress max="'+Math.max(rows.length,1)+'" value="'+complete+'"></progress><p>Validation scientifique indépendante : non attestée dans ce registre.</p><a href="docs/controle-editorial.html">Protocole éditorial</a></section><label>Afficher <select id="editorial-filter"><option value="all">Toutes les leçons</option><option value="missing">Structures à compléter</option><option value="complete">Structures complètes</option></select></label><div id="editorial-list"></div>';
+ const list=v.querySelector('#editorial-list'),filter=v.querySelector('#editorial-filter');
+ function draw(){list.replaceChildren();rows.filter(x=>filter.value==='all'||(filter.value==='complete')===x.checks.every(c=>c[1])).forEach(x=>{
+ const card=document.createElement('details');card.className='card';const title=document.createElement('summary');title.textContent=x.lesson.title+' · '+editorialStatus(x.lesson);card.append(title);
+ const p=document.createElement('p');p.textContent=x.course.title+' · Relecture scientifique indépendante non attestée';card.append(p);
+ const ul=document.createElement('ul');x.checks.forEach(([label,ok])=>{const li=document.createElement('li');li.textContent=(ok?'Présent : ':'À vérifier : ')+label;ul.append(li);});card.append(ul);
+ const button=document.createElement('button');button.textContent='Consulter la leçon';button.onclick=()=>showLesson(x.course,x.index);card.append(button);list.append(card);
+ });}
+ filter.onchange=draw;draw();
 }
