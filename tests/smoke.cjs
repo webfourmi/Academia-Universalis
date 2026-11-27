@@ -81,3 +81,8 @@ assert.ok(readingSource.includes("function evolutionAnatomy()"));
 assert.equal(vm.runInContext('civilisations[1].id',sandbox),'migrations-humaines');
 assert.equal(vm.runInContext('civilisations[1].sources.length',sandbox),8);
 assert.equal(vm.runInContext('civilisations[1].quiz[2]',sandbox),1);
+
+const migrationSource=fs.readFileSync('civilisations.js','utf8');
+assert.ok(migrationSource.includes('function migrationMap(lesson)'));
+assert.ok(migrationSource.includes('bindMigrationMap(v);'));
+assert.ok(migrationSource.includes('data-migration-pin'));
