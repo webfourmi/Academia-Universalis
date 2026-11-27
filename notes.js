@@ -11,12 +11,54 @@ function exportNotes() {
   downloadBackup({format:'academia-notes', version:1, notes:S.notes}, 'academia-notes-'+localStudyDate()+'.json');
 }
 
-async function importNotes(input) {
+function backup() {
+  downloadBackup(S,'academia-sauvegarde.json');
+}
+
+async function restore(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const status = v.querySelector('#notes-import-status');
+  let data;
+  try {
+    data = JSON.parse((await file.text()).replace(/^\uFEFF/,''));
+  } catch {
+    status.textContent = 'Choisis le fichier .json téléchargé depuis Academia Universalis.';
+    input.value = '';
+    return;
+  }
+  if (data?.format === 'academia-notes') {
+    await importNotes(input,data);
+    return;
+  }
+  const records = (value,type) => value && typeof value === 'object' &&
+    !Array.isArray(value) && Object.values(value).every(entry=>typeof entry === type);
+  try {
+    if (!validAssessments(data?.assessments) || !validReviews(data?.reviews) ||
+        !records(data?.done,'boolean') || !records(data.notes,'string') ||
+        (data.history !== undefined && !records(data.history,'boolean')) ||
+        ![3,6,10].includes(data.hours)) {
+      status.textContent = 'Ce fichier JSON ne correspond pas à une sauvegarde Academia valide.';
+      return;
+    }
+    if (!confirm('Remplacer les notes, la progression et le rythme sur cet appareil par cette sauvegarde ?')) return;
+    localStorage.au = JSON.stringify(data);
+    S = data;
+    render();
+    v.querySelector('#notes-import-status')?.append('Sauvegarde restaurée.');
+  } catch {
+    status.textContent = 'Impossible d’enregistrer la sauvegarde sur cet appareil.';
+  } finally {
+    input.value = '';
+  }
+}
+
+async function importNotes(input, parsedData) {
   const status = v.querySelector('#notes-import-status');
   const file = input.files[0];
   if (!file) return;
   try {
-    const data = JSON.parse(await file.text());
+    const data = parsedData ?? JSON.parse((await file.text()).replace(/^\uFEFF/,''));
     const notes = data?.notes;
     const supported = data?.format === 'academia-notes'
       ? data.version === 1
@@ -123,7 +165,7 @@ function backupControls() {
     <label>Importer des notes <input type="file" accept=".json,application/json" onchange="importNotes(this)"></label>
   </details>
   <p id="notes-import-status" role="status"></p>
-  <p><button onclick="backup()">Exporter ma sauvegarde</button> <label>Importer <input type="file" accept=".json" onchange="restore(this)"></label></p>`;
+  <p><button onclick="backup()">Exporter ma sauvegarde</button> <label>Importer <input type="file" accept=".json,application/json" onchange="restore(this)"></label></p>`;
 }
 
 function showBackup() {
