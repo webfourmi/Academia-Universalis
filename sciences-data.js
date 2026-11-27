@@ -194,6 +194,10 @@ const physique = [
         "À Gaithersburg, Tate rapporte g = 980,1018 cm/s², écart-type 0,0005 cm/s². Un tube en silice tombe dans une enceinte sous vide ; des repères optiques permettent de mesurer les durées. Convertir en SI puis comparer à 9,81 m/s². Corrigé : 9,801018 m/s² et 0,000005 m/s² ; écart relatif à 9,81 ≈ 0,092 %. L’écart-type ne décrit pas nécessairement toute l’incertitude. g dépend du lieu. Voir tableau 4 et conclusion [4]."
       ],
       [
+        "Données authentiques : tableau 4 de Tate (1968)",
+        "Moyennes par tube en cm/s², III : 980,1012 (8 séries) ; IV : 980,1015 (8) ; V : 980,1012 (12) ; VI : 980,1005 (8). Calculez la moyenne non pondérée et la demi-étendue. Corrigé : 980,1011 et 0,0005 cm/s² à la précision affichée. La valeur de référence 980,1018 résulte ensuite d'une correction de hauteur de +0,0007 cm/s². Le tableau 4 donne un écart-type de la moyenne de 0,0002 cm/s² ; la section 7.11 estime l'incertitude finale à 0,00045 cm/s² avant arrondi. Ne pas confondre dispersion, correction et incertitude. Source : Tate, tableau 4, sections 7.11 et 8, DOI 10.6028/jres.072C.001."
+      ],
+      [
         "Bilan éditorial",
         "Exemples numériques fictifs ou prédictions signalés. Références externes à contrôler individuellement ; relecture indépendante non réalisée."
       ]
@@ -258,8 +262,8 @@ const physique = [
       [
         "BIPM",
         "Mise en pratique for the definition of the metre, SI Brochure appendix 2",
-        "2019",
-        "https://www.bipm.org/documents/20126/41489670/SI-App2-meter.pdf/0e011055-9736-d293-5e56-b8b1b267fd68?download=false",
+        "2026",
+        "https://www.bipm.org/fr/publications/mises-en-pratique/",
         "Réalisation du mètre, temps de vol et influence de l'air.",
         "anglais"
       ],
@@ -332,6 +336,10 @@ const physique = [
       [
         "Pourquoi g mesuré diffère-t-il de 9,81 m/s² ?",
         "9,81 est une approximation ; g varie selon le lieu et la mesure comporte des incertitudes."
+      ],
+      [
+        "Pourquoi la moyenne du tableau 4 diffère-t-elle du résultat final de Tate ?",
+        "Une correction de hauteur de +0,0007 cm/s² est appliquée au point de référence."
       ]
     ]
   },
