@@ -128,6 +128,157 @@ const civilisations = [
     ]
   ]
 },
+{
+  "id": "migrations-humaines",
+  "title": "Les premières migrations humaines",
+  "goal": "Distinguer dispersions du genre Homo et de Sapiens ; comparer quatre dossiers datés ; argumenter sur les limites des preuves.",
+  "prerequisite": "Leçon 1. Parcours essentiel 40 min ; universitaire 2 h ; recherche 3–5 h.",
+  "sections": [
+    [
+      "Une histoire de populations",
+      "Une dispersion désigne une extension géographique, non un voyage unique. Une présence archéologique établit une occupation, non la continuité d'une population ni son ascendance. Problématique : comment reconstruire des déplacements sans témoignages écrits ?"
+    ],
+    [
+      "Dmanisi : premiers Homo en Eurasie",
+      "En Géorgie, les outils des couches anciennes ont été datés en 2011 entre 1,85 et 1,78 million d'années ; les fossiles de couches ultérieures avoisinent 1,77 million d'années. Une étude de 2022 situe les occupations vers 1,80–1,76 Ma. Les estimations évoluent avec les méthodes. [1, 2]"
+    ],
+    [
+      "Le crâne D4500",
+      "Associé à la mandibule D2600, ce crâne présente un volume endocrânien de 546 cm³ et une face projetée vers l'avant. Les cinq crânes du site documentent une diversité anatomique. Les auteurs proposent une seule lignée évolutive pour les premiers Homo : c'est une interprétation taxonomique, non une certitude. [3]"
+    ],
+    [
+      "Sapiens au Levant",
+      "Une étude de 2018 propose 177–194 milliers d'années pour le maxillaire Misliya-1. Sharp et Paces contestent l'interprétation de certaines mesures uranium-thorium. Une date de présence ne suffit pas à démontrer une filiation avec les populations actuelles. [4, 5]"
+    ],
+    [
+      "Sahul",
+      "Lorsque les mers étaient plus basses, Australie et Nouvelle-Guinée formaient le Sahul. Des traversées maritimes restaient nécessaires. À Madjedbebe, des outils et des sédiments datés par luminescence ont conduit les chercheurs à proposer une occupation vers 65 000 ans ; cette ancienneté demeure discutée. [6]"
+    ],
+    [
+      "Amériques",
+      "À White Sands, des empreintes humaines sont associées à des couches datées vers 23–21 milliers d'années. La datation de graines aquatiques pouvait être biaisée par du carbone ancien. Des mesures indépendantes sur pollen terrestre et sédiments confortent cette estimation. Elles ne fixent pas la route d'arrivée. [7]"
+    ],
+    [
+      "Méthodes et limites",
+      "La stratigraphie ordonne les dépôts ; le paléomagnétisme rapproche des inversions du champ terrestre de chronologies calibrées ; la luminescence mesure le temps depuis la dernière exposition à la lumière des grains étudiés. Le radiocarbone date du carbone organique et dépend de sa provenance. La génétique peut renseigner des parentés et des mélanges, mais non restituer seule un itinéraire exact."
+    ],
+    [
+      "Glossaire",
+      "Dispersion : extension géographique d'une population. Sahul : continent réunissant Australie et Nouvelle-Guinée en période de bas niveau marin. Taphonomie : transformations des vestiges. Effet réservoir : biais lié à du carbone ancien. OSL : luminescence stimulée optiquement. Ma : million d'années ; ka : millier d'années."
+    ]
+  ],
+  "diagram": [
+    "Chronologie comparée : dates proposées, non dates des premières arrivées absolues",
+    [
+      "Site",
+      "Âge",
+      "Nature de la preuve"
+    ],
+    [
+      [
+        "Dmanisi",
+        "1,80–1,76 Ma",
+        "Outils, fossiles, stratigraphie"
+      ],
+      [
+        "Misliya",
+        "194–177 ka (discuté)",
+        "Maxillaire"
+      ],
+      [
+        "Madjedbebe",
+        "65 ka (discuté)",
+        "Outils, sédiments"
+      ],
+      [
+        "White Sands",
+        "23–21 ka",
+        "Empreintes, pollen, sédiments"
+      ]
+    ]
+  ],
+  "dossier": "Atlas documentaire : figure 1 et coupes de Ferring [1], crâne D4500/D2600 décrit dans [3], figures de fouille de Madjedbebe [6], données originales White Sands [8, CC0]. Suivre les liens bibliographiques ; aucune reproduction photographique locale. Comparer objet, contexte, méthode et incertitude. Les résumés sont accessibles ; certains articles complets peuvent être restreints.",
+  "activity": "1. Convertir 1,80 Ma en ka. 2. Comparer l'intervalle de Misliya et celui de White Sands. 3. Expliquer pourquoi dater des graines aquatiques peut biaiser l'âge. 4. Concevoir une carte avec quatre sites ponctuels, sans transformer les sites en étapes obligatoires d'un itinéraire.",
+  "correction": "1. 1 800 ka. 2. Misliya est beaucoup plus ancien selon les estimations proposées ; cela ne prouve aucune filiation. 3. Un apport de carbone ancien peut augmenter l'âge apparent ; pollen terrestre et OSL testent indépendamment cette hypothèse. 4. Chaque point porte une date, un type de preuve et un degré d'incertitude ; les itinéraires demeurent hypothétiques.",
+  "quiz": [
+    "Que démontre une occupation datée ?",
+    [
+      "La route exacte suivie",
+      "Une présence humaine locale à cette époque",
+      "La filiation directe avec les habitants actuels"
+    ],
+    1,
+    "Une occupation est une preuve locale, non une généalogie ni un itinéraire."
+  ],
+  "seminar": "500–700 mots : les dispersions humaines exigeaient-elles des innovations anatomiques ou techniques particulières ? Mobiliser Dmanisi et deux autres sites. Barème /20 : données 6, méthodes 5, critique 5, argumentation 4. Corrigé indicatif : Dmanisi contredit la nécessité d'un gros cerveau ; le Sahul pose la question des traversées ; White Sands montre la valeur des datations indépendantes. Éviter les conclusions causales sans preuve.",
+  "review": "J+2 : distinguer Homo et Sapiens, Ma et ka. J+7 : restituer les quatre sites et leurs preuves. J+30 : expliquer le débat de Misliya et l'effet réservoir. Flashcards : D4500 → 546 cm³ ; Sahul → Australie et Nouvelle-Guinée ; OSL → dernière exposition lumineuse ; présence → pas filiation ; White Sands → empreintes ; Misliya → âge discuté.",
+  "sources": [
+    [
+      "Ferring et al.",
+      "Earliest human occupations at Dmanisi (Georgian Caucasus) dated to 1.85–1.78 Ma",
+      "2011",
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC3127884/",
+      "Article intégral, stratigraphie et figures ; droits de reproduction non vérifiés",
+      "anglais"
+    ],
+    [
+      "Tappen et al.",
+      "Life and death at Dmanisi, Georgia: Taphonomic signals from the fossil mammals",
+      "2022",
+      "https://www.sciencedirect.com/science/article/pii/S0047248422001099",
+      "Chronologie et taphonomie ; accès variable",
+      "anglais"
+    ],
+    [
+      "Lordkipanidze et al.",
+      "A complete skull from Dmanisi, Georgia, and the evolutionary biology of early Homo",
+      "2013",
+      "https://pubmed.ncbi.nlm.nih.gov/24136960/",
+      "Résumé, crâne D4500",
+      "anglais"
+    ],
+    [
+      "Hershkovitz et al.",
+      "The earliest modern humans outside Africa",
+      "2018",
+      "https://pubmed.ncbi.nlm.nih.gov/29371468/",
+      "Datation proposée de Misliya",
+      "anglais"
+    ],
+    [
+      "Sharp et Paces",
+      "Comment on The earliest modern humans outside Africa",
+      "2018",
+      "https://www.usgs.gov/publications/comment-earliest-modern-humans-outside-africa",
+      "Critique de la datation",
+      "anglais"
+    ],
+    [
+      "Clarkson et al.",
+      "Human occupation of northern Australia by 65,000 years ago",
+      "2017",
+      "https://www.nature.com/articles/nature22968",
+      "Madjedbebe, figures et datations",
+      "anglais"
+    ],
+    [
+      "Pigati et al.",
+      "Independent age estimates resolve the controversy of ancient human footprints at White Sands",
+      "2023",
+      "https://www.usgs.gov/publications/independent-age-estimates-resolve-controversy-ancient-human-footprints-white-sands",
+      "Datations indépendantes",
+      "anglais"
+    ],
+    [
+      "Pigati et al., USGS",
+      "Data release for Independent age estimates resolve the controversy of ancient human footprints at White Sands",
+      "2023",
+      "https://doi.org/10.5066/P9E36U4B",
+      "Données CC0 ; consultation 27/11/2026",
+      "anglais"
+    ]
+  ]
+},
   {
     id: 'mobilites', title: 'Chasseurs-cueilleurs et mobilités',
     goal: 'Construire deux hypothèses sur la durée d’occupation d’un site et proposer un indice capable de les départager.',
