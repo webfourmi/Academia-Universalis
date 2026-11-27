@@ -200,3 +200,50 @@ main { max-width: 1080px; }
 #lesson-reading[data-reading-theme] .passage-highlight{background:#f8e6a1;color:#302a17}
 #lesson-reading[data-reading-theme] .passage-highlight :is(a,small,strong,em){color:#302a17}
 #lesson-reading[data-reading-theme] :focus-visible{outline-color:var(--reading-link)}
+
+.personal-planning {
+  min-width: 0;
+  background: #fff;
+}
+.planning-heading {
+  padding: 1rem;
+  border: 0;
+  border-radius: 12px;
+  color: #fff;
+  background: #18423e;
+}
+.planning-heading h3, .planning-heading p { margin: 0; }
+.personal-planning form { display: grid; gap: 1rem; margin-top: 1rem; min-width: 0; }
+.personal-planning fieldset { border: 0; padding: 0; margin: 0; min-inline-size: 0; }
+.personal-planning legend { font-weight: 700; }
+#planning-hint { margin: .25rem 0 .75rem; color: #495b56; font-size: .9rem; }
+.planning-days {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(min(100%,10rem),1fr));
+  gap: .5rem;
+}
+.planning-days label {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 4rem auto;
+  gap: .4rem;
+  align-items: center;
+  padding: .45rem .55rem;
+  background: #f0f6f4;
+  border-radius: 9px;
+}
+.planning-days input { width: 100%; min-width: 0; box-sizing: border-box; padding: .5rem .25rem; }
+.planning-priority, .planning-break label { display: grid; gap: .35rem; min-width: 0; font-weight: 600; }
+.planning-priority select, .planning-break input {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  text-overflow: ellipsis;
+}
+.planning-break > div { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,11rem),1fr)); gap: .6rem; margin-top: .55rem; }
+.personal-planning [role=status]:empty { display: none; }
+.planning-agenda { list-style: none; padding: 0; display: grid; gap: .55rem; }
+.planning-agenda li { min-width: 0; border: 1px solid #dce5e0; border-radius: 10px; padding: .65rem .8rem; }
+.planning-agenda li > div { display: flex; align-items: center; gap: .6rem; font-size: .9rem; font-weight: 600; }
+.planning-agenda li span { color: #17483e; background: #e5f2ee; border-radius: 6px; padding: .05rem .4rem; }
+.planning-agenda .title-action { white-space: normal; overflow-wrap: anywhere; text-align: start; }
