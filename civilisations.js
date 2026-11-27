@@ -55,6 +55,27 @@ function lessonProgressKey(courseKey, lessonId) {
   return courseKey === 'histoire' ? lessonId : `${courseKey}:${lessonId}`;
 }
 
+function evolutionFossils(){
+const docs=[['Jebel Irhoud · Maroc','Reconstruction scientifique par tomodensitométrie de plusieurs fossiles originaux, environ 300 000 ans. Philipp Gunz, MPI EVA Leipzig, CC BY-SA 2.0 (image signalée sur la page source).','https://humanorigins.si.edu/research/whats-hot-human-origins/our-species-arose-least-300000-years-ago','Comparez le profil facial et la forme de la boîte crânienne.','La face relativement moderne coexiste avec une boîte crânienne allongée.'],['Lucy · AL 288-1 · Hadar, Éthiopie','Squelette partiel d’Australopithecus afarensis, environ 3,2 millions d’années. La page présente notamment un squelette reconstitué, crédit Chip Clark, Smithsonian.','https://humanorigins.si.edu/evidence/human-fossils/fossils/al-288-1','Quels caractères du bassin renseignent sur la bipédie ?','Un bassin court et large participe au maintien du tronc lors de la marche.'],['La Ferrassie 1 · Dordogne, France','Crâne néandertalien découvert en 1909 ; photographies créditées au Smithsonian, James Di Loreto et Donald H. Hurlbert pour le profil.','https://humanorigins.si.edu/evidence/human-fossils/fossils/la-ferrassie','Observez le front et l’ouverture nasale.','Le front est bas et incliné ; l’ouverture nasale est large. Ces caractères ne démontrent pas une infériorité cognitive.'],['Collection 3D · Smithsonian','Numérisations de fossiles, dont Cro-Magnon 1 et La Ferrassie 1. Consulter la notice individuelle pour distinguer original et moulage.','https://humanorigins.si.edu/evidence/3d-collection/fossils','Comparez les profils dans une orientation similaire.','Une comparaison de forme exige des orientations et des échelles contrôlées.']];
+return '<h3>Atlas : observer les documents scientifiques</h3><p>Notices consultées le 27/11/2026. Documents hébergés par les institutions, accès internet requis. Aucune photographie protégée reproduite localement.</p>'+docs.map(([title,desc,url,q,a])=>'<section class="card"><h4>'+e(title)+'</h4><p>'+e(desc)+'</p><a target="_blank" rel="noopener" href="'+e(url)+'">Observer le document institutionnel</a><p>'+e(q)+'</p><details><summary>Correction</summary><p>'+e(a)+'</p></details></section>').join('');
+}
+
+function evolutionAnatomy(){
+return '<figure class="history-overview"><svg viewBox="0 0 340 150" width="100%" role="img" aria-label="Comparaison schématique de deux formes de boîte crânienne"><g fill="none" stroke="currentColor" stroke-width="2"><path d="M20 85 Q5 20 85 25 Q145 25 145 75 L125 95 L125 116 L90 116 L70 96 Z"/><path d="M190 85 Q165 12 235 12 Q300 12 305 75 L285 95 L285 116 L250 116 L230 96 Z"/><path d="M82 89 L112 89 M242 89 L272 89"/></g><g fill="currentColor" font-size="10" text-anchor="middle"><text x="83" y="135">Forme allongée</text><text x="247" y="135">Forme plus globulaire</text></g></svg><figcaption>Schéma conceptuel, non métrique, non reproduction de fossiles : évolution en mosaïque de la face et de la boîte crânienne. Voir Hublin et al. [3].</figcaption></figure>';
+}
+function evolutionQuiz(){
+const qs=[['Que date la thermoluminescence du silex ?',['La dernière chauffe suffisante','La naissance du fabricant','La formation de la roche'],0,'Le signal est réinitialisé par une chauffe suffisante.'],['Quel est le recouvrement des deux intervalles publiés ?',['254 000–349 000','281 000–318 000','286 000–315 000'],1,'Le maximum des bornes basses et le minimum des bornes hautes donnent 281 000–318 000.'],['Que signifie évolution en mosaïque ?',['Tous les caractères changent ensemble','Les caractères évoluent à des rythmes différents','Les espèces suivent une échelle'],1,'La face et la boîte crânienne peuvent évoluer différemment.'],['Que démontre le génome étudié par Slon et al. ?',['Une origine unique de Sapiens','Une filiation directe de tous les humains','Une reproduction entre Néandertaliens et Denisoviens'],2,'Cet individu avait une mère néandertalienne et un père denisovien.']];
+return '<h3>Quiz complémentaire</h3>'+qs.map(([q,opts,a,why],i)=>'<fieldset><legend>'+e(q)+'</legend>'+opts.map((o,j)=>'<label class="quiz-option"><input type="radio" name="evo-extra-'+i+'" value="'+j+'"> '+e(o)+'</label>').join('')+'<button type="button" data-evo-answer="'+a+'" data-evo-why="'+e(why)+'">Vérifier</button><p role="status"></p></fieldset>').join('');
+}
+
+function evolutionExtras(lesson){
+ if(lesson.id!=='evolution-humaine')return '';
+ const species=[['Sahelanthropus',7,6],['Orrorin',6.1,5.7],['Ardipithecus kadabba',5.8,5.2],['Ardipithecus ramidus',4.4,4.4],['A. anamensis',4.2,3.8],['A. afarensis',3.85,2.95],['A. africanus',3.3,2.1],['P. boisei',2.3,1.2],['H. habilis',2.4,1.4],['H. erectus',1.89,.11],['H. heidelbergensis',.7,.2],['Néandertal',.4,.04],['H. naledi',.335,.236],['H. floresiensis',.1,.06],['H. sapiens',.3,0]];
+ const timeline=max=>'<svg viewBox="0 0 340 350" width="100%" role="img" aria-label="Chronologie des fossiles, millions d’années avant le présent"><text x="145" y="12" fill="currentColor" font-size="10">'+max+' Ma</text><text x="325" y="12" fill="currentColor" font-size="10">0</text>'+species.filter(s=>s[2]<max).map((s,i)=>'<text x="2" y="'+(32+i*21)+'" font-size="10" fill="currentColor">'+e(s[0])+'</text><rect x="'+(145+185*(1-Math.min(max,s[1])/max))+'" y="'+(22+i*21)+'" width="'+Math.max(2,185*(Math.min(max,s[1])-s[2])/max)+'" height="12" rx="2" fill="#39766a" stroke="currentColor" stroke-width=".5"/>').join('')+'</svg>';
+ const cards=[['Pourquoi un arbre plutôt qu’une échelle ?','Divergence, coexistence et échanges génétiques.'],['Évolution en mosaïque ?','Caractères évoluant à des rythmes différents.'],['Âge des silex ?','315 000 ± 34 000 ans.'],['Un fossile date-t-il la naissance de son espèce ?','Non, il atteste sa présence.'],['Parents de l’individu étudié en 2018 ?','Mère néandertalienne et père denisovien.'],['Modèle panafricain ?','Participation possible de plusieurs populations africaines.']];
+ return evolutionAnatomy()+evolutionFossils()+'<h3>Chronologie graphique</h3><figure class="history-overview">'+timeline(7)+'<figcaption>Intervalles fossiles indicatifs, non filiations. Source : Smithsonian [7].</figcaption><details><summary>Zoom sur le dernier million d’années</summary>'+timeline(1)+'</details></figure><h3>Révision active</h3>'+cards.map(([q,a])=>'<details><summary>'+e(q)+'</summary><p>'+e(a)+'</p></details>').join('');
+}
+
 function showLesson(course, index, {offset,fromNote} = {}) {
   saveReading();
   const {key, lessons} = course;
@@ -84,6 +105,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
       <p><strong>Prérequis.</strong> ${lesson.prerequisite}</p>
       ${lesson.overview ? cite(lesson.overview) : ''}
       ${lesson.sections.map(([heading, paragraph],section) => `<h3 id="lesson-section-${section}" tabindex="-1">${heading}</h3><p>${cite(paragraph)}</p>`).join('')}
+      ${evolutionExtras(lesson)}
       ${lesson.diagram ? `<div class="lesson-table" tabindex="0" role="region" aria-label="${e(caption)}">
         <table><caption>${caption}</caption>
           <thead><tr>${columns.map(column => `<th scope="col">${column}</th>`).join('')}</tr></thead>
@@ -102,6 +124,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
         <button>Vérifier ma réponse</button>
         <p role="status" id="quiz-result"></p>
       </form>
+      ${lesson.id==='evolution-humaine'?evolutionQuiz():''}
       <h3>Séminaire</h3><p>${lesson.seminar}</p>
       <h3>Révision espacée</h3><p>${lesson.review}</p>
       <label for="history-notes">Mes notes</label>
@@ -132,6 +155,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
   v.querySelectorAll('[data-jump]').forEach(button=>{
     button.onclick=()=>jumpToStudySection(button.dataset.jump);
   });
+  v.querySelectorAll('[data-evo-answer]').forEach(button=>button.onclick=()=>{const field=button.closest('fieldset');const selected=field.querySelector('input:checked');field.querySelector('[role=status]').textContent=selected?((selected.value===button.dataset.evoAnswer?'Correct. ':'À revoir. ')+button.dataset.evoWhy):'Choisissez une réponse.';});
   installReadingTools(course,lesson);
   const heading = v.querySelector('h2');
   heading.focus({preventScroll:offset!==undefined});
