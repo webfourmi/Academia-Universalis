@@ -190,6 +190,10 @@ const physique = [
         "Lire la section 3 et la figure 1 : identifier le trajet de référence et le trajet de mesure. Calculer le temps de vol aller simple sur 1 m dans le vide : 1/c ≈ 3,34 ns. L’air modifie la propagation. [3]"
       ],
       [
+        "Recherche originale : gravimétrie",
+        "À Gaithersburg, Tate rapporte g = 980,1018 cm/s², écart-type 0,0005 cm/s². Un tube en silice tombe dans une enceinte sous vide ; des repères optiques permettent de mesurer les durées. Convertir en SI puis comparer à 9,81 m/s². Corrigé : 9,801018 m/s² et 0,000005 m/s² ; écart relatif à 9,81 ≈ 0,092 %. L’écart-type ne décrit pas nécessairement toute l’incertitude. g dépend du lieu. Voir tableau 4 et conclusion [4]."
+      ],
+      [
         "Bilan éditorial",
         "Exemples numériques fictifs ou prédictions signalés. Références externes à contrôler individuellement ; relecture indépendante non réalisée."
       ]
@@ -258,6 +262,14 @@ const physique = [
         "https://www.bipm.org/documents/20126/41489670/SI-App2-meter.pdf/0e011055-9736-d293-5e56-b8b1b267fd68?download=false",
         "Réalisation du mètre, temps de vol et influence de l'air.",
         "anglais"
+      ],
+      [
+        "D. R. Tate",
+        "Acceleration due to gravity at the National Bureau of Standards",
+        "1968",
+        "https://doi.org/10.6028/jres.072C.001",
+        "Publication originale, résultat expérimental et écart-type ; consultée le 27 novembre 2026.",
+        "anglais"
       ]
     ],
     "flashcards": [
@@ -316,6 +328,10 @@ const physique = [
       [
         "Homogénéité garantit-elle la vérité ?",
         "Non."
+      ],
+      [
+        "Pourquoi g mesuré diffère-t-il de 9,81 m/s² ?",
+        "9,81 est une approximation ; g varie selon le lieu et la mesure comporte des incertitudes."
       ]
     ]
   },
@@ -670,6 +686,10 @@ const physique = [
         "Observer le plan incliné, inventaire 1041. Pourquoi ralentir la chute ? Corrigé : augmenter la durée observable facilite la mesure ; le roulement n’est pas identique à la chute libre. [2]"
       ],
       [
+        "Recherche originale : gravimétrie",
+        "À Gaithersburg, Tate rapporte g = 980,1018 cm/s², écart-type 0,0005 cm/s². Un tube en silice tombe dans une enceinte sous vide ; des repères optiques permettent de mesurer les durées. Convertir en SI puis comparer à 9,81 m/s². Corrigé : 9,801018 m/s² et 0,000005 m/s² ; écart relatif à 9,81 ≈ 0,092 %. L’écart-type ne décrit pas nécessairement toute l’incertitude. g dépend du lieu. Voir tableau 4 et conclusion [3]."
+      ],
+      [
         "Bilan éditorial",
         "Exemples numériques fictifs ou prédictions signalés. Références externes à contrôler individuellement ; relecture indépendante non réalisée."
       ]
@@ -730,6 +750,14 @@ const physique = [
         "https://catalogue.museogalileo.it/section/ScienceOfMotion.html",
         "Catalogue institutionnel, photographies et provenance des instruments.",
         "anglais"
+      ],
+      [
+        "D. R. Tate",
+        "Acceleration due to gravity at the National Bureau of Standards",
+        "1968",
+        "https://doi.org/10.6028/jres.072C.001",
+        "Publication originale, résultat expérimental et écart-type ; consultée le 27 novembre 2026.",
+        "anglais"
       ]
     ],
     "flashcards": [
@@ -784,6 +812,10 @@ const physique = [
       [
         "x=t², accélération ?",
         "2 m/s²."
+      ],
+      [
+        "Pourquoi g mesuré diffère-t-il de 9,81 m/s² ?",
+        "9,81 est une approximation ; g varie selon le lieu et la mesure comporte des incertitudes."
       ]
     ]
   },
@@ -824,6 +856,10 @@ const physique = [
       [
         "Document scientifique commenté",
         "Examiner les notes de mécanique et distinguer hypothèses, calculs et traces d’expériences. Corrigé : un modèle prédit des valeurs ; seules des mesures documentées permettent de tester ces prédictions. [2]"
+      ],
+      [
+        "Recherche originale : gravimétrie",
+        "À Gaithersburg, Tate rapporte g = 980,1018 cm/s², écart-type 0,0005 cm/s². Un tube en silice tombe dans une enceinte sous vide ; des repères optiques permettent de mesurer les durées. Convertir en SI puis comparer à 9,81 m/s². Corrigé : 9,801018 m/s² et 0,000005 m/s² ; écart relatif à 9,81 ≈ 0,092 %. L’écart-type ne décrit pas nécessairement toute l’incertitude. g dépend du lieu. Voir tableau 4 et conclusion [3]."
       ],
       [
         "Bilan éditorial",
@@ -886,6 +922,14 @@ const physique = [
         "https://echo.mpiwg-berlin.mpg.de/content/scientific_revolution.html",
         "Manuscrits numérisés, notes et calculs de Galilée.",
         "anglais"
+      ],
+      [
+        "D. R. Tate",
+        "Acceleration due to gravity at the National Bureau of Standards",
+        "1968",
+        "https://doi.org/10.6028/jres.072C.001",
+        "Publication originale, résultat expérimental et écart-type ; consultée le 27 novembre 2026.",
+        "anglais"
       ]
     ],
     "flashcards": [
@@ -940,6 +984,10 @@ const physique = [
       [
         "Écart signifie-t-il modèle faux ?",
         "Examiner les incertitudes et hypothèses."
+      ],
+      [
+        "Pourquoi g mesuré diffère-t-il de 9,81 m/s² ?",
+        "9,81 est une approximation ; g varie selon le lieu et la mesure comporte des incertitudes."
       ]
     ]
   },
