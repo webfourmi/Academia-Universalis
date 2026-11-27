@@ -280,26 +280,212 @@ const civilisations = [
   ]
 },
   {
-    id: 'mobilites', title: 'Chasseurs-cueilleurs et mobilités',
-    goal: 'Construire deux hypothèses sur la durée d’occupation d’un site et proposer un indice capable de les départager.',
-    prerequisite: 'Aucun. Distinguer une observation de son interprétation.',
-    sections: [
-      ['Des manières d’habiter', 'Un groupe peut changer régulièrement de résidence, envoyer seulement une partie de ses membres chercher des ressources ou revenir au même lieu au fil des saisons. Ces possibilités concernent des échelles différentes. La mobilité d’un individu ne décrit pas à elle seule celle du groupe. Pour restituer un territoire, il faut associer les sites et les activités au lieu de traiter chaque fouille comme un portrait complet de la société.'],
-      ['Le Levant natoufien', 'À la fin du Pléistocène, les sites natoufiens du Levant documentent des réponses variées à des milieux locaux. Des constructions relativement durables et des investissements dans certains lieux rendent plausible une occupation prolongée dans plusieurs cas. Les différences entre sites et périodes empêchent de déduire une sédentarité uniforme. Une occupation longue peut alterner avec des déplacements et rester fondée sur des ressources sauvages. [1]'],
-      ['Pertinence et limites des indices', 'Un outil lourd abandonné sur place réduit le coût d’un retour. Son poids indique une stratégie d’équipement, avec plusieurs interprétations possibles pour la résidence. Des restes animaux bien identifiés peuvent documenter des saisons d’abattage. Un dépôt peut toutefois mêler des retours successifs espacés de plusieurs années. La stratigraphie aide à dissocier ces événements. [1, 2]'],
-      ['Du terrain à l’argument', 'Commencez par préciser l’unité observée, par exemple un foyer et ses déchets dans une couche. Établissez ensuite les conditions de dépôt et de conservation. Comparez enfin plusieurs indices indépendants. Si seuls les murs subsistent, le résultat raisonnable concerne l’investissement dans le lieu. Une conclusion sur le calendrier de résidence exige d’autres preuves. [2]']
+    
+  "id": "mobilites",
+  "title": "Chasseurs-cueilleurs et mobilités",
+  "goal": "Distinguer mobilité résidentielle et logistique, interpréter trois indices archéologiques et défendre une hypothèse réfutable.",
+  "prerequisite": "Les premières migrations humaines ; distinguer observation et interprétation.",
+  "overview": "Pourquoi se déplacer, pourquoi revenir, pourquoi rester ? Étude essentielle : 40 min ; parcours universitaire : 2 h ; recherche : 4 h.",
+  "sections": [
+    [
+      "Habiter un territoire",
+      "La subsistance par chasse, pêche et collecte ne détermine pas une forme unique de résidence. Un territoire comprend des lieux de séjour, de prélèvement, de rencontre et de circulation. Les déplacements peuvent répondre aux variations des ressources, aux relations sociales ou aux besoins techniques. Un campement n’est qu’une partie de ce système."
     ],
-    diagram: ['Indices et hypothèses sur la mobilité', ['Indice', 'Ce qu’il renseigne', 'Autre explication'], [['Bâtiment durable', 'Investissement dans le lieu', 'Réoccupations saisonnières'], ['Restes d’animaux d’âges variés', 'Saisons possibles de chasse', 'Mélange de plusieurs dépôts'], ['Pierre d’origine distante', 'Circulation de matière', 'Échange entre groupes']]],
-    dossier: 'La figure synthétise des possibilités d’interprétation. Dans l’article [1], repérez un contraste régional ou chronologique. Identifiez ensuite une catégorie de données absente de ce bref résumé.',
-    activity: 'Cas fictif. Un abri livre un mur de pierre, des meules et des dents animales correspondant à une chasse d’automne. Rédigez deux reconstructions, puis indiquez quel prélèvement chercher dans une seconde couche.',
-    correction: 'Une résidence longue avec une chasse surtout automnale et des séjours automnaux répétés expliquent toutes deux les trois indices. Dans des couches bien séparées, des indices saisonniers non automnaux renforceraient l’hypothèse d’une présence à d’autres moments. Ils ne suffiraient pas à prouver la continuité de résidence entre deux saisons.',
-    quiz: ['Quel indice soutient le plus directement une hypothèse de saison de fréquentation ?', ['Un âge d’abattage identifié dans une couche datée', 'La largeur du mur', 'La distance à la carrière'], 0, 'L’âge de l’animal, associé à un cycle de naissance connu, peut situer l’abattage. L’interprétation dépend aussi du contexte de dépôt.'],
-    seminar: 'Comment étudier la mobilité sans faire d’un peuple actuel le modèle figé d’une population ancienne ?',
-    review: 'À J+2, redonnez de mémoire deux formes de mobilité. À J+7, expliquez par écrit la différence entre retour régulier et résidence annuelle.',
-    sources: [
-      ['A. N. Goring-Morris et A. Belfer-Cohen', 'Neolithization Processes in the Levant: The Outer Envelope', '2011', 'https://doi.org/10.1086/658860', 'Variabilité régionale et chronologique des adaptations natoufiennes.'],
-      ['MIT OpenCourseWare', 'The Human Past: Introduction to Archaeology', '2006', 'https://ocw.mit.edu/courses/3-986-the-human-past-introduction-to-archaeology-fall-2006/pages/syllabus/', 'Repères méthodologiques sur la construction des données archéologiques.']
+    [
+      "Deux échelles de mobilité",
+      "Binford distingue les déplacements de résidence et les sorties spécialisées depuis une base. Dans le premier cas, le groupe déplace son lieu de vie ; dans le second, certains membres rapportent des ressources. Ces stratégies se combinent : elles ne constituent ni deux peuples figés ni deux stades d’évolution. [1]"
+    ],
+    [
+      "Calendriers et stockage",
+      "Le stockage peut différer la consommation et rendre avantageux le retour à un lieu. Mais il nécessite du travail, de la protection et des contenants adaptés. Une ressource abondante à une saison ne garantit pas sa disponibilité annuelle. Les décisions dépendent aussi du coût du transport et des risques."
+    ],
+    [
+      "Le Levant à la fin du Pléistocène",
+      "Le Natoufien précède les premières sociétés agricoles du Levant. Des séjours prolongés sont compatibles avec une alimentation principalement issue de ressources sauvages. Le degré de mobilité varie selon les sites et les moments : une architecture durable ne suffit pas à démontrer une résidence continue."
+    ],
+    [
+      "Étude originale : Hayonim",
+      "Lieberman (1991) analyse les couches de cément des dents de gazelles de Hayonim pour estimer leur saison de mort. L’étude propose une fréquentation sur plusieurs saisons. Elle repose sur la relation entre croissance dentaire et cycle annuel, ainsi que sur la qualité de conservation et du contexte. Une accumulation de visites distinctes reste à examiner. [2]"
+    ],
+    [
+      "Comparer les preuves",
+      "Un mur renseigne sur l’investissement ; une pierre distante sur la circulation ; une dent sur un événement biologique. Aucun indice isolé ne démontre à lui seul un calendrier résidentiel. Les couches remaniées et les dépôts mêlés peuvent produire une fausse impression de continuité."
+    ],
+    [
+      "Réseaux sociaux et ethnographie",
+      "Migliano et ses collègues ont mesuré les contacts de proximité chez des Agta et BaYaka contemporains. Les liens non familiaux peuvent favoriser les échanges de connaissances. Cette enquête constitue une comparaison méthodologique, non une observation de la préhistoire ; elle ne permet pas de transposer directement les pratiques actuelles aux populations anciennes. [3]"
+    ],
+    [
+      "Climat : tester plutôt que supposer",
+      "Une étude isotopique des dents de gazelles de deux sites de Galilée indique que le Dryas récent (environ 12 900 à 11 500 ans BP) y fut plus frais, sans preuve de diminution locale de la disponibilité en eau. Un changement climatique global ne se traduit donc pas partout par les mêmes contraintes. [4]"
+    ],
+    [
+      "Glossaire",
+      "Mobilité résidentielle : déplacement du lieu de vie. Mobilité logistique : sortie spécialisée. Saisonnalité : distribution annuelle d’un phénomène. Cément : tissu recouvrant la racine dentaire. Taphonomie : transformations entre dépôt et observation. Palimpseste : superposition d’événements difficiles à séparer. Analogie ethnographique : comparaison contrôlée avec des pratiques documentées. BP : avant 1950."
     ]
+  ],
+  "diagram": [
+    "Comparer deux organisations (schéma conceptuel, non reconstitution)",
+    [
+      "Variable",
+      "Résidence mobile",
+      "Sorties logistiques"
+    ],
+    [
+      [
+        "Déplacement",
+        "Lieu de vie déplacé",
+        "Base et sorties"
+      ],
+      [
+        "Transport",
+        "Équipement et personnes",
+        "Ressources rapportées"
+      ],
+      [
+        "Traces possibles",
+        "Multiples lieux de séjour",
+        "Base et sites spécialisés"
+      ],
+      [
+        "Limite",
+        "Retours possibles",
+        "Base pas nécessairement permanente"
+      ]
+    ]
+  ],
+  "dossier": "Document authentique : Lieberman [2], figure 1 (carte des sites) et illustrations de la méthode dentaire dans l’article original, accessible sur Persée. Observer les documents dans leur contexte ; aucune reproduction locale sans licence vérifiée. Question : que mesure la dent directement ? Corrigé : un signal biologique servant à estimer une saison, non la durée de présence humaine. Comparer ensuite le résumé et les figures de Migliano [3], accessibles selon les droits de l’éditeur.",
+  "activity": "Laboratoire sur données fictives : une couche A contient 8 dents attribuées à l’automne ; une couche B, indépendante, contient 6 dents attribuées au printemps. Les deux couches comportent des traces de foyer. 1. Calculer la proportion automnale de l’ensemble. 2. Proposer deux scénarios. 3. Identifier une preuve complémentaire et un biais. 4. Expliquer pourquoi le regroupement des couches est risqué.",
+  "correction": "1. 8/14 = 57,1 %. 2. Résidence prolongée avec activités variables, ou visites distinctes en automne et au printemps. 3. Chercher plusieurs séries saisonnières dans un contexte stratigraphique fin ; contrôler le remaniement et la conservation différentielle. 4. Le total efface la séparation des événements. Ces nombres sont inventés pour l’exercice et ne proviennent pas de Hayonim.",
+  "quiz": [
+    "Quel résultat permet le mieux de discuter la saison de chasse ?",
+    [
+      "Une dent dont la croissance saisonnière est interprétable dans un contexte daté",
+      "Un mur épais",
+      "Une pierre exotique"
+    ],
+    0,
+    "La dent peut situer un événement biologique ; elle ne démontre pas à elle seule une résidence continue."
+  ],
+  "seminar": "500 à 700 mots : discuter la proposition « un village implique une population sédentaire ». Comparer Binford [1] et Hayonim [2], formuler une hypothèse alternative et son test. Barème /20 : concepts 5, sources et méthode 6, alternatives 5, argumentation 4. Corrigé indicatif : distinguer investissement, saison de présence et continuité ; une architecture durable peut être réutilisée. La convergence d’indices stratifiés renforce une hypothèse sans abolir son incertitude.",
+  "review": "Rappel actif : cartes individuelles, puis comparaison des deux stratégies sans notes. Refaire le laboratoire à J+7 et le séminaire à J+30.",
+  "flashcards": [
+    [
+      "Qu’est-ce que la mobilité résidentielle ?",
+      "Déplacement du lieu de vie."
+    ],
+    [
+      "Mobilité logistique ?",
+      "Sorties spécialisées à partir d’une base."
+    ],
+    [
+      "Les deux stratégies sont-elles exclusives ?",
+      "Non, elles peuvent se combiner."
+    ],
+    [
+      "Que change le stockage ?",
+      "Il décale la consommation et peut favoriser les retours."
+    ],
+    [
+      "Un mur prouve-t-il une résidence annuelle ?",
+      "Non, il indique un investissement dans un lieu."
+    ],
+    [
+      "Que démontre une pierre d’origine distante ?",
+      "La circulation de matière, pas nécessairement le déplacement direct du groupe."
+    ],
+    [
+      "Où se trouve Hayonim ?",
+      "En Galilée, dans le Levant."
+    ],
+    [
+      "Quel tissu dentaire étudie Lieberman ?",
+      "Le cément des dents de gazelles."
+    ],
+    [
+      "Que permet d’estimer cette méthode ?",
+      "La saison de mort de l’animal."
+    ],
+    [
+      "Pourquoi séparer les couches ?",
+      "Pour ne pas confondre des événements distincts."
+    ],
+    [
+      "Qu’est-ce qu’un palimpseste ?",
+      "Une superposition d’événements difficiles à distinguer."
+    ],
+    [
+      "Qu’est-ce que la taphonomie ?",
+      "L’étude des transformations entre dépôt et observation."
+    ],
+    [
+      "Pourquoi utiliser plusieurs indices ?",
+      "Pour confronter les interprétations concurrentes."
+    ],
+    [
+      "Quel est le problème d’une analogie ethnographique directe ?",
+      "Une société actuelle ne constitue pas un modèle figé du passé."
+    ],
+    [
+      "Que suggère l’étude des réseaux Agta et BaYaka ?",
+      "Des liens non familiaux favorisent les possibilités d’échange de connaissances."
+    ],
+    [
+      "Le Dryas récent fut-il nécessairement plus sec en Galilée ?",
+      "Non, les données isotopiques citées indiquent un refroidissement sans assèchement local démontré."
+    ],
+    [
+      "Que signifie BP ?",
+      "Avant 1950."
+    ],
+    [
+      "8 dents sur 14 représentent quelle proportion ?",
+      "Environ 57,1 %."
+    ],
+    [
+      "Deux saisons attestées prouvent-elles une occupation continue ?",
+      "Non, des visites séparées peuvent expliquer les données."
+    ],
+    [
+      "Comment tester une hypothèse de résidence ?",
+      "Comparer des indices indépendants dans des contextes stratigraphiques bien établis."
+    ]
+  ],
+  "sources": [
+    [
+      "L. R. Binford",
+      "Willow Smoke and Dogs’ Tails: Hunter-Gatherer Settlement Systems and Archaeological Site Formation",
+      "1980",
+      "https://doi.org/10.2307/279653",
+      "Modèle de mobilité et conséquences archéologiques ; résumé consulté",
+      "EN"
+    ],
+    [
+      "D. E. Lieberman",
+      "Seasonality and gazelle hunting at Hayonim Cave: new evidence for sedentism during the Natufian",
+      "1991",
+      "https://www.persee.fr/doc/paleo_0153-9345_1991_num_17_1_4538",
+      "Méthode dentaire et saisonnalité ; article accessible",
+      "EN"
+    ],
+    [
+      "A. B. Migliano et al.",
+      "Characterization of hunter-gatherer networks and implications for cumulative culture",
+      "2017",
+      "https://www.nature.com/articles/s41562-016-0043",
+      "Réseaux contemporains ; résumé consulté",
+      "EN"
+    ],
+    [
+      "G. Hartman et al.",
+      "Hunted gazelles evidence cooling, but not drying, during the Younger Dryas in the southern Levant",
+      "2016",
+      "https://pubmed.ncbi.nlm.nih.gov/27035951/",
+      "Climat local ; résumé consulté",
+      "EN"
+    ]
+  ]
+
   },
   {
     id: 'neolithiques', title: 'Néolithiques et domestications',
