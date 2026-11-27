@@ -17,3 +17,12 @@ const version = html.match(/Campus numérique · V(\d+)\.(\d+)\.(\d+)/);
 assert.ok(version, 'Version affichée absente');
 assert.ok(sw.includes('academia-v'+version.slice(1).join('')), 'Version du cache incohérente');
 console.log('Contrôles statiques réussis');
+
+const sandbox = {};
+vm.createContext(sandbox);
+vm.runInContext(fs.readFileSync('notes.js','utf8'), sandbox);
+assert.equal(vm.runInContext('safeBackupTree({notes:{a:"texte"},done:{a:true}})',sandbox),true);
+assert.equal(vm.runInContext('safeBackupTree(JSON.parse(\'{"notes":{"__proto__":{}}}\'))',sandbox),false);
+assert.equal(vm.runInContext('safeBackupTree({constructor:{}})',sandbox),false);
+assert.equal(vm.runInContext('safeBackupTree(Array.from({length:45}).reduce(a=>({a}),{}))',sandbox),false);
+console.log('Contrôles de structure des sauvegardes réussis');
