@@ -193,6 +193,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
   v.querySelectorAll('[data-evo-answer]').forEach(button=>button.onclick=()=>{const field=button.closest('fieldset');const selected=field.querySelector('input:checked');field.querySelector('[role=status]').textContent=selected?((selected.value===button.dataset.evoAnswer?'Correct. ':'À revoir. ')+button.dataset.evoWhy):'Choisissez une réponse.';});
   bindMigrationMap(v);
   bindMigrationFlashcards(v,course,lesson);
+  if(course.key==='physique')bindPhysicsLab(v,lesson);
   installReadingTools(course,lesson);
   const heading = v.querySelector('h2');
   heading.focus({preventScroll:offset!==undefined});
@@ -389,4 +390,41 @@ function glossaryPanel(){
  const input=panel.querySelector('input'),list=panel.querySelector('dl');
  function draw(){const q=searchableText(input.value.trim());const terms=universityGlossary.filter(([term,def])=>searchableText(term+' '+def).includes(q));list.replaceChildren();terms.forEach(([term,def])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=term;dd.textContent=def;list.append(dt,dd);});panel.querySelector('[role=status]').textContent=terms.length+' notions';}
  input.oninput=draw;draw();return panel;
+}
+
+function physicsModel(id,p,t){
+ if(id==='intro-physique')return 2*Math.PI*Math.sqrt(p/9.81);
+ if(id==='mesures')return 15.1+p;
+ if(id==='maths-physicien')return 2+p*t;
+ if(id==='referentiels')return 8-p*t;
+ if(id==='vitesse-acceleration')return p*t;
+ return t+0.5*p*t*t;
+}
+function bindPhysicsLab(v,lesson){
+ const specs={
+ 'intro-physique':['Longueur du pendule (m)',0.2,0.8,0.1,0.4,'Période (s)','À petite amplitude, prévoir l’effet d’une longueur quadruplée.','T = 2π√(L/g) ; g = 9,81 m/s².'],
+ 'mesures':['Biais ajouté (cm)',-0.5,0.5,0.1,0,'Moyenne (cm)','Prévoir si un biais modifie la demi-étendue.','Lectures fictives : 15,0 ; 15,1 ; 15,2 cm. Demi-étendue constante : 0,1 cm.'],
+ 'maths-physicien':['Pente (m/s)',-3,3,0.5,1,'Position (m)','Prévoir le signe de la pente.','x = 2 + pt.'],
+ 'referentiels':['Vitesse du repère (m/s)',-3,3,0.5,2,'Position relative (m)','Prévoir la position dans le repère mobile à 3 s.','xB = 8 − Ut ; objet fixe dans A.'],
+ 'vitesse-acceleration':['Accélération (m/s²)',-3,3,0.5,2,'Vitesse (m/s)','Prévoir le signe de la vitesse à 3 s.','v = at ; vitesse initiale nulle.'],
+ 'prevoir-mouvement':['Accélération (m/s²)',-3,3,0.5,2,'Position (m)','Prévoir la position à 3 s.','x = t + ½at² ; x₀ = 0 m, v₀ = 1 m/s.']
+ };
+ const s=specs[lesson.id];if(!s)return;
+ const root=document.createElement('section');root.className='card';root.innerHTML='<h3>Laboratoire virtuel</h3><p></p><p></p><label>'+s[0]+' <input type="range" min="'+s[1]+'" max="'+s[2]+'" step="'+s[3]+'" value="'+s[4]+'"></label><p data-param></p><label>Votre prédiction numérique à t = 3 s (ou résultat indépendant du temps) <input type="number" step="any"></label><button type="button">Comparer au modèle</button><p role="status"></p><figure><svg viewBox="0 0 320 180" width="100%" role="img"></svg><figcaption></figcaption></figure><p>Modèle idéal, données calculées et non mesures expérimentales.</p>';
+ root.querySelectorAll('p')[0].textContent=s[6];root.querySelectorAll('p')[1].textContent=s[7];
+ const range=root.querySelector('input[type=range]'), guess=root.querySelector('input[type=number]'), status=root.querySelector('[role=status]'), svg=root.querySelector('svg');
+ function draw(){
+ const p=Number(range.value), independent=['intro-physique','mesures'].includes(lesson.id);
+ const xs=Array.from({length:31},(_,i)=>independent?s[1]+(s[2]-s[1])*i/30:i/10);
+ const ys=xs.map(x=>physicsModel(lesson.id,independent?x:p,independent?3:x));
+ const lo=Math.min(0,...ys),hi=Math.max(0,...ys),span=hi-lo||1;
+ const X=i=>42+i*260/30,Y=y=>145-(y-lo)/span*115;
+ svg.innerHTML='<path d="M42 20 V145 H302" fill="none" stroke="currentColor"/><text x="4" y="12" font-size="10" fill="currentColor">'+s[5]+'</text><text x="4" y="32" font-size="10" fill="currentColor">'+hi.toFixed(2)+'</text><text x="4" y="145" font-size="10" fill="currentColor">'+lo.toFixed(2)+'</text><polyline fill="none" stroke="#4387cc" stroke-width="2.5" points="'+ys.map((y,i)=>X(i)+','+Y(y)).join(' ')+'"/><text x="42" y="162" font-size="10" fill="currentColor">'+xs[0]+'</text><text x="270" y="162" font-size="10" fill="currentColor">'+xs[30]+'</text><text x="160" y="177" text-anchor="middle" font-size="10" fill="currentColor">'+(independent?s[0]:'Temps (s)')+'</text>';
+ svg.setAttribute('aria-label',s[5]+' selon '+(independent?s[0]:'le temps'));
+ root.querySelector('[data-param]').textContent=s[0]+' : '+p;
+ root.querySelector('figcaption').textContent='Courbe calculée. Valeurs aux extrémités : '+ys[0].toFixed(3)+' et '+ys[30].toFixed(3)+'.';
+ status.textContent='';
+ }
+ range.oninput=draw;root.querySelector('button').onclick=()=>{if(guess.value.trim()===''||!Number.isFinite(Number(guess.value))){status.textContent='Saisissez une prédiction numérique.';return;}const actual=physicsModel(lesson.id,Number(range.value),3);status.textContent=s[5]+' : '+actual.toFixed(3)+' ; écart prédiction − modèle : '+(Number(guess.value)-actual).toFixed(3);};draw();
+ v.querySelector('#lesson-reading')?.append(root);
 }
