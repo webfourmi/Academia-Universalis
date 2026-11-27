@@ -69,7 +69,11 @@ function renderTopTools() {
     <button type="button" id="campus-installation" aria-controls="pwa" aria-expanded="false">${campusIcon('M4 4h16v12H4zM8 21h8m-4-5v5m0-15v6m-3-3 3 3 3-3')}<span>Outils</span></button>
     <button type="button" data-tab="5" onclick="openTopTool(5)">${campusIcon('M4 4h6v16H4zM13 5l5-1 3 15-5 1z')}<span>Bibliothèque</span></button>
     <button type="button" data-tab="11" onclick="openTopTool(11)">${campusIcon('M3 9l9-6 9 6zM4 21h16M6 10v8m6-8v8m6-8v8')}<span>Campus</span></button>`;
-  bar.querySelector('#campus-installation').onclick=()=>toggleInstallation();
+  bar.querySelector('#campus-installation').onclick=()=>{
+    if (!document.querySelector('#pwa').hidden && history.state?.academia?.route?.kind==='tools') { history.back(); return; }
+    if (document.querySelector('#pwa').hidden) rememberCampusRoute('tools');
+    toggleInstallation();
+  };
 }
 
 
