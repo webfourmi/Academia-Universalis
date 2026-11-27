@@ -168,3 +168,15 @@ main { max-width: 1080px; }
 @media(forced-colors:active) {
  #campus-shortcuts button[aria-current],#campus-tools button[aria-current] { outline:2px solid Highlight; }
 }
+
+#lesson-reading[data-reading-theme="sepia"]{background:#f5e8ce;color:#382d20}
+#lesson-reading[data-reading-theme="dark"]{background:#202a29;color:#f0f3ed;color-scheme:dark}
+#lesson-reading[data-reading-theme="dark"] a{color:#a7e4d4}
+#lesson-reading[data-reading-theme="dark"] :is(th,td){background:#293936;color:#f0f3ed}
+#lesson-reading .passage-highlight{background:#f8e6a1;color:#302a17;border-radius:.2rem}
+.reading-controls{display:flex;flex-wrap:wrap;gap:.5rem;align-items:end}
+.reading-controls label,.passage-tools label{display:grid;gap:.25rem}
+.passage-tools{font-size:.85rem;margin-block:.25rem 1rem;border-bottom:1px solid #a6b8af;padding-bottom:.5rem}
+.passage-tools textarea{min-height:4rem}
+#lesson-reading.reading-immersive{max-width:76ch;margin-inline:auto}
+#view > [hidden]{display:none!important}
