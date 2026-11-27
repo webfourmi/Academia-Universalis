@@ -151,7 +151,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
     <article class="card lesson">
       <h3>Dossier commenté</h3><p>${cite(lesson.dossier)}</p>
       <h3 id="lesson-exercise" tabindex="-1">Exercice</h3><p>${lesson.activity}</p>
-      <details><summary>Lire la correction</summary><p>${lesson.correction}</p></details>
+      <div id="written-exercise"></div>
       <form id="history-quiz" tabindex="-1">
         <fieldset><legend>${question}</legend>
           ${options.map((option, n) => `<label class="quiz-option"><input type="radio" name="answer" value="${n}" required> ${option}</label>`).join('')}
@@ -194,6 +194,8 @@ function showLesson(course, index, {offset,fromNote} = {}) {
   bindMigrationMap(v);
   bindMigrationFlashcards(v,course,lesson);
   if(course.key==='physique')bindPhysicsLab(v,lesson);
+  const exercise=v.querySelector('#written-exercise');
+  if(lesson.activity&&lesson.correction)exercise.replaceWith(writtenExercise(course,lesson));
   installReadingTools(course,lesson);
   v.append(tutorPanel(course,lesson));
   if(S.studySession?.key===lessonProgressKey(course.key,lesson.id)){

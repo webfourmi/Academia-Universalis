@@ -12,7 +12,7 @@ const tutorModes = {
 };
 
 function validAuditState(data) {
-  const {studyPlan:p, studySession:s, quizEvidence:q,studyJournal:j} = data || {};
+  const {studyPlan:p, studySession:s, quizEvidence:q,studyJournal:j,exerciseEvidence:w} = data || {};
   const planOK = p===undefined || p && Array.isArray(p.days) && p.days.length<=7 &&
     p.days.every(d=>Number.isInteger(d)&&d>=0&&d<7) && new Set(p.days).size===p.days.length &&
     Number.isInteger(p.minutes)&&p.minutes>=5&&p.minutes<=240 &&
@@ -29,7 +29,13 @@ function validAuditState(data) {
   const journalOK = j===undefined || Array.isArray(j)&&j.length<=1000&&j.every(row=>row&&
     auditDate(row.date)&&typeof row.key==='string'&&row.key.length<=240&&
     Number.isInteger(row.minutes)&&row.minutes>=0&&row.minutes<=1440);
-  return Boolean(planOK&&sessionOK&&evidenceOK&&journalOK);
+  const writtenOK = w===undefined || w && typeof w==='object'&&!Array.isArray(w) &&
+    Object.entries(w).length<=1000&&Object.entries(w).every(([key,row])=>key.length<=240&&row&&
+      auditDate(row.date)&&Number.isInteger(row.revision)&&row.revision>=1&&
+      typeof row.answer==='string'&&row.answer.trim()!==''&&row.answer.length<=12000&&
+      (row.criteria===null||Array.isArray(row.criteria)&&row.criteria.length===exerciseCriteria.length&&
+        row.criteria.every(value=>Number.isInteger(value)&&value>=0&&value<=2)));
+  return Boolean(planOK&&sessionOK&&evidenceOK&&journalOK&&writtenOK);
 }
 
 function auditSave(fields) {
@@ -184,16 +190,88 @@ function captureQuizEvidence(course,lesson,selected,correct) {
   auditSave({quizEvidence:{...S.quizEvidence,[key]:{success,error}}});
 }
 
+const exerciseCriteria = [
+  'La réponse traite toutes les demandes de la consigne.',
+  'Les notions du cours sont utilisées avec exactitude.',
+  'La démarche est justifiée et les résultats sont expliqués.'
+];
+
+function exercisePracticeLabel(record,lesson) {
+  if(!record) return 'Exercice à faire';
+  if(record.revision!==(lesson.revision??1)) return 'À relire après la mise à jour du cours';
+  if(!record.criteria) return 'Réponse enregistrée · à relire';
+  return record.criteria.every(value=>value===2)
+    ? 'Exercice réussi en autoévaluation'
+    : 'Exercice à consolider selon ton autoévaluation';
+}
+
+function writtenExercise(course,lesson) {
+  const form=document.createElement('form');
+  form.className='written-exercise';
+  const key=lessonProgressKey(course.key,lesson.id);
+  const saved=S.exerciseEvidence?.[key];
+  const revision=lesson.revision??1;
+  form.innerHTML=`<label>Ma réponse à l’exercice <textarea name="answer" maxlength="12000" required rows="6"></textarea></label>
+    <button id="save-exercise">Enregistrer ma réponse</button>
+    <details><summary>Lire le corrigé et relire ma réponse</summary><p>${lesson.correction}</p>
+    <fieldset><legend>Autoévaluation</legend>${exerciseCriteria.map((criterion,index)=>`<p><label>${criterion}
+      <select name="criterion-${index}"><option value="">Choisir</option><option value="0">À revoir</option><option value="1">Partiellement atteint</option><option value="2">Atteint</option></select></label></p>`).join('')}
+    <button type="button" id="save-exercise-review">Enregistrer mon autoévaluation</button></fieldset></details>
+    <p role="status"></p>`;
+  const status=form.querySelector('[role=status]');
+  const answer=form.elements.answer;
+  const picks=exerciseCriteria.map((_,index)=>form.elements['criterion-'+index]);
+  answer.value=saved?.answer||'';
+  const redraw=record=>{
+    status.textContent=exercisePracticeLabel(record,lesson);
+    picks.forEach((pick,index)=>pick.value=record?.revision===revision&&record.criteria?String(record.criteria[index]):'');
+  };
+  redraw(saved);
+  function persist(review){
+    if(!form.reportValidity())return;
+    const text=answer.value.trim();
+    if(!text){status.textContent='Écris une réponse avant de l’enregistrer.';return;}
+    const previous=S.exerciseEvidence?.[key];
+    if(review&&(previous?.answer!==text||previous.revision!==revision)){
+      status.textContent='Enregistre d’abord cette version de ta réponse.';
+      return;
+    }
+    if(review&&picks.some(pick=>pick.value==='')){
+      status.textContent='Renseigne chaque critère en comparant ta réponse au corrigé.';
+      return;
+    }
+    const criteria=review?picks.map(pick=>Number(pick.value)):
+      previous?.answer===text&&previous.revision===revision?previous.criteria:null;
+    const record={answer:text,criteria,revision,date:localStudyDate()};
+    const exerciseEvidence={...S.exerciseEvidence,[key]:record};
+    if(!validAuditState({exerciseEvidence})){
+      status.textContent='La réponse dépasse la capacité de stockage prévue pour les exercices.';
+      return;
+    }
+    if(auditSave({exerciseEvidence}))redraw(record);
+  }
+  form.onsubmit=event=>{event.preventDefault();persist(false);};
+  form.querySelector('#save-exercise-review').onclick=()=>persist(true);
+  return form;
+}
+
 function showCompetencies() {
-  const items=studyItems().filter(i=>i.lesson.quiz);
+  const items=studyItems().filter(i=>i.lesson.quiz||i.lesson.activity&&i.lesson.correction);
   const errors=items.filter(i=>S.quizEvidence?.[i.key]?.error);
   v.innerHTML=`<h2>Compétences et carnet des erreurs</h2>
-    <p>Une réponse correcte ouvre la consolidation. Deux rappels corrects à des dates différentes depuis la dernière erreur attestent la maîtrise de la question testée.</p>
+    <p>Une réponse correcte ouvre la consolidation. Deux réussites à des dates différentes documentent le rappel de la question. Pour les exercices écrits, le suivi indique le résultat de ton autoévaluation après comparaison au corrigé.</p>
     <section class="card"><h3>Mes erreurs · ${errors.length}</h3><button id="personal-test" ${errors.length?'':'disabled'}>Réviser mes difficultés</button><div id="error-list"></div></section>
-    <details class="card"><summary>Cartographie par leçon</summary><ul>${items.map(i=>{
+    <details class="card"><summary>Cartographie par leçon</summary><ul>${items.map((i,index)=>{
       const n=S.quizEvidence?.[i.key]?.success.length||0;
-      return `<li>${e(i.lesson.goal||i.lesson.title)} · ${['Découverte','Consolidation','Maîtrise de la question'][n]}</li>`;
+      const label=i.lesson.quiz?['Quiz à faire','Quiz en consolidation','Quiz réussi à deux dates'][n]:'';
+      const practice=i.lesson.activity&&i.lesson.correction?exercisePracticeLabel(S.exerciseEvidence?.[i.key],i.lesson):'';
+      return `<li><button class="title-action" data-competency="${index}">${e(i.lesson.goal||i.lesson.title)}</button><br>${[label,practice].filter(Boolean).join(' · ')}</li>`;
     }).join('')}</ul></details>`;
+  v.querySelectorAll('[data-competency]').forEach(button=>button.onclick=()=>{
+    const item=items[Number(button.dataset.competency)];
+    showLesson(item.course,item.index);
+    if(item.lesson.activity&&item.lesson.correction)jumpToStudySection('lesson-exercise');
+  });
   const list=v.querySelector('#error-list');
   for(const item of errors){
     const {lesson}=item;

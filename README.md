@@ -36,7 +36,7 @@ Depuis la racine du dépôt, lancer `python3 -m http.server 8000` puis ouvrir ht
 | --- | --- | --- |
 | A. Planning | Créneaux sur 14 jours, disponibilité, durée, priorité, vacances et révisions. La progression suit l’ordre des leçons d’un parcours. | Prérequis entre matières et estimation de la charge par leçon. |
 | B. Séance | Quatre étapes, chronomètre, pause, reprise après rechargement, correction des minutes et journal. | Distinguer le temps passé sur chaque étape. |
-| C. Compétences | Trois états fondés sur les réponses au quiz de chaque leçon. | Modèle de compétences transversal et preuves issues des exercices et travaux écrits. |
+| C. Compétences | Résultats des quiz et autoévaluation des exercices écrits avec réponse conservée, corrigé et trois critères explicites. | Modèle de compétences transversal et évaluation externe et suivi des travaux de synthèse. |
 | D. Erreurs | Dernière erreur par quiz, passage du cours et examen personnalisé. | Historique de toutes les tentatives et questions inédites. |
 | E. Ateliers | Entrées disciplinaires vers les simulations et activités du corpus. | Chronologies comparées, nouveaux scénarios physiques et comparaison de traductions. |
 | F. Atlas | Trois parcours filtrables reliant les leçons. | Index transversal exhaustif et enrichissement documentaire. |

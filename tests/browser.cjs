@@ -36,6 +36,20 @@ async function verify(browser,viewport) {
     const item=studyItems().find(i=>i.lesson.quiz);
     showLesson(item.course,item.index);
   });
+  const exercise=page.locator('.written-exercise');
+  await exercise.locator('textarea').fill('Une réponse rédigée avec une justification.');
+  await exercise.locator('#save-exercise').click();
+  await exercise.locator('summary').click();
+  for(const select of await exercise.locator('select').all())await select.selectOption('2');
+  await exercise.locator('#save-exercise-review').click();
+  assert.match(await exercise.locator('[role=status]').innerText(),/réussi en autoévaluation/);
+  await exercise.locator('textarea').fill('Une version révisée de ma réponse.');
+  await exercise.locator('#save-exercise').click();
+  assert.match(await exercise.locator('[role=status]').innerText(),/à relire/);
+  await exercise.locator('select').first().selectOption('1');
+  for(const select of (await exercise.locator('select').all()).slice(1))await select.selectOption('2');
+  await exercise.locator('#save-exercise-review').click();
+  assert.match(await exercise.locator('[role=status]').innerText(),/à consolider/);
   await page.evaluate(()=>{
     const form=document.querySelector('#history-quiz');
     const item=studyItems().find(i=>i.lesson.quiz);
@@ -56,6 +70,7 @@ async function verify(browser,viewport) {
   assert.match(file.suggestedFilename(),/^academia-sauvegarde-.*\.json$/);
   await page.locator('input[onchange="restore(this)"]').setInputFiles(await file.path());
   await page.getByText('Sauvegarde restaurée.').waitFor();
+  assert.equal(await page.evaluate(()=>Object.values(S.exerciseEvidence)[0].answer),'Une version révisée de ma réponse.');
   await page.waitForFunction(()=>navigator.serviceWorker.controller);
   await context.setOffline(true);
   await page.reload();
