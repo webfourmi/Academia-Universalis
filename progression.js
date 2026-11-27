@@ -54,7 +54,9 @@ function showQuickReview(course,index) {
   const form = v.querySelector('#quick-review');
   form.onsubmit = event=>{
     event.preventDefault();
-    const correct = Number(new FormData(form).get('answer'))===answer;
+    const selected = Number(new FormData(form).get('answer'));
+    const correct = selected===answer;
+    captureQuizEvidence(course,lesson,selected,correct);
     recordReview(course,lesson,correct);
     form.querySelector('[role="status"]').textContent=`${correct?'Réponse correcte.':'Réponse attendue : '+options[answer]+'.'} ${rationale}`;
     form.querySelector('#review-links').hidden=false;

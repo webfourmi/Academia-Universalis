@@ -195,6 +195,13 @@ function showLesson(course, index, {offset,fromNote} = {}) {
   bindMigrationFlashcards(v,course,lesson);
   if(course.key==='physique')bindPhysicsLab(v,lesson);
   installReadingTools(course,lesson);
+  v.append(tutorPanel(course,lesson));
+  if(S.studySession?.key===lessonProgressKey(course.key,lesson.id)){
+    const resume=document.createElement('button');
+    resume.textContent='Reprendre la séance guidée';
+    resume.onclick=()=>showStudySession(S.studySession.key);
+    v.querySelector('#history-back').after(resume);
+  }
   const heading = v.querySelector('h2');
   heading.focus({preventScroll:offset!==undefined});
   rememberLesson(heading,course,lesson,offset);
@@ -224,6 +231,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
     const selected = Number(new FormData(event.currentTarget).get('answer'));
     const result = selected === answer ? 'Réponse correcte.' : `Réponse attendue : ${options[answer]}.`;
     recordReview(course, lesson, selected === answer);
+    captureQuizEvidence(course,lesson,selected,selected===answer);
     const feedback = v.querySelector('#quiz-result');
     feedback.textContent = `${result} ${rationale}`;
     if (selected !== answer) {
@@ -398,11 +406,13 @@ function physicsModel(id,p,t){
  if(id==='maths-physicien')return 2+p*t;
  if(id==='referentiels')return 8-p*t;
  if(id==='vitesse-acceleration')return p*t;
+ if(id==='forces')return p/2;
  return t+0.5*p*t*t;
 }
 function bindPhysicsLab(v,lesson){
  const specs={
  'intro-physique':['Longueur du pendule (m)',0.2,0.8,0.1,0.4,'Période (s)','À petite amplitude, prévoir l’effet d’une longueur quadruplée.','T = 2π√(L/g) ; g = 9,81 m/s².'],
+ 'forces':['Force appliquée vers la droite (N)',0,20,1,6,'Accélération (m/s²)','Prévoir l’accélération d’un chariot de 2 kg sans frottement.','Dans ce modèle, la force horizontale résultante vaut F et a = F/m.'],
  'mesures':['Biais ajouté (cm)',-0.5,0.5,0.1,0,'Moyenne (cm)','Prévoir si un biais modifie la demi-étendue.','Lectures fictives : 15,0 ; 15,1 ; 15,2 cm. Demi-étendue constante : 0,1 cm.'],
  'maths-physicien':['Pente (m/s)',-3,3,0.5,1,'Position (m)','Prévoir le signe de la pente.','x = 2 + pt.'],
  'referentiels':['Vitesse du repère (m/s)',-3,3,0.5,2,'Position relative (m)','Prévoir la position dans le repère mobile à 3 s.','xB = 8 − Ut ; objet fixe dans A.'],
@@ -414,7 +424,7 @@ function bindPhysicsLab(v,lesson){
  root.querySelectorAll('p')[0].textContent=s[6];root.querySelectorAll('p')[1].textContent=s[7];
  const range=root.querySelector('input[type=range]'), guess=root.querySelector('input[type=number]'), status=root.querySelector('[role=status]'), svg=root.querySelector('svg');
  function draw(){
- const p=Number(range.value), independent=['intro-physique','mesures'].includes(lesson.id);
+ const p=Number(range.value), independent=['intro-physique','mesures','forces'].includes(lesson.id);
  const xs=Array.from({length:31},(_,i)=>independent?s[1]+(s[2]-s[1])*i/30:i/10);
  const ys=xs.map(x=>physicsModel(lesson.id,independent?x:p,independent?3:x));
  const lo=Math.min(0,...ys),hi=Math.max(0,...ys),span=hi-lo||1;
