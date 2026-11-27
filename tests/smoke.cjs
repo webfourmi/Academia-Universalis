@@ -112,3 +112,9 @@ const extrasEnd=readingSource.indexOf('function showLesson(',extrasStart);
 vm.runInContext('function e(x){return String(x)};function evolutionAnatomy(){return ""};function evolutionFossils(){return ""};'+readingSource.slice(extrasStart,extrasEnd),sandbox);
 assert.ok(vm.runInContext('evolutionExtras(civilisations[0]).includes("Chronologie graphique")',sandbox));
 assert.equal(vm.runInContext('evolutionExtras(civilisations[1])',sandbox),'');
+
+assert.equal(vm.runInContext('civilisations[4].id',sandbox),'villages-neolithiques');
+assert.equal(vm.runInContext('civilisations[5].id',sandbox),'methodes-archeologiques');
+assert.equal(vm.runInContext('civilisations[4].flashcards.length',sandbox),20);
+assert.equal(vm.runInContext('civilisations[5].flashcards.length',sandbox),28);
+assert.equal(vm.runInContext('new Set(civilisations.map(l=>l.id)).size',sandbox),vm.runInContext('civilisations.length',sandbox));
