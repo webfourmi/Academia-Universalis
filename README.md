@@ -1,5 +1,44 @@
 # Academia Universalis
 
+*Sapere aude — Ose savoir.*
+
+Université personnelle indépendante et cosmopolite, sans diplôme officiel. PWA en français, sans API payante. Quatre années, 32 disciplines ; le cursus reste en construction.
+
+## Version et accès
+
+- Version de référence : V0.19.0.
+- V0.20.0 : chantier de fiabilisation, non publié.
+- [Campus](https://webfourmi.github.io/Academia-Universalis/)
+- [Charte fondatrice](docs/Academia_Universalis_charte.pdf)
+- [Contrôle éditorial](docs/controle-editorial.html)
+- [Suivi de la charte](docs/suivi-charte.html)
+
+## Architecture
+
+Application statique HTML/CSS/JavaScript. Les fichiers de données pédagogiques sont chargés par index.html. Le manifeste et sw.js assurent le socle PWA ; pwa.js gère l'installation et les mises à jour. campus-history.js gère la navigation, notes.js les exports et imports. Les données personnelles restent dans localStorage (clé au).
+
+## Développement local
+
+Depuis la racine du dépôt, lancer `python3 -m http.server 8000` puis ouvrir http://localhost:8000. Ne pas utiliser file:// pour tester le service worker.
+
+## Règles de contribution
+
+- Travailler sur une branche dédiée ; fusion après validation.
+- Aucun abonnement supplémentaire, aucune API payante.
+- Préserver les données existantes et la compatibilité des sauvegardes.
+- Tester navigation, retour mobile, notes, évaluations, révisions, hors connexion et mises à jour.
+- Synchroniser la version affichée et le nom du cache lors d'une publication.
+- Documenter les anomalies restantes et ne jamais déclarer un test réussi sans l'avoir exécuté.
+- Vérifier les sources, licences et références de chaque leçon ; distinguer validation interne et expertise indépendante.
+
+## Feuille de route proposée
+
+V0.20 fiabilisation ; V0.21 ergonomie ; V0.22 bureau étudiant ; V0.23 lecture ; V0.24 mémorisation ; V0.25 bibliothèque ; V0.26 contrôle pédagogique ; V0.27 campus vivant.
+
+## Historique documentaire
+
+# Academia Universalis
+
 *Sapere aude.*
 
 Université personnelle cosmopolite, fondée sur des sources académiques vérifiées. Programme de quatre années et 32 disciplines. Application PWA en français, sans API payante.

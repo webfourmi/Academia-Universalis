@@ -15,13 +15,23 @@ function backup() {
   downloadBackup(S,'academia-sauvegarde.json');
 }
 
+function safeBackupTree(value, depth = 0) {
+  if (depth > 40) return false;
+  if (value === null || typeof value !== 'object') return true;
+  return Object.keys(value).every(key =>
+    !['__proto__','constructor','prototype'].includes(key) &&
+    safeBackupTree(value[key], depth + 1));
+}
+
 async function restore(input) {
   const file = input.files[0];
   if (!file) return;
   const status = v.querySelector('#notes-import-status');
   let data;
   try {
+    if (file.size > 10 * 1024 * 1024) throw new Error('Fichier trop volumineux');
     data = JSON.parse((await file.text()).replace(/^\uFEFF/,''));
+    if (!safeBackupTree(data)) throw new Error('Structure invalide');
   } catch {
     status.textContent = 'Choisis le fichier .json téléchargé depuis Academia Universalis.';
     input.value = '';
@@ -44,12 +54,14 @@ async function restore(input) {
       return;
     }
     if (!confirm('Remplacer les notes, la progression et le rythme sur cet appareil par cette sauvegarde ?')) return;
+    const previous = JSON.stringify(S);
+    localStorage.setItem('au-before-restore', previous);
     localStorage.au = JSON.stringify(data);
     S = data;
     render();
     v.querySelector('#notes-import-status')?.append('Sauvegarde restaurée.');
   } catch {
-    status.textContent = 'Impossible d’enregistrer la sauvegarde sur cet appareil.';
+    if (status) status.textContent = 'Impossible de terminer la restauration. Une copie préalable est conservée si son enregistrement a réussi.';
   } finally {
     input.value = '';
   }
@@ -60,7 +72,9 @@ async function importNotes(input, parsedData) {
   const file = input.files[0];
   if (!file) return;
   try {
+    if (file.size > 10 * 1024 * 1024) throw new Error('Fichier trop volumineux');
     const data = parsedData ?? JSON.parse((await file.text()).replace(/^\uFEFF/,''));
+    if (!safeBackupTree(data)) throw new Error('Structure invalide');
     const notes = data?.notes;
     const supported = data?.format === 'academia-notes'
       ? data.version === 1
@@ -189,12 +203,26 @@ function showNotebook() {
 }
 
 
+function recoverPreviousBackup() {
+  const status = v.querySelector('#notes-import-status');
+  try {
+    const raw = localStorage.getItem('au-before-restore');
+    if (!raw) { status.textContent = 'Aucune copie précédente disponible.'; return; }
+    const previous = JSON.parse(raw);
+    if (!safeBackupTree(previous) || !previous || typeof previous.notes !== 'object' || !previous.notes || typeof previous.done !== 'object' || !previous.done) throw new Error('Copie invalide');
+    downloadBackup(previous, 'academia-sauvegarde-precedente.json');
+    status.textContent = 'Copie précédente exportée. Pour la restaurer, utilise le bouton Importer.';
+  } catch {
+    status.textContent = 'Impossible de récupérer la copie précédente.';
+  }
+}
+
 function backupControls() {
   return `<details id="notes-backup-panel" class="card"><summary>Sauvegarder mes notes</summary><p><button onclick="exportNotes()">Exporter mes notes</button></p>
     <label>Importer des notes <input type="file" accept=".json,application/json" onchange="importNotes(this)"></label>
   </details>
   <p id="notes-import-status" role="status"></p>
-  <p><button onclick="backup()">Exporter ma sauvegarde</button> <label>Importer <input type="file" accept=".json,application/json" onchange="restore(this)"></label></p>`;
+  <p><button type="button" onclick="recoverPreviousBackup()">Récupérer la sauvegarde précédente</button></p><p><button onclick="backup()">Exporter ma sauvegarde</button> <label>Importer <input type="file" accept=".json,application/json" onchange="restore(this)"></label></p>`;
 }
 
 function showBackup() {
