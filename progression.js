@@ -6,10 +6,10 @@ function showProgress() {
     const total = courses.reduce((sum,course)=>sum+course.lessons.length,0);
     const count = course => course.lessons.filter(lesson=>S.history?.[lessonProgressKey(course.key,lesson.id)]).length;
     const done = courses.reduce((sum,course)=>sum+count(course),0);
-    return `<article class="card"><h3>Année ${year} · ${title}</h3>
+    return `<article class="card"><h3><button class="title-action" onclick="go(${year})">Année ${year} · ${title}</button></h3>
       <p>${done} / ${total} leçons terminées</p><progress aria-label="Leçons terminées en année ${year}" value="${done}" max="${total}"></progress>
       <details><summary>Voir par parcours</summary><ul>${courses.map(course=>`<li>${course.title} · ${count(course)} / ${course.lessons.length}</li>`).join('')}</ul></details>
-      <button onclick="go(${year})">Ouvrir l’Année ${year}</button></article>`;
+      </article>`;
   }).join('');
   const due = catalog.reduce((sum,course)=>sum+course.lessons.filter(lesson=>{
     const review=S.reviews?.[lessonProgressKey(course.key,lesson.id)];
@@ -20,8 +20,8 @@ function showProgress() {
     <p>Retrouve tes leçons terminées, tes scores et les révisions en attente.</p>
     <button type="button" id="jump-to-assessment">Aller aux évaluations</button>
     <div class="grid">${yearCards}</div>
-    <article class="card"><h3>Révisions</h3><p>${due} à faire aujourd’hui ou en retard.</p>
-    <button id="progress-planning">Ouvrir le planning</button></article>
+    <article class="card"><h3><button class="title-action" id="progress-planning">Révisions</button></h3><p>${due} à faire aujourd’hui ou en retard.</p>
+    </article>
     ${assessmentSection(options)}`;
   v.querySelector('#jump-to-assessment').onclick=()=>{
     const heading=v.querySelector('#assessment-title');

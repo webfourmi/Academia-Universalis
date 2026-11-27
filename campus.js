@@ -63,7 +63,7 @@ function recordReview(course, lesson, correct) {
 
 function showCampus() {
   v.innerHTML='<h2>Espaces du campus</h2><div class="grid">'+Object.entries(campusSpaces)
-    .map(([name, purpose])=>'<article class="card"><h3>'+name+'</h3><p>'+purpose+'</p><button data-space="'+name+'">Ouvrir · '+name+'</button></article>').join('')+'</div>';
+    .map(([name, purpose])=>'<article class="card"><h3><button class="title-action" data-space="'+name+'">'+name+'</button></h3><p>'+purpose+'</p></article>').join('')+'</div>';
   v.querySelectorAll('[data-space]').forEach(button=>button.onclick=()=>showSpace(button.dataset.space));
 }
 

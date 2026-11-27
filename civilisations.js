@@ -13,6 +13,15 @@ function showCivilisations() {
   showCourse(histoire);
 }
 
+function lessonStatus(courseKey, lesson) {
+  const key = lessonProgressKey(courseKey, lesson.id);
+  if (!S.history?.[key]) return '';
+  // Increment a lesson’s revision when its teaching content changes. Legacy completions use revision 1.
+  const updated = (lesson.revision ?? 1) > (S.lessonRevisions?.[key] ?? 1);
+  const label = updated ? 'Mise à jour depuis la validation' : 'Leçon validée';
+  return `<span class="lesson-status ${updated?'lesson-updated':''}" title="${label}"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="${updated?'M12 2l2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5z':'M5 12l4 4L19 6'}"/></svg><span class="lesson-status-label">${label}</span></span>`;
+}
+
 function showCourse(course) {
   if (course.key!=='methode' || tab!==9) rememberCampusRoute('course',{key:course.key});
   const {title, introduction, key, lessons, links = []} = course;
@@ -33,9 +42,8 @@ function showCourse(course) {
       </details>
     </article>
     <ol class="lesson-list">${lessons.map((lesson, index) => `
-      <li class="card"><h3>${lesson.title}</h3><p>${lesson.goal}</p>
-      <button data-lesson="${index}">${S.history?.[lessonProgressKey(key, lesson.id)] ? 'Revoir' : 'Ouvrir'} · ${lesson.title}</button></li>`).join('')}</ol>
-    ${key === 'histoire' ? '<article class="card"><h3>Deuxième cycle · Grèce et Rome</h3><button onclick="showCourse(antiquite)">Voir les leçons de Grèce et Rome</button></article>' : ''}
+      <li class="card lesson-card"><h3><button class="title-action lesson-title" type="button" data-lesson="${index}"><span class="lesson-name" title="${e(lesson.title)}">${e(lesson.title)}</span>${lessonStatus(key,lesson)}</button></h3><p>${e(lesson.goal)}</p></li>`).join('')}</ol>
+    ${key === 'histoire' ? '<article class="card"><h3><button class="title-action" onclick="showCourse(antiquite)">Deuxième cycle · Grèce et Rome</button></h3></article>' : ''}
     ${key === 'antiquite' ? '<p><button onclick="showCivilisations()">Retour au premier cycle d’histoire</button></p>' : ''}
     ${links.map(([url, label]) => `<p><a href="${url}">${label}</a></p>`).join('')}`;
   v.querySelectorAll('[data-lesson]').forEach(button => {
@@ -155,7 +163,14 @@ function showLesson(course, index, {offset,fromNote} = {}) {
   };
   v.querySelector('#history-done').onchange = event => {
     S.history ??= {};
-    S.history[lessonProgressKey(key, lesson.id)] = event.target.checked;
+    const progressKey = lessonProgressKey(key, lesson.id);
+    S.history[progressKey] = event.target.checked;
+    if (event.target.checked) {
+      S.lessonRevisions ??= {};
+      S.lessonRevisions[progressKey] = lesson.revision ?? 1;
+    } else if (S.lessonRevisions) {
+      delete S.lessonRevisions[progressKey];
+    }
     save();
   };
 }
@@ -178,11 +193,10 @@ function openGuidedLesson() {
 function guidedJourneyCard() {
   const {next, total, completed} = guidedJourney();
   return `<article class="card">
-    <h3>Commencer mes cours</h3>
+    <h3>${next ? '<button class="title-action" onclick="openGuidedLesson()">Commencer mes cours</button>' : 'Commencer mes cours'}</h3>
     <p>${completed} sur ${total} leçons publiées terminées.</p>
     <progress aria-label="Progression dans les leçons publiées" value="${completed}" max="${total}"></progress>
-    ${next ? `<p>Prochaine leçon conseillée · <strong>${next.lesson.title}</strong></p>
-      <button onclick="openGuidedLesson()">${completed ? 'Continuer le parcours' : 'Commencer le parcours'}</button>`
+    ${next ? `<p>Prochaine leçon conseillée · <strong>${next.lesson.title}</strong></p>`
       : '<p>Tu as terminé les leçons publiées. Tu peux les revoir depuis les rubriques ci-dessous.</p>'}
     <details><summary>Comment suivre une leçon ?</summary>
       <ol>

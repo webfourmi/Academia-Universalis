@@ -111,9 +111,8 @@ function showCampusSearch() {
       (!type.value||type.value===entry.type) && terms.every(term=>entry.search.includes(term)));
     counter.textContent=matches.length+' '+(matches.length===1?'résultat':'résultats');
     results.innerHTML=matches.map(({entry,index})=>`<article class="card"><small>${entry.type}</small>
-      <h3>${e(entry.title)}</h3><p>${e(entry.context)}</p>
-      ${entry.url ? `<a href="${e(entry.url)}" target="_blank" rel="noopener">Lire la ressource</a>`
-        : `<button type="button" data-search-result="${index}">Ouvrir ${entry.type==='Note'?'la note':'la leçon'}</button>`}</article>`).join('');
+      <h3>${entry.url ? `<a href="${e(entry.url)}" target="_blank" rel="noopener">${e(entry.title)}</a>`
+        : `<button class="title-action" type="button" data-search-result="${index}">${e(entry.title)}</button>`}</h3><p>${e(entry.context)}</p></article>`).join('');
   }
   results.onclick=event=>{
     const button=event.target.closest('[data-search-result]');

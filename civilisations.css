@@ -87,3 +87,19 @@ a, button, input, textarea { scroll-margin-bottom: 6rem; }
   #subject-nav { padding-block: .25rem; margin-block: .35rem; }
   main:has(.subject-grid) h2 { margin-block: .45rem .7rem; font-size: 1.2rem; }
 }
+
+.campus-brand { padding: .55rem max(1rem, 6%); }
+.campus-brand h1 { margin: 0; }
+.campus-brand button { display: inline-flex; align-items: center; gap: .65rem; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; font-size: clamp(1.2rem, 5.8vw, 2rem); text-align: left; }
+.campus-brand svg { flex: none; width: 2.45rem; height: 2.45rem; fill: none; stroke: #e5c998; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.title-action { display: block; padding: .2rem 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; text-decoration: underline; text-decoration-color: #6a8c7f; text-underline-offset: .16em; }
+.title-action:focus-visible, .campus-brand button:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.subject-heading .title-action { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lesson-card { padding: .55rem .8rem; }
+.lesson-card h3, .lesson-card p { margin: 0; }
+.lesson-title { display: flex; width: 100%; min-height: 44px; align-items: center; justify-content: space-between; gap: .5rem; }
+.lesson-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lesson-status { display: inline-flex; flex: none; color: #24634f; }
+.lesson-updated { color: #946015; }
+.lesson-status svg { fill: none; stroke: currentColor; stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; }
+.lesson-status-label { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

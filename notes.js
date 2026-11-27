@@ -37,6 +37,8 @@ async function restore(input) {
     if (!validAssessments(data?.assessments) || !validReviews(data?.reviews) ||
         !records(data?.done,'boolean') || !records(data.notes,'string') ||
         (data.history !== undefined && !records(data.history,'boolean')) ||
+        (data.lessonRevisions !== undefined && (!records(data.lessonRevisions,'number') ||
+          !Object.values(data.lessonRevisions).every(value=>Number.isInteger(value) && value>=1))) ||
         ![3,6,10].includes(data.hours)) {
       status.textContent = 'Ce fichier JSON ne correspond pas à une sauvegarde Academia valide.';
       return;
@@ -107,10 +109,10 @@ function showNotebook() {
   v.innerHTML = `<h2>Mon carnet</h2>
     ${entries.length ? '' : '<p>Tes notes de cours et tes brouillons apparaîtront ici.</p>'}
     <div id="notebook-entries">${entries.map(([key,note],index)=>`
-      <article class="card note-entry" tabindex="-1" data-note-key="${e(key)}"><h3>${e(noteTitle(key))}</h3>
+      <article class="card note-entry" tabindex="-1" data-note-key="${e(key)}"><h3>${lessonForNote(key)?`<button class="title-action" type="button" data-note-lesson="${index}">${e(noteTitle(key))}</button>`:e(noteTitle(key))}</h3>
       <p class="note-text">${e(note)}</p>
       <button type="button" data-edit-note="${index}">Modifier</button>
-      ${lessonForNote(key)?`<button type="button" data-note-lesson="${index}">Ouvrir la leçon</button>`:''}</article>`).join('')}</div>
+      </article>`).join('')}</div>
     ${backupControls()}`;
   v.querySelectorAll('[data-note-lesson]').forEach(button=>{
     button.onclick=()=>openNotebookLesson(entries[Number(button.dataset.noteLesson)][0]);

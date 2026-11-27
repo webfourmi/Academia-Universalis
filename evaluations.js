@@ -32,9 +32,9 @@ function assessmentSection(options) {
     <button onclick="showWrittenProjects()">Travaux de synthèse · Année 1</button>
     <div class="grid">${options.map(({key,title,items}) => {
       const saved = S.assessments?.[key];
-      return `<article class="card"><h4>${title}</h4><p>${items.length} questions</p>
+      return `<article class="card"><h4><button class="title-action" data-assessment="${key}">${title}</button></h4><p>${items.length} questions</p>
       ${saved ? `<p>Dernier score : ${saved.last}/${saved.total} · Meilleur : ${saved.best}/${saved.total}</p>` : ''}
-      <button data-assessment="${key}">Commencer · ${title}</button></article>`;
+      </article>`;
     }).join('')}</div></section>`;
 }
 
