@@ -13,13 +13,16 @@ const tutorModes = {
 
 function validAuditState(data) {
   const {studyPlan:p, studySession:s, quizEvidence:q,studyJournal:j,exerciseEvidence:w} = data || {};
-  const planOK = p===undefined || p && Array.isArray(p.days) && p.days.length<=7 &&
-    p.days.every(d=>Number.isInteger(d)&&d>=0&&d<7) && new Set(p.days).size===p.days.length &&
-    Number.isInteger(p.minutes)&&p.minutes>=5&&p.minutes<=240 &&
+  const planOK = p===undefined || p && (p.dailyMinutes===undefined
+    ? Array.isArray(p.days)&&p.days.length<=7&&p.days.every(d=>Number.isInteger(d)&&d>=0&&d<7)&&
+      new Set(p.days).size===p.days.length&&validDailyMinutes(p.minutes)
+    : Array.isArray(p.dailyMinutes)&&p.dailyMinutes.length===7&&
+      p.dailyMinutes.every(minutes=>minutes===0||validDailyMinutes(minutes))) &&
     typeof p.priority==='string'&&p.priority.length<=120 &&
     (p.from===''&&p.to===''||auditDate(p.from)&&auditDate(p.to)&&p.from<=p.to);
   const sessionOK = s===undefined || s && typeof s.key==='string'&&s.key.length<=240 &&
     Number.isInteger(s.step)&&s.step>=0&&s.step<4 && Number.isFinite(s.elapsed)&&s.elapsed>=0&&s.elapsed<=86400000 &&
+    (s.minutes===undefined||validDailyMinutes(s.minutes)) &&
     (s.started===null||Number.isFinite(s.started)&&s.started>0);
   const evidenceOK = q===undefined || q && typeof q==='object'&&!Array.isArray(q) &&
     Object.entries(q).length<=5000 && Object.entries(q).every(([key,item])=>key.length<=240 && item &&
@@ -56,15 +59,23 @@ function studyItems() {
   })));
 }
 
+function validDailyMinutes(minutes) {
+  return Number.isInteger(minutes)&&minutes>=5&&minutes<=240;
+}
+
+function plannedMinutes(plan,weekday) {
+  return plan.dailyMinutes?.[weekday]??(plan.days.includes(weekday)?plan.minutes??45:0);
+}
+
 function adaptiveSchedule(plan, items, today = new Date()) {
   const dates = Array.from({length:14},(_,offset)=>{
     const date = new Date(today);
     date.setDate(date.getDate()+offset);
     return {day:localStudyDate(date),weekday:(date.getDay()+6)%7};
-  }).filter(({day,weekday})=>plan.days.includes(weekday)&&!(plan.from&&day>=plan.from&&day<=plan.to));
+  }).filter(({day,weekday})=>plannedMinutes(plan,weekday)>0&&!(plan.from&&day>=plan.from&&day<=plan.to));
   const used = new Set();
   const ordered = [...items].sort((a,b)=>Number(b.course.key===plan.priority)-Number(a.course.key===plan.priority));
-  return dates.map(({day})=>{
+  return dates.map(({day,weekday})=>{
     const review = ordered.find(item=>{
       const entry=S.reviews?.[item.key];
       return !used.has(item.key)&&entry&&reviewDate(entry)<=day;
@@ -74,36 +85,54 @@ function adaptiveSchedule(plan, items, today = new Date()) {
       (item.index===0||S.history?.[lessonProgressKey(item.course.key,item.course.lessons[item.index-1].id)]));
     const item = review||next;
     if(item) used.add(item.key);
-    return {day,item,review:Boolean(review)};
+    return {day,minutes:plannedMinutes(plan,weekday),item,review:Boolean(review)};
   });
 }
 
-function planningPanel() {
-  const plan = S.studyPlan || {days:[0,2,4],minutes:S.hours*20,priority:'',from:'',to:''};
-  const items = studyItems();
-  const schedule = adaptiveSchedule(plan,items);
-  const panel = document.createElement('section');
-  panel.className = 'card';
-  panel.innerHTML = `<h3>Planning personnalisé</h3><form>
-    <fieldset><legend>Jours disponibles</legend>${studyDays.map((day,i)=>`<label><input type="checkbox" name="days" value="${i}" ${plan.days.includes(i)?'checked':''}> ${day}</label> `).join('')}</fieldset>
-    <p><label>Minutes par jour <input type="number" name="minutes" min="5" max="240" required value="${plan.minutes}"></label></p>
-    <p><label>Matière prioritaire <select name="priority"><option value="">Toutes les matières</option>${allStudyCourses().map(c=>`<option value="${e(c.key)}" ${c.key===plan.priority?'selected':''}>${e(c.title)} · année ${c.year||1}</option>`).join('')}</select></label></p>
-    <p><label>Vacances du <input type="date" name="from" value="${e(plan.from)}"></label>
-    <label>au <input type="date" name="to" value="${e(plan.to)}"></label></p>
-    <button>Recalculer le planning</button><p role="status"></p></form>
-    <h4>Les 14 prochains jours</h4>${schedule.length?`<ol>${schedule.map(({day,item,review},i)=>`<li><time>${day}</time> · ${plan.minutes} min · ${item?`<button class="title-action" data-slot="${i}">${review?'Réviser':'Étudier'} · ${e(item.lesson.title)}</button>`:'Relecture ou exercice libre'}</li>`).join('')}</ol>`:'<p>Aucun créneau disponible sur cette période.</p>'}`;
-  const form = panel.querySelector('form');
-  form.onsubmit = event=>{
+function planningPanel(message='') {
+  const plan=S.studyPlan||{days:[0,2,4],minutes:S.hours*20,priority:'',from:'',to:''};
+  const schedule=adaptiveSchedule(plan,studyItems());
+  const durations=studyDays.map((_,i)=>plannedMinutes(plan,i));
+  const total=durations.reduce((sum,minutes)=>sum+minutes,0);
+  const panel=document.createElement('section');
+  panel.className='card personal-planning';
+  panel.innerHTML=`<header class="planning-heading"><h3>Planning personnalisé</h3>
+    <p>${total} min par semaine · ${durations.filter(Boolean).length} jours d’étude</p></header>
+    <form>
+      <fieldset><legend>Durée par jour</legend><p id="planning-hint">Laisse 0 pour un jour sans séance. Les séances durent de 5 à 240 min.</p>
+      <div class="planning-days">${studyDays.map((day,i)=>`<label><span>${day}</span><input type="number" name="day-${i}" min="0" max="240" step="1" required aria-label="${day}, minutes" aria-describedby="planning-hint" value="${durations[i]}"><span aria-hidden="true">min</span></label>`).join('')}</div></fieldset>
+      <label class="planning-priority">Matière prioritaire <select name="priority"><option value="">Toutes les matières</option>${allStudyCourses().map(c=>`<option value="${e(c.key)}" ${c.key===plan.priority?'selected':''}>${e(c.title)} · année ${c.year||1}</option>`).join('')}</select></label>
+      <details class="planning-break" ${plan.from?'open':''}><summary>Vacances</summary><div>
+        <label>Du <input type="date" name="from" value="${e(plan.from)}"></label>
+        <label>Au <input type="date" name="to" value="${e(plan.to)}"></label></div></details>
+      <button class="active">Enregistrer le planning</button><p role="status">${e(message)}</p>
+    </form>
+    <h4>Les 14 prochains jours</h4>${schedule.length?`<ol class="planning-agenda">${schedule.map(({day,minutes,item,review},i)=>`<li><div><time datetime="${day}">${new Date(day+'T12:00:00').toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'})}</time><span>${minutes} min</span></div>${item?`<button class="title-action" data-slot="${i}">${review?'Réviser':'Étudier'} · ${e(item.lesson.title)}</button>`:'Relecture ou exercice libre'}</li>`).join('')}</ol>`:'<p>Aucun créneau disponible sur cette période.</p>'}`;
+  const form=panel.querySelector('form');
+  form.onsubmit=event=>{
     event.preventDefault();
     const fields=new FormData(form);
-    const next={days:fields.getAll('days').map(Number),minutes:Number(fields.get('minutes')),priority:fields.get('priority'),from:fields.get('from'),to:fields.get('to')};
-    if(!validAuditState({studyPlan:next})){
-      panel.querySelector('[role=status]').textContent='Indique une période de vacances complète, avec la fin après le début.';
+    const dailyMinutes=studyDays.map((_,i)=>Number(fields.get('day-'+i)));
+    const next={dailyMinutes,priority:fields.get('priority'),from:fields.get('from'),to:fields.get('to')};
+    const status=panel.querySelector('[role=status]');
+    if(dailyMinutes.some(minutes=>minutes!==0&&!validDailyMinutes(minutes))){
+      status.textContent='Indique 0 pour un jour sans séance, ou de 5 à 240 minutes.';
       return;
     }
-    if(auditSave({studyPlan:next})) panel.replaceWith(planningPanel());
+    if(!validAuditState({studyPlan:next})){
+      status.textContent='Indique une période de vacances complète, avec une fin égale ou postérieure au début.';
+      return;
+    }
+    if(auditSave({studyPlan:next})){
+      const updated=planningPanel('Planning enregistré.');
+      panel.replaceWith(updated);
+      updated.querySelector('button').focus({preventScroll:true});
+    }
   };
-  panel.querySelectorAll('[data-slot]').forEach(button=>button.onclick=()=>showStudySession(schedule[Number(button.dataset.slot)].item.key));
+  panel.querySelectorAll('[data-slot]').forEach(button=>button.onclick=()=>{
+    const slot=schedule[Number(button.dataset.slot)];
+    showStudySession(slot.item.key,slot.minutes);
+  });
   return panel;
 }
 
@@ -114,14 +143,14 @@ function sessionElapsed(session) {
 function studentSessionCard() {
   const items=studyItems();
   const item=items.find(i=>i.key===S.studySession?.key);
-  const next=adaptiveSchedule(S.studyPlan||{days:[0,1,2,3,4,5,6],priority:''},items).find(slot=>slot.item)?.item;
-  const key=item?.key||next?.key;
+  const next=adaptiveSchedule(S.studyPlan||{days:[0,1,2,3,4,5,6],priority:''},items).find(slot=>slot.item);
+  const key=item?.key||next?.item.key;
   const journal=(S.studyJournal||[]).slice(-7).reverse();
   const titles=new Map(items.map(i=>[i.key,i.lesson.title]));
-  return `<section class="card"><h3>Séance guidée</h3>${key?`<button id="desk-session" data-session-key="${e(key)}" class="title-action">${item?'Reprendre la séance':'Préparer une séance'} · ${e((item||next).lesson.title)}</button>`:'<p>Choisis une leçon dans le campus pour étudier à ton rythme.</p>'}<p><button onclick="showSpace('Planning')">Planning personnalisé</button> <button onclick="showSpace('Compétences et erreurs')">Compétences et erreurs</button></p><details><summary>Journal des séances guidées</summary>${journal.length?`<ul>${journal.map(row=>`<li>${row.date} · ${e(titles.get(row.key)||'Leçon archivée')} · ${row.minutes} min</li>`).join('')}</ul>`:'<p>Aucune séance enregistrée.</p>'}</details></section>`;
+  return `<section class="card"><h3>Séance guidée</h3>${key?`<button id="desk-session" data-session-key="${e(key)}" data-session-minutes="${S.studySession?.minutes??next?.minutes??45}" class="title-action">${item?'Reprendre la séance':'Préparer une séance'} · ${e((item||next.item).lesson.title)}</button>`:'<p>Choisis une leçon dans le campus pour étudier à ton rythme.</p>'}<p><button onclick="showSpace('Planning')">Planning personnalisé</button> <button onclick="showSpace('Compétences et erreurs')">Compétences et erreurs</button></p><details><summary>Journal des séances guidées</summary>${journal.length?`<ul>${journal.map(row=>`<li>${row.date} · ${e(titles.get(row.key)||'Leçon archivée')} · ${row.minutes} min</li>`).join('')}</ul>`:'<p>Aucune séance enregistrée.</p>'}</details></section>`;
 }
 
-function showStudySession(key) {
+function showStudySession(key,planned) {
   const session = S.studySession;
   if(session && key && session.key!==key) {
     alert('Termine la séance en cours avant d’en démarrer une autre.');
@@ -129,10 +158,11 @@ function showStudySession(key) {
   }
   key ||= session?.key;
   const item=studyItems().find(i=>i.key===key);
-  rememberCampusRoute('session',{key});
+  const weekday=(new Date().getDay()+6)%7;
+  const minutes=session?.minutes||(session?S.studyPlan?.minutes:planned)||(S.studyPlan?plannedMinutes(S.studyPlan,weekday):0)||45;
+  rememberCampusRoute('session',{key,minutes});
   if(!item){v.innerHTML='<h2>Séance terminée</h2><button onclick="go(0)">Accueil</button>';return;}
-  const state=session||{key,step:0,elapsed:0,started:null};
-  const minutes=S.studyPlan?.minutes||45;
+  const state=session?{...session,minutes}:{key,step:0,elapsed:0,started:null,minutes};
   const durations=[5,20,15,5].map(weight=>Math.floor(minutes*weight/45));
   for(let i=0;durations.reduce((a,b)=>a+b,0)<minutes;i++) durations[i%4]++;
   const section=['history-quiz','lesson-reading','lesson-exercise','history-notes'][state.step];

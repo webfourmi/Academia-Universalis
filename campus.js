@@ -245,7 +245,7 @@ function studentDesk() {
   <details><summary>Planning de la semaine</summary><p>Répartis librement tes ${target} minutes. Priorité aux révisions à échéance, puis à la prochaine leçon.</p><ol>${week.map(day=>`<li>${e(day)} · ${log[day]||0} min déclarées</li>`).join('')}</ol><button onclick="showSpace('Planning')">Calendrier du campus</button></details></section>
   <article class="card"><h3><button class="title-action" onclick="go(12)">Explorer les matières</button></h3><p>Les quatre années du campus</p></article>`;
   const session=v.querySelector('#desk-session');
-  if(session)session.onclick=()=>showStudySession(session.dataset.sessionKey);
+  if(session)session.onclick=()=>showStudySession(session.dataset.sessionKey,Number(session.dataset.sessionMinutes));
   v.append(memoryPanel(),bookmarkPanel(),glossaryPanel());
   v.querySelectorAll('[data-desk-review]').forEach(button=>button.onclick=()=>{const item=due[Number(button.dataset.deskReview)];showQuickReview(item.course,item.index);});
   v.querySelector('#desk-hours').onchange=event=>{S.hours=Number(event.target.value);save();studentDesk();};
