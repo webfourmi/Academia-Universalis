@@ -46,3 +46,10 @@ vm.runInContext(readingSource.slice(readingSource.indexOf('function sameBookmark
 assert.equal(vm.runInContext('validBookmarks(undefined)',sandbox),true);
 assert.equal(vm.runInContext('validBookmarks([{courseKey:"a",lessonId:"b",section:0,title:"Titre"}])',sandbox),true);
 assert.equal(vm.runInContext('validBookmarks([{courseKey:"a",lessonId:"b",section:-1,title:"Titre"}])',sandbox),false);
+
+assert.equal(vm.runInContext('nextMemoryReview(undefined,false,"2026-11-27").due',sandbox),'2026-11-28');
+assert.equal(vm.runInContext('nextMemoryReview(undefined,true,"2026-11-27").due',sandbox),'2026-11-29');
+assert.equal(vm.runInContext('nextMemoryReview(nextMemoryReview(undefined,true,"2026-11-27"),true,"2026-11-29").step',sandbox),1);
+assert.equal(vm.runInContext('nextMemoryReview(nextMemoryReview(undefined,true,"2026-11-27"),true,"2026-11-27").step',sandbox),0);
+assert.equal(vm.runInContext('validMemoryCards([{question:"Q",answer:"A"}])',sandbox),true);
+assert.equal(vm.runInContext('validMemoryCards([{question:42,answer:"A"}])',sandbox),false);
