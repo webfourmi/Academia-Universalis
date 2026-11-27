@@ -203,6 +203,7 @@ function studentDesk() {
   <form id="desk-time"><label for="desk-minutes">Temps total étudié aujourd’hui (minutes)</label><input id="desk-minutes" type="number" min="0" max="1440" step="1" required value="${log[today]||0}"><button>Enregistrer</button><p role="status"></p></form>
   <details><summary>Planning de la semaine</summary><p>Répartis librement tes ${target} minutes. Priorité aux révisions à échéance, puis à la prochaine leçon.</p><ol>${week.map(day=>`<li>${e(day)} · ${log[day]||0} min déclarées</li>`).join('')}</ol><button onclick="showSpace('Planning')">Calendrier du campus</button></details></section>
   <article class="card"><h3><button class="title-action" onclick="go(12)">Explorer les matières</button></h3><p>Les quatre années du campus</p></article>`;
+  v.append(bookmarkPanel(),glossaryPanel());
   v.querySelectorAll('[data-desk-review]').forEach(button=>button.onclick=()=>{const item=due[Number(button.dataset.deskReview)];showQuickReview(item.course,item.index);});
   v.querySelector('#desk-hours').onchange=event=>{S.hours=Number(event.target.value);save();studentDesk();};
   v.querySelector('#desk-time').onsubmit=event=>{event.preventDefault();const n=Number(v.querySelector('#desk-minutes').value);if(!Number.isInteger(n)||n<0||n>1440)return;const next={...S,studyMinutes:{...log,[today]:n}};try{localStorage.au=JSON.stringify(next);S=next;studentDesk();v.querySelector('#desk-time [role="status"]').textContent='Temps enregistré.';}catch{v.querySelector('#desk-time [role="status"]').textContent='Enregistrement impossible.';}};
