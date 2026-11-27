@@ -26,3 +26,11 @@ assert.equal(vm.runInContext('safeBackupTree(JSON.parse(\'{"notes":{"__proto__":
 assert.equal(vm.runInContext('safeBackupTree({constructor:{}})',sandbox),false);
 assert.equal(vm.runInContext('safeBackupTree(Array.from({length:45}).reduce(a=>({a}),{}))',sandbox),false);
 console.log('Contrôles de structure des sauvegardes réussis');
+
+vm.runInContext(fs.readFileSync('campus.js','utf8'),sandbox);
+assert.equal(vm.runInContext('validStudyMinutes({"2026-11-27":45})',sandbox),true);
+assert.equal(vm.runInContext('validStudyMinutes({"2026-11-27":-1})',sandbox),false);
+assert.equal(vm.runInContext('validStudyMinutes(undefined)',sandbox),true);
+assert.equal(vm.runInContext('studentWeek(new Date(2026,10,29,12))[0]',sandbox),'2026-11-23');
+assert.ok(html.includes('studentDesk()'));
+console.log('Contrôles du bureau étudiant réussis');
