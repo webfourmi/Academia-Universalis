@@ -180,3 +180,5 @@ main { max-width: 1080px; }
 .passage-tools textarea{min-height:4rem}
 #lesson-reading.reading-immersive{max-width:76ch;margin-inline:auto}
 #view > [hidden]{display:none!important}
+
+.bookmark-row{display:flex;align-items:center;gap:.5rem;border-bottom:1px solid #c5d5ce;padding-block:.5rem}.bookmark-row .title-action{flex:1;min-width:0;overflow-wrap:anywhere}.reading-tools dt{font-weight:700}.reading-tools dd{margin:0 0 .75rem}.reading-tools input[type=search]{max-width:100%;box-sizing:border-box}
