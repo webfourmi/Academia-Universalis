@@ -34,6 +34,10 @@ const physique = [
         "Modèle ? : Représentation simplifiée d'un phénomène. ; Hypothèse testable ? : Proposition dont on peut confronter les conséquences aux observations. ; Prédiction ? : Conséquence attendue du modèle. ; Observation ? : Résultat d'une procédure empirique. ; Variable contrôlée ? : Grandeur maintenue aussi constante que possible."
       ],
       [
+        "Document scientifique commenté",
+        "Observer l’appareil à pendules, inventaire 982. Pourquoi comparer plusieurs longueurs ? Corrigé : isoler l’influence de la longueur sur la période ; l’objet du XVIIIe siècle ne constitue pas un appareil original de Galilée. [2]"
+      ],
+      [
         "Bilan éditorial",
         "Exemples numériques fictifs ou prédictions signalés. Références externes à contrôler individuellement ; relecture indépendante non réalisée."
       ]
@@ -63,7 +67,7 @@ const physique = [
         ]
       ]
     ],
-    "dossier": "Lire la section de référence [1], relever les hypothèses, les unités et les limites. Les documents externes nécessitent une connexion.",
+    "dossier": "Lire la section de référence [1], relever les hypothèses, les unités et les limites. Les documents externes nécessitent une connexion. Document institutionnel [2] : Observer l’appareil à pendules, inventaire 982. Pourquoi comparer plusieurs longueurs ? Corrigé : isoler l’influence de la longueur sur la période ; l’objet du XVIIIe siècle ne constitue pas un appareil original de Galilée. Consultation : 27 novembre 2026. Images et manuscrits accessibles par lien externe ; droits de reproduction non établis, aucune copie intégrée.",
     "activity": "Suspendre un petit objet léger à un fil solidement fixé, loin des personnes et objets fragiles. Comparer dix oscillations à 20 et 80 cm, faible amplitude. Ne pas utiliser de charge lourde.",
     "correction": "Avec g = 9,81 m/s², T ≈ 0,90 s puis 1,79 s. Dix oscillations durent environ 9 et 18 s. Comparer les mesures et expliquer les écarts ; ces valeurs sont des prédictions, pas des données observées.",
     "quiz": [
@@ -85,6 +89,14 @@ const physique = [
         "2016",
         "https://openstax.org/books/university-physics-volume-1/pages/15-4-pendulums",
         "Manuel universitaire, modèles et exemples.",
+        "anglais"
+      ],
+      [
+        "Museo Galileo",
+        "Science of motion, inventaires 982 et 1041",
+        "XVIIIe–XIXe siècles",
+        "https://catalogue.museogalileo.it/section/ScienceOfMotion.html",
+        "Catalogue institutionnel, photographies et provenance des instruments.",
         "anglais"
       ]
     ],
@@ -174,6 +186,10 @@ const physique = [
         "Unité SI longueur ? : mètre. ; Unité SI durée ? : seconde. ; Unité SI masse ? : kilogramme. ; 1 cm en m ? : 0,01 m. ; 1 ms en s ? : 0,001 s."
       ],
       [
+        "Document scientifique commenté",
+        "Lire la section 3 et la figure 1 : identifier le trajet de référence et le trajet de mesure. Calculer le temps de vol aller simple sur 1 m dans le vide : 1/c ≈ 3,34 ns. L’air modifie la propagation. [3]"
+      ],
+      [
         "Bilan éditorial",
         "Exemples numériques fictifs ou prédictions signalés. Références externes à contrôler individuellement ; relecture indépendante non réalisée."
       ]
@@ -203,7 +219,7 @@ const physique = [
         ]
       ]
     ],
-    "dossier": "Lire la section de référence [1], relever les hypothèses, les unités et les limites. Les documents externes nécessitent une connexion.",
+    "dossier": "Lire la section de référence [1], relever les hypothèses, les unités et les limites. Les documents externes nécessitent une connexion. Document institutionnel [3] : Lire la section 3 et la figure 1 : identifier le trajet de référence et le trajet de mesure. Calculer le temps de vol aller simple sur 1 m dans le vide : 1/c ≈ 3,34 ns. L’air modifie la propagation. Consultation : 27 novembre 2026. Images et manuscrits accessibles par lien externe ; droits de reproduction non établis, aucune copie intégrée.",
     "activity": "Mesurer cinq fois une largeur en repositionnant la règle. Noter les lectures brutes, calculer moyenne et demi-étendue, identifier un biais et convertir en mètres.",
     "correction": "Exemple fictif 15,0 ; 15,1 ; 15,2 ; 15,1 ; 15,1 cm : moyenne 15,1 cm, demi-étendue 0,1 cm, soit 0,151 m et 0,001 m. Un zéro décalé de 0,2 cm ne serait pas détecté par la seule dispersion.",
     "quiz": [
@@ -233,6 +249,14 @@ const physique = [
         "2016",
         "https://openstax.org/books/university-physics-volume-1/pages/1-5-estimates-and-fermi-calculations",
         "Manuel universitaire, modèles et exemples.",
+        "anglais"
+      ],
+      [
+        "BIPM",
+        "Mise en pratique for the definition of the metre, SI Brochure appendix 2",
+        "2019",
+        "https://www.bipm.org/documents/20126/41489670/SI-App2-meter.pdf/0e011055-9736-d293-5e56-b8b1b267fd68?download=false",
+        "Réalisation du mètre, temps de vol et influence de l'air.",
         "anglais"
       ]
     ],
@@ -330,6 +354,10 @@ const physique = [
         "Notation scientifique de 0,00032 ? : 3,2 × 10⁻⁴. ; Produit 10² × 10³ ? : 10⁵. ; y=kx, x double ? : y double. ; y=kx², x double ? : y quadruple. ; Vecteur ? : Grandeur avec norme et direction."
       ],
       [
+        "Document scientifique commenté",
+        "Repérer dans les archives les calculs et diagrammes. Distinguer une table calculée d’un relevé expérimental ; la seule présence de chiffres ne permet pas de trancher. [3]"
+      ],
+      [
         "Bilan éditorial",
         "Exemples numériques fictifs ou prédictions signalés. Références externes à contrôler individuellement ; relecture indépendante non réalisée."
       ]
@@ -359,7 +387,7 @@ const physique = [
         ]
       ]
     ],
-    "dossier": "Lire la section de référence [1], relever les hypothèses, les unités et les limites. Les documents externes nécessitent une connexion.",
+    "dossier": "Lire la section de référence [1], relever les hypothèses, les unités et les limites. Les documents externes nécessitent une connexion. Document institutionnel [3] : Repérer dans les archives les calculs et diagrammes. Distinguer une table calculée d’un relevé expérimental ; la seule présence de chiffres ne permet pas de trancher. Consultation : 27 novembre 2026. Images et manuscrits accessibles par lien externe ; droits de reproduction non établis, aucune copie intégrée.",
     "activity": "Tracer x(t)=2+3t pour t=0,1,2,3 s ; calculer pente et déplacement. Puis comparer à x(t)=2+t².",
     "correction": "Positions 2,5,8,11 m ; pente 3 m/s ; déplacement 9 m. Pour le second modèle : 2,3,6,11 m, pente moyenne 3 m/s mais pente instantanée variable.",
     "quiz": [
@@ -389,6 +417,14 @@ const physique = [
         "2016",
         "https://openstax.org/books/university-physics-volume-1/pages/3-2-instantaneous-velocity-and-speed",
         "Manuel universitaire, modèles et exemples.",
+        "anglais"
+      ],
+      [
+        "Max Planck Institute for the History of Science",
+        "Manuscripts and Related Writings of the Pioneers of the Scientific Revolution",
+        "Archives historiques",
+        "https://echo.mpiwg-berlin.mpg.de/content/scientific_revolution.html",
+        "Manuscrits numérisés, notes et calculs de Galilée.",
         "anglais"
       ]
     ],
@@ -478,6 +514,10 @@ const physique = [
         "Système ? : Objet ou ensemble étudié. ; Référentiel ? : Cadre de description spatiale et temporelle. ; Origine ? : Point de coordonnée zéro. ; Déplacement ? : Position finale moins initiale. ; Distance égale toujours déplacement ? : Non."
       ],
       [
+        "Document scientifique commenté",
+        "En lisant le commentaire sur la relativité du mouvement, expliquer pourquoi une description exige un référentiel. Corrigé : positions et vitesses dépendent du cadre choisi. [2]"
+      ],
+      [
         "Bilan éditorial",
         "Exemples numériques fictifs ou prédictions signalés. Références externes à contrôler individuellement ; relecture indépendante non réalisée."
       ]
@@ -507,7 +547,7 @@ const physique = [
         ]
       ]
     ],
-    "dossier": "Lire la section de référence [1], relever les hypothèses, les unités et les limites. Les documents externes nécessitent une connexion.",
+    "dossier": "Lire la section de référence [1], relever les hypothèses, les unités et les limites. Les documents externes nécessitent une connexion. Document institutionnel [2] : En lisant le commentaire sur la relativité du mouvement, expliquer pourquoi une description exige un référentiel. Corrigé : positions et vitesses dépendent du cadre choisi. Consultation : 27 novembre 2026. Images et manuscrits accessibles par lien externe ; droits de reproduction non établis, aucune copie intégrée.",
     "activity": "Faire glisser une feuille portant un repère sous un petit objet posé sur une table. Comparer ses positions dans les deux repères. Calculer xB si xA=8 m, U=2 m/s, t=3 s.",
     "correction": "xB=8−6=2 m. L'objet peut être immobile dans un repère et mobile dans l'autre. Documenter les origines et les sens positifs.",
     "quiz": [
@@ -529,6 +569,14 @@ const physique = [
         "2016",
         "https://openstax.org/books/university-physics-volume-1/pages/4-5-relative-motion-in-one-and-two-dimensions",
         "Manuel universitaire, modèles et exemples.",
+        "anglais"
+      ],
+      [
+        "Museo Galileo",
+        "Galileo and the science of motion",
+        "Catalogue institutionnel",
+        "https://catalogue.museogalileo.it/multimedia/GalileoScienceMotionBis.html",
+        "Contexte historique de la relativité du mouvement.",
         "anglais"
       ]
     ],
@@ -618,6 +666,10 @@ const physique = [
         "Vitesse moyenne ? : Δx/Δt. ; Célérité moyenne ? : Distance totale/durée. ; Vitesse instantanée ? : dx/dt. ; Accélération ? : dv/dt. ; Unité vitesse ? : m/s."
       ],
       [
+        "Document scientifique commenté",
+        "Observer le plan incliné, inventaire 1041. Pourquoi ralentir la chute ? Corrigé : augmenter la durée observable facilite la mesure ; le roulement n’est pas identique à la chute libre. [2]"
+      ],
+      [
         "Bilan éditorial",
         "Exemples numériques fictifs ou prédictions signalés. Références externes à contrôler individuellement ; relecture indépendante non réalisée."
       ]
@@ -647,7 +699,7 @@ const physique = [
         ]
       ]
     ],
-    "dossier": "Lire la section de référence [1], relever les hypothèses, les unités et les limites. Les documents externes nécessitent une connexion.",
+    "dossier": "Lire la section de référence [1], relever les hypothèses, les unités et les limites. Les documents externes nécessitent une connexion. Document institutionnel [2] : Observer le plan incliné, inventaire 1041. Pourquoi ralentir la chute ? Corrigé : augmenter la durée observable facilite la mesure ; le roulement n’est pas identique à la chute libre. Consultation : 27 novembre 2026. Images et manuscrits accessibles par lien externe ; droits de reproduction non établis, aucune copie intégrée.",
     "activity": "À partir de positions fictives 0,1,4,9 m aux temps 0,1,2,3 s, calculer les vitesses moyennes par intervalle et interpréter.",
     "correction": "1,3,5 m/s. Leur augmentation régulière est compatible avec une accélération constante de 2 m/s² ; quatre points ne prouvent pas à eux seuls le modèle entre les mesures.",
     "quiz": [
@@ -669,6 +721,14 @@ const physique = [
         "2016",
         "https://openstax.org/books/university-physics-volume-1/pages/3-3-average-and-instantaneous-acceleration",
         "Manuel universitaire, modèles et exemples.",
+        "anglais"
+      ],
+      [
+        "Museo Galileo",
+        "Science of motion, inventaires 982 et 1041",
+        "XVIIIe–XIXe siècles",
+        "https://catalogue.museogalileo.it/section/ScienceOfMotion.html",
+        "Catalogue institutionnel, photographies et provenance des instruments.",
         "anglais"
       ]
     ],
@@ -762,6 +822,10 @@ const physique = [
         "Mouvement uniforme ? : Vitesse constante. ; Position uniforme ? : x₀+vt. ; Vitesse à a constante ? : v₀+at. ; Position à a constante ? : x₀+v₀t+½at². ; Condition des équations ? : Accélération constante."
       ],
       [
+        "Document scientifique commenté",
+        "Examiner les notes de mécanique et distinguer hypothèses, calculs et traces d’expériences. Corrigé : un modèle prédit des valeurs ; seules des mesures documentées permettent de tester ces prédictions. [2]"
+      ],
+      [
         "Bilan éditorial",
         "Exemples numériques fictifs ou prédictions signalés. Références externes à contrôler individuellement ; relecture indépendante non réalisée."
       ]
@@ -791,7 +855,7 @@ const physique = [
         ]
       ]
     ],
-    "dossier": "Lire la section de référence [1], relever les hypothèses, les unités et les limites. Les documents externes nécessitent une connexion.",
+    "dossier": "Lire la section de référence [1], relever les hypothèses, les unités et les limites. Les documents externes nécessitent une connexion. Document institutionnel [2] : Examiner les notes de mécanique et distinguer hypothèses, calculs et traces d’expériences. Corrigé : un modèle prédit des valeurs ; seules des mesures documentées permettent de tester ces prédictions. Consultation : 27 novembre 2026. Images et manuscrits accessibles par lien externe ; droits de reproduction non établis, aucune copie intégrée.",
     "activity": "TP de cycle : filmer un petit objet roulant lentement sur une table dégagée, avec une règle visible et un arrêt avant le bord. Relever au moins cinq positions à des temps connus. Ajuster un modèle uniforme ou uniformément accéléré et réserver un point pour le test.",
     "correction": "Exemple fictif : x=0, 0,10, 0,40, 0,90 m à t=0,1,2,3 s. Modèle x=0,10t², a=0,20 m/s². Prédiction à 4 s : 1,60 m. Si mesure fictive 1,55 m, résidu −0,05 m. Comparer à l'incertitude et ne pas assimiler ces données à une expérience réelle.",
     "quiz": [
@@ -813,6 +877,14 @@ const physique = [
         "2016",
         "https://openstax.org/books/university-physics-volume-1/pages/3-4-motion-with-constant-acceleration",
         "Manuel universitaire, modèles et exemples.",
+        "anglais"
+      ],
+      [
+        "Max Planck Institute for the History of Science",
+        "Manuscripts and Related Writings of the Pioneers of the Scientific Revolution",
+        "Archives historiques",
+        "https://echo.mpiwg-berlin.mpg.de/content/scientific_revolution.html",
+        "Manuscrits numérisés, notes et calculs de Galilée.",
         "anglais"
       ]
     ],
