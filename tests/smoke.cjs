@@ -96,3 +96,7 @@ assert.ok(fs.readFileSync('campus.js','utf8').includes('...builtinDue.map'));
 
 assert.ok(migrationSource.includes('function lessonCardDefinitions(lesson)'));
 assert.ok(migrationSource.includes('function builtinStudyCards()'));
+
+assert.equal(vm.runInContext('civilisations.find(l=>l.id==="mobilites").flashcards.length',sandbox),20);
+assert.equal(vm.runInContext('civilisations.filter(l=>l.id==="mobilites").length',sandbox),1);
+assert.equal(vm.runInContext('civilisations.find(l=>l.id==="mobilites").sources.length',sandbox),4);
