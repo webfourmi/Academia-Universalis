@@ -142,3 +142,12 @@ assert.equal(pm('maths-physicien',3,3),11);
 assert.equal(pm('referentiels',2,3),2);
 assert.equal(pm('vitesse-acceleration',2,3),6);
 assert.equal(pm('prevoir-mouvement',2,3),12);
+
+assert.equal(vm.runInContext('litterature.slice(0,6).map(l=>l.id).join(",")',sandbox),'intro-litterature,genres-litteraires,odyssee,fable,japon-heian,commentaire-litteraire');
+assert.ok(vm.runInContext('litterature.slice(0,6).every(l=>l.flashcards.length>=12&&l.correction)',sandbox));
+const literarySource=fs.readFileSync('campus.js','utf8').split('function validLiteraryState(')[1].split('function literaryState(')[0];
+const vl=vm.runInNewContext('(function validLiteraryState('+literarySource.trim()+')');
+assert.ok(vl(undefined));
+assert.ok(vl({theme:'sepia',size:115,entries:{fable:{status:'reading',impressions:'note',quotes:'',analysis:'',characters:'',position:.5}}}));
+assert.ok(!vl({theme:'bad',size:115,entries:{}}));
+assert.ok(!vl({theme:'dark',size:115,entries:{fable:{status:'read',position:2}}}));
