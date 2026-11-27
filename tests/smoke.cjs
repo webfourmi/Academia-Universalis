@@ -100,3 +100,8 @@ assert.ok(migrationSource.includes('function builtinStudyCards()'));
 assert.equal(vm.runInContext('civilisations.find(l=>l.id==="mobilites").flashcards.length',sandbox),20);
 assert.equal(vm.runInContext('civilisations.filter(l=>l.id==="mobilites").length',sandbox),1);
 assert.equal(vm.runInContext('civilisations.find(l=>l.id==="mobilites").sources.length',sandbox),4);
+
+assert.equal(vm.runInContext('civilisations.find(l=>l.id==="neolithiques").flashcards.length',sandbox),28);
+assert.equal(vm.runInContext('civilisations.filter(l=>l.id==="neolithiques").length',sandbox),1);
+assert.equal(vm.runInContext('civilisations.find(l=>l.id==="neolithiques").sources.length',sandbox),5);
+assert.ok(vm.runInContext('civilisations.find(l=>l.id==="neolithiques").flashcards.every(c=>c.length===2&&c.every(t=>typeof t==="string"&&t.length))',sandbox));

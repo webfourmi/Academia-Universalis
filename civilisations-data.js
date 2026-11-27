@@ -488,27 +488,261 @@ const civilisations = [
 
   },
   {
-    id: 'neolithiques', title: 'Néolithiques et domestications',
-    goal: 'Distinguer collecte, culture et domestication, puis comparer deux dossiers archéobotaniques.',
-    prerequisite: 'Chasseurs-cueilleurs et mobilités.',
-    sections: [
-      ['Trois phénomènes', 'Récolter une plante sauvage, modifier les conditions de sa croissance et reproduire une population domestiquée sont trois propositions différentes. Une plante peut être semée ou protégée alors que ses caractères restent proches des populations sauvages. La domestication désigne ici une transformation transmissible observée au niveau d’une population. Les trajectoires réelles combinent souvent plusieurs ressources et pratiques. [1]'],
-      ['Une preuve biologique', 'Chez certaines céréales, une proportion accrue de structures qui retiennent les grains mûrs est compatible avec la sélection de plantes dont la récolte est facilitée. Cette proportion dépend aussi de la maturité à la coupe et des déchets jetés sur le site. Pour défendre une transformation durable, mieux vaut comparer des séries bien datées et contextualisées que chercher un spécimen décisif. [1]'],
-      ['Nouvelle-Guinée et Chine', 'Au marais de Kuk, des traces d’aménagement et des restes végétaux documentent l’intervention humaine dans un paysage humide des hautes terres. Dans le bas Yangzi, des phytolithes, minuscules structures siliceuses conservées dans le sol, alimentent la discussion sur l’histoire du riz. Les deux dossiers portent sur des pratiques différentes et mobilisent des preuves qui ne se datent ni ne se comparent exactement de la même façon. [2, 3]'],
-      ['Explications à mettre à l’épreuve', 'Le climat change les coûts de certaines pratiques. La démographie, les échanges, les préférences alimentaires et la gestion des terres peuvent aussi orienter les choix. Pour comparer deux explications, demandez quels changements elles prédisent, à quelle échelle et dans quel ordre. Une chronologie compatible rend une explication possible. Pour l’appuyer, il faut des données capables de départager les mécanismes. [1]']
+    
+  "id": "neolithiques",
+  "title": "Néolithiques et domestications",
+  "goal": "Distinguer collecte, culture, domestication et agriculture ; comparer quatre régions ; interpréter une série archéobotanique quantitative.",
+  "prerequisite": "Chasseurs-cueilleurs et mobilités ; savoir calculer un pourcentage.",
+  "overview": "Comment les pratiques humaines modifient-elles les populations vivantes ? Essentiel : 40 min ; universitaire : 2 h ; recherche : 4 h.",
+  "sections": [
+    [
+      "Des néolithisations au pluriel",
+      "Le terme Néolithique désigne des configurations historiques variables. La poterie, la résidence durable, la production alimentaire et les outils polis ne constituent pas partout un ensemble simultané. La transition est étudiée régionalement, sans hiérarchie entre sociétés."
     ],
-    diagram: ['Trois niveaux d’inférence en archéobotanique', ['Donnée', 'Inférence prudente', 'Donnée complémentaire'], [['Graines carbonisées', 'Présence ou usage', 'Contexte de récolte'], ['Sillons et aménagements', 'Modification du terrain', 'Restes végétaux associés'], ['Caractère morphologique récurrent', 'Sélection possible', 'Série datée et référence sauvage']]],
-    dossier: 'Lisez le résumé de l’étude sur Kuk [2]. Notez les types d’indices avancés et les périodes auxquelles ils se rapportent. Comparez-les aux preuves invoquées pour le riz [3].',
-    activity: 'Cas fictif. Des graines sauvages et des traces de plantation apparaissent dans la même couche. Rédigez une conclusion en deux phrases et proposez un protocole pour vérifier une domestication.',
-    correction: 'La culture est plausible si les traces et graines correspondent à un même usage du lieu. La domestication reste à établir. Échantillonnez plusieurs couches datées, décrivez les caractères pertinents, comparez-les à une population sauvage et contrôlez les différences de conservation.',
-    quiz: ['Quel résultat soutient spécifiquement la domestication ?', ['Une forte densité de graines', 'Une modification morphologique transmissible dans une série datée', 'La présence d’une meule'], 1, 'La domestication implique un changement dans les populations végétales. Les deux autres indices documentent principalement la présence ou le traitement des plantes.'],
-    seminar: 'Pourquoi plusieurs foyers de production alimentaire conduisent-ils à des rythmes et des formes d’organisation différents ?',
-    review: 'À J+2, définissez les trois niveaux. À J+7, opposez les indices du bassin du Yangzi à ceux de Kuk.',
-    sources: [
-      ['D. Q. Fuller et al.', 'Convergent evolution and parallelism in plant domestication revealed by an expanding archaeological record', '2014', 'https://doi.org/10.1073/pnas.1308937110', 'Processus graduels et comparaisons des domestications.'],
-      ['T. P. Denham et al.', 'Origins of agriculture at Kuk Swamp in the highlands of New Guinea', '2003', 'https://pubmed.ncbi.nlm.nih.gov/12817084/', 'Aménagements et indices de culture des hautes terres.'],
-      ['X. Zuo et al.', 'Dating rice remains through phytolith carbon-14 study reveals domestication at the beginning of the Holocene', '2017', 'https://doi.org/10.1073/pnas.1704304114', 'Datation et interprétation des phytolithes de riz.']
+    [
+      "Quatre concepts",
+      "Collecter consiste à prélever des ressources ; cultiver implique de favoriser la croissance des plantes ; domestiquer implique une transformation héréditaire de populations sous influence humaine ; une économie agricole repose principalement sur la production cultivée. Une plante cultivée peut encore présenter des caractères sauvages. [1]"
+    ],
+    [
+      "Sélection et transmission",
+      "Lorsqu'une récolte favorise certains individus et que ceux-ci fournissent les semences suivantes, leur caractère héréditaire peut devenir plus fréquent. La sélection n'implique pas nécessairement un projet conscient. Chez certaines céréales, la rétention des graines facilite leur récolte mais limite leur dispersion naturelle."
+    ],
+    [
+      "Proche-Orient : plantes et animaux",
+      "Les céréales, légumineuses et troupeaux ont des histoires distinctes. La synthèse de Zeder situe des pratiques de gestion de populations encore morphologiquement sauvages vers 11 500 ans calendaires BP ou auparavant. Les trajectoires concernent plusieurs secteurs du Proche-Orient plutôt qu'un unique village fondateur. [5]"
+    ],
+    [
+      "Chine : Tianluoshan",
+      "Dans le Zhejiang, Fuller et ses collègues comparent des bases d'épillets de riz. Entre environ 6 900 et 6 600 ans avant le présent, le caractère de rétention des grains devient plus fréquent : 27 % puis 39 %. La part des restes de riz parmi les restes végétaux passe de 8 % à 24 %. Ces deux indicateurs ne mesurent pas la même chose. [2]"
+    ],
+    [
+      "Mexique : Xihuatoxtla",
+      "Dans le bassin du Balsas, des résidus microscopiques conservés sur des outils et dans des sédiments renseignent sur la présence précoce du maïs, vers 8 700 ans calendaires BP au moins. Les dates concernent le contexte étudié : elles ne désignent pas la première plante domestiquée. [3, 4]"
+    ],
+    [
+      "Afrique occidentale et Nouvelle-Guinée",
+      "La synthèse comparative de Fuller aborde le mil perlé africain et les cultures à multiplication végétative des régions tropicales. Les tubercules et plantes reproduites par fragments posent des problèmes différents des céréales : les critères fondés sur la dispersion des graines ne sont pas universels. [1] Le dossier de Kuk en Nouvelle-Guinée mérite une lecture complémentaire ; son article original n’a pas pu être vérifié lors de cette révision."
+    ],
+    [
+      "Domestication animale",
+      "La gestion des troupeaux peut être étudiée par les profils de mortalité selon l'âge et le sexe, les changements morphologiques et les données génétiques. Un profil de mortalité peut aussi dépendre de pratiques de chasse ou de conservation différentielle : croiser les preuves est indispensable. Un animal apprivoisé ne constitue pas à lui seul une population domestiquée."
+    ],
+    [
+      "Conséquences et causalité",
+      "La production alimentaire peut modifier le travail saisonnier, la densité de population, le stockage, les maladies et les paysages. Ces effets varient selon les contextes ; ni la croissance démographique ni les inégalités ne constituent une conséquence automatique à une date unique. Pour tester une cause, formuler une prédiction et chercher des données susceptibles de la réfuter."
+    ],
+    [
+      "Glossaire",
+      "Archéobotanique : étude des vestiges végétaux. Phytolithe : structure minérale formée dans une plante. Amidon : réserve glucidique végétale. Épillet : unité florale des graminées. Rachis : axe portant les épillets. Sélection : variation du succès reproductif de caractères héréditaires. Multiplication végétative : reproduction à partir de parties de plante. Cal BP : années calendaires avant 1950."
     ]
+  ],
+  "diagram": [
+    "Tableau comparatif des preuves (dates indicatives, pas dates de naissance des espèces domestiques)",
+    [
+      "Région",
+      "Repère",
+      "Indice"
+    ],
+    [
+      [
+        "Proche-Orient",
+        "vers 11 500 cal BP",
+        "Gestion de populations [5]"
+      ],
+      [
+        "Mexique, Balsas",
+        "8 700 cal BP",
+        "Amidon et phytolithes [3, 4]"
+      ],
+      [
+        "Chine, Tianluoshan",
+        "6 900–6 600 ans",
+        "Bases d'épillets [2]"
+      ],
+      [
+        "Afrique occidentale",
+        "Synthèse comparative",
+        "Mil perlé [1]"
+      ],
+      [
+        "Nouvelle-Guinée",
+        "Dossier à approfondir",
+        "Cultures végétatives [1]"
+      ]
+    ]
+  ],
+  "dossier": "Atlas documentaire : carte mondiale de Fuller et al. [1], figure 1 ; photographie de l'abri Xihuatoxtla et coupe stratigraphique de Ranere et al. [4], figures 2 et 3 ; résultats de Tianluoshan [2]. Consulter les originaux via les références. Questions : que montre la coupe ? Corrigé : la succession des unités et leur contexte, non une datation directe de chaque résidu. La carte de synthèse n'est pas une carte des frontières politiques. Documents externes en anglais ; aucune reproduction sans vérification de licence.",
+  "activity": "Laboratoire sur données publiées [2] : bases d'épillets de type domestique 27 % puis 39 % ; part du riz parmi les restes végétaux 8 % puis 24 %. 1. Calculer les variations en points et en pourcentage relatif. 2. Interpréter séparément les indicateurs. 3. Proposer deux biais. 4. Peut-on déduire la part calorique du riz ?",
+  "correction": "1. 12 points, soit environ 44,4 % d'augmentation relative ; 16 points, soit 200 % d'augmentation relative. 2. Le premier indicateur concerne la morphologie, le second la composition du dépôt végétal. 3. Conservation et échantillonnage, maturité de récolte ou traitement des déchets. 4. Non : nombre de restes et apport calorique sont distincts. Les quatre proportions sont celles du résumé de Fuller et al. [2] ; les calculs sont pédagogiques.",
+  "quiz": [
+    "Quel résultat soutient spécifiquement une domestication végétale ?",
+    [
+      "Une meule isolée",
+      "Une évolution de caractères héréditaires dans une population documentée",
+      "Un foyer"
+    ],
+    1,
+    "Une série de caractères biologiques contextualisés appuie l'hypothèse ; les outils seuls documentent surtout des activités."
+  ],
+  "seminar": "500–700 mots : comparer Tianluoshan et Xihuatoxtla. Pourquoi ne peut-on pas fixer une date mondiale de l'invention agricole ? Barème /20 : concepts 5, comparaison des preuves 6, limites 5, argumentation 4. Corrigé indicatif : les indicateurs, chronologies et populations diffèrent ; distinguer présence, gestion, transformation et dépendance alimentaire.",
+  "review": "Réviser les cartes individuelles ; à J+7 refaire les calculs sans notes ; à J+30 comparer trois dossiers sans confondre leurs indicateurs.",
+  "flashcards": [
+    [
+      "Collecte ?",
+      "Prélèvement de ressources."
+    ],
+    [
+      "Culture ?",
+      "Pratiques favorisant la croissance des plantes."
+    ],
+    [
+      "Domestication ?",
+      "Transformation héréditaire de populations sous influence humaine."
+    ],
+    [
+      "Agriculture ?",
+      "Système économique où la culture domine."
+    ],
+    [
+      "Le Néolithique débute-t-il partout simultanément ?",
+      "Non."
+    ],
+    [
+      "Une plante cultivée est-elle forcément domestiquée ?",
+      "Non."
+    ],
+    [
+      "La sélection doit-elle être intentionnelle ?",
+      "Non."
+    ],
+    [
+      "Pourquoi la rétention des graines peut-elle être sélectionnée ?",
+      "Elle facilite la récolte et peut favoriser leur transmission."
+    ],
+    [
+      "Où se trouve Tianluoshan ?",
+      "Zhejiang, bas Yangzi, Chine."
+    ],
+    [
+      "Période étudiée à Tianluoshan ?",
+      "Environ 6 900–6 600 ans avant le présent."
+    ],
+    [
+      "Indicateur morphologique du riz ?",
+      "Bases d'épillets de type domestique."
+    ],
+    [
+      "Évolution de cet indicateur ?",
+      "27 % à 39 %."
+    ],
+    [
+      "Variation en points ?",
+      "12 points."
+    ],
+    [
+      "Variation relative ?",
+      "Environ 44,4 %."
+    ],
+    [
+      "Part du riz parmi les restes ?",
+      "8 % à 24 %."
+    ],
+    [
+      "Variation relative de cette part ?",
+      "200 %, soit un triplement."
+    ],
+    [
+      "Part des restes égale part calorique ?",
+      "Non."
+    ],
+    [
+      "Où se trouve Xihuatoxtla ?",
+      "Bassin du Balsas, Mexique."
+    ],
+    [
+      "Repère du maïs à Xihuatoxtla ?",
+      "Au moins 8 700 cal BP."
+    ],
+    [
+      "Deux indices microscopiques du maïs ?",
+      "Amidon et phytolithes."
+    ],
+    [
+      "Phytolithe ?",
+      "Structure minérale produite dans une plante."
+    ],
+    [
+      "Cal BP ?",
+      "Années calendaires avant 1950."
+    ],
+    [
+      "Pourquoi les tubercules exigent-ils d'autres critères ?",
+      "La multiplication végétative ne repose pas sur la dispersion des graines."
+    ],
+    [
+      "Apprivoisement égale domestication ?",
+      "Non, la domestication concerne les populations."
+    ],
+    [
+      "Deux indices de gestion animale ?",
+      "Profils de mortalité et morphologie, complétés par la génétique."
+    ],
+    [
+      "Pourquoi contrôler la stratigraphie ?",
+      "Pour relier les restes à des événements et contextes datés."
+    ],
+    [
+      "Comment tester une hypothèse causale ?",
+      "Formuler une prédiction réfutable et rechercher des preuves indépendantes."
+    ],
+    [
+      "La première trace datée est-elle la date d'origine ?",
+      "Non, elle atteste une présence au moment documenté."
+    ]
+  ],
+  "sources": [
+    [
+      "D. Q. Fuller et al.",
+      "Convergent evolution and parallelism in plant domestication revealed by an expanding archaeological record",
+      "2014",
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC4035951/",
+      "Synthèse comparative ; texte intégral consulté ; figure 1 ; EN",
+      "EN"
+    ],
+    [
+      "D. Q. Fuller et al.",
+      "The domestication process and domestication rate in rice: spikelet bases from the Lower Yangtze",
+      "2009",
+      "https://pubmed.ncbi.nlm.nih.gov/19299619/",
+      "Science 323, 1607–1610 ; DOI 10.1126/science.1166605 ; résumé consulté",
+      "EN"
+    ],
+    [
+      "D. R. Piperno et al.",
+      "Starch grain and phytolith evidence for early ninth millennium B.P. maize from the Central Balsas River Valley, Mexico",
+      "2009",
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC2664021/",
+      "DOI 10.1073/pnas.0812525106 ; résumé consulté",
+      "EN"
+    ],
+    [
+      "A. J. Ranere et al.",
+      "The cultural and chronological context of early Holocene maize and squash domestication in the Central Balsas River Valley, Mexico",
+      "2009",
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC2664064/",
+      "DOI 10.1073/pnas.0812590106 ; contexte, figures 2–3",
+      "EN"
+    ],
+    [
+      "M. A. Zeder",
+      "The Origins of Agriculture in the Near East",
+      "2011",
+      "https://www.journals.uchicago.edu/doi/full/10.1086/659307",
+      "Synthèse ; résumé consulté",
+      "EN"
+    ]
+  ]
+
   },
   {
     id: 'uruk', title: 'Mésopotamie : Uruk et les premiers comptes',
