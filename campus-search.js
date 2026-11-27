@@ -52,8 +52,8 @@ function rememberLesson(heading,course,lesson,offset) {
 function bookmarkCard() {
   const record = readingPosition();
   const target = record && locateLesson(record.courseKey,record.lessonId);
-  return target ? `<article class="card"><h3>Reprendre ma lecture</h3>
-    <p>${e(target.lesson.title)}</p><button onclick="resumeReading()">Reprendre la leçon</button></article>` : '';
+  return target ? `<article class="card"><h3><button class="title-action" onclick="resumeReading()">${e(target.lesson.title)}</button></h3>
+    <p>Reprendre ma lecture</p></article>` : '';
 }
 
 function resumeReading() {

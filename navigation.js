@@ -77,3 +77,28 @@ function openTopTool(id) {
   go(id);
   v.scrollIntoView({block:'start'});
 }
+
+function initializeTitleSizing() {
+  const selector = 'h2, h3 > .title-action:not(.lesson-title), h4 > .title-action, h3 > a, .lesson-name';
+  let frame;
+  const fit = () => {
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(() => {
+      const titles = [...v.querySelectorAll(selector)];
+      for (const title of titles) title.style.removeProperty('font-size');
+      const sizes = titles.map(title => {
+        if (title.clientWidth === 0 || title.scrollWidth <= title.clientWidth) return 0;
+        const size = parseFloat(getComputedStyle(title).fontSize);
+        const minimum = parseFloat(getComputedStyle(document.documentElement).fontSize) * .875;
+        return Math.max(minimum, Math.floor(size * (title.clientWidth - 1) / title.scrollWidth * 10) / 10);
+      });
+      titles.forEach((title,index) => {
+        if (sizes[index]) title.style.fontSize = sizes[index] + 'px';
+        if (!title.title && title.scrollWidth > title.clientWidth) title.title = title.textContent.trim();
+      });
+    });
+  };
+  new MutationObserver(fit).observe(v,{childList:true,subtree:true});
+  new ResizeObserver(fit).observe(v);
+  fit();
+}

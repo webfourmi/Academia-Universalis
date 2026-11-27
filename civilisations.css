@@ -103,3 +103,16 @@ a, button, input, textarea { scroll-margin-bottom: 6rem; }
 .lesson-updated { color: #946015; }
 .lesson-status svg { fill: none; stroke: currentColor; stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; }
 .lesson-status-label { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+#view .grid > *, #view .subject-grid > * { min-width: 0; }
+#view h2, #view h3 > .title-action:not(.lesson-title), #view h4 > .title-action, #view h3 > a {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#view h3 > .title-action:not(.lesson-title), #view h4 > .title-action { min-height: 44px; }
+.subject-heading h3 { min-width: 0; }
+.subject-heading h3 > .title-action { min-height: 2rem; }
+#view input[type="file"] { box-sizing: border-box; display: block; max-width: 100%; margin-block: .35rem; }

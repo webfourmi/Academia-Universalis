@@ -91,7 +91,7 @@ function showAssessmentResult(assessment, selections) {
     ${score < total ? '<p>Les leçons liées aux réponses à reprendre sont inscrites au planning de révision à partir de J+2.</p>' : ''}
     <ol>${items.map(({course, lesson, index, quiz}, position) => `
       <li class="card"><h3>${quiz[0]}</h3><p>${selections[position]===quiz[2]?'Réponse correcte.':'À revoir.'} <strong>${quiz[1][quiz[2]]}</strong></p>
-      <p>${quiz[3]}</p><button data-course="${course.key}" data-index="${index}">Revoir · ${lesson.title}</button></li>`).join('')}</ol>
+      <p>${quiz[3]}</p><h4><button class="title-action" data-course="${course.key}" data-index="${index}">${e(lesson.title)}</button></h4></li>`).join('')}</ol>
     <button id="retry-assessment">Refaire le bilan</button>`;
   v.querySelector('h2').focus();
   v.querySelector('#retry-assessment').onclick = () => showAssessment(assessment);
