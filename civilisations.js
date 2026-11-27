@@ -68,6 +68,20 @@ const qs=[['Que date la thermoluminescence du silex ?',['La dernière chauffe su
 return '<h3>Quiz complémentaire</h3>'+qs.map(([q,opts,a,why],i)=>'<fieldset><legend>'+e(q)+'</legend>'+opts.map((o,j)=>'<label class="quiz-option"><input type="radio" name="evo-extra-'+i+'" value="'+j+'"> '+e(o)+'</label>').join('')+'<button type="button" data-evo-answer="'+a+'" data-evo-why="'+e(why)+'">Vérifier</button><p role="status"></p></fieldset>').join('');
 }
 
+function migrationMap(lesson){
+ if(lesson.id!=='migrations-humaines')return '';
+ const sites=[['Dmanisi',41.33,44.34,1800,'1,80–1,76 Ma','Outils et fossiles',1],['Misliya',32.74,34.97,194,'194–177 ka, discuté','Maxillaire',4],['Madjedbebe',-12.5,132.9,65,'65 ka, discuté','Outils et sédiments',6],['White Sands',32.8,-106.2,23,'23–21 ka','Empreintes et datations indépendantes',7]];
+ const xy=(lat,lon)=>[180+lon,90-lat];
+ const land=['M12 30 L32 19 65 15 85 25 100 48 82 62 65 59 58 76 48 72 35 55 18 48Z','M78 77 L104 81 119 100 111 127 96 148 85 133 78 110Z','M151 38 L174 24 207 25 225 15 270 19 313 27 345 45 325 65 299 69 282 85 263 72 250 91 233 73 216 65 199 58 184 58 171 51Z','M165 65 L195 63 213 82 204 110 190 125 178 112 169 91 155 79Z','M286 111 L307 103 330 115 335 132 312 139 291 130Z','M265 93 L285 98 300 102 295 106 273 102Z','M110 8 L145 6 140 23 125 32 112 23Z'];
+ return '<section class="card" id="migration-map"><h3>Atlas interactif : quatre sites, quatre preuves</h3><p>Fond schématique des continents actuels, non paléogéographique. Positions approximatives. Aucun itinéraire démontré.</p><label for="migration-time">Horizon chronologique</label><select id="migration-time"><option value="0">Tous les sites</option><option value="1000">Au moins 1 Ma</option><option value="100">Au moins 100 ka</option><option value="50">Au moins 50 ka</option><option value="20">Au moins 20 ka</option></select><svg viewBox="0 0 360 180" width="100%" role="img" aria-label="Carte schématique des quatre sites"><rect width="360" height="180" fill="#dcebf4"/>'+land.map(d=>'<path d="'+d+'" fill="#d6d3ad" stroke="#64745b" stroke-width=".7"/>').join('')+sites.map(([name,lat,lon,age],i)=>{const [x,y]=xy(lat,lon);return '<g data-migration-pin="'+i+'" data-age="'+age+'"><circle cx="'+x+'" cy="'+y+'" r="4" fill="#8b3028" stroke="white"/><text x="'+(x+(i===1?-6:6))+'" y="'+(y+(i===1?10:-5))+'" text-anchor="'+(i===1?'end':'start')+'" font-size="7" fill="#172c3c">'+(i+1)+'</text></g>'}).join('')+'</svg><div>'+sites.map(([name,lat,lon,age,date,proof,source],i)=>'<details data-migration-site="'+i+'" data-age="'+age+'"><summary>'+(i+1)+'. '+e(name)+' · '+e(date)+'</summary><p>'+e(proof)+'. <a href="'+e(lesson.sources[source-1][3])+'" target="_blank" rel="noopener">Publication ['+source+']</a></p></details>').join('')+'</div><p role="status" id="migration-status">4 sites affichés.</p></section>';
+}
+function bindMigrationMap(v){
+ const root=v.querySelector('#migration-map');if(!root)return;
+ const filter=root.querySelector('#migration-time');
+ filter.onchange=()=>{let n=0;root.querySelectorAll('[data-age]').forEach(el=>{const show=Number(el.dataset.age)>=Number(filter.value);el.style.display=show?'':'none';if(show&&el.matches('details'))n++;});root.querySelector('#migration-status').textContent=n+' sites affichés.';};
+ root.querySelectorAll('[data-migration-pin]').forEach(pin=>{pin.style.cursor='pointer';pin.onclick=()=>{const d=root.querySelector('[data-migration-site="'+pin.dataset.migrationPin+'"]');d.open=true;d.querySelector('summary').focus();};});
+}
+
 function evolutionExtras(lesson){
  if(lesson.id!=='evolution-humaine')return '';
  const species=[['Sahelanthropus',7,6],['Orrorin',6.1,5.7],['Ardipithecus kadabba',5.8,5.2],['Ardipithecus ramidus',4.4,4.4],['A. anamensis',4.2,3.8],['A. afarensis',3.85,2.95],['A. africanus',3.3,2.1],['P. boisei',2.3,1.2],['H. habilis',2.4,1.4],['H. erectus',1.89,.11],['H. heidelbergensis',.7,.2],['Néandertal',.4,.04],['H. naledi',.335,.236],['H. floresiensis',.1,.06],['H. sapiens',.3,0]];
@@ -106,6 +120,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
       ${lesson.overview ? cite(lesson.overview) : ''}
       ${lesson.sections.map(([heading, paragraph],section) => `<h3 id="lesson-section-${section}" tabindex="-1">${heading}</h3><p>${cite(paragraph)}</p>`).join('')}
       ${evolutionExtras(lesson)}
+      ${migrationMap(lesson)}
       ${lesson.diagram ? `<div class="lesson-table" tabindex="0" role="region" aria-label="${e(caption)}">
         <table><caption>${caption}</caption>
           <thead><tr>${columns.map(column => `<th scope="col">${column}</th>`).join('')}</tr></thead>
@@ -156,6 +171,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
     button.onclick=()=>jumpToStudySection(button.dataset.jump);
   });
   v.querySelectorAll('[data-evo-answer]').forEach(button=>button.onclick=()=>{const field=button.closest('fieldset');const selected=field.querySelector('input:checked');field.querySelector('[role=status]').textContent=selected?((selected.value===button.dataset.evoAnswer?'Correct. ':'À revoir. ')+button.dataset.evoWhy):'Choisissez une réponse.';});
+  bindMigrationMap(v);
   installReadingTools(course,lesson);
   const heading = v.querySelector('h2');
   heading.focus({preventScroll:offset!==undefined});
