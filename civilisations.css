@@ -129,3 +129,42 @@ a, button, input, textarea { scroll-margin-bottom: 6rem; }
 .next-session { border-color: #9ab2a7; }
 .next-session h3, .next-session p { margin-block: .35rem; }
 #campus-installation[data-update-available] span::after { content: " •"; color: #95651c; }
+
+/* V0.21 — campus accessible, sans dépendance externe */
+:root { --campus-ink:#183b38; --campus-muted:#405e55; --campus-line:#c5d5ce; --campus-paper:#fffefa; }
+body { color:var(--campus-ink); line-height:1.65; }
+main { max-width: 1080px; }
+.card { border-color:var(--campus-line); box-shadow:0 2px 8px #183b3808; }
+#view > h2 { margin-block:.65rem 1rem; }
+#view .lesson { line-height:1.8; }
+.lesson :is(p,ol,ul) { max-inline-size:72ch; }
+.lesson :is(h2,h3,h4) { line-height:1.35; }
+#view .lesson h2 { white-space:normal; overflow-wrap:anywhere; }
+#view .lesson h3 { margin-block:1.5rem .65rem; }
+#view :is(button,a,input,select,textarea,summary):focus-visible,
+#campus-tools button:focus-visible,#campus-shortcuts button:focus-visible { outline:3px solid #17665b; outline-offset:3px; }
+#view :is(input,select,textarea) { font-size:1rem; }
+#view summary { cursor:pointer; padding-block:.45rem; }
+#view .title-action { text-decoration-thickness:1px; }
+#view .title-action:hover { color:#17665b; }
+#view .lesson-card { border-radius:12px; }
+#view .lesson-card p { color:var(--campus-muted); font-size:.94rem; }
+#view .subject-action { min-height:44px; }
+#campus-shortcuts button { min-width:0; }
+#campus-tools button { min-height:44px; }
+#view :is(h2,h3,h4), #view [id] { scroll-margin-top:calc(5rem + env(safe-area-inset-top)); }
+.skip-campus { position:fixed; top:.5rem; left:.5rem; z-index:100; transform:translateY(-200%); background:white; padding:.7rem; border:2px solid #17665b; }
+.skip-campus:focus { transform:none; }
+@media(max-width:600px) {
+ main { padding-inline:12px; }
+ #view .card:not(.subject-card):not(.lesson-card) { padding:14px; }
+ #view .lesson { font-size:1rem; }
+ #view .grid { grid-template-columns:minmax(0,1fr); }
+ #campus-shortcuts button { flex:1 1 0; }
+}
+@media(prefers-reduced-motion:reduce) {
+ *,*::before,*::after { scroll-behavior:auto!important; animation-duration:.01ms!important; transition-duration:.01ms!important; }
+}
+@media(forced-colors:active) {
+ #campus-shortcuts button[aria-current],#campus-tools button[aria-current] { outline:2px solid Highlight; }
+}
