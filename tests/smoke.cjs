@@ -53,3 +53,8 @@ assert.equal(vm.runInContext('nextMemoryReview(nextMemoryReview(undefined,true,"
 assert.equal(vm.runInContext('nextMemoryReview(nextMemoryReview(undefined,true,"2026-11-27"),true,"2026-11-27").step',sandbox),0);
 assert.equal(vm.runInContext('validMemoryCards([{question:"Q",answer:"A"}])',sandbox),true);
 assert.equal(vm.runInContext('validMemoryCards([{question:42,answer:"A"}])',sandbox),false);
+
+assert.equal(vm.runInContext('validLibraryShelf(undefined)',sandbox),true);
+assert.equal(vm.runInContext('validLibraryShelf({"https://example.org":"read"})',sandbox),true);
+assert.equal(vm.runInContext('validLibraryShelf({"https://example.org":"invalid"})',sandbox),false);
+assert.equal(vm.runInContext('validLibraryShelf({"javascript:alert(1)":"read"})',sandbox),false);
