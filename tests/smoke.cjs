@@ -71,3 +71,8 @@ const readingCss=fs.readFileSync('civilisations.css','utf8');
 assert.ok(readingCss.includes('.history-overview,.card,blockquote,pre,details'));
 function luminance(hex){const rgb=hex.match(/../g).map(x=>parseInt(x,16)/255).map(x=>x<=0.04045?x/12.92:((x+0.055)/1.055)**2.4);return rgb[0]*0.2126+rgb[1]*0.7152+rgb[2]*0.0722;}
 for(const [fg,bg] of [['f0f3ed','293936'],['a7e4d4','293936'],['233b36','f2f7f5'],['17665b','f2f7f5'],['382d20','eee0c3'],['65451e','eee0c3'],['302a17','f8e6a1']]){const a=luminance(fg),b=luminance(bg);assert.ok((Math.max(a,b)+0.05)/(Math.min(a,b)+0.05)>=4.5);}
+
+assert.equal(vm.runInContext('civilisations.filter(l=>l.id==="evolution-humaine").length',sandbox),1);
+assert.equal(vm.runInContext('civilisations.find(l=>l.id==="evolution-humaine").sources.length',sandbox),7);
+assert.ok(readingSource.includes("function evolutionQuiz()"));
+assert.ok(readingSource.includes("function evolutionAnatomy()"));
