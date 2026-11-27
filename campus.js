@@ -7,6 +7,8 @@ const campusResources = [
 ];
 
 const campusSpaces = {
+  'Salon de lecture': 'Lire les œuvres et retrouver les éditions gratuites.',
+  'Carnet littéraire': 'Conserver ses impressions, citations et analyses.',
   'Qualité scientifique': 'Consulter les contrôles structurels des leçons et les vérifications restant à effectuer.',
   'Projets universitaires': 'Conduire un projet personnel, documenter ses étapes et conserver un dossier de travail.',
   'Planning': 'Répartir son temps sur 40 semaines et ouvrir les révisions arrivées à échéance.',
@@ -78,6 +80,7 @@ function spaceButton(courseKey, lessonId, label) {
 
 function showSpace(name) {
   rememberCampusRoute('space',{name});
+  if(name==='Salon de lecture'||name==='Carnet littéraire'){literaryPanel(name);return;}
   if(name==='Projets universitaires'){showPractice(name);return;}
   if(name==='Qualité scientifique'){showEditorialQuality();return;}
   const catalog=campusCatalog();
@@ -320,4 +323,44 @@ function practicePanel(kind){
  const remove=document.createElement('button');remove.type='button';remove.textContent='Supprimer';remove.onclick=()=>{if(confirm('Supprimer ce dossier ?')&&persist((S.practiceProjects||[]).filter(x=>x.id!==p.id)))redraw();};
  details.append(edit,exportButton,remove);list.append(details);
  });return panel;
+}
+
+const literaryBooks=[
+{id:"fable",title:"Le Loup et l’Agneau",author:"Jean de La Fontaine",access:"Texte intégral du domaine public",url:"https://fr.wikisource.org/wiki/Fables_de_La_Fontaine_%28%C3%A9d._1874%29/Le_Loup_et_l%E2%80%99Agneau",text:"La raison du plus fort est toujours la meilleure :\nNous l’allons montrer tout à l’heure.\n\nUn Agneau se désaltérait\nDans le courant d’une onde pure.\nUn Loup survient à jeun, qui cherchait aventure,\nEt que la faim en ces lieux attirait.\nQui te rend si hardi de troubler mon breuvage ?\nDit cet animal plein de rage :\nTu seras châtié de ta témérité.\nSire, répond l’Agneau, que Votre Majesté\nNe se mette pas en colère ;\nMais plutôt qu’elle considère\nQue je me vas désaltérant\nDans le courant,\nPlus de vingt pas au-dessous d’Elle,\nEt que par conséquent, en aucune façon,\nJe ne puis troubler sa boisson.\nTu la troubles, reprit cette bête cruelle,\nEt je sais que de moi tu médis l’an passé.\nComment l’aurais-je fait si je n’étais pas né ?\nReprit l’Agneau ; je tette encor ma mère.\nSi ce n’est toi, c’est donc ton frère.\nJe n’en ai point. C’est donc quelqu’un des tiens :\nCar vous ne m’épargnez guère,\nVous, vos bergers et vos chiens.\nOn me l’a dit : il faut que je me venge.\nLà-dessus, au fond des forêts\nLe Loup l’emporte et puis le mange,\nSans autre forme de procès."},
+{id:"odyssee",title:"L’Odyssée",author:"Homère",access:"Chant IX intégral gratuit en français, Leconte de Lisle, édition Lemerre 1893",url:"https://fr.wikisource.org/wiki/L%E2%80%99Odyss%C3%A9e/Traduction_Leconte_de_Lisle/9"},
+{id:"genji",title:"Le Dit du Genji",author:"Murasaki Shikibu",access:"Œuvre intégrale facultative ; catalogue scientifique externe",url:"https://www.metmuseum.org/met-publications/the-tale-of-genji-a-japanese-classic-illuminated"},
+{id:"chevet",title:"Notes de chevet",author:"Sei Shōnagon",access:"Œuvre intégrale facultative ; rechercher une édition gratuite",url:"https://gallica.bnf.fr/"},
+{id:"achebe",title:"Le Monde s’effondre",author:"Chinua Achebe",access:"Lecture facultative protégée ; emprunt possible"}
+];
+function validLiteraryState(x){return x===undefined||!!(x&&typeof x==="object"&&!Array.isArray(x)&&["light","sepia","dark"].includes(x.theme)&&[100,115,130,150].includes(x.size)&&x.entries&&typeof x.entries==="object"&&!Array.isArray(x.entries)&&Object.keys(x.entries).length<=500&&Object.entries(x.entries).every(([k,e])=>k.length<=100&&e&&["todo","reading","read"].includes(e.status)&&["impressions","quotes","analysis","characters"].every(p=>typeof e[p]==="string"&&e[p].length<=20000)&&Number.isFinite(e.position)&&e.position>=0&&e.position<=1));}
+function literaryState(){return validLiteraryState(S.literary)&&S.literary?S.literary:{theme:"sepia",size:115,entries:{}};}
+function literaryEntry(state,id){return state.entries[id]||{status:"todo",impressions:"",quotes:"",analysis:"",characters:"",position:0};}
+function persistLiterary(state){if(!validLiteraryState(state))return false;try{localStorage.au=JSON.stringify({...S,literary:state});S.literary=state;return true;}catch{return false;}}
+function literaryPanel(name,selected){
+ const state=literaryState(),book=literaryBooks.find(b=>b.id===selected)||literaryBooks[0],entry=literaryEntry(state,book.id);
+ v.replaceChildren();const el=(tag,txt,parent=v)=>{const n=document.createElement(tag);if(txt)n.textContent=txt;parent.append(n);return n;};
+ const btn=(txt,fn,parent=v)=>{const b=el("button",txt,parent);b.type="button";b.onclick=fn;return b;};
+ btn("Retour aux espaces",()=>go(11));el("h2",name);
+ const nav=el("nav");btn("Salon de lecture",()=>showSpace("Salon de lecture"),nav);btn("Carnet littéraire",()=>showSpace("Carnet littéraire"),nav);
+ const label=el("label","Œuvre ");const select=el("select","",label);literaryBooks.forEach(b=>{const o=el("option",b.title+" · "+b.author,select);o.value=b.id;});select.value=book.id;select.onchange=()=>literaryPanel(name,select.value);
+ el("h3",book.title);el("p",book.author+" · "+book.access);const lessonId={fable:"fable",odyssee:"odyssee",genji:"japon-heian",chevet:"japon-heian",achebe:"achebe"}[book.id];if(lessonId)btn("Lire la leçon associée",()=>spaceLesson("litterature",lessonId));
+ const msg=el("p","");msg.setAttribute("role","status");
+ const store=()=>{state.entries={...state.entries,[book.id]:entry};msg.textContent=persistLiterary({...state})?"Enregistré sur cet appareil.":"Enregistrement impossible."};
+ const sl=el("label","État de lecture ");const status=el("select","",sl);[["todo","À lire"],["reading","En cours"],["read","Terminé"]].forEach(([k,t])=>{el("option",t,status).value=k;});status.value=entry.status;status.onchange=()=>{entry.status=status.value;store();};
+ if(name==="Carnet littéraire"){
+ [["impressions","Impressions personnelles"],["quotes","Citations et références de pages"],["characters","Personnages et thèmes"],["analysis","Analyse et questions"]].forEach(([k,t])=>{const l=el("label",t);const a=el("textarea","",l);a.rows=5;a.maxLength=20000;a.value=entry[k];a.oninput=()=>{entry[k]=a.value;store();};});
+ btn("Exporter le carnet",()=>{const content=literaryBooks.map(b=>{const e=literaryEntry(state,b.id);return b.title+" · "+b.author+"\n"+e.status+"\n"+e.impressions+"\n"+e.quotes+"\n"+e.characters+"\n"+e.analysis;}).join("\n\n");const u=URL.createObjectURL(new Blob([content],{type:"text/plain;charset=utf-8"}));const a=document.createElement("a");a.href=u;a.download="carnet-litteraire.txt";a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);});
+ }else{
+ if(book.url){const a=el("a","Consulter la ressource externe (connexion nécessaire)");a.href=book.url;a.target="_blank";a.rel="noopener noreferrer";}
+ if(book.text){const controls=el("div");const theme=el("select","",el("label","Thème ",controls));[["light","Clair"],["sepia","Sépia"],["dark","Nuit"]].forEach(([k,t])=>el("option",t,theme).value=k);theme.value=state.theme;
+ const size=el("select","",el("label","Taille ",controls));[100,115,130,150].forEach(n=>el("option",n+" %",size).value=n);size.value=state.size;
+ const reader=el("article",book.text);reader.className="card";reader.tabIndex=0;reader.style.cssText="white-space:pre-wrap;line-height:1.8;max-height:65vh;overflow:auto;overflow-wrap:anywhere;";
+ const apply=()=>{reader.style.background=state.theme==="dark"?"#20232c":state.theme==="sepia"?"#f3e8ce":"#fff";reader.style.color=state.theme==="dark"?"#f4f4f4":"#29241e";reader.style.fontSize=state.size+"%";};apply();
+ theme.onchange=()=>{state.theme=theme.value;apply();store();};size.onchange=()=>{state.size=Number(size.value);apply();store();};
+ requestAnimationFrame(()=>{reader.scrollTop=entry.position*Math.max(0,reader.scrollHeight-reader.clientHeight);});
+ btn("Mémoriser ce passage",()=>{entry.position=reader.scrollTop/Math.max(1,reader.scrollHeight-reader.clientHeight);store();});
+ el("p","Texte de 1668, orthographe modernisée ; collation de l’édition à terminer.");
+ }else el("p","Pas de texte intégral embarqué : les droits ou l’accès de l’édition restent à vérifier.");
+ btn("Ouvrir mon carnet pour cette œuvre",()=>{rememberCampusRoute("space",{name:"Carnet littéraire"});literaryPanel("Carnet littéraire",book.id);});
+ }
 }
