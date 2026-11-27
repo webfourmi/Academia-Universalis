@@ -11,3 +11,18 @@ jobs:
         with:
           node-version: '22'
       - run: node tests/smoke.cjs
+  browser-checks:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save playwright@1.58.2
+      - run: npx playwright install --with-deps chromium --only-shell
+      - run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 &
+          server=$!
+          trap 'kill "$server"' EXIT
+          curl --retry 10 --retry-connrefused --fail --silent http://localhost:8765/ -o /dev/null
+          node tests/browser.cjs

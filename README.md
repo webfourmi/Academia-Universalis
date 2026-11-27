@@ -6,8 +6,7 @@ Université personnelle indépendante et cosmopolite, sans diplôme officiel. PW
 
 ## Version et accès
 
-- Version de référence de cette branche : V0.21.0 (ergonomie et accessibilité).
-- V0.20.0 : fiabilisation et sauvegardes.
+- Version de référence de cette branche : V0.30.0 (mise à jour suite à l’audit).
 - [Campus](https://webfourmi.github.io/Academia-Universalis/)
 - [Charte fondatrice](docs/Academia_Universalis_charte.pdf)
 - [Contrôle éditorial](docs/controle-editorial.html)
@@ -31,50 +30,25 @@ Depuis la racine du dépôt, lancer `python3 -m http.server 8000` puis ouvrir ht
 - Documenter les anomalies restantes et ne jamais déclarer un test réussi sans l'avoir exécuté.
 - Vérifier les sources, licences et références de chaque leçon ; distinguer validation interne et expertise indépendante.
 
-## Feuille de route proposée
+## Suivi de l’audit V0.29.0
 
-V0.20 fiabilisation ; V0.21 ergonomie ; V0.22 bureau étudiant ; V0.23 lecture ; V0.24 mémorisation ; V0.25 bibliothèque ; V0.26 contrôle pédagogique ; V0.27 campus vivant.
+| Point | V0.30.0 | Travaux complémentaires |
+| --- | --- | --- |
+| A. Planning | Créneaux sur 14 jours, disponibilité, durée, priorité, vacances et révisions. La progression suit l’ordre des leçons d’un parcours. | Prérequis entre matières et estimation de la charge par leçon. |
+| B. Séance | Quatre étapes, chronomètre, pause, reprise après rechargement, correction des minutes et journal. | Distinguer le temps passé sur chaque étape. |
+| C. Compétences | Résultats des quiz et autoévaluation des exercices écrits avec réponse conservée, corrigé et trois critères explicites. | Modèle de compétences transversal et évaluation externe et suivi des travaux de synthèse. |
+| D. Erreurs | Dernière erreur par quiz, passage du cours et examen personnalisé. | Historique de toutes les tentatives et questions inédites. |
+| E. Ateliers | Simulations et quatre ateliers interactifs corrigés en histoire, physique, philosophie et littérature. | Chronologies comparées, nouveaux scénarios physiques et comparaison de traductions. |
+| F. Atlas | Cinq parcours thématiques et index filtrable des leçons par notion et année. | Index transversal exhaustif et enrichissement documentaire. |
+| G. Tuteur | Sept modes et prompt contextualisé à copier depuis les leçons. | — |
+| H. Vie du campus | Première sélection avec conférence, livre, séminaire et découverte, fondée sur les ressources déjà référencées dans le campus. | Renouveler les sélections au fil des versions. |
+| Qualité académique | Fiche de contrôle en neuf points et quatre statuts. | Documenter chaque contrôle, compléter les métadonnées et obtenir des relectures indépendantes. |
+| Sauvegardes | Espace Mes données, export daté, restauration validée et transfert manuel entre appareils. | Étudier IndexedDB et la synchronisation selon les besoins de capacité et de mobilité. |
+| Performances et PWA | Pagination du catalogue et scénarios Chromium sur deux formats. | Mesures sur téléphone réel. Chaque cours propose une copie HTML autonome à enregistrer ou télécharger. La PWA conserve aussi son cache historique. |
+| V1.0 | Les outils avancent sur le corpus disponible. | Première année complète, évaluations de synthèse et contrôle scientifique du corpus. |
 
-## Historique documentaire
+## Vérification
 
-# Academia Universalis
-
-*Sapere aude.*
-
-Université personnelle cosmopolite, fondée sur des sources académiques vérifiées. Programme de quatre années et 32 disciplines. Application PWA en français, sans API payante.
-
-Le campus V0.3.0 prolonge la V0.2.2, issue de la V0.2.1.
-
-[Charte fondatrice et cahier des charges](docs/Academia_Universalis_charte.pdf)
-
-## V0.3.0 · La naissance des civilisations
-
-Huit leçons, des mobilités des chasseurs-cueilleurs au séminaire sur le progrès,
-avec dossiers commentés, exercices, quiz, bibliographie et révisions espacées.
-Le cycle et ses tableaux sont utilisables hors connexion. Les sources externes
-s’ouvrent en ligne. Les données du campus restent sur l’appareil et peuvent être
-exportées depuis le carnet.
-
-[Programmes consultés et contrôle éditorial](docs/controle-editorial.html)
-
-### Avancement par rapport à la charte fondatrice
-
-La V0.6.0 ouvre une introduction à chacune des huit matières de l’année 1.
-Les années 2 à 4 disposent de leurs programmes et de 24 leçons d’ouverture.
-Le catalogue des matières n’équivaut pas à un cursus intégralement rédigé.
-
-Le planning propose 52 leçons sur 40 semaines et une reprise toutes les dix semaines.
-Les volumes de 120, 240 ou 400 heures incluent le temps personnel indiqué dans
-la charte. Les trois rythmes suggèrent des activités dont la durée reste indicative.
-L’onglet Espaces du campus donne accès aux ateliers et au rappel actif à J+2,
-J+7 et J+30. Les échéances et les données d’étude sont locales et exportables.
-
-La bibliothèque contient des notices de départ sur les cinq régions, en plus
-de l’Atlas de prospection. La couverture des références de la charte, la
-rédaction des cours avancés, les évaluations de fin d’année et la relecture
-indépendante sont des travaux à poursuivre avant de qualifier le cursus
-de complet.
-
-Le Carnet permet aussi un export JSON des seules notes et un import avec conservation de la version locale en cas de conflit.
-
-La V0.10.0 ajoute vingt-quatre leçons d’ouverture aux années 2 à 4 et quatre travaux de synthèse pour l’année 1. La page « Suivi de la charte » présente la couverture et les validations encore à mener.
+Lancer `node tests/smoke.cjs`. Le scénario navigateur utilise Playwright avec Chromium.
+Le chargement, la navigation et le hors connexion sont vérifiés sur deux dimensions de fenêtre.
+Les temps mesurés en environnement local ne représentent pas les performances sur téléphone réel.

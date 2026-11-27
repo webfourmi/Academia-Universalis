@@ -12,7 +12,13 @@ function exportNotes() {
 }
 
 function backup() {
-  downloadBackup(S,'academia-sauvegarde.json');
+  const date=localStudyDate();
+  const {studySession,...data}=S;
+  if(studySession)data.studySession={...studySession,elapsed:sessionElapsed(studySession),started:null};
+  downloadBackup(data,'academia-sauvegarde-'+date+'.json');
+  try{localStorage.setItem('au-export-date',date);}catch{}
+  const status=v.querySelector('#last-export');
+  if(status)status.textContent='Dernier export lancé le '+date+'.';
 }
 
 function safeBackupTree(value, depth = 0) {
@@ -44,7 +50,7 @@ async function restore(input) {
   const records = (value,type) => value && typeof value === 'object' &&
     !Array.isArray(value) && Object.values(value).every(entry=>typeof entry === type);
   try {
-    if (!validLiteraryState(data?.literary) || !validPracticeProjects(data?.practiceProjects) || !validLibraryShelf(data?.libraryShelf) || !validMemoryCards(data?.memoryCards) || !validBookmarks(data?.bookmarks) || !validReadingTools(data?.readingTools) || !validStudyMinutes(data?.studyMinutes) || !validAssessments(data?.assessments) || !validReviews(data?.reviews) ||
+    if (!validAuditState(data) || !validLiteraryState(data?.literary) || !validPracticeProjects(data?.practiceProjects) || !validLibraryShelf(data?.libraryShelf) || !validMemoryCards(data?.memoryCards) || !validBookmarks(data?.bookmarks) || !validReadingTools(data?.readingTools) || !validStudyMinutes(data?.studyMinutes) || !validAssessments(data?.assessments) || !validReviews(data?.reviews) ||
         !records(data?.done,'boolean') || !records(data.notes,'string') ||
         (data.history !== undefined && !records(data.history,'boolean')) ||
         (data.lessonRevisions !== undefined && (!records(data.lessonRevisions,'number') ||
@@ -56,7 +62,8 @@ async function restore(input) {
     if (!confirm('Remplacer les notes, la progression et le rythme sur cet appareil par cette sauvegarde ?')) return;
     const previous = JSON.stringify(S);
     localStorage.setItem('au-before-restore', previous);
-    localStorage.au = JSON.stringify(data);
+    if(data.studySession)data.studySession.started=null;
+    localStorage.au=JSON.stringify(data);
     S = data;
     render();
     v.querySelector('#notes-import-status')?.append('Sauvegarde restaurée.');
@@ -226,7 +233,9 @@ function backupControls() {
 }
 
 function showBackup() {
-  v.innerHTML=`<h2>Sauvegarde</h2>
+  v.innerHTML=`<h2>Mes données</h2>
+    <p id="last-export" role="status">${localStorage.getItem('au-export-date')?'Dernier export lancé le '+e(localStorage.getItem('au-export-date'))+'.':'Aucun export enregistré sur cet appareil.'}</p>
+    <p>Pour changer d’appareil, exporte le fichier complet puis importe-le sur l’autre appareil.</p>
     <p>La sauvegarde complète contient tes notes, ta progression et tes évaluations. Tu peux aussi exporter uniquement tes notes.</p>
     ${backupControls()}`;
 }

@@ -11,7 +11,9 @@ const campusSpaces = {
   'Carnet littéraire': 'Conserver ses impressions, citations et analyses.',
   'Qualité scientifique': 'Consulter les contrôles structurels des leçons et les vérifications restant à effectuer.',
   'Projets universitaires': 'Conduire un projet personnel, documenter ses étapes et conserver un dossier de travail.',
-  'Planning': 'Répartir son temps sur 40 semaines et ouvrir les révisions arrivées à échéance.',
+  'Planning': 'Planifier les séances et les révisions selon tes disponibilités.',
+  'Compétences et erreurs': 'Revoir les questions difficiles et suivre la consolidation.',
+  'Vie du campus': 'Découvrir une conférence, une lecture, un séminaire et une recherche.',
   'Amphithéâtre': 'Suivre une conférence ou une lecture de cours.',
   'Séminaires': 'Préparer une argumentation ou un devoir comparatif.',
   'Laboratoire': 'Formuler une hypothèse et la tester.',
@@ -82,6 +84,8 @@ function showSpace(name) {
   rememberCampusRoute('space',{name});
   if(name==='Salon de lecture'||name==='Carnet littéraire'){literaryPanel(name);return;}
   if(name==='Projets universitaires'){showPractice(name);return;}
+  if(name==='Compétences et erreurs'){showCompetencies();return;}
+  if(name==='Vie du campus'){showCampusLife();return;}
   if(name==='Qualité scientifique'){showEditorialQuality();return;}
   const catalog=campusCatalog();
   const due=allStudyCourses().flatMap(course=>course.lessons.filter(lesson=>{
@@ -109,6 +113,8 @@ function showSpace(name) {
   v.innerHTML='<button onclick="go(11)">Retour aux espaces</button><h2>'+name+'</h2><article class="card">'+activities[name]+'</article>';
   v.querySelectorAll('[data-course]').forEach(button=>button.onclick=()=>spaceLesson(button.dataset.course,button.dataset.lessonId));
   if(['Séminaires','Laboratoire','Atelier','Cabinet de recherche'].includes(name))v.append(practicePanel(name));
+  if(name==='Planning')v.querySelector('article').before(planningPanel());
+  addDisciplineWorkshops(name);
   const hours=v.querySelector('#campus-hours');
   if(hours) hours.onchange=()=>{S.hours=Number(hours.value);save();showSpace(name);};
 }
@@ -158,7 +164,7 @@ function showCampusLibrary(){
  const resources=libraryCatalog();
  const filters=[['theme','Thème'],['region','Région'],['language','Langue'],['type','Type'],['level','Niveau'],['access','Accès'],['author','Auteur / organisme'],['discipline','Discipline'],['year','Année du cursus'],['status','Ma bibliothèque']];
  const values=(r,key)=>key==='discipline'?r.links.map(x=>x.discipline):key==='year'?r.links.map(x=>String(x.year)):key==='status'?[S.libraryShelf?.[r.url]||'none']:[String(r[key]||'Non renseigné')];
- v.innerHTML='<h2>Bibliothèque scientifique</h2><p>Références des cours et catalogues universitaires. Les métadonnées manquantes restent à vérifier.</p><label>Rechercher <input type="search" id="library-search" placeholder="Titre, auteur, notion…"></label><details><summary>Filtres du catalogue</summary><div class="library-filters"></div></details><p role="status" id="library-count"></p><button id="library-export">Exporter les références affichées</button><div id="library-records"></div>';
+ v.innerHTML='<h2>Bibliothèque scientifique</h2><p>Références des cours et catalogues universitaires. Les métadonnées manquantes restent à vérifier.</p><label>Rechercher <input type="search" id="library-search" placeholder="Titre, auteur, notion…"></label><details><summary>Filtres du catalogue</summary><div class="library-filters"></div></details><p role="status" id="library-count"></p><button id="library-export">Exporter toutes les références filtrées</button><div id="library-records"></div><div class="library-pages"><button id="library-prev">Précédent</button> <span id="library-page" role="status"></span> <button id="library-next">Suivant</button></div>';
  const controls=v.querySelector('.library-filters'),search=v.querySelector('#library-search'),list=v.querySelector('#library-records');
  const statusLabels={none:'Non enregistré',saved:'Favori',reading:'En cours',read:'Lu'};
  const picks=filters.map(([key,label])=>{
@@ -166,15 +172,23 @@ function showCampusLibrary(){
   const all=document.createElement('option');all.value='';all.textContent='Tous';select.append(all);
   const options=key==='status'?Object.keys(statusLabels):[...new Set(resources.flatMap(r=>values(r,key)))].sort((a,b)=>a.localeCompare(b,'fr'));
   options.forEach(value=>{const option=document.createElement('option');option.value=value;option.textContent=key==='status'?statusLabels[value]:value;select.append(option);});
-  select.onchange=draw;return {key,select};
+  select.onchange=resetPage;return {key,select};
  });
- let matches=[];
+ let matches=[],page=0;
+ const pageSize=20;
+ function resetPage(){page=0;draw();}
+ const prev=v.querySelector('#library-prev'),next=v.querySelector('#library-next');
+ prev.onclick=()=>{page--;draw();};next.onclick=()=>{page++;draw();};
  function draw(){
   const terms=searchableText(search.value.trim()).split(/\s+/).filter(Boolean);
   matches=resources.filter(r=>picks.every(({key,select})=>!select.value||values(r,key).includes(select.value))&&terms.every(t=>searchableText([r.title,r.author,r.evidence,r.theme,...r.links.map(x=>x.title+' '+x.discipline)].join(' ')).includes(t)));
   v.querySelector('#library-count').textContent=matches.length+' références sur '+resources.length;
   list.replaceChildren();
-  matches.forEach(r=>{
+  const pages=Math.ceil(matches.length/pageSize);
+  page=Math.max(0,Math.min(page,pages-1));
+  prev.disabled=page===0;next.disabled=page+1>=pages;
+  v.querySelector('#library-page').textContent=pages?'Page '+(page+1)+' / '+pages:'Aucune référence';
+  matches.slice(page*pageSize,(page+1)*pageSize).forEach(r=>{
    const card=document.createElement('article');card.className='card library-record';
    const h=document.createElement('h3'),a=document.createElement('a');a.href=r.url;a.target='_blank';a.rel='noopener';a.textContent=r.title;h.append(a);card.append(h);
    for(const line of [[r.author,r.year,r.language,r.region,r.type,r.level].filter(Boolean).join(' · '),r.evidence,[r.access,r.rights,r.consulted?'Consulté le '+r.consulted:'Date de consultation non renseignée'].filter(Boolean).join(' · ')]){
@@ -188,7 +202,7 @@ function showCampusLibrary(){
    r.links.forEach(link=>{const button=document.createElement('button');button.type='button';button.className='title-action';button.textContent=link.title;button.onclick=()=>spaceLesson(link.courseKey,link.lessonId);links.append(button);});card.append(links);list.append(card);
   });
  }
- search.oninput=draw;
+ search.oninput=resetPage;
  v.querySelector('#library-export').onclick=()=>{
   const text=matches.map(r=>[r.author,r.year,r.title,r.url,r.access,r.rights].filter(Boolean).join(' · ')).join('\n\n');
   const url=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='academia-bibliographie.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
@@ -220,15 +234,18 @@ function studentDesk() {
   const due=allStudyCourses().flatMap(course=>course.lessons.map((lesson,index)=>({course,lesson,index,review:S.reviews?.[lessonProgressKey(course.key,lesson.id)]}))).filter(item=>item.review&&reviewDue(item.review));
   due.sort((a,b)=>Number(a.review.correct)-Number(b.review.correct)||a.review.date.localeCompare(b.review.date));
   v.innerHTML=`<h2>Mon bureau</h2><p class="session-label">${e(new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'}))}</p>
+  ${studentSessionCard()}
   ${guidedJourneyCard()}
   <section class="card"><h3>Révisions prioritaires · ${due.length}</h3>
   ${due.length?due.slice(0,3).map((item,i)=>`<h4><button class="title-action" data-desk-review="${i}">${e(item.lesson.title)}</button></h4><p>${e(item.course.title)}</p>`).join(''):'<p>Aucune révision à échéance.</p>'}
   ${due.length>3?'<button onclick="go(13)">Toutes les révisions</button>':''}</section>
   <section class="card"><h3>Ma semaine</h3><label>Rythme <select id="desk-hours">${[3,6,10].map(h=>`<option value="${h}" ${S.hours===h?'selected':''}>${h} h / semaine</option>`).join('')}</select></label>
-  <p>${minutes} / ${target} minutes déclarées</p><progress aria-label="Temps déclaré cette semaine" value="${Math.min(minutes,target)}" max="${target}"></progress>
+  <p>${minutes} / ${target} minutes étudiées</p><progress aria-label="Temps déclaré cette semaine" value="${Math.min(minutes,target)}" max="${target}"></progress>
   <form id="desk-time"><label for="desk-minutes">Temps total étudié aujourd’hui (minutes)</label><input id="desk-minutes" type="number" min="0" max="1440" step="1" required value="${log[today]||0}"><button>Enregistrer</button><p role="status"></p></form>
   <details><summary>Planning de la semaine</summary><p>Répartis librement tes ${target} minutes. Priorité aux révisions à échéance, puis à la prochaine leçon.</p><ol>${week.map(day=>`<li>${e(day)} · ${log[day]||0} min déclarées</li>`).join('')}</ol><button onclick="showSpace('Planning')">Calendrier du campus</button></details></section>
   <article class="card"><h3><button class="title-action" onclick="go(12)">Explorer les matières</button></h3><p>Les quatre années du campus</p></article>`;
+  const session=v.querySelector('#desk-session');
+  if(session)session.onclick=()=>showStudySession(session.dataset.sessionKey);
   v.append(memoryPanel(),bookmarkPanel(),glossaryPanel());
   v.querySelectorAll('[data-desk-review]').forEach(button=>button.onclick=()=>{const item=due[Number(button.dataset.deskReview)];showQuickReview(item.course,item.index);});
   v.querySelector('#desk-hours').onchange=event=>{S.hours=Number(event.target.value);save();studentDesk();};
@@ -282,7 +299,7 @@ function showEditorialQuality(){
  function draw(){list.replaceChildren();rows.filter(x=>filter.value==='all'||(filter.value==='complete')===x.checks.every(c=>c[1])).forEach(x=>{
  const card=document.createElement('details');card.className='card';const title=document.createElement('summary');title.textContent=x.lesson.title+' · '+editorialStatus(x.lesson);card.append(title);
  const p=document.createElement('p');p.textContent=x.course.title+' · Relecture scientifique indépendante non attestée';card.append(p);
- const ul=document.createElement('ul');x.checks.forEach(([label,ok])=>{const li=document.createElement('li');li.textContent=(ok?'Présent : ':'À vérifier : ')+label;ul.append(li);});card.append(ul);
+ const ul=document.createElement('ul');x.checks.forEach(([label,ok])=>{const li=document.createElement('li');li.textContent=(ok?'Présent : ':'À vérifier : ')+label;ul.append(li);});card.append(ul,academicReviewSheet(lessonProgressKey(x.course.key,x.lesson.id)));
  const button=document.createElement('button');button.textContent='Consulter la leçon';button.onclick=()=>showLesson(x.course,x.index);card.append(button);list.append(card);
  });}
  filter.onchange=draw;draw();

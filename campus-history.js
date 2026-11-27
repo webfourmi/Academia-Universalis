@@ -40,6 +40,7 @@ function restoreCampusRoute(entry) {
         break;
       }
       case 'subject': course(route.year,route.index,route.archives); break;
+      case 'session': showStudySession(route.key); break;
       case 'space': showSpace(route.name); break;
       case 'projects': showWrittenProjects(); break;
       case 'assessment':
