@@ -8,6 +8,7 @@ const campusResources = [
 
 const campusSpaces = {
   'Qualité scientifique': 'Consulter les contrôles structurels des leçons et les vérifications restant à effectuer.',
+  'Projets universitaires': 'Conduire un projet personnel, documenter ses étapes et conserver un dossier de travail.',
   'Planning': 'Répartir son temps sur 40 semaines et ouvrir les révisions arrivées à échéance.',
   'Amphithéâtre': 'Suivre une conférence ou une lecture de cours.',
   'Séminaires': 'Préparer une argumentation ou un devoir comparatif.',
@@ -77,6 +78,7 @@ function spaceButton(courseKey, lessonId, label) {
 
 function showSpace(name) {
   rememberCampusRoute('space',{name});
+  if(name==='Projets universitaires'){showPractice(name);return;}
   if(name==='Qualité scientifique'){showEditorialQuality();return;}
   const catalog=campusCatalog();
   const due=allStudyCourses().flatMap(course=>course.lessons.filter(lesson=>{
@@ -103,6 +105,7 @@ function showSpace(name) {
   };
   v.innerHTML='<button onclick="go(11)">Retour aux espaces</button><h2>'+name+'</h2><article class="card">'+activities[name]+'</article>';
   v.querySelectorAll('[data-course]').forEach(button=>button.onclick=()=>spaceLesson(button.dataset.course,button.dataset.lessonId));
+  if(['Séminaires','Laboratoire','Atelier','Cabinet de recherche'].includes(name))v.append(practicePanel(name));
   const hours=v.querySelector('#campus-hours');
   if(hours) hours.onchange=()=>{S.hours=Number(hours.value);save();showSpace(name);};
 }
@@ -278,4 +281,41 @@ function showEditorialQuality(){
  const button=document.createElement('button');button.textContent='Consulter la leçon';button.onclick=()=>showLesson(x.course,x.index);card.append(button);list.append(card);
  });}
  filter.onchange=draw;draw();
+}
+
+const practiceStages={
+ 'Séminaires':['Question et thèse','Deux arguments documentés','Objection et réponse','Synthèse et limites'],
+ 'Laboratoire':['Hypothèse et prédiction','Protocole et variables','Observations et résultats','Interprétation et limites'],
+ 'Atelier':['Objectif et contraintes','Méthode et réalisation','Vérification et corrections','Production finale'],
+ 'Cabinet de recherche':['Question de recherche','Sources et méthode','Analyse critique','Conclusion et limites'],
+ 'Projets universitaires':['Question et objectifs','Plan et sources','Réalisation et résultats','Bilan et perspectives']
+};
+function validPracticeProjects(value){
+ return value===undefined||Array.isArray(value)&&value.length<=500&&value.every(p=>p&&typeof p.id==='string'&&p.id.length<=100&&Object.hasOwn(practiceStages,p.kind)&&typeof p.title==='string'&&p.title.length<=200&&Array.isArray(p.steps)&&p.steps.length===4&&p.steps.every(s=>typeof s==='string'&&s.length<=20000)&&['draft','finished'].includes(p.status))&&new Set(value.map(p=>p.id)).size===value.length;
+}
+function showPractice(name){
+ v.innerHTML='<h2>Projets universitaires</h2><p>Un dossier de travail personnel, de la question initiale au bilan. Aucun résultat n’est évalué automatiquement.</p>';
+ v.append(practicePanel(name));
+}
+function practicePanel(kind){
+ const panel=document.createElement('section');panel.className='card';
+ const projects=validPracticeProjects(S.practiceProjects)?S.practiceProjects||[]:[];
+ panel.innerHTML='<h3>Mes dossiers de travail</h3><p>Rédige tes étapes, conserve tes preuves et indique tes limites. Les dossiers restent sur cet appareil.</p><form><label>Titre du dossier <input name="title" maxlength="200" required></label><button>Créer un dossier</button></form><div data-projects></div>';
+ const form=panel.querySelector('form'),list=panel.querySelector('[data-projects]');
+ function persist(next){try{localStorage.au=JSON.stringify({...S,practiceProjects:next});S.practiceProjects=next;return true;}catch{alert('Enregistrement impossible. Exporte une sauvegarde et vérifie l’espace disponible.');return false;}}
+ function redraw(){panel.replaceWith(practicePanel(kind));}
+ form.onsubmit=event=>{event.preventDefault();const title=form.elements.title.value.trim();if(!title||projects.length>=500)return;const id=globalThis.crypto?.randomUUID?.()||Date.now()+'-'+Math.random().toString(36).slice(2);if(persist([...projects,{id,kind,title,steps:['','','',''],status:'draft'}]))redraw();};
+ projects.filter(p=>kind==='Projets universitaires'||p.kind===kind).forEach(p=>{
+ const details=document.createElement('details');details.className='card practice-dossier';
+ const summary=document.createElement('summary');summary.textContent=p.title+' · '+(p.status==='finished'?'Terminé (auto-déclaré)':'En cours');details.append(summary);
+ const edit=document.createElement('form');const labels=practiceStages[p.kind];
+ const fields=labels.map((label,i)=>{const wrap=document.createElement('label'),area=document.createElement('textarea');wrap.textContent=label;area.rows=5;area.maxLength=20000;area.value=p.steps[i];wrap.append(area);edit.append(wrap);return area;});
+ const done=document.createElement('label'),check=document.createElement('input');check.type='checkbox';check.checked=p.status==='finished';done.append(check,' Dossier terminé (autoévaluation)');edit.append(done);
+ const status=document.createElement('p');status.setAttribute('role','status');
+ const saveButton=document.createElement('button');saveButton.textContent='Enregistrer';edit.append(saveButton,status);
+ edit.onsubmit=event=>{event.preventDefault();const steps=fields.map(a=>a.value);if(check.checked&&steps.some(s=>!s.trim())){status.textContent='Complète les quatre étapes avant de terminer.';return;}const next={...p,steps,status:check.checked?'finished':'draft'};if(persist((S.practiceProjects||[]).map(x=>x.id===p.id?next:x))){Object.assign(p,next);summary.textContent=p.title+' · '+(p.status==='finished'?'Terminé (auto-déclaré)':'En cours');status.textContent='Dossier enregistré.';}};
+ const exportButton=document.createElement('button');exportButton.type='button';exportButton.textContent='Exporter le dossier enregistré';exportButton.onclick=()=>{const text=p.title+'\n'+p.kind+'\n\n'+labels.map((label,i)=>label+'\n'+p.steps[i]).join('\n\n');const url=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='academia-dossier.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+ const remove=document.createElement('button');remove.type='button';remove.textContent='Supprimer';remove.onclick=()=>{if(confirm('Supprimer ce dossier ?')&&persist((S.practiceProjects||[]).filter(x=>x.id!==p.id)))redraw();};
+ details.append(edit,exportButton,remove);list.append(details);
+ });return panel;
 }
