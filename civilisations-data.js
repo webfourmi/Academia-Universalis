@@ -745,6 +745,409 @@ const civilisations = [
 
   },
   {
+  "id": "villages-neolithiques",
+  "title": "Villages et premières sociétés agricoles",
+  "revision": 1,
+  "goal": "Comparer deux habitats, interpréter les indices de santé et discuter les modèles d'organisation sociale.",
+  "prerequisite": "Néolithiques et domestications.",
+  "overview": "Problématique : vivre ensemble transforme-t-il nécessairement la société ? 40 minutes / 2 heures / 4 heures.",
+  "sections": [
+    [
+      "Habiter durablement",
+      "La sédentarité est une durée de résidence, non une absence de déplacements. Un village peut réunir des foyers qui exploitent des territoires éloignés. Les maisons, leurs reconstructions et leurs dépôts renseignent sur la durée d'occupation."
+    ],
+    [
+      "Jéricho",
+      "Tell es-Sultan se situe près d'une source permanente dans la vallée du Jourdain. Les dépôts remontent vers 10 500 avant notre ère. Au IXe–VIIIe millénaire, mur, fossé et tour témoignent d'un travail collectif. Leur fonction précise ne se déduit pas de leur seule monumentalité. [1]"
+    ],
+    [
+      "Çatalhöyük",
+      "Sur le plateau anatolien, le tell étudié couvre environ 13 hectares et conserve une succession de dépôts atteignant près de 21 mètres. L'étude bioarchéologique situe son occupation entre 7100 et 5950 cal BCE. Une surface cumulée ne donne pas directement la population simultanée. [2]"
+    ],
+    [
+      "Maison et société",
+      "Les bâtiments et sépultures permettent d'étudier les groupes domestiques. Une proximité funéraire ne prouve pas une parenté biologique. Les différences de mobilier peuvent refléter l'âge, les pratiques rituelles ou les ressources, sans établir seules une hiérarchie politique."
+    ],
+    [
+      "Santé et démographie",
+      "Larsen et ses collègues distinguent trois phases d'occupation. Leur synthèse relie croissance et densité de population à des contraintes sanitaires et à une charge de travail accrue. Il s'agit d'une trajectoire locale, non d'une loi universelle. [2]"
+    ],
+    [
+      "Mesurer les mobilités",
+      "La géométrie des os longs peut renseigner sur les contraintes mécaniques. Les signatures isotopiques et les traces d'usure dentaire des animaux complètent l'étude des pratiques pastorales. Chaque indicateur demande une interprétation contextualisée. [2]"
+    ],
+    [
+      "Comparer sans hiérarchiser",
+      "Jéricho et Çatalhöyük ne sont ni contemporains à toutes leurs phases ni représentatifs de tous les villages agricoles. Distinguer organisation collective, spécialisation du travail et institution politique. La comparaison avec les foyers chinois et américains de la leçon précédente ouvre des hypothèses plutôt qu'une chronologie universelle."
+    ],
+    [
+      "Glossaire",
+      "Tell : accumulation de dépôts d'occupation. Bioarchéologie : étude contextualisée des restes humains. Groupe domestique : unité de vie et de coopération. Isotope : variante d'un élément chimique. Monumentalité : construction de dimensions ou d'investissement remarquables."
+    ]
+  ],
+  "diagram": [
+    "Comparaison raisonnée",
+    [
+      "Site",
+      "Indice",
+      "Limite"
+    ],
+    [
+      [
+        "Jéricho",
+        "Tour et mur [1]",
+        "Fonction non certaine"
+      ],
+      [
+        "Çatalhöyük",
+        "Dépôts et restes humains [2]",
+        "Population simultanée non déduite de la surface"
+      ]
+    ]
+  ],
+  "dossier": "Consulter les photographies patrimoniales de Tell es-Sultan [1] et le tableau 1 de Larsen et al. [2]. Identifier les observations et les interprétations. Documents originaux externes, non reproduits ; droits de reproduction non contrôlés.",
+  "activity": "À partir des bornes de Çatalhöyük [2], calculer la durée des phases 7100–6700, 6700–6500 et 6500–5950 cal BCE. Le tableau 1 indique une hausse puis une baisse de l'indice de juvénilité interprété en termes de natalité. Pourquoi ne s'agit-il pas d'un recensement ?",
+  "correction": "400, 200 et 550 ans, total 1150 ans. La représentation des jeunes dans les sépultures dépend aussi de la mortalité, des rites et de la conservation. L'interprétation démographique exige un modèle et des contrôles.",
+  "quiz": [
+    "Une tour monumentale démontre-t-elle un État ?",
+    [
+      "Oui nécessairement",
+      "Non, elle documente au minimum une capacité de construction collective",
+      "Elle prouve une armée professionnelle"
+    ],
+    1,
+    "La forme matérielle seule ne définit pas l'institution politique."
+  ],
+  "seminar": "Comparer les deux sites en 500 mots. Barème : contexte 5, preuves 6, limites 5, argumentation 4. Plan indicatif : habitat et durée, coopération et santé, limites de l'inférence politique.",
+  "review": "J+2 définir les concepts ; J+7 refaire les calculs ; J+30 comparer les deux sites.",
+  "flashcards": [
+    [
+      "Sédentarité ?",
+      "Résidence durable, compatible avec des déplacements."
+    ],
+    [
+      "Tell ?",
+      "Accumulation de dépôts d'occupation."
+    ],
+    [
+      "Jéricho se trouve où ?",
+      "Vallée du Jourdain, Palestine."
+    ],
+    [
+      "Ressource locale majeure ?",
+      "Source permanente."
+    ],
+    [
+      "Premiers dépôts de Jéricho ?",
+      "Vers 10 500 avant notre ère."
+    ],
+    [
+      "Monuments néolithiques de Jéricho ?",
+      "Tour, mur et fossé."
+    ],
+    [
+      "Monument implique État ?",
+      "Non."
+    ],
+    [
+      "Çatalhöyük se trouve où ?",
+      "Anatolie centrale, Turquie."
+    ],
+    [
+      "Occupation étudiée ?",
+      "7100–5950 cal BCE."
+    ],
+    [
+      "Durée ?",
+      "1150 ans."
+    ],
+    [
+      "Surface du tell ?",
+      "Environ 13 hectares."
+    ],
+    [
+      "Épaisseur maximale des dépôts ?",
+      "Près de 21 mètres."
+    ],
+    [
+      "Surface égale population simultanée ?",
+      "Non."
+    ],
+    [
+      "Bioarchéologie ?",
+      "Étude contextualisée des restes humains."
+    ],
+    [
+      "Indice de juvénilité égale recensement ?",
+      "Non, il dépend notamment des pratiques funéraires."
+    ],
+    [
+      "Durée des trois phases ?",
+      "400, 200, 550 ans."
+    ],
+    [
+      "Parenté déduite de la proximité funéraire ?",
+      "Non."
+    ],
+    [
+      "Que peut indiquer la géométrie osseuse ?",
+      "Des contraintes mécaniques."
+    ],
+    [
+      "Les difficultés sanitaires sont-elles universelles ?",
+      "Non, les trajectoires varient."
+    ],
+    [
+      "Comparer sans hiérarchiser ?",
+      "Comparer indices et contextes sans supposer un progrès unique."
+    ]
+  ],
+  "sources": [
+    [
+      "UNESCO",
+      "Ancient Jericho/Tell es-Sultan",
+      "2023",
+      "https://whc.unesco.org/en/list/1687",
+      "Notice patrimoniale, contexte et monuments.",
+      "anglais"
+    ],
+    [
+      "C. S. Larsen et al.",
+      "Bioarchaeology of Neolithic Çatalhöyük reveals fundamental transitions in health, mobility, and lifestyle in early farmers",
+      "2019",
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC6601267/",
+      "PNAS, données et tableau 1.",
+      "anglais"
+    ]
+  ]
+},
+{
+  "id": "methodes-archeologiques",
+  "title": "Méthodes archéologiques : de la trace à la preuve",
+  "goal": "Construire une chronologie relative, interpréter une datation et distinguer observation, hypothèse et conclusion.",
+  "prerequisite": "Leçons 1 à 5.",
+  "overview": "Comment produire une preuve à partir d'un contexte incomplet ? 40 minutes / 2 heures / 4 heures.",
+  "sections": [
+    [
+      "Enquête et contexte",
+      "Une question de recherche détermine les données à recueillir. Le contexte associe position, unité stratigraphique, relations et circonstances de découverte. Un objet isolé perd une partie de sa valeur informative."
+    ],
+    [
+      "Stratigraphie",
+      "Dans une succession non perturbée, les dépôts supérieurs sont postérieurs aux dépôts inférieurs. Une fosse coupe des couches préexistantes ; son remplissage lui est postérieur. Enregistrer les relations plutôt que supposer que la profondeur seule suffit."
+    ],
+    [
+      "Fouille et documentation",
+      "La fouille transforme irréversiblement le contexte. Plans, coupes, photographies avec échelle, coordonnées, fiches et inventaires permettent de documenter les observations. Le prélèvement doit répondre à une question et limiter les contaminations."
+    ],
+    [
+      "Taphonomie",
+      "Les processus naturels et humains modifient les assemblages entre dépôt et découverte. Les matériaux organiques disparaissent plus facilement dans certains milieux ; une absence observée ne prouve pas l'absence passée."
+    ],
+    [
+      "Radiocarbone",
+      "Le carbone 14 décroît après la cessation des échanges de carbone d'un organisme. Une mesure conventionnelle n'est pas directement une date calendaire. La calibration corrige notamment les variations passées du carbone atmosphérique. [1, 2]"
+    ],
+    [
+      "Choisir la courbe",
+      "IntCal20 couvre les échantillons terrestres de l'hémisphère Nord jusqu'à 55 000 années calendaires BP. Les échantillons marins demandent une autre courbe et une correction du réservoir local lorsque pertinente. [1, 2]"
+    ],
+    [
+      "Lire une date",
+      "Publier code laboratoire, mesure brute, incertitude, courbe utilisée et intervalles calibrés. Des intervalles disjoints peuvent être nécessaires. Historic England donne un exemple à trois plages totalisant 95 % de probabilité. [2]"
+    ],
+    [
+      "Datations complémentaires",
+      "La dendrochronologie compare des séries de cernes ; la luminescence peut dater la dernière exposition à la lumière de grains minéraux dans des conditions adaptées. La méthode doit dater l'événement pertinent, non simplement un matériau associé."
+    ],
+    [
+      "Argumentation et éthique",
+      "Une hypothèse doit rendre compte des observations et rester révisable. Chercher des preuves indépendantes, signaler les données manquantes, respecter les autorisations de fouille, la conservation et le traitement digne des restes humains."
+    ],
+    [
+      "Glossaire",
+      "Unité stratigraphique : événement ou dépôt individualisé. Intrusion : élément introduit après formation du contexte. Résidualité : matériau ancien redéposé. Calibration : conversion probabiliste vers le calendrier. Terminus post quem : date après laquelle un événement peut avoir eu lieu."
+    ]
+  ],
+  "diagram": [
+    "Coupe fictive : ordre des événements",
+    [
+      "Unité",
+      "Observation",
+      "Relation"
+    ],
+    [
+      [
+        "A",
+        "Sol intact",
+        "Antérieur à B"
+      ],
+      [
+        "B",
+        "Remblai sur A",
+        "Antérieur à la fosse C"
+      ],
+      [
+        "C",
+        "Fosse coupant A et B",
+        "Postérieure à A et B"
+      ],
+      [
+        "D",
+        "Remplissage de C",
+        "Postérieur au creusement"
+      ]
+    ]
+  ],
+  "dossier": "Lire le graphique de calibration et l'exemple GrA-24663 dans Historic England [2], puis le résumé de Reimer et al. [1]. Pourquoi plusieurs plages ? Corrigé : les irrégularités de la courbe rendent plusieurs dates calendaires compatibles avec une mesure. Liens originaux externes ; article [1] CC BY 4.0, aucune figure reproduite.",
+  "activity": "Laboratoire : dans la coupe fictive, ordonner A, B, C, D. Un charbon ancien est redéposé dans D : date-t-il exactement la fosse ? Dans l'exemple réel GrA-24663 [2], les plages sont 750–680, 670–630 et 570–380 cal BC, avec 11 %, 5 % et 79 %. Calculer la somme et expliquer pourquoi une date moyenne est trompeuse.",
+  "correction": "A puis B puis C puis D. Le charbon résiduel peut être bien antérieur au remplissage. Les probabilités totalisent 95 %. Une moyenne peut tomber hors des plages plausibles ; conserver les intervalles et le protocole de calibration.",
+  "quiz": [
+    "Une fosse coupe deux couches. Quand a-t-elle été creusée ?",
+    [
+      "Avant les deux couches",
+      "Après leur formation",
+      "À une date déterminée uniquement par sa profondeur"
+    ],
+    1,
+    "Une relation de recoupement établit une chronologie relative."
+  ],
+  "seminar": "Dossier de synthèse du cycle : 600 mots comparant deux études des leçons 1 à 5. Identifier contexte, méthode, résultat, incertitude et hypothèse alternative. Barème /20 : contexte 4, méthodes 6, critique 6, références 4. Plan corrigé : deux dossiers distincts, comparaison des événements datés, limites et données complémentaires.",
+  "review": "J+2 reconstruire la coupe ; J+7 interpréter les intervalles ; J+30 refaire le dossier comparatif.",
+  "flashcards": [
+    [
+      "Contexte archéologique ?",
+      "Position, relations et circonstances de découverte."
+    ],
+    [
+      "Stratigraphie ?",
+      "Étude des dépôts et de leurs relations."
+    ],
+    [
+      "Superposition non perturbée ?",
+      "Le dépôt supérieur est plus récent."
+    ],
+    [
+      "Une fosse coupe une couche : ordre ?",
+      "La couche précède le creusement."
+    ],
+    [
+      "Remplissage avant creusement ?",
+      "Non."
+    ],
+    [
+      "Ordre A B C D du laboratoire ?",
+      "A, B, creusement C, remplissage D."
+    ],
+    [
+      "Pourquoi documenter chaque unité ?",
+      "La fouille modifie irréversiblement le contexte."
+    ],
+    [
+      "Taphonomie ?",
+      "Processus modifiant les restes avant découverte."
+    ],
+    [
+      "Absence de vestige égale absence passée ?",
+      "Non."
+    ],
+    [
+      "Intrusion ?",
+      "Élément introduit après formation du contexte."
+    ],
+    [
+      "Résidualité ?",
+      "Matériau ancien redéposé."
+    ],
+    [
+      "Charbon résiduel date-t-il exactement le dépôt ?",
+      "Non."
+    ],
+    [
+      "Carbone 14 : principe ?",
+      "Décroissance radioactive après cessation des échanges."
+    ],
+    [
+      "Pourquoi calibrer ?",
+      "Variations du carbone 14 atmosphérique."
+    ],
+    [
+      "IntCal20 : domaine ?",
+      "Échantillons terrestres de l'hémisphère Nord."
+    ],
+    [
+      "Étendue IntCal20 ?",
+      "Jusqu'à 55 000 cal BP."
+    ],
+    [
+      "BP cal : origine ?",
+      "1950."
+    ],
+    [
+      "Échantillon marin : même courbe ?",
+      "Non, Marine20 et correction pertinente."
+    ],
+    [
+      "Probabilités de l'exemple ?",
+      "11 %, 5 %, 79 %."
+    ],
+    [
+      "Somme ?",
+      "95 %."
+    ],
+    [
+      "Pourquoi éviter la moyenne unique ?",
+      "Elle peut masquer des intervalles disjoints."
+    ],
+    [
+      "Métadonnées d'une datation ?",
+      "Code laboratoire, mesure, incertitude, courbe et intervalles."
+    ],
+    [
+      "Dendrochronologie ?",
+      "Comparaison des séries de cernes."
+    ],
+    [
+      "Luminescence : événement possible ?",
+      "Dernière exposition à la lumière de grains minéraux."
+    ],
+    [
+      "Terminus post quem ?",
+      "Limite après laquelle un événement peut avoir eu lieu."
+    ],
+    [
+      "Tester une hypothèse ?",
+      "Prédictions et preuves indépendantes."
+    ],
+    [
+      "Pourquoi conserver les données brutes ?",
+      "Permettre réanalyse et vérification."
+    ],
+    [
+      "Règle éthique ?",
+      "Autorisations, conservation et traitement digne des restes."
+    ]
+  ],
+  "sources": [
+    [
+      "P. J. Reimer et al.",
+      "The IntCal20 Northern Hemisphere Radiocarbon Age Calibration Curve (0–55 cal kBP)",
+      "2020",
+      "https://doi.org/10.1017/RDC.2020.41",
+      "Radiocarbon 62, 725–757 ; CC BY 4.0 ; domaine de calibration.",
+      "anglais"
+    ],
+    [
+      "Historic England",
+      "Radiocarbon Dating and Chronological Modelling: Radiocarbon Dating",
+      "2022",
+      "https://historicengland.org.uk/images-books/publications/radiocarbon-dating-chronological-modelling/radiocarbon-dating/",
+      "Section 1.5, calibration et exemple GrA-24663.",
+      "anglais"
+    ]
+  ]
+},
+  {
     id: 'uruk', title: 'Mésopotamie : Uruk et les premiers comptes',
     goal: 'Relier trois catégories de vestiges à des fonctions urbaines et évaluer ce que les tablettes révèlent de la société.',
     prerequisite: 'Néolithiques et domestications.',
