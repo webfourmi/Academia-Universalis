@@ -262,36 +262,48 @@ const philosophie = [
   {
     "id": "socrate",
     "title": "Socrate · Examiner une conviction",
-    "goal": "Reconstituer un argument de l’Apologie et formuler une objection qui vise une prémisse précise.",
-    "prerequisite": "Aucun. Une prémisse est une raison avancée à l’appui d’une conclusion.",
+    "goal": "Situer le procès de Socrate, reconstruire le refus du silence dans l’Apologie et éprouver une définition par un questionnement suivi.",
+    "prerequisite": "Avoir distingué prémisse, conclusion et objection dans « Qu’est-ce que la philosophie ? ». Socle (30–45 min) : lire les quatre premières sections et faire l’atelier. Universitaire (1 h 30–2 h) : lire le dossier, travailler l’Euthyphron et préparer le séminaire. Recherche (3–5 h) : prolonger l’enquête proposée en fin de cours.",
     "sections": [
       [
         "Une parole située",
-        "L’Apologie est un texte de Platon qui met en scène la défense de Socrate. Au passage 38a, Socrate explique pourquoi il ne pourrait accepter de se taire. Le cadre judiciaire oriente la lecture : il s’agit d’une réponse à une issue possible du procès, prononcée devant des juges. Pour l’analyser, distinguez ce que le personnage soutient et ce que nous pouvons attribuer au Socrate historique. [1]"
+        "En 399 av. J.-C., à Athènes, Socrate est jugé pour impiété et corruption de la jeunesse. La cité a subi la défaite face à Sparte et le régime des Trente avant le rétablissement de la démocratie. Ce cadre éclaire la fragilité politique de la période, mais il ne suffit pas à expliquer pourquoi chacun des juges a voté comme il l’a fait. Apologie signifie ici défense. À 37e–38a, après le verdict de culpabilité, le Socrate de Platon examine l’idée de vivre ailleurs en se taisant. Platon construit une scène littéraire dont nous ne possédons aucun procès-verbal. Les portraits de Xénophon, de Platon et d’Aristophane répondent à des projets différents, ce qui rend leur comparaison indispensable à l’enquête sur le Socrate historique. [1, 2]"
       ],
       [
         "Reconstituer la justification",
-        "Dans ce passage, examiner ce que nous tenons pour une vertu fait partie des biens les plus importants. Garder le silence empêcherait Socrate de mener cette activité comme il l’entend. La conclusion pratique concerne d’abord sa propre conduite. La formule générale sur la vie sans examen soulève une autre question : à quelles conditions une affirmation sur sa vie pourrait-elle valoir pour toute autre personne ? [1]"
+        "À 37e–38a, Socrate présente deux motifs : le silence irait contre ce qu’il comprend comme une exigence divine et l’examen quotidien de la vertu est pour lui un bien de premier ordre. Reconstruisons seulement le second motif. P1 : Socrate tient l’examen quotidien, avec lui-même et avec les autres, pour un bien majeur. P2 : s’engager à se taire empêcherait la pratique dialoguée qu’il défend devant le jury. P3, implicite : il faut refuser une condition qui ferait abandonner un bien majeur, sauf raison supérieure. Conclusion : Socrate a une raison de refuser cette condition. La prémisse implicite rend visible un choix de priorité. Comparez cette reconstruction à la formulation beaucoup plus générale sur la vie sans examen. [1]"
       ],
       [
         "Éprouver une prémisse",
-        "Prenons la conviction « une promesse doit toujours être tenue ». Un cas dans lequel respecter la promesse exposerait quelqu’un à un danger oblige à préciser le mot « toujours ». L’examen peut conduire à ajouter une exception, à invoquer des devoirs concurrents ou à expliquer pourquoi la promesse n’était jamais valide. Chaque réponse demande une justification différente."
+        "Imaginez une association qui a promis de rendre public un compte rendu. Entre-temps, elle découvre que sa publication intégrale révélerait l’identité d’une personne vulnérable. Quel engagement doit-elle réviser : l’idée que toute promesse oblige sans exception, l’idée que le compte rendu doit être public dans son intégralité, ou l’idée que protéger l’identité est impossible tout en publiant ? Chaque réponse conduit à une action différente. Cet exemple est construit pour distinguer les objections à un principe, à son application et à un fait supposé."
       ],
       [
         "Deux objections possibles",
-        "On peut contester la première prémisse en donnant le même poids à d’autres biens, par exemple le soin apporté à ses proches. On peut aussi accepter la valeur de l’examen et contester que la conversation publique en soit la seule forme. La première objection réévalue une priorité. La seconde demande de justifier le passage de la valeur de l’examen au refus du silence."
+        "Contester la priorité donnée à l’examen vise P1 ou P3 : la survie pourrait rendre d’autres biens possibles. Accepter cette priorité tout en proposant une correspondance écrite vise P2, selon la portée donnée au silence. La réponse la plus forte doit préciser ce que l’écrit peut conserver et ce qu’un échange immédiat ajoute : le retour de l’interlocuteur, la demande de précision et la possibilité de corriger un malentendu sur le moment. Le texte de Platon ouvre cette comparaison sans décider à lui seul quel moyen convient à toutes les formes d’examen. [1]"
       ],
       [
         "Contexte et méthode",
-        "L'examen socratique cherche à éprouver des engagements déjà admis par l'interlocuteur. Une contradiction entre réponses invite à réviser au moins un engagement ; elle ne prouve pas automatiquement la thèse opposée."
+        "L’élenchos, ou examen réfutatif, confronte une affirmation aux autres engagements que l’interlocuteur accepte. Dans l’Euthyphron 9e–11b, les deux personnages admettent provisoirement que tous les dieux aiment le pieux. Socrate demande dans quel sens va l’explication : est-ce la piété qui explique l’amour des dieux, ou cet amour qui rend l’acte pieux ? Dans la première lecture, dire que les dieux aiment le pieux peut en indiquer un trait sans définir ce qui le rend pieux. Le passage teste ainsi une définition en distinguant une propriété commune de son rôle explicatif. [3, 4]"
       ],
       [
         "Dialogue fictif",
-        "A : toute règle est juste si elle est votée. B : une règle votée qui prive arbitrairement une minorité de droits serait-elle juste ? A doit préciser si le vote suffit ou si des conditions supplémentaires sont nécessaires."
+        "Scène fictive. Lina : « Une décision est juste dès qu’elle est votée par la majorité. » Malik : « Même si elle interdit à un seul groupe d’utiliser la bibliothèque pour un motif arbitraire ? » Lina : « Ce cas serait injuste. » Malik : « Quelle proposition veux-tu réviser ? » Lina : « Je garde le vote, mais j’ajoute que les mêmes droits doivent être garantis à tous. » Malik : « Et une priorité temporaire pour les personnes qui n’ont aucun autre accès ? » Lina : « Il faut que je distingue mêmes droits et règles d’accès identiques. » Le premier cas révèle une incompatibilité, la révision la résout et le second ouvre une difficulté nouvelle. Reformulez la position de Lina à chaque étape."
       ],
       [
         "Glossaire",
-        "Élenchos : examen réfutatif ; aporie : difficulté sans résolution immédiate ; prémisse implicite : raison non formulée."
+        "Élenchos — examen d’une affirmation à partir d’engagements discutés avec l’interlocuteur. Aporie — difficulté où les réponses disponibles ne permettent pas encore d’avancer. Prémisse implicite — proposition qu’on doit ajouter pour rendre l’inférence intelligible. Contre-exemple — cas incompatible avec une affirmation générale. Priorité explicative — relation par laquelle un fait rend compte d’un autre, même lorsque tous deux coïncident."
+      ],
+      [
+        "Portée et limites de la réfutation",
+        "Si A, B et C sont incompatibles, au moins une proposition doit être révisée. Il reste possible que B ou C soit en défaut. Pour établir que A est fausse, il faut défendre indépendamment les autres engagements ou produire un contre-exemple dont les conditions sont admises. Dans un échange inégal, un assentiment peut refléter la pression exercée par la personne qui questionne. Exigez que chacun puisse reformuler une question, suspendre sa réponse et contester les exemples utilisés. [4]"
+      ],
+      [
+        "Comparer deux usages du dialogue",
+        "Dans l’Apologie, le personnage justifie sa conduite devant des juges. Dans l’Euthyphron, le questionnement soumet une définition à l’épreuve. Comparez le rôle de l’interlocuteur et le résultat attendu : une décision pratique dans le premier passage, une difficulté de définition dans le second. Étudier deux scènes de Platon permet déjà de mesurer les limites d’une formule unique qui résumerait toute la méthode de Socrate. [1, 3, 4]"
+      ],
+      [
+        "Enquête et synthèse",
+        "Pour le parcours recherche, comparez les passages 21b–23b et 37e–38a de l’Apologie avec Euthyphron 9e–11b. Relevez un cas où l’examen révèle une incompatibilité et un cas où il justifie une conduite. Rédigez une page qui cite les repères de passage, distingue ce que Platon met en scène de l’attribution au personnage historique et confronte votre lecture à la notice de Stanford. Terminez par une question que les documents étudiés laissent ouverte. [1, 2, 3, 4]"
       ]
     ],
     "diagram": [
@@ -315,9 +327,9 @@ const philosophie = [
         ]
       ]
     ],
-    "dossier": "Lisez 38a [1]. Repérez l’hypothèse du silence et les motifs donnés pour la rejeter. Paraphrasez les deux motifs séparément.",
-    "activity": "Écrivez un argument en deux prémisses et une conclusion sur le refus du silence. Ajoutez une objection et indiquez quelle prémisse elle vise.",
-    "correction": "Exemple. L’examen partagé constitue pour Socrate un bien essentiel. Se taire exclut l’examen partagé tel qu’il le pratique. Il refuse donc de se taire. L’objection selon laquelle l’écriture pourrait prolonger cet examen vise la seconde prémisse ou oblige à la préciser. Elle laisse intacte l’importance accordée à l’examen.",
+    "dossier": "Apologie 37e–38a [1] : relevez les deux motifs du refus du silence. Reformulez-les séparément, puis expliquez pourquoi seul le second apparaît dans la reconstruction du cours. Euthyphron 9e–11b [3] : dessinez deux flèches représentant les explications rivales. Repère pour vous corriger : dans l’une, la piété explique que les dieux aiment l’acte. Dans l’autre, leur amour explique que l’acte soit pieux.",
+    "activity": "Reprenez le dialogue fictif sur la bibliothèque. Écrivez la proposition initiale de Lina, le jugement qu’elle porte sur le premier cas et la contradiction qui en résulte. Proposez une formulation révisée et mettez-la à l’épreuve du cas de priorité temporaire. Enfin, relisez P2 de l’Apologie et formulez une objection qui vise cette seule prémisse.",
+    "correction": "Pour la bibliothèque, Lina dit d’abord que tout vote majoritaire suffit à rendre une décision juste et admet ensuite qu’une exclusion arbitraire reste injuste même si elle est votée. Elle peut réviser sa thèse en exigeant une justification publique des différences de traitement. La priorité temporaire peut rester compatible avec cette exigence si elle répond à un obstacle réel et cesse lorsque cet obstacle disparaît. Dans l’Apologie, l’écriture pourrait prolonger une forme d’examen et vise donc P2. Pour répondre, précisez quel examen dépend de l’échange oral et pourquoi.",
     "quiz": [
       "Quelle objection vise le lien entre examen et parole publique ?",
       [
@@ -328,8 +340,8 @@ const philosophie = [
       1,
       "L’objection accepte provisoirement le but et interroge les moyens indispensables pour l’atteindre."
     ],
-    "seminar": "Une personne peut-elle pratiquer l’examen de soi sans interlocuteur ? Comparez les avantages d’un journal et d’un entretien. Rédiger 400–600 mots. Barème : fidélité au texte 6, argument 6, objection 4, clarté 4. Corrigé indicatif : expliciter le contexte, reconstruire une raison, examiner un contre-exemple et qualifier la conclusion.",
-    "review": "À J+2, reconstruisez l’argument. À J+7, rédigez une objection nouvelle en nommant la prémisse visée. À J+30, refaire l'activité avec un autre cas.",
+    "seminar": "Peut-on examiner ses convictions sans interlocuteur ? En 400 à 600 mots, partez de l’Apologie 37e–38a [1]. Comparez un journal personnel et un entretien où chacun peut contester les prémisses de l’autre. Appuyez la comparaison sur un cas concret. Défendez une thèse, formulez l’objection la plus forte et répondez-y. Barème sur 20 : lecture située du passage (5), reconstruction et thèse (5), comparaison des deux pratiques (4), objection et réponse (4), références (2). Corrigé indicatif : un journal aide à relire et réviser ses raisons. Un interlocuteur peut révéler une prémisse que le journal laisse intacte. Cette différence justifie une complémentarité, à condition que l’interlocuteur puisse contester librement et que le journal permette une relecture critique.",
+    "review": "À J+2, reformulez de mémoire les deux motifs de 38a. À J+7, reconstruisez les deux directions de l’explication dans l’Euthyphron. À J+30, examinez une conviction nouvelle en distinguant la contradiction constatée et la proposition que vous choisissez de réviser.",
     "sources": [
       [
         "Platon, trad. Harold North Fowler",
@@ -337,6 +349,30 @@ const philosophie = [
         "1914 pour cette traduction",
         "https://beta.perseus.tufts.edu/urn%3Acts%3AgreekLit%3Atlg0059.tlg002.perseus-eng2%3A38/",
         "Texte primaire, édition numérique de Tufts University."
+      ],
+      [
+        "Debra Nails et S. Sara Monoson",
+        "Socrates",
+        "2022 (révision)",
+        "https://plato.stanford.edu/entries/socrates/",
+        "Notice scientifique en accès libre, contexte athénien et limites des témoignages. Consultation : 28 novembre 2026.",
+        "anglais"
+      ],
+      [
+        "Platon, trad. Benjamin Jowett",
+        "Euthyphron 9e–11b",
+        "Traduction historique, édition numérique sans date",
+        "https://persweb.wabash.edu/facstaff/helmang/phi110-1516F/phi110-handouts/Euthyphro.pdf",
+        "Texte primaire mis à disposition par Wabash College, repères de Stephanus. Consultation : 28 novembre 2026.",
+        "anglais"
+      ],
+      [
+        "Stanford Encyclopedia of Philosophy",
+        "Plato’s Shorter Ethical Works, § 2 Elenchus",
+        "Notice scientifique",
+        "https://plato.stanford.edu/entries/plato-ethics-shorter/",
+        "Lecture secondaire en accès libre, fonctionnement et limites de l’examen réfutatif. Consultation : 28 novembre 2026.",
+        "anglais"
       ]
     ],
     "flashcards": [
@@ -387,6 +423,34 @@ const philosophie = [
       [
         "Quel résultat peut avoir un dialogue sans réponse ?",
         "Identifier une difficulté et les raisons de poursuivre l'enquête."
+      ],
+      [
+        "Quels sont les deux motifs du refus du silence à 38a ?",
+        "L’exigence divine telle que Socrate la comprend et la valeur de l’examen quotidien."
+      ],
+      [
+        "À quel moment du procès se situe 38a ?",
+        "Après la déclaration de culpabilité, pendant la discussion sur la peine."
+      ],
+      [
+        "Quelle prémisse vise l’objection du journal personnel ?",
+        "La prémisse selon laquelle se taire rend impossible la forme d’examen considérée."
+      ],
+      [
+        "Que prouve l’incompatibilité de trois engagements ?",
+        "Qu’ils ne peuvent être vrais ensemble. Elle laisse ouverte la question de savoir lequel réviser."
+      ],
+      [
+        "Quelle distinction explique la difficulté de l’Euthyphron ?",
+        "Une propriété peut accompagner la piété sans expliquer ce qui rend une action pieuse."
+      ],
+      [
+        "Pourquoi distinguer Apologie et Euthyphron ?",
+        "La première justifie une conduite devant des juges. Le second met une définition à l’épreuve."
+      ],
+      [
+        "Comment éviter un assentiment de façade ?",
+        "Laisser à chacun la possibilité de demander des précisions, de suspendre son jugement ou de contester le cas."
       ]
     ]
   },
