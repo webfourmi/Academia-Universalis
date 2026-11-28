@@ -116,3 +116,70 @@ const historyAssessmentGuidance = {
   "republique-romaine": {"quiz":0,"exercise":[0,2,3],"seminar":[0,1,2],"rubric":["Mécanisme institutionnel (8)","Exemple situé (8)","Limite (4)"],"answer":"La renommée de Pompée n’explique pas à elle seule sa capacité à commander. Identifier l’attribution du commandement, les ressources obtenues et le mode de décision qui les rend disponibles.","rationale":"Comparer qui vote et comment le choix collectif est calculé permet de distinguer la décision par les citoyens présents à Athènes du vote par groupes dans les comices romains."},
   "auguste": {"quiz":1,"exercise":[0,1,2,3],"seminar":[0,1,2,3],"rubric":["Institutions de 27 et 23 (8)","Confrontation au texte (8)","Limite du récit (4)"],"answer":"Le Sénat et les magistratures subsistent. Le contrôle de provinces et de forces militaires modifie le poids des acteurs. Lire la prééminence décrite au §34 à la lumière de ces moyens effectifs.","rationale":"Une inscription expose la continuité revendiquée par Auguste. Comparer les institutions maintenues, les compétences cumulées et le commandement réel précise la portée de cette revendication."}
 };
+
+// Retain the original URL as the library key when an institutional reading link is available.
+const historyReferenceDetails = {
+  "https://doi.org/10.1038/nature00879": {"type":"Article","access":"Notice ou résumé en ligne","readUrl":"https://pubmed.ncbi.nlm.nih.gov/12110880/"},
+  "https://doi.org/10.1126/science.1188021": {"type":"Article","access":"Texte en ligne","readUrl":"https://pmc.ncbi.nlm.nih.gov/articles/PMC5100745/"},
+  "https://doi.org/10.1038/nature22336": {"type":"Article","access":"Texte en ligne","readUrl":"https://www.eva.mpg.de/fileadmin/content_files/human_evolution/Homo_Sapiens_presskit/nature22336_Hublin.pdf"},
+  "https://doi.org/10.1038/nature22335": {"type":"Article","access":"Texte en ligne","readUrl":"https://www.eva.mpg.de/fileadmin/content_files/human_evolution/Homo_Sapiens_presskit/nature22335_McPherron.pdf"},
+  "https://doi.org/10.1038/s41586-018-0455-x": {"type":"Article","access":"Texte en ligne","readUrl":"https://pmc.ncbi.nlm.nih.gov/articles/PMC6130845/"},
+  "https://doi.org/10.1038/s41586-021-04275-8": {"type":"Article","access":"Notice ou résumé en ligne","readUrl":"https://www.repository.cam.ac.uk/items/fd6874cc-4e12-401d-b3a5-cfe401fd49e2"},
+  "https://humanorigins.si.edu/evidence/human-family-tree": {"type":"Notice","access":"Notice ou résumé en ligne"},
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC3127884/": {"type":"Article","access":"Texte en ligne"},
+  "https://www.sciencedirect.com/science/article/pii/S0047248422001099": {"type":"Article","access":"Notice ou résumé en ligne","readUrl":"https://pubmed.ncbi.nlm.nih.gov/36116366/"},
+  "https://pubmed.ncbi.nlm.nih.gov/24136960/": {"type":"Article","access":"Notice ou résumé en ligne"},
+  "https://pubmed.ncbi.nlm.nih.gov/29371468/": {"type":"Article","access":"Notice ou résumé en ligne","readUrl":"https://www.lsce.ipsl.fr/en/the-earliest-modern-humans-outside-africa/"},
+  "https://www.usgs.gov/publications/comment-earliest-modern-humans-outside-africa": {"type":"Article","access":"Notice ou résumé en ligne"},
+  "https://www.nature.com/articles/nature22968": {"type":"Article","access":"Notice ou résumé en ligne","readUrl":"https://researchportalplus.anu.edu.au/en/publications/human-occupation-of-northern-australia-by-65000-years-ago/"},
+  "https://www.usgs.gov/publications/independent-age-estimates-resolve-controversy-ancient-human-footprints-white-sands": {"type":"Article","access":"Notice ou résumé en ligne"},
+  "https://doi.org/10.5066/P9E36U4B": {"type":"Jeu de données","access":"Jeu de données en ligne","readUrl":"https://www.usgs.gov/data/data-release-independent-age-estimates-resolve-controversy-ancient-human-footprints-white","rights":"CC0 1.0 pour le jeu de données"},
+  "https://doi.org/10.2307/279653": {"type":"Article","access":"Notice ou résumé en ligne","readUrl":"https://www.cambridge.org/core/journals/american-antiquity/article/abs/willow-smoke-and-dogs-tails-huntergatherer-settlement-systems-and-archaeological-site-formation/89CE96EE412C74E6CBCEA1DB904E88EB"},
+  "https://www.persee.fr/doc/paleo_0153-9345_1991_num_17_1_4538": {"type":"Article","access":"Texte en ligne"},
+  "https://www.nature.com/articles/s41562-016-0043": {"type":"Article","access":"Notice ou résumé en ligne","readUrl":"https://www.repository.cam.ac.uk/items/3c5f7572-22dd-4db1-ac05-e7184808e661"},
+  "https://pubmed.ncbi.nlm.nih.gov/27035951/": {"type":"Article","access":"Texte en ligne","readUrl":"https://pmc.ncbi.nlm.nih.gov/articles/PMC4839398/"},
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC4035951/": {"type":"Article","access":"Texte en ligne"},
+  "https://pubmed.ncbi.nlm.nih.gov/19299619/": {"type":"Article","access":"Notice ou résumé en ligne","readUrl":"https://discovery.ucl.ac.uk/id/eprint/108026/"},
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC2664021/": {"type":"Article","access":"Texte en ligne"},
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC2664064/": {"type":"Article","access":"Notice ou résumé en ligne","readUrl":"https://repository.si.edu/items/e12bb972-89f6-42c6-bbd9-49796ca0ce56"},
+  "https://www.journals.uchicago.edu/doi/full/10.1086/659307": {"type":"Article","access":"Texte en ligne"},
+  "https://researchportalplus.anu.edu.au/en/publications/origins-of-agriculture-at-kuk-swamp-in-the-highlands-of-new-guine/": {"type":"Article","access":"Notice ou résumé en ligne"},
+  "https://whc.unesco.org/en/list/1687": {"type":"Notice","access":"Notice ou résumé en ligne"},
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC6601267/": {"type":"Article","access":"Texte en ligne"},
+  "https://doi.org/10.1017/RDC.2020.41": {"type":"Article","access":"Dépôt institutionnel","readUrl":"https://pure.qub.ac.uk/en/publications/the-intcal20-northern-hemisphere-radiocarbon-age-calibration-curv/","rights":"CC BY 4.0 pour l’article"},
+  "https://historicengland.org.uk/images-books/publications/radiocarbon-dating-chronological-modelling/radiocarbon-dating/": {"type":"Synthèse","access":"Texte en ligne"},
+  "https://www.metmuseum.org/essays/uruk-the-first-city": {"type":"Synthèse","access":"Texte en ligne"},
+  "https://www.metmuseum.org/fr/essays/the-origins-of-writing": {"type":"Synthèse","access":"Texte en ligne"},
+  "https://www.metmuseum.org/art/collection/search/327385": {"type":"Notice","access":"Notice ou résumé en ligne"},
+  "https://openstax.org/books/world-history-volume-1/pages/3-3-ancient-egypt": {"type":"Chapitre","access":"Manuel en ligne","rights":"CC BY-NC-SA 4.0 pour le manuel"},
+  "https://www.metmuseum.org/de/toah/ht/02/afe": {"type":"Synthèse","access":"Notice ou résumé en ligne"},
+  "https://humanities.uct.ac.za/department-historical-studies/our-degrees-undergraduate-studies/africa-question-ancient-pre-colonial-africa-between-past-present": {"type":"Programme","access":"Descriptif de cours en ligne"},
+  "https://egyptianmuseumcairo.eg/artefacts/narmer-palette-collection/": {"type":"Notice","access":"Notice ou résumé en ligne"},
+  "https://isac-idb-static.uchicago.edu/multimedia/88/oimp33.pdf": {"type":"Notice","access":"Notice indexée dans un catalogue PDF"},
+  "https://openstax.org/books/world-history-volume-1/pages/5-4-vedic-india-to-the-fall-of-the-maurya-empire": {"type":"Chapitre","access":"Manuel en ligne","rights":"CC BY-NC-SA 4.0 pour le manuel"},
+  "https://pubmed.ncbi.nlm.nih.gov/22645375/": {"type":"Article","access":"Texte en ligne","readUrl":"https://pmc.ncbi.nlm.nih.gov/articles/PMC3387054/"},
+  "https://doi.org/10.1073/pnas.1704304114": {"type":"Article","access":"Texte en ligne","readUrl":"https://pmc.ncbi.nlm.nih.gov/articles/PMC5488950/"},
+  "https://doi.org/10.1073/pnas.1308937110": {"type":"Article","access":"Texte en ligne","readUrl":"https://pmc.ncbi.nlm.nih.gov/articles/PMC4035951/"},
+  "https://www.britishmuseum.org/sites/default/files/2020-11/British_Museum_Magazine_Autumn2020_reducedsize.pdf": {"type":"Revue de musée","access":"Accès direct à confirmer"},
+  "https://avpreservation.si.edu/spotlight/anyang": {"type":"Notice","access":"Notice et modèle 3D en ligne","readUrl":"https://www.si.edu/object/inscribed-turtle-plastron%3Adpo_3d_230004","rights":"Modèle 3D soumis aux conditions du Smithsonian"},
+  "https://pubmed.ncbi.nlm.nih.gov/11326098/": {"type":"Article","access":"Notice ou résumé en ligne"},
+  "https://servicios-galileo.filos.unam.mx/uploads/temarios/20261083302890005/Garc%C3%ADa_Capistr%C3%A1n_Hugo_Mesoam%C3%A9rica.pdf": {"type":"Programme","access":"Programme indexé, ouverture du PDF à confirmer"},
+  "https://doi.org/10.1017/S0959774311000023": {"type":"Article","access":"Notice ou résumé en ligne","readUrl":"https://www.cambridge.org/core/journals/cambridge-archaeological-journal/article/gender-and-mortuary-ritual-at-ancient-teotihuacan-mexico-a-study-of-intrasocietal-diversity/04CE7E769B0B36F1F1FB525187BEDC3B"},
+  "https://www.hsps.cam.ac.uk/part-i": {"type":"Programme","access":"Descriptif de cours en ligne"},
+  "https://www.cambridge.org/core/books/abs/cambridge-world-history/different-cities-jennejeno-and-african-urbanism/4CDCE74CCE3A6D89C52A283B518F579F": {"type":"Chapitre","access":"Notice ou résumé en ligne"},
+  "https://online.yale.edu/courses/introduction-ancient-greek-history": {"type":"Conférence","access":"Descriptif de cours en ligne"},
+  "https://beta.perseus.tufts.edu/urn%3Acts%3AgreekLit%3Atlg0003.tlg001.perseus-eng6/chapter%3A2.37/": {"type":"Source primaire","access":"Texte en ligne"},
+  "https://beta.perseus.tufts.edu/urn%3Acts%3AgreekLit%3Atlg0003.tlg001.1st1K-eng2/chapter%3A1.98/": {"type":"Source primaire","access":"Texte en ligne"},
+  "https://openstax.org/books/world-history-volume-1/pages/6-4-the-roman-republic": {"type":"Chapitre","access":"Manuel en ligne","rights":"CC BY-NC-SA 4.0 pour le manuel"},
+  "https://openstax.org/books/world-history-volume-1/pages/6-5-the-age-of-augustus": {"type":"Chapitre","access":"Manuel en ligne","rights":"CC BY-NC-SA 4.0 pour le manuel"},
+  "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Augustus/Res_Gestae/home.html": {"type":"Source primaire","access":"Texte en ligne"},
+  "https://ocw.mit.edu/courses/21h-007j-empire-introduction-to-ancient-and-medieval-studies-fall-2012/pages/calendar/": {"type":"Programme","access":"Descriptif de cours en ligne"}
+};
+
+function historyReference(url) {
+  return historyReferenceDetails[url];
+}
+
+function historyReferenceUrl(url) {
+  return historyReference(url)?.readUrl || url;
+}
