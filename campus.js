@@ -9,7 +9,6 @@ const campusResources = [
 const campusSpaces = {
   'Mathématiques': 'Expérimenter, démontrer, résoudre des problèmes et réviser les formules.',
   'Salon de lecture': 'Lire les œuvres et retrouver les éditions gratuites.',
-  'Carnet littéraire': 'Conserver ses impressions, citations et analyses.',
   'Qualité scientifique': 'Consulter les contrôles structurels des leçons et les vérifications restant à effectuer.',
   'Projets universitaires': 'Conduire un projet personnel, documenter ses étapes et conserver un dossier de travail.',
   'Planning': 'Planifier les séances et les révisions selon tes disponibilités.',
@@ -161,8 +160,9 @@ function campusCourseActivityPanel(name) {
 
 function showSpace(name) {
   if(name==='Mathématiques'){showMath();return;}
+  if(name==='Carnet littéraire'){openSubjectNotebook('Littérature');return;}
   rememberCampusRoute('space',{name});
-  if(name==='Salon de lecture'||name==='Carnet littéraire'){literaryPanel(name);return;}
+  if(name==='Salon de lecture'){literaryPanel(name);return;}
   if(name==='Projets universitaires'){showPractice(name);return;}
   if(name==='Compétences et erreurs'){showCompetencies();return;}
   if(name==='Vie du campus'){showCampusLife();return;}
@@ -439,13 +439,20 @@ function validLiteraryState(x){return x===undefined||!!(x&&typeof x==="object"&&
 function literaryState(){return validLiteraryState(S.literary)&&S.literary?S.literary:{theme:"sepia",size:115,entries:{}};}
 function literaryEntry(state,id){return state.entries[id]||{status:"todo",impressions:"",quotes:"",analysis:"",characters:"",position:0};}
 function persistLiterary(state){if(!validLiteraryState(state))return false;try{localStorage.au=JSON.stringify({...S,literary:state});S.literary=state;return true;}catch{return false;}}
-function literaryPanel(name,selected){
+function literaryPanel(name,selected,container=v){
+ if(name==='Carnet littéraire'&&container===v){openSubjectNotebook('Littérature',selected);return;}
  const state=literaryState(),book=literaryBooks.find(b=>b.id===selected)||literaryBooks[0],entry=literaryEntry(state,book.id);
- v.replaceChildren();const el=(tag,txt,parent=v)=>{const n=document.createElement(tag);if(txt)n.textContent=txt;parent.append(n);return n;};
- const btn=(txt,fn,parent=v)=>{const b=el("button",txt,parent);b.type="button";b.onclick=fn;return b;};
- btn("Retour aux espaces",()=>go(11));el("h2",name);
- const nav=el("nav");btn("Salon de lecture",()=>showSpace("Salon de lecture"),nav);btn("Carnet littéraire",()=>showSpace("Carnet littéraire"),nav);
- const label=el("label","Œuvre ");const select=el("select","",label);literaryBooks.forEach(b=>{const o=el("option",b.title+" · "+b.author,select);o.value=b.id;});select.value=book.id;select.onchange=()=>literaryPanel(name,select.value);
+ container.replaceChildren();const el=(tag,txt,parent=container)=>{const n=document.createElement(tag);if(txt)n.textContent=txt;parent.append(n);return n;};
+ const btn=(txt,fn,parent=container)=>{const b=el("button",txt,parent);b.type="button";b.onclick=fn;return b;};
+ if(container===v){
+   btn("Retour aux espaces",()=>go(11));
+   el("h2",name);
+   btn("Mes notes de lecture",()=>openSubjectNotebook('Littérature',book.id));
+ }else{
+   notebookBook=book.id;
+   el("h3","Notes de lecture");
+ }
+ const label=el("label","Œuvre ");const select=el("select","",label);literaryBooks.forEach(b=>{const o=el("option",b.title+" · "+b.author,select);o.value=b.id;});select.value=book.id;select.onchange=()=>literaryPanel(name,select.value,container);
  el("h3",book.title);el("p",book.author+" · "+book.access);const lessonId={fable:"fable",odyssee:"odyssee",genji:"japon-heian",chevet:"japon-heian",achebe:"achebe"}[book.id];if(lessonId)btn("Lire la leçon associée",()=>spaceLesson("litterature",lessonId));
  const msg=el("p","");msg.setAttribute("role","status");
  const store=()=>{state.entries={...state.entries,[book.id]:entry};msg.textContent=persistLiterary({...state})?"Enregistré sur cet appareil.":"Enregistrement impossible."};
@@ -464,6 +471,6 @@ function literaryPanel(name,selected){
  btn("Mémoriser ce passage",()=>{entry.position=reader.scrollTop/Math.max(1,reader.scrollHeight-reader.clientHeight);store();});
  el("p","Texte de 1668, orthographe modernisée ; collation de l’édition à terminer.");
  }else el("p","Pas de texte intégral embarqué : les droits ou l’accès de l’édition restent à vérifier.");
- btn("Ouvrir mon carnet pour cette œuvre",()=>{rememberCampusRoute("space",{name:"Carnet littéraire"});literaryPanel("Carnet littéraire",book.id);});
+ btn("Ouvrir mon carnet pour cette œuvre",()=>openSubjectNotebook('Littérature',book.id));
  }
 }

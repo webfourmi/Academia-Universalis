@@ -3,7 +3,7 @@ const mathSpaces = {
   demonstration: 'Atelier de démonstration',
   problemes: 'Cabinet des problèmes',
   formulaire: 'Formulaire intelligent',
-  carnet: 'Carnet mathématique'
+  carnet: 'Mes notes de maths'
 };
 
 const mathCampusSpaces = {
@@ -83,6 +83,7 @@ function mathProgress() {
 }
 
 function showMath(space = 'accueil') {
+  if(space==='carnet'){openSubjectNotebook('Mathématiques');return;}
   rememberCampusRoute('mathematiques',{space});
   const lesson=mathFoundationLessons.find(item=>item.id===space);
   const foundations=lesson || space==='diagnostic';
@@ -101,7 +102,6 @@ function showMath(space = 'accueil') {
   else if (space === 'laboratoire') showMathLab(content);
   else if (space === 'demonstration' || space === 'problemes') showMathExercises(content,space);
   else if (space === 'formulaire') showMathFormulas(content);
-  else if (space === 'carnet') showMathNotebook(content);
   else content.innerHTML = '<p>Explore les sécantes, construis une preuve, résous un problème puis consigne ton raisonnement dans le carnet. Les activités couvrent la récurrence, le second degré, la dérivation et les probabilités binomiales.</p><p>Le cycle I est disponible. Les cycles II à VI sont en préparation.</p>';
   v.querySelector('h2').focus();
 }

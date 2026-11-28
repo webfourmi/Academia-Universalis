@@ -133,47 +133,93 @@ async function importNotes(input, parsedData) {
   }
 }
 
+function notebookCourseSubject(course) {
+  if(course.key==='antiquite')return 'Histoire';
+  if(course.key==='chinois')return 'Langues';
+  const year=(course.year||1)-1;
+  const index=upperYears[year-1]?.findIndex(entry=>entry.key===course.key);
+  return raw[year]?.[index]?.[0]||course.title.split(' · ')[0];
+}
+
 function notebookCategory(key) {
   const lesson = lessonForNote(key);
-  if (lesson) return [lesson.course.year || 1,lesson.course.title.split(' · ')[0]];
+  if (lesson) return [lesson.course.year || 1,notebookCourseSubject(lesson.course)];
   const archive = /^(\d+)-(\d+)-\d+$/.exec(key);
   if (archive && raw[archive[1]]?.[archive[2]]) return [Number(archive[1])+1,raw[archive[1]][archive[2]][0]];
   return key.startsWith('synthese:') ? [1,'Travaux de synthèse'] : [0,'Autres notes'];
 }
 
+let notebookSubject = '';
+let notebookBook;
+
+function openSubjectNotebook(subject, book) {
+  notebookSubject = subject;
+  notebookBook = book;
+  go(6);
+}
+
 function showNotebook() {
-  const entries = Object.entries(S.notes).filter(([,note])=>note.trim());
+  const entries = Object.entries(S.notes).filter(([key,note])=>note.trim()&&!key.startsWith('math-carnet-'));
   const categories=entries.map(([key])=>notebookCategory(key));
-  const subjects=[...new Set([...categories.map(([,subject])=>subject),...notebookPassages().map(x=>x.target?.course.title.split(' · ')[0]||'Autres notes')])].sort((a,b)=>a.localeCompare(b,'fr'));
-  v.innerHTML = `<h2>Mon carnet</h2>
-    ${(entries.length||notebookPassages().length) ? `<div class="library-filters"><div><label for="note-year">Année</label><select id="note-year"><option value="">Toutes</option>
-      ${years.map((_,index)=>`<option value="${index+1}">Année ${index+1}</option>`).join('')}<option value="0">Autres notes</option></select></div>
-      <div><label for="note-subject">Matière</label><select id="note-subject"><option value="">Toutes</option>${subjects.map(subject=>`<option>${e(subject)}</option>`).join('')}</select></div></div>
-      <label>Rechercher dans le carnet <input type="search" id="note-search"></label><p id="note-count" role="status"></p>` : '<p>Tes notes de cours et tes brouillons apparaîtront ici.</p>'}
+  const subjects=[...new Set([
+    'Mathématiques', 'Littérature',
+    ...allStudyCourses().map(notebookCourseSubject),
+    ...raw.flatMap(year=>year.map(([title])=>title)),
+    ...categories.map(([,subject])=>subject),
+    ...notebookPassages().map(x=>x.target?notebookCourseSubject(x.target.course):'Autres notes')
+  ])].sort((a,b)=>a.localeCompare(b,'fr'));
+  if(!subjects.includes(notebookSubject))notebookSubject='';
+  v.innerHTML = `<section class="study-notebook">
+    <header class="notebook-cover"><h2>Mon carnet</h2></header>
+    <nav class="notebook-tabs" aria-label="Matières du carnet">
+      ${['',...subjects].map((subject,index)=>`<button type="button" data-notebook-tab="${index}" aria-pressed="${subject===notebookSubject}">${e(subject||'Toutes')}</button>`).join('')}
+    </nav>
+    <div class="notebook-page">
+    <div id="notebook-math" hidden></div><div id="notebook-literature" hidden></div>
+    <div class="library-filters"><label for="note-year">Année
+      <select id="note-year"><option value="">Toutes</option>
+      ${years.map((_,index)=>`<option value="${index+1}">Année ${index+1}</option>`).join('')}<option value="0">Autres notes</option></select>
+    </label><label for="note-search">Rechercher dans les notes de cours
+      <input type="search" id="note-search"></label></div><p id="note-count" role="status"></p>
     <div id="notebook-entries">${entries.map(([key,note],index)=>`
       <article class="card note-entry" tabindex="-1" data-note-key="${e(key)}"><h3>${lessonForNote(key)?`<button class="title-action" type="button" data-note-lesson="${index}">${e(noteTitle(key))}</button>`:e(noteTitle(key))}</h3>
       <p class="note-text">${e(note)}</p><button type="button" data-edit-note="${index}">Modifier</button></article>`).join('')}</div>
-    ${backupControls()}`;
+    </div></section>${backupControls()}`;
   appendPassageNotebook();
   unifyNotebookTimeline();
-  if (entries.length||notebookPassages().length) {
+  {
     const year=v.querySelector('#note-year');
-    const subject=v.querySelector('#note-subject');
+    const tabs=[...v.querySelectorAll('[data-notebook-tab]')];
+    const tabSubjects=['',...subjects];
+    const math=v.querySelector('#notebook-math');
+    const literature=v.querySelector('#notebook-literature');
     const cards=[...v.querySelectorAll('.note-entry')];
     const filter=()=>{
       let count=0;
       const query=v.querySelector('#note-search').value.toLocaleLowerCase('fr');
       cards.forEach((card,index)=>{
         const [entryYear,entrySubject]=categories[Number(card.querySelector('[data-edit-note]').dataset.editNote)];
-        card.hidden=Boolean((year.value && Number(year.value)!==entryYear)||(subject.value && subject.value!==entrySubject));
+        card.hidden=Boolean((year.value && Number(year.value)!==entryYear)||(notebookSubject && notebookSubject!==entrySubject));
         if(!card.hidden&&query&&!card.textContent.toLocaleLowerCase('fr').includes(query))card.hidden=true;
         if (!card.hidden) count++;
       });
-      for(const card of v.querySelectorAll('[data-passage-entry]')){card.hidden=Boolean((year.value&&Number(year.value)!==Number(card.dataset.year))||(subject.value&&subject.value!==card.dataset.subject));if(!card.hidden&&query&&!card.textContent.toLocaleLowerCase('fr').includes(query))card.hidden=true;if(!card.hidden)count++;}
-      v.querySelector('#note-count').textContent=count ? `${count} note${count===1?'':'s'}` : 'Aucune note pour ces filtres.';
+      for(const card of v.querySelectorAll('[data-passage-entry]')){card.hidden=Boolean((year.value&&Number(year.value)!==Number(card.dataset.year))||(notebookSubject&&notebookSubject!==card.dataset.subject));if(!card.hidden&&query&&!card.textContent.toLocaleLowerCase('fr').includes(query))card.hidden=true;if(!card.hidden)count++;}
+      v.querySelector('#note-count').textContent=count ? `${count} note${count===1?'':'s'}` : 'Aucune note de cours pour cette sélection.';
     };
-    year.onchange=subject.onchange=filter;v.querySelector('#note-search').oninput=filter;
-    filter();
+    function selectSubject(subject) {
+      notebookSubject=subject;
+      tabs.forEach((button,index)=>button.setAttribute('aria-pressed',String(tabSubjects[index]===subject)));
+      math.hidden=subject!=='Mathématiques';
+      literature.hidden=subject!=='Littérature';
+      if(!math.hidden&&!math.hasChildNodes())showMathNotebook(math);
+      if(!literature.hidden&&!literature.hasChildNodes())literaryPanel('Carnet littéraire',notebookBook,literature);
+      filter();
+    }
+    tabs.forEach((button,index)=>button.onclick=()=>selectSubject(tabSubjects[index]));
+    year.onchange=filter;
+    v.querySelector('#note-search').oninput=filter;
+    selectSubject(notebookSubject);
+    tabs.find(button=>button.getAttribute('aria-pressed')==='true')?.scrollIntoView({block:'nearest',inline:'nearest'});
   }
   v.querySelectorAll('[data-note-lesson]').forEach(button=>{
     button.onclick=()=>openNotebookLesson(entries[Number(button.dataset.noteLesson)][0]);
@@ -269,7 +315,7 @@ function appendPassageNotebook(){
   if(!entries.length)list.textContent='Aucune annotation de passage.';
   for(const {key,mark,section,target} of entries){
     const lesson=target?.course.lessons[target.index];
-    const card=document.createElement('article');card.className='card';card.dataset.passageEntry='';card.dataset.date=mark.updatedAt||mark.createdAt||'';card.dataset.noteKey=key;card.dataset.year=target?.course.year||1;card.dataset.subject=target?.course.title.split(' · ')[0]||'Autres notes';card.tabIndex=-1;
+    const card=document.createElement('article');card.className='card';card.dataset.passageEntry='';card.dataset.date=mark.updatedAt||mark.createdAt||'';card.dataset.noteKey=key;card.dataset.year=target?(target.course.year||1):0;card.dataset.subject=target?notebookCourseSubject(target.course):'Autres notes';card.tabIndex=-1;
     const heading=document.createElement('h4');heading.textContent=target?target.course.title+' · '+lesson.title:key;card.append(heading);
     const date=document.createElement('p');date.textContent=mark.createdAt?'Créée le '+new Date(mark.createdAt).toLocaleString('fr-FR'):'Date d’origine inconnue';if(mark.updatedAt)date.textContent+=' · Modifiée le '+new Date(mark.updatedAt).toLocaleString('fr-FR');card.append(date);
     const label=document.createElement('p');label.textContent=lesson?.sections[section]?.[0]||'Passage non identifié';card.append(label);
