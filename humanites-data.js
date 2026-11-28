@@ -52,6 +52,22 @@ const philosophie = [
       [
         "Bilan éditorial",
         "Cours original et exemples fictifs explicitement identifiés. Sources consultées le 27 novembre 2026 ; documents externes en anglais, sans reproduction de figures. La comparaison est introductive, non exhaustive. Relecture indépendante non réalisée."
+      ],
+      [
+        "Problématiser un désaccord",
+        "Deux personnes disent que l’accès à la bibliothèque doit être égal. L’une veut distribuer le même nombre de places à chaque quartier. L’autre veut réduire le temps de trajet vers la bibliothèque pour les quartiers mal desservis. Leur désaccord porte sur le critère d’égalité. Reformulez les deux propositions de sorte que chacune puisse reconnaître son propre raisonnement."
+      ],
+      [
+        "Comparer sans effacer le contexte",
+        "Dans le dossier sur Oruka, sélectionnez un passage qui distingue la parole du sage du travail d’entretien et de traduction. Puis relevez, dans l’Apologie, qui prend la parole et devant quel public. Comparez le rôle d’une relance dans chaque cas. Le texte judiciaire et l’entretien documenté rendent visibles des attentes différentes et ne permettent pas les mêmes inférences historiques. [3, 4]"
+      ],
+      [
+        "Recherche et synthèse",
+        "Choisissez une règle locale, par exemple l’attribution d’une salle commune. Formulez une question de fait, une question de définition et une question normative. Repérez une donnée qui éclaire la décision et une prémisse que cette donnée ne suffit pas à établir. Rédigez deux paragraphes qui défendent une réponse et indiquent le cas qui pourrait vous faire la réviser. [2]"
+      ],
+      [
+        "Repères documentaires",
+        "Les passages antiques sont repérés par leur numérotation usuelle. Les lectures en français sont des reformulations pédagogiques originales. Les sources externes donnent accès aux éditions et aux commentaires. Relecture scientifique indépendante à organiser."
       ]
     ],
     "diagram": [
@@ -257,41 +273,83 @@ const philosophie = [
         "Texte primaire, édition numérique Tufts.",
         "anglais"
       ]
-    ]
+    ],
+    "overview": "Comment passer d’un désaccord à une question que chacun peut examiner ?",
+    "practiceQuiz": [
+      "Dans le cas de la bibliothèque, que faut-il ajouter au constat de fréquentation pour justifier un financement ?",
+      [
+        "Une prémisse normative sur l’accès au savoir",
+        "Une répétition du taux de fréquentation",
+        "La définition d’un syllogisme"
+      ],
+      0,
+      "La donnée renseigne sur l’usage. Le principe normatif précise pourquoi cet usage devrait compter dans la décision."
+    ],
+    "plan": [
+      [
+        0,
+        "Définir et situer la philosophie"
+      ],
+      [
+        5,
+        "Construire et discuter les raisons"
+      ],
+      [
+        10,
+        "Consolider et approfondir"
+      ]
+    ],
+    "revision": 2
   },
   {
     "id": "socrate",
     "title": "Socrate · Examiner une conviction",
-    "goal": "Reconstituer un argument de l’Apologie et formuler une objection qui vise une prémisse précise.",
-    "prerequisite": "Aucun. Une prémisse est une raison avancée à l’appui d’une conclusion.",
+    "goal": "Situer le procès de Socrate, reconstruire le refus du silence dans l’Apologie et éprouver une définition par un questionnement suivi.",
+    "prerequisite": "Avoir distingué prémisse, conclusion et objection dans « Qu’est-ce que la philosophie ? ». Socle (30–45 min) : lire les quatre premières sections et faire l’atelier. Universitaire (1 h 30–2 h) : lire le dossier, travailler l’Euthyphron et préparer le séminaire. Recherche (3–5 h) : prolonger l’enquête proposée en fin de cours.",
     "sections": [
       [
         "Une parole située",
-        "L’Apologie est un texte de Platon qui met en scène la défense de Socrate. Au passage 38a, Socrate explique pourquoi il ne pourrait accepter de se taire. Le cadre judiciaire oriente la lecture : il s’agit d’une réponse à une issue possible du procès, prononcée devant des juges. Pour l’analyser, distinguez ce que le personnage soutient et ce que nous pouvons attribuer au Socrate historique. [1]"
+        "En 399 av. J.-C., à Athènes, Socrate est jugé pour impiété et corruption de la jeunesse. La cité a subi la défaite face à Sparte et le régime des Trente avant le rétablissement de la démocratie. Ce cadre éclaire la fragilité politique de la période, mais il ne suffit pas à expliquer pourquoi chacun des juges a voté comme il l’a fait. Apologie signifie ici défense. À 37e–38a, après le verdict de culpabilité, le Socrate de Platon examine l’idée de vivre ailleurs en se taisant. Platon construit une scène littéraire dont nous ne possédons aucun procès-verbal. Les portraits de Xénophon, de Platon et d’Aristophane répondent à des projets différents, ce qui rend leur comparaison indispensable à l’enquête sur le Socrate historique. [1, 2]"
       ],
       [
         "Reconstituer la justification",
-        "Dans ce passage, examiner ce que nous tenons pour une vertu fait partie des biens les plus importants. Garder le silence empêcherait Socrate de mener cette activité comme il l’entend. La conclusion pratique concerne d’abord sa propre conduite. La formule générale sur la vie sans examen soulève une autre question : à quelles conditions une affirmation sur sa vie pourrait-elle valoir pour toute autre personne ? [1]"
+        "À 37e–38a, Socrate présente deux motifs : le silence irait contre ce qu’il comprend comme une exigence divine et l’examen quotidien de la vertu est pour lui un bien de premier ordre. Reconstruisons seulement le second motif. P1 : Socrate tient l’examen quotidien, avec lui-même et avec les autres, pour un bien majeur. P2 : s’engager à se taire empêcherait la pratique dialoguée qu’il défend devant le jury. P3, implicite : il faut refuser une condition qui ferait abandonner un bien majeur, sauf raison supérieure. Conclusion : Socrate a une raison de refuser cette condition. La prémisse implicite rend visible un choix de priorité. Comparez cette reconstruction à la formulation beaucoup plus générale sur la vie sans examen. [1]"
       ],
       [
         "Éprouver une prémisse",
-        "Prenons la conviction « une promesse doit toujours être tenue ». Un cas dans lequel respecter la promesse exposerait quelqu’un à un danger oblige à préciser le mot « toujours ». L’examen peut conduire à ajouter une exception, à invoquer des devoirs concurrents ou à expliquer pourquoi la promesse n’était jamais valide. Chaque réponse demande une justification différente."
+        "Imaginez une association qui a promis de rendre public un compte rendu. Entre-temps, elle découvre que sa publication intégrale révélerait l’identité d’une personne vulnérable. Quel engagement doit-elle réviser : l’idée que toute promesse oblige sans exception, l’idée que le compte rendu doit être public dans son intégralité, ou l’idée que protéger l’identité est impossible tout en publiant ? Chaque réponse conduit à une action différente. Cet exemple est construit pour distinguer les objections à un principe, à son application et à un fait supposé."
       ],
       [
         "Deux objections possibles",
-        "On peut contester la première prémisse en donnant le même poids à d’autres biens, par exemple le soin apporté à ses proches. On peut aussi accepter la valeur de l’examen et contester que la conversation publique en soit la seule forme. La première objection réévalue une priorité. La seconde demande de justifier le passage de la valeur de l’examen au refus du silence."
+        "Contester la priorité donnée à l’examen vise P1 ou P3 : la survie pourrait rendre d’autres biens possibles. Accepter cette priorité tout en proposant une correspondance écrite vise P2, selon la portée donnée au silence. La réponse la plus forte doit préciser ce que l’écrit peut conserver et ce qu’un échange immédiat ajoute : le retour de l’interlocuteur, la demande de précision et la possibilité de corriger un malentendu sur le moment. Le texte de Platon ouvre cette comparaison sans décider à lui seul quel moyen convient à toutes les formes d’examen. [1]"
       ],
       [
         "Contexte et méthode",
-        "L'examen socratique cherche à éprouver des engagements déjà admis par l'interlocuteur. Une contradiction entre réponses invite à réviser au moins un engagement ; elle ne prouve pas automatiquement la thèse opposée."
+        "L’élenchos, ou examen réfutatif, confronte une affirmation aux autres engagements que l’interlocuteur accepte. Dans l’Euthyphron 9e–11b, les deux personnages admettent provisoirement que tous les dieux aiment le pieux. Socrate demande dans quel sens va l’explication : est-ce la piété qui explique l’amour des dieux, ou cet amour qui rend l’acte pieux ? Dans la première lecture, dire que les dieux aiment le pieux peut en indiquer un trait sans définir ce qui le rend pieux. Le passage teste ainsi une définition en distinguant une propriété commune de son rôle explicatif. [3, 4]"
       ],
       [
         "Dialogue fictif",
-        "A : toute règle est juste si elle est votée. B : une règle votée qui prive arbitrairement une minorité de droits serait-elle juste ? A doit préciser si le vote suffit ou si des conditions supplémentaires sont nécessaires."
+        "Scène fictive. Lina : « Une décision est juste dès qu’elle est votée par la majorité. » Malik : « Même si elle interdit à un seul groupe d’utiliser la bibliothèque pour un motif arbitraire ? » Lina : « Ce cas serait injuste. » Malik : « Quelle proposition veux-tu réviser ? » Lina : « Je garde le vote, mais j’ajoute que les mêmes droits doivent être garantis à tous. » Malik : « Et une priorité temporaire pour les personnes qui n’ont aucun autre accès ? » Lina : « Il faut que je distingue mêmes droits et règles d’accès identiques. » Le premier cas révèle une incompatibilité, la révision la résout et le second ouvre une difficulté nouvelle. Reformulez la position de Lina à chaque étape."
       ],
       [
         "Glossaire",
-        "Élenchos : examen réfutatif ; aporie : difficulté sans résolution immédiate ; prémisse implicite : raison non formulée."
+        "Élenchos — examen d’une affirmation à partir d’engagements discutés avec l’interlocuteur. Aporie — difficulté où les réponses disponibles ne permettent pas encore d’avancer. Prémisse implicite — proposition qu’on doit ajouter pour rendre l’inférence intelligible. Contre-exemple — cas incompatible avec une affirmation générale. Priorité explicative — relation par laquelle un fait rend compte d’un autre, même lorsque tous deux coïncident."
+      ],
+      [
+        "Portée et limites de la réfutation",
+        "Si A, B et C sont incompatibles, au moins une proposition doit être révisée. Il reste possible que B ou C soit en défaut. Pour établir que A est fausse, il faut défendre indépendamment les autres engagements ou produire un contre-exemple dont les conditions sont admises. Dans un échange inégal, un assentiment peut refléter la pression exercée par la personne qui questionne. Exigez que chacun puisse reformuler une question, suspendre sa réponse et contester les exemples utilisés. [4]"
+      ],
+      [
+        "Comparer deux usages du dialogue",
+        "Dans l’Apologie, le personnage justifie sa conduite devant des juges. Dans l’Euthyphron, le questionnement soumet une définition à l’épreuve. Comparez le rôle de l’interlocuteur et le résultat attendu : une décision pratique dans le premier passage, une difficulté de définition dans le second. Étudier deux scènes de Platon permet déjà de mesurer les limites d’une formule unique qui résumerait toute la méthode de Socrate. [1, 3, 4]"
+      ],
+      [
+        "Enquête et synthèse",
+        "Pour le parcours recherche, comparez les passages 21b–23b et 37e–38a de l’Apologie avec Euthyphron 9e–11b. Relevez un cas où l’examen révèle une incompatibilité et un cas où il justifie une conduite. Rédigez une page qui cite les repères de passage, distingue ce que Platon met en scène de l’attribution au personnage historique et confronte votre lecture à la notice de Stanford. Terminez par une question que les documents étudiés laissent ouverte. [1, 2, 3, 4]"
+      ],
+      [
+        "Repères documentaires",
+        "Les passages antiques sont repérés par leur numérotation usuelle. Les lectures en français sont des reformulations pédagogiques originales. Les sources externes donnent accès aux éditions et aux commentaires. Relecture scientifique indépendante à organiser."
       ]
     ],
     "diagram": [
@@ -315,9 +373,9 @@ const philosophie = [
         ]
       ]
     ],
-    "dossier": "Lisez 38a [1]. Repérez l’hypothèse du silence et les motifs donnés pour la rejeter. Paraphrasez les deux motifs séparément.",
-    "activity": "Écrivez un argument en deux prémisses et une conclusion sur le refus du silence. Ajoutez une objection et indiquez quelle prémisse elle vise.",
-    "correction": "Exemple. L’examen partagé constitue pour Socrate un bien essentiel. Se taire exclut l’examen partagé tel qu’il le pratique. Il refuse donc de se taire. L’objection selon laquelle l’écriture pourrait prolonger cet examen vise la seconde prémisse ou oblige à la préciser. Elle laisse intacte l’importance accordée à l’examen.",
+    "dossier": "Apologie 37e–38a [1] : relevez les deux motifs du refus du silence. Reformulez-les séparément, puis expliquez pourquoi seul le second apparaît dans la reconstruction du cours. Euthyphron 9e–11b [3] : dessinez deux flèches représentant les explications rivales. Repère pour vous corriger : dans l’une, la piété explique que les dieux aiment l’acte. Dans l’autre, leur amour explique que l’acte soit pieux.",
+    "activity": "Reprenez le dialogue fictif sur la bibliothèque. Écrivez la proposition initiale de Lina, le jugement qu’elle porte sur le premier cas et la contradiction qui en résulte. Proposez une formulation révisée et mettez-la à l’épreuve du cas de priorité temporaire. Enfin, relisez P2 de l’Apologie et formulez une objection qui vise cette seule prémisse.",
+    "correction": "Pour la bibliothèque, Lina dit d’abord que tout vote majoritaire suffit à rendre une décision juste et admet ensuite qu’une exclusion arbitraire reste injuste même si elle est votée. Elle peut réviser sa thèse en exigeant une justification publique des différences de traitement. La priorité temporaire peut rester compatible avec cette exigence si elle répond à un obstacle réel et cesse lorsque cet obstacle disparaît. Dans l’Apologie, l’écriture pourrait prolonger une forme d’examen et vise donc P2. Pour répondre, précisez quel examen dépend de l’échange oral et pourquoi.",
     "quiz": [
       "Quelle objection vise le lien entre examen et parole publique ?",
       [
@@ -328,8 +386,8 @@ const philosophie = [
       1,
       "L’objection accepte provisoirement le but et interroge les moyens indispensables pour l’atteindre."
     ],
-    "seminar": "Une personne peut-elle pratiquer l’examen de soi sans interlocuteur ? Comparez les avantages d’un journal et d’un entretien. Rédiger 400–600 mots. Barème : fidélité au texte 6, argument 6, objection 4, clarté 4. Corrigé indicatif : expliciter le contexte, reconstruire une raison, examiner un contre-exemple et qualifier la conclusion.",
-    "review": "À J+2, reconstruisez l’argument. À J+7, rédigez une objection nouvelle en nommant la prémisse visée. À J+30, refaire l'activité avec un autre cas.",
+    "seminar": "Peut-on examiner ses convictions sans interlocuteur ? En 400 à 600 mots, partez de l’Apologie 37e–38a [1]. Comparez un journal personnel et un entretien où chacun peut contester les prémisses de l’autre. Appuyez la comparaison sur un cas concret. Défendez une thèse, formulez l’objection la plus forte et répondez-y. Barème sur 20 : lecture située du passage (5), reconstruction et thèse (5), comparaison des deux pratiques (4), objection et réponse (4), références (2). Corrigé indicatif : un journal aide à relire et réviser ses raisons. Un interlocuteur peut révéler une prémisse que le journal laisse intacte. Cette différence justifie une complémentarité, à condition que l’interlocuteur puisse contester librement et que le journal permette une relecture critique.",
+    "review": "À J+2, reformulez de mémoire les deux motifs de 38a. À J+7, reconstruisez les deux directions de l’explication dans l’Euthyphron. À J+30, examinez une conviction nouvelle en distinguant la contradiction constatée et la proposition que vous choisissez de réviser.",
     "sources": [
       [
         "Platon, trad. Harold North Fowler",
@@ -337,6 +395,30 @@ const philosophie = [
         "1914 pour cette traduction",
         "https://beta.perseus.tufts.edu/urn%3Acts%3AgreekLit%3Atlg0059.tlg002.perseus-eng2%3A38/",
         "Texte primaire, édition numérique de Tufts University."
+      ],
+      [
+        "Debra Nails et S. Sara Monoson",
+        "Socrates",
+        "2022 (révision)",
+        "https://plato.stanford.edu/entries/socrates/",
+        "Notice scientifique en accès libre, contexte athénien et limites des témoignages. Consultation : 28 novembre 2026.",
+        "anglais"
+      ],
+      [
+        "Platon, trad. Benjamin Jowett",
+        "Euthyphron 9e–11b",
+        "Traduction historique, édition numérique sans date",
+        "https://persweb.wabash.edu/facstaff/helmang/phi110-1516F/phi110-handouts/Euthyphro.pdf",
+        "Texte primaire mis à disposition par Wabash College, repères de Stephanus. Consultation : 28 novembre 2026.",
+        "anglais"
+      ],
+      [
+        "Stanford Encyclopedia of Philosophy",
+        "Plato’s Shorter Ethical Works, § 2 Elenchus",
+        "Notice scientifique",
+        "https://plato.stanford.edu/entries/plato-ethics-shorter/",
+        "Lecture secondaire en accès libre, fonctionnement et limites de l’examen réfutatif. Consultation : 28 novembre 2026.",
+        "anglais"
       ]
     ],
     "flashcards": [
@@ -387,14 +469,67 @@ const philosophie = [
       [
         "Quel résultat peut avoir un dialogue sans réponse ?",
         "Identifier une difficulté et les raisons de poursuivre l'enquête."
+      ],
+      [
+        "Quels sont les deux motifs du refus du silence à 38a ?",
+        "L’exigence divine telle que Socrate la comprend et la valeur de l’examen quotidien."
+      ],
+      [
+        "À quel moment du procès se situe 38a ?",
+        "Après la déclaration de culpabilité, pendant la discussion sur la peine."
+      ],
+      [
+        "Quelle prémisse vise l’objection du journal personnel ?",
+        "La prémisse selon laquelle se taire rend impossible la forme d’examen considérée."
+      ],
+      [
+        "Que prouve l’incompatibilité de trois engagements ?",
+        "Qu’ils ne peuvent être vrais ensemble. Elle laisse ouverte la question de savoir lequel réviser."
+      ],
+      [
+        "Quelle distinction explique la difficulté de l’Euthyphron ?",
+        "Une propriété peut accompagner la piété sans expliquer ce qui rend une action pieuse."
+      ],
+      [
+        "Pourquoi distinguer Apologie et Euthyphron ?",
+        "La première justifie une conduite devant des juges. Le second met une définition à l’épreuve."
+      ],
+      [
+        "Comment éviter un assentiment de façade ?",
+        "Laisser à chacun la possibilité de demander des précisions, de suspendre son jugement ou de contester le cas."
       ]
-    ]
+    ],
+    "practiceQuiz": [
+      "Qu’établit une contradiction entre plusieurs engagements de l’interlocuteur ?",
+      [
+        "La thèse inverse est vraie",
+        "Au moins un engagement doit être révisé",
+        "Le dernier engagement formulé est faux"
+      ],
+      1,
+      "L’incompatibilité n’indique pas à elle seule lequel des engagements abandonner."
+    ],
+    "plan": [
+      [
+        0,
+        "Le procès et l’argument du silence"
+      ],
+      [
+        4,
+        "L’examen réfutatif en pratique"
+      ],
+      [
+        7,
+        "Comparer et poursuivre l’enquête"
+      ]
+    ],
+    "revision": 2
   },
   {
     "id": "confucius",
     "title": "Confucius · Apprendre et réfléchir",
     "goal": "Distinguer deux manières d’échouer à apprendre et définir une pratique qui les corrige.",
-    "prerequisite": "Savoir distinguer une proposition et les raisons qui la soutiennent.",
+    "prerequisite": "Savoir distinguer une proposition et les raisons qui la soutiennent. Socle (30–45 min) : cours, atelier et quiz. Universitaire (1 h 30–2 h) : ajouter le dossier et le séminaire. Recherche (3–5 h) : prolonger par une comparaison documentée et réviser sa conclusion.",
     "sections": [
       [
         "Deux gestes complémentaires",
@@ -423,6 +558,26 @@ const philosophie = [
       [
         "Glossaire",
         "Xué : apprendre ou étudier ; sī : réfléchir ; contre-exemple : cas qui éprouve une généralisation. Les traductions de ces termes varient."
+      ],
+      [
+        "Du texte transmis au problème philosophique",
+        "Les Entretiens réunissent des propos et des échanges transmis par des générations de disciples et de lecteurs. Le passage 2.15 associe deux déséquilibres : étudier en laissant la réflexion de côté, et réfléchir en négligeant l’étude. Sa forme parallèle fait ressortir leur dépendance mutuelle. Le texte bref laisse ouverte la façon dont l’élève doit reconnaître qu’il a trouvé un équilibre. [1, 3]"
+      ],
+      [
+        "Mettre la règle à l’épreuve",
+        "Une règle de discussion prévoit un temps de parole identique pour chacun. Examinez un cas où une participante utilise un dispositif de communication lent. Garder la même durée pourrait réduire sa possibilité de participer. Supprimer toute règle pourrait favoriser ceux qui parlent le plus. Formulez une adaptation qui préserve le but de la règle, puis indiquez un cas où votre adaptation risquerait de créer un autre déséquilibre."
+      ],
+      [
+        "Lecture ligne à ligne",
+        "Dans 2.15, relevez les verbes correspondant à étudier et réfléchir, puis les deux conséquences données par chaque traduction. Construisez un tableau « activité présente, activité absente, difficulté ». Une traduction qui parle de danger et une autre qui parle d’incertitude invitent à des lectures différentes. Justifiez votre interprétation à partir du parallélisme, en précisant ce que vous inférez. [3]"
+      ],
+      [
+        "Limites et comparaison",
+        "Dans l’Apologie, l’examen soutient un choix de conduite dans une situation de procès. Dans les Entretiens, étude et réflexion façonnent progressivement le jugement. On peut comparer leurs manières de corriger une conviction en distinguant le cadre judiciaire, l’apprentissage et le rôle des traditions reçues. Pour le parcours recherche, rédigez une page qui défend une ressemblance limitée et une différence décisive. [1, 2, 3]"
+      ],
+      [
+        "Repères documentaires",
+        "Les passages antiques sont repérés par leur numérotation usuelle. Les lectures en français sont des reformulations pédagogiques originales. Les sources externes donnent accès aux éditions et aux commentaires. Relecture scientifique indépendante à organiser."
       ]
     ],
     "diagram": [
@@ -446,7 +601,7 @@ const philosophie = [
         ]
       ]
     ],
-    "dossier": "Dans la notice [1], retrouvez le passage qui commente Entretiens 2.15. Reformulez chacune des deux difficultés et comparez vos formulations.",
+    "dossier": "Entretiens 2.15 [3] : comparez les formulations et associez chaque conséquence à l’activité laissée de côté. Vérifiez votre lecture avec la section sur la formation personnelle de la notice [1].",
     "activity": "Une étudiante mémorise les règles du débat. Un autre invente ses propres règles sans examiner de débat réel. Proposez une tâche qui aiderait chacun.",
     "correction": "À la première, proposer d’analyser un débat où deux règles semblent entrer en conflit et de justifier sa priorité. Au second, demander d’annoter un échange et de distinguer précisément les exemples que ses règles expliquent de ceux qui les contredisent.",
     "quiz": [
@@ -475,6 +630,14 @@ const philosophie = [
         "1914 pour cette traduction",
         "https://beta.perseus.tufts.edu/urn%3Acts%3AgreekLit%3Atlg0059.tlg002.perseus-eng2%3A38/",
         "Support de lecture comparée."
+      ],
+      [
+        "Confucius, traductions comparées dont James Legge",
+        "Entretiens 2.15",
+        "Traductions de dates diverses",
+        "https://confucius.page/analects-2-15/",
+        "Texte chinois et versions anglaises en accès libre. Site de consultation utilisé pour comparer les traductions, notice scientifique en [1].",
+        "chinois et anglais"
       ]
     ],
     "flashcards": [
@@ -525,14 +688,44 @@ const philosophie = [
       [
         "Que faire face à deux cas incompatibles ?",
         "Préciser les conditions de la règle."
+      ],
+      [
+        "Quel exercice associe le mieux étude et réflexion ?",
+        "Étudier deux applications puis modifier la règle à partir d’un cas difficile Les cas documentés alimentent l’étude. La révision argumentée met la règle à l’épreuve."
       ]
-    ]
+    ],
+    "overview": "Une règle apprise peut-elle guider un jugement lorsque les exemples habituels ne suffisent plus ?",
+    "practiceQuiz": [
+      "Quel exercice associe le mieux étude et réflexion ?",
+      [
+        "Mémoriser une règle sans l’appliquer",
+        "Inventer une règle sans examiner de cas",
+        "Étudier deux applications puis modifier la règle à partir d’un cas difficile"
+      ],
+      2,
+      "Les cas documentés alimentent l’étude. La révision argumentée met la règle à l’épreuve."
+    ],
+    "plan": [
+      [
+        0,
+        "Étudier et réfléchir"
+      ],
+      [
+        7,
+        "Lire et mettre à l’épreuve la règle"
+      ],
+      [
+        10,
+        "Comparer et approfondir"
+      ]
+    ],
+    "revision": 2
   },
   {
     "id": "conditions",
     "title": "Philosophie bouddhique ancienne · Penser les conditions",
     "goal": "Distinguer une hypothèse de dépendance d’une opposition absolue et produire un exemple argumenté.",
-    "prerequisite": "Savoir formuler une objection qui vise une proposition précise.",
+    "prerequisite": "Savoir formuler une objection qui vise une proposition précise. Socle (30–45 min) : cours, atelier et quiz. Universitaire (1 h 30–2 h) : ajouter le dossier et le séminaire. Recherche (3–5 h) : prolonger par une comparaison documentée et réviser sa conclusion.",
     "sections": [
       [
         "Une question sur la vue juste",
@@ -561,6 +754,26 @@ const philosophie = [
       [
         "Glossaire",
         "Production conditionnée : apparition et cessation en dépendance de conditions ; contrefactuel : hypothèse sur ce qui arriverait si une condition changeait."
+      ],
+      [
+        "Situer le discours",
+        "SN 12.15 appartient au Saṃyutta Nikāya, une collection du canon pāli. Le texte met en scène une demande de Kaccāna au sujet de la vue juste. La traduction anglaise est une médiation moderne du texte transmis. La lecture suit l’ordre du passage : deux positions générales, puis l’attention aux conditions d’apparition et de cessation. [1, 4]"
+      ],
+      [
+        "Distinguer les niveaux d’explication",
+        "Si un récit ambigu facilite une rumeur, son ambiguïté est une condition contributive. Une rumeur peut aussi naître d’un mensonge formulé sans ambiguïté. Distinguez une condition contributive, une condition nécessaire et une condition suffisante. Cet exercice contemporain aide à éviter une lecture mécanique du discours. Il ne décide pas de la portée philosophique de chaque maillon présenté dans le texte. [1, 4]"
+      ],
+      [
+        "Cabinet des textes",
+        "Repérez dans SN 12.15 où le texte passe de la critique des deux positions à la formulation conditionnelle. Rédigez deux phrases : la première indique la question posée par Kaccāna, la seconde explique le changement de démarche. Demandez-vous pourquoi cette démarche est reliée à la souffrance dans le discours. [1]"
+      ],
+      [
+        "Comparer sans identifier",
+        "Socrate motive une conduite, les Entretiens mettent en relation deux pratiques d’apprentissage, et SN 12.15 relie la vue juste à la compréhension des conditions. Comparez la fonction du raisonnement dans chaque passage en citant un détail précis. Pour le parcours recherche, discutez ce que perd l’analogie de la rumeur lorsqu’on l’emploie pour éclairer un texte orienté vers la cessation de la souffrance. [1, 2, 3, 4]"
+      ],
+      [
+        "Repères documentaires",
+        "Les passages antiques sont repérés par leur numérotation usuelle. Les lectures en français sont des reformulations pédagogiques originales. Les sources externes donnent accès aux éditions et aux commentaires. Relecture scientifique indépendante à organiser."
       ]
     ],
     "diagram": [
@@ -597,7 +810,7 @@ const philosophie = [
       0,
       "L’énoncé identifie une condition dont on peut discuter ou éprouver le rôle."
     ],
-    "seminar": "Comparez en 400 mots les gestes de pensée des trois textes. Barème sur 20 : précision des passages (6), qualité du raisonnement (6), traitement d’une objection (4), clarté (4). Rédiger 400–600 mots. Barème : fidélité au texte 6, argument 6, objection 4, clarté 4. Corrigé indicatif : expliciter le contexte, reconstruire une raison, examiner un contre-exemple et qualifier la conclusion.",
+    "seminar": "En 400 à 600 mots, comparez deux gestes de pensée dans SN 12.15 et l’un des textes du début du cycle. Présentez la question propre à chaque passage, un point de rapprochement et une limite. Barème sur 20 : précision des passages (6), comparaison (6), objection (4), clarté (4). Corrigé indicatif : le refus du silence et l’exposé d’une dépendance répondent à des problèmes différents. Une comparaison peut montrer comment chacun déplace la question initiale, à condition de préserver les contextes et les finalités.",
     "review": "À J+2, retrouvez le contraste entre opposition et dépendance. À J+7, reprenez votre exemple en modifiant une condition. À J+30, refaire l'activité avec un autre cas.",
     "sources": [
       [
@@ -620,6 +833,14 @@ const philosophie = [
         "archive 2017",
         "https://plato.stanford.edu/archives/spr2017/entries/confucius/",
         "Texte de comparaison."
+      ],
+      [
+        "Mark Siderits",
+        "Buddha",
+        "Notice scientifique",
+        "https://plato.stanford.edu/entries/buddha/",
+        "Accès libre, cadre philosophique de la dépendance et de la cessation.",
+        "anglais"
       ]
     ],
     "flashcards": [
@@ -670,14 +891,44 @@ const philosophie = [
       [
         "Finalité du discours ?",
         "La vue juste dans une pratique orientée vers la cessation de la souffrance."
+      ],
+      [
+        "Si une condition facilite un phénomène, quelle conclusion est justifiée ?",
+        "Elle y contribue dans le cas étudié Pour établir la nécessité ou la suffisance, il faut des arguments distincts."
       ]
-    ]
+    ],
+    "overview": "Comment expliquer l’apparition et la cessation d’un phénomène sans supposer qu’il existe partout ou nulle part ?",
+    "practiceQuiz": [
+      "Si une condition facilite un phénomène, quelle conclusion est justifiée ?",
+      [
+        "Elle est toujours indispensable",
+        "Elle y contribue dans le cas étudié",
+        "Elle suffit seule à produire le phénomène"
+      ],
+      1,
+      "Pour établir la nécessité ou la suffisance, il faut des arguments distincts."
+    ],
+    "plan": [
+      [
+        0,
+        "Penser à partir des conditions"
+      ],
+      [
+        7,
+        "Lire le discours et distinguer les conditions"
+      ],
+      [
+        10,
+        "Comparer les démarches"
+      ]
+    ],
+    "revision": 2
   },
   {
     "id": "aristote-raisonnement",
     "title": "Aristote · Raisonner et démontrer",
     "goal": "Tester un syllogisme et distinguer validité et démonstration.",
-    "prerequisite": "Leçons 1 à 4.",
+    "prerequisite": "Leçons 1 à 4. Socle (30–45 min) : cours, atelier et quiz. Universitaire (1 h 30–2 h) : ajouter le dossier et le séminaire. Recherche (3–5 h) : prolonger par une comparaison documentée et réviser sa conclusion.",
     "sections": [
       [
         "Problématique",
@@ -702,6 +953,26 @@ const philosophie = [
       [
         "Glossaire",
         "Syllogisme : déduction à partir de prémisses ; terme moyen : terme reliant les prémisses ; validité : impossibilité de prémisses vraies et conclusion fausse."
+      ],
+      [
+        "Deux ouvrages, deux questions",
+        "Dans les Premiers Analytiques, Aristote étudie notamment la structure du syllogisme. Dans les Seconds Analytiques I.2, il demande quelles prémisses permettent une démonstration qui donne un savoir scientifique au sens qu’il propose. Un raisonnement peut être valide avec des prémisses fausses. Une démonstration, dans cette conception, fait intervenir des prémisses vraies, antérieures et explicatives. [1, 3]"
+      ],
+      [
+        "Trois épreuves d’un raisonnement",
+        "Prenez : tous les romans sont des textes, tous les textes sont imprimés, donc tous les romans sont imprimés. La forme est valide. La seconde prémisse est fausse : un manuscrit peut être un texte. Même en remplaçant cet exemple par un argument aux prémisses vraies, il faut encore demander ce qui explique la conclusion. Cette troisième question est centrale pour comprendre le projet des Seconds Analytiques. [1, 2, 3]"
+      ],
+      [
+        "Lire les Seconds Analytiques",
+        "Dans I.2, relevez deux conditions imposées aux prémisses d’une démonstration. Pour chacune, expliquez ce qui manquerait à un argument qui ne la remplit pas. Puis distinguez l’ordre dans lequel vous découvrez un fait et l’ordre dans lequel vous l’expliquez. Selon le passage, ce qui est plus connu pour nous peut différer de ce qui est antérieur par nature. [3]"
+      ],
+      [
+        "Transfert et recherche",
+        "À partir d’un exemple scientifique de votre choix, comparez un indice qui permet de repérer un phénomène et le mécanisme qui l’explique. Donnez deux raisons de préférer une explication, puis indiquez une hypothèse concurrente à tester. La comparaison transpose une question d’Aristote dans une enquête actuelle dont les méthodes et les critères peuvent différer."
+      ],
+      [
+        "Repères documentaires",
+        "Les passages antiques sont repérés par leur numérotation usuelle. Les lectures en français sont des reformulations pédagogiques originales. Les sources externes donnent accès aux éditions et aux commentaires. Relecture scientifique indépendante à organiser."
       ]
     ],
     "diagram": [
@@ -721,7 +992,7 @@ const philosophie = [
         ]
       ]
     ],
-    "dossier": "Lire la section sur les syllogismes de [1] et repérer les références aux Premiers Analytiques. Notice scientifique, pas reproduction du texte primaire.",
+    "dossier": "Lisez Seconds Analytiques I.2 [3], puis la section sur la démonstration dans la notice [1]. Repérez une différence entre une déduction valide et une démonstration scientifique. Vérifiez pourquoi la vérité des prémisses ne garantit pas à elle seule leur rôle explicatif.",
     "activity": "Construire un syllogisme valide sur les arbres puis un syllogisme invalide ayant deux prémisses vraies. Identifier le terme moyen.",
     "correction": "Tous les chênes sont des arbres ; tous les arbres sont des plantes ; donc tous les chênes sont des plantes. Terme moyen : arbres. Tous les chênes sont des arbres et tous les pins sont des arbres ne permet pas de conclure que tous les pins sont des chênes.",
     "quiz": [
@@ -751,6 +1022,14 @@ const philosophie = [
         "2022",
         "https://openstax.org/books/introduction-philosophy/pages/5-3-arguments",
         "Analyse des prémisses.",
+        "anglais"
+      ],
+      [
+        "Aristote, trad. G. R. G. Mure",
+        "Seconds Analytiques I.2",
+        "Traduction historique, édition numérique sans date",
+        "https://classics.mit.edu/Aristotle/posterior.1.i.html",
+        "Texte primaire, Internet Classics Archive hébergé au MIT. Accès libre.",
         "anglais"
       ]
     ],
@@ -802,14 +1081,44 @@ const philosophie = [
       [
         "Logique aristotélicienne égale toute logique moderne ?",
         "Non."
+      ],
+      [
+        "Un argument valide contient une prémisse fausse. Que peut-on affirmer ?",
+        "Sa forme reste valide La validité porte sur le lien entre prémisses et conclusion, indépendamment de la vérité effective des prémisses."
       ]
-    ]
+    ],
+    "overview": "Une conclusion correctement déduite explique-t-elle pourquoi elle est vraie ?",
+    "practiceQuiz": [
+      "Un argument valide contient une prémisse fausse. Que peut-on affirmer ?",
+      [
+        "La conclusion est nécessairement fausse",
+        "Sa forme reste valide",
+        "C’est une démonstration au sens d’Aristote"
+      ],
+      1,
+      "La validité porte sur le lien entre prémisses et conclusion, indépendamment de la vérité effective des prémisses."
+    ],
+    "plan": [
+      [
+        0,
+        "Structure du raisonnement"
+      ],
+      [
+        7,
+        "Validité, vérité et explication"
+      ],
+      [
+        10,
+        "Appliquer à une enquête"
+      ]
+    ],
+    "revision": 2
   },
   {
     "id": "doute-argumentation",
     "title": "Douter, argumenter et construire son jugement",
     "goal": "Comparer des arguments, évaluer leur force et rédiger une objection.",
-    "prerequisite": "Leçons 1 à 5.",
+    "prerequisite": "Leçons 1 à 5. Socle (30–45 min) : cours, atelier et quiz. Universitaire (1 h 30–2 h) : ajouter le dossier et le séminaire. Recherche (3–5 h) : prolonger par une comparaison documentée et réviser sa conclusion.",
     "sections": [
       [
         "Problématique",
@@ -834,6 +1143,26 @@ const philosophie = [
       [
         "Glossaire",
         "Abduction : inférence explicative ; induction : inférence ampliative fondée sur des observations ; faux dilemme : alternatives injustement restreintes ; objection : raison de contester une thèse."
+      ],
+      [
+        "Graduer la confiance",
+        "Face à trois réussites après une nouvelle méthode d’étude, formulez une observation, une hypothèse et une recommandation. L’observation rapporte ce qui a été constaté. L’hypothèse attribue un rôle à la méthode. La recommandation peut être raisonnable à titre d’essai, même si l’effet causal reste incertain. Fixez ensuite une donnée qui ferait baisser votre confiance et une donnée qui la ferait monter. [2, 3]"
+      ],
+      [
+        "Traiter les explications concurrentes",
+        "Les élèves peuvent avoir choisi la méthode parce qu’ils étaient déjà motivés. Ils peuvent aussi avoir consacré plus de temps à l’étude. Une comparaison avec des élèves ayant consacré un temps similaire aide à examiner la seconde explication. Elle ne suffit pas à écarter la première. Pour chaque comparaison proposée, précisez quelle hypothèse elle départage et laquelle demeure plausible. [2, 3]"
+      ],
+      [
+        "Comparer les outils du cycle",
+        "L’élenchos repère des engagements incompatibles. La lecture des Entretiens met à l’épreuve l’articulation entre étude et réflexion. Le raisonnement conditionnel recherche les circonstances d’apparition ou de cessation. Le syllogisme examine un lien de conséquence. Choisissez deux outils et expliquez, sur un même exemple, ce que chacun permet de tester."
+      ],
+      [
+        "Préparer l’épreuve de synthèse",
+        "Rédigez la thèse en une phrase. Numérotez deux prémisses et indiquez pour chacune si elle est empirique ou normative. Choisissez deux textes du cycle et donnez le passage précis qui aide à examiner l’inférence. Écrivez l’objection en des termes qu’un contradicteur pourrait accepter, puis indiquez exactement ce qu’elle vous conduit à maintenir, affaiblir ou réviser."
+      ],
+      [
+        "Repères documentaires",
+        "Les passages antiques sont repérés par leur numérotation usuelle. Les lectures en français sont des reformulations pédagogiques originales. Les sources externes donnent accès aux éditions et aux commentaires. Relecture scientifique indépendante à organiser."
       ]
     ],
     "diagram": [
@@ -970,8 +1299,38 @@ const philosophie = [
       [
         "Aristote : apport ?",
         "Tester les inférences."
+      ],
+      [
+        "Que justifient trois réussites observées après une méthode ?",
+        "Une hypothèse à comparer à d’autres explications Une petite série sélectionnée laisse ouvertes plusieurs explications et ne garantit pas l’effet chez d’autres personnes."
       ]
-    ]
+    ],
+    "overview": "Quelles raisons pourraient nous conduire à réviser une conviction sans abandonner tout jugement ?",
+    "practiceQuiz": [
+      "Que justifient trois réussites observées après une méthode ?",
+      [
+        "Une garantie générale",
+        "Une hypothèse à comparer à d’autres explications",
+        "La preuve que la méthode est inutile"
+      ],
+      1,
+      "Une petite série sélectionnée laisse ouvertes plusieurs explications et ne garantit pas l’effet chez d’autres personnes."
+    ],
+    "plan": [
+      [
+        0,
+        "Douter et juger"
+      ],
+      [
+        7,
+        "Évaluer les raisons et les explications"
+      ],
+      [
+        10,
+        "Préparer l’épreuve du cycle"
+      ]
+    ],
+    "revision": 2
   }
 ];
 
