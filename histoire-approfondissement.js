@@ -4,9 +4,9 @@ const historySeminars = {
     method: [
       'L’unité de fouille et l’unité de comportement sont différentes. Une couche peut réunir des épisodes espacés. Avant de reconstruire la vie d’un groupe, demandez combien de temps les dépôts ont mis à se former, quels objets sont contemporains et quelles zones ont été fouillées. Un même foyer peut contenir des rejets accumulés au cours de plusieurs retours.',
       'La saison de mort d’un animal peut être approchée lorsque l’espèce, le cycle de reproduction et les indicateurs d’âge sont suffisamment bien établis. Cette estimation date un événement de chasse ou de dépôt, selon le contexte. Pour passer de la chasse à la résidence, il faut croiser cette donnée avec des traces domestiques, des épisodes de réfection et d’autres indices saisonniers.',
-      'Goring-Morris et Belfer-Cohen présentent la néolithisation levantine comme une mosaïque de trajectoires régionales. Lisez leur passage sur la diversité du Natoufien. Relevez pour chaque proposition le lieu, la période et le type de trace. Vous pourrez ensuite distinguer une tendance générale d’une propriété observée à un site particulier.'
+      'Dans le dossier sur Hayonim, Lieberman examine la saison de chasse à partir de dents de gazelles. Identifiez la trace, le contexte et l’événement qu’elle permet de situer. Comparez ensuite ce dossier publié au cas fictif ci-dessous. [2]'
     ],
-    source: 0,
+    source: 1,
     task: 'Dossier fictif. La couche A comporte un foyer réparé, une meule et cinq animaux dont la mort est compatible avec l’automne. La couche B comporte un foyer et un animal compatible avec le printemps. Rédigez 350 à 500 mots. Formulez deux modèles d’occupation compatibles avec A, évaluez ce que B ajoute et proposez une observation qui aiderait à départager les modèles.',
     answer: 'La couche A est compatible avec un camp automnal réoccupé et avec un habitat occupé plus longtemps où la chasse se concentrait en automne. B rend plausible un usage printanier du lieu dans un autre épisode. Elle ne suffit pas à attribuer deux saisons à une seule occupation. Un ensemble de dépôts brefs bien reliés stratigraphiquement et contenant des indicateurs saisonniers indépendants permettrait d’évaluer la durée. La réponse doit traiter la faiblesse de l’échantillon et le lien entre chasse, traitement des carcasses et habitat.',
     rubric: ['Deux modèles compatibles avec les traces (6)', 'Analyse distincte des deux couches (6)', 'Observation discriminante et limites (8)']
@@ -30,8 +30,8 @@ const historySeminars = {
       'La présence d’une comptabilité permet de poser la question des biens, des personnes et des obligations que certaines institutions choisissaient d’enregistrer. Un dossier de comptes est sélectif : il renseigne directement sur les catégories du scribe et indirectement sur les pratiques dont elles gardent la trace.',
       'L’apparition d’un système graphique et l’évolution de ses usages s’étudient séparément. Pour discuter un lien entre écriture et urbanisation, comparez les traces de gestion à d’autres indices, notamment les bâtiments communs, les réseaux d’échange et la spécialisation du travail.'
     ],
-    source: 1,
-    task: 'À partir d’une tablette présentée dans la ressource du Met, rédigez une notice critique de 350 mots. Distinguez description, interprétation et limites. Terminez par une hypothèse sur la fonction de la tablette et un indice nécessaire pour la confirmer.',
+    source: 2,
+    task: 'À partir de la tablette d’orge décrite dans le dossier intégré, rédigez une notice critique de 350 mots. Distinguez description, interprétation et limites. Terminez par une hypothèse sur la fonction de la tablette et un indice nécessaire pour la confirmer.',
     answer: 'Décrivez les caractères ou cases visibles sans leur attribuer d’emblée un sens. Attribuez la lecture au catalogue lorsqu’elle en provient. Une interprétation comptable peut être renforcée par un parallèle de forme et de signes dans un contexte documenté. Évitez de généraliser à toute la population à partir d’un objet.',
     rubric: ['Description contextualisée (6)', 'Hypothèse soutenue (8)', 'Limites et moyen de vérification (6)']
   },
@@ -42,7 +42,7 @@ const historySeminars = {
       'Une image de domination peut témoigner du langage du pouvoir sans dater à elle seule une victoire précise. Formulez séparément l’hypothèse d’un événement commémoré, celle d’un motif rituel et celle d’un programme politique. Plusieurs fonctions peuvent coexister.',
       'Les chronologies du début de l’État égyptien associent des objets, des contextes archéologiques et des reconstructions historiques de nature différente. Comparez deux tableaux de dates et vérifiez quels événements ou changements chacun utilise comme borne.'
     ],
-    source: 0,
+    source: 3,
     task: 'Rédigez deux légendes d’environ 120 mots pour la palette : une description destinée à un visiteur et une interprétation destinée à un séminaire. Ajoutez une note sur les limites de l’objet pour étudier les relations avec la Nubie.',
     answer: 'La description identifie des figures et des attributs visibles. L’interprétation présente la violence et les signes royaux comme une mise en scène du pouvoir, puis formule avec prudence tout rapprochement avec un événement précis. La note sur la Nubie explique pourquoi il faut des sources situées de part et d’autre du Nil.',
     rubric: ['Description contrôlable (6)', 'Interprétation contextualisée (8)', 'Portée et limites (6)']
@@ -96,3 +96,90 @@ const historySeminars = {
     rubric: ['Problématique et définition (4)', 'Trois terrains et preuves contextualisées (8)', 'Contre-exemple et discussion des limites (6)', 'Structure et références (2)']
   }
 };
+
+// Original section indices for assessment feedback and seminar preparation.
+const historyAssessmentGuidance = {
+  "evolution-humaine": {"quiz":0,"exercise":[4,5],"seminar":[0,3,5],"rubric":["Exactitude (6)","Parentés (5)","Preuves (5)","Argumentation (4)"],"answer":"Opposer une succession linéaire à des lignées coexistantes. L’anatomie d’Irhoud illustre la mosaïque. La génétique documente des échanges entre certaines branches.","rationale":"Un arbre rend compte des bifurcations et de la coexistence. Une échelle supposerait une succession orientée vers un résultat unique, ce que les fossiles et les échanges entre lignées ne permettent pas de soutenir."},
+  "migrations-humaines": {"quiz":0,"exercise":[3,5,6,7],"seminar":[1,2,4,5],"rubric":["Trois sites et leurs données (6)","Méthodes (5)","Limites (5)","Argumentation (4)"],"answer":"D4500 fragilise l’idée qu’un grand volume endocrânien était indispensable. Le Sahul pose une autre question, celle des traversées. White Sands rappelle qu’une date de présence ne révèle pas l’itinéraire.","rationale":"Une occupation datée place une présence à un endroit et à un moment. Un trajet ou une filiation réclame des sites reliés par d’autres indices."},
+  "mobilites": {"quiz":4,"exercise":[4,5],"seminar":[1,3,4,5],"rubric":["Concepts (5)","Sources et méthode (6)","Scénario concurrent (5)","Argumentation (4)"],"answer":"Une architecture durable peut correspondre à des retours saisonniers. Comparer la saison estimée par les dents sous des couches distinctes et chercher d’autres traces de séjour à chaque niveau.","rationale":"Les couches de cément renseignent sur la saison de mort de la gazelle. Les datations saisonnières rapprochées ne démontrent une occupation continue que si d’autres preuves relient les dépôts."},
+  "neolithiques": {"quiz":2,"exercise":[2,4],"seminar":[1,4,5,6],"rubric":["Concepts (5)","Comparaison des preuves (6)","Limites (5)","Argumentation (4)"],"answer":"Les épillets de Tianluoshan renseignent la fréquence d’un caractère du riz. Les microrestes de Xihuatoxtla documentent la présence précoce du maïs dans leur contexte. Comparer les objets et leurs dates avant de discuter la domestication.","rationale":"L’évolution de caractères héréditaires dans une série végétale contextualisée peut appuyer la domestication. Un outil ou une trace de culture renseigne d’abord une pratique."},
+  "villages-neolithiques": {"quiz":1,"exercise":[2,4],"seminar":[1,2,4,6],"rubric":["Contextes (5)","Preuves (6)","Limites (5)","Argumentation (4)"],"answer":"À Jéricho, les ouvrages témoignent de travail coordonné. À Çatalhöyük, les reconstructions et les sépultures renseignent des pratiques et des phases différentes. Ni l’ouvrage ni la taille cumulée du site ne suffisent à établir la forme du pouvoir.","rationale":"La construction d’une tour implique coordination et investissement. Les mêmes traces peuvent être compatibles avec plusieurs formes d’organisation politique."},
+  "methodes-archeologiques": {"quiz":1,"exercise":[1,3,6],"seminar":[0,6,8],"rubric":["Contexte (4)","Méthodes (6)","Critique (6)","Références (4)"],"answer":"Comparer deux événements datés, par exemple la chauffe des silex à Irhoud et les dépôts associés aux empreintes de White Sands. Pour chaque dossier, nommer le matériau, son lien avec l’événement et un contrôle indépendant.","rationale":"Le creusement recoupe les couches déjà en place. Il les suit donc dans la chronologie relative, même si un matériau plus ancien a été redéposé dans son remplissage."},
+  "uruk": {"quiz":2,"exercise":[1,2],"seminar":[1,2,3],"rubric":["Deux modèles distincts (8)","Indices contextualisés (8)","Limite (4)"],"answer":"Un standard peut circuler par diffusion professionnelle ou redistribution institutionnelle. La provenance des bols et la répartition de scellés associés aux livraisons aideraient à départager les hypothèses.","rationale":"Une tablette administrative trace des catégories et des quantités enregistrées. Son contexte documente un circuit possible, sans donner les revenus de tous les habitants ni les limites de la ville."},
+  "nil": {"quiz":1,"exercise":[1,2],"seminar":[1,2],"rubric":["Lecture de l’image (6)","Comparaison de deux contextes (8)","Limites (6)"],"answer":"Comparer l’image de victoire à Nekhen et les motifs de Qustul. Un répertoire commun éclaire des relations dans la vallée. Les lieux de découverte et les usages des objets empêchent d’en déduire une frontière politique.","rationale":"Le geste, les signes royaux et la relation entre figures éclairent l’autorité mise en scène. Une bataille précise doit être établie par des indices indépendants."},
+  "indus": {"quiz":1,"exercise":[1,2],"seminar":[1,2,3],"rubric":["Deux modèles (8)","Asymétrie des archives (8)","Donnée de contrôle (4)"],"answer":"Les briques renseignent des conventions. Les sceaux ne permettent pas d’identifier un souverain. Tester le niveau de centralisation grâce à la chronologie des travaux et aux provenances des productions, plutôt que juger l’Indus à partir des seules archives d’Uruk.","rationale":"Des proportions répétées attestent une convention technique. Apprentissage, circulation et autorité sont des mécanismes possibles qu’il faut départager."},
+  "chine": {"quiz":1,"exercise":[2,3],"seminar":[1,2,3],"rubric":["Matériaux et contextes (6)","Portée des conclusions (8)","Données complémentaires (6)"],"answer":"Une consultation sur la récolte atteste un intérêt de la cour. Elle ne livre ni le rendement ni les pratiques de toutes les communautés. Comparer avec des restes végétaux d’habitats précisément situés.","rationale":"Un dépôt de phytolithes et un os inscrit dépendent d’activités, de contextes et de périodes différents. Les rapprocher exige d’expliciter ces écarts."},
+  "ameriques": {"quiz":3,"exercise":[0,1,2,3],"seminar":[1,2,3],"rubric":["Contexte et chronologie (6)","Axe de comparaison (8)","Limites (6)"],"answer":"Comparer le chantier monumental à Caral et le fonctionnement d’un ensemble résidentiel à Teotihuacan. Les échelles différentes rendent visibles des formes différentes de coordination.","rationale":"La coordination du travail peut être interrogée dans les deux cas. Les dates, les matériaux et l’échelle des vestiges limitent la comparaison à cette question commune."},
+  "comparaison": {"quiz":2,"exercise":[0,1,2,3],"seminar":[1,2,3],"rubric":["Objection fondée sur un cas (8)","Réponse argumentée (8)","Limite explicite (4)"],"answer":"Si la thèse lie coordination et centre unique, Djenné-Djeno invite à élargir l’unité d’analyse aux établissements voisins. Reformuler la proposition pour distinguer centralisation et coordination en réseau.","rationale":"La réponse définit le groupe, la durée et le résultat à mesurer. Elle permet aussi de rechercher des effets différents pour un autre groupe."},
+  "athenes": {"quiz":3,"exercise":[1,2,3],"seminar":[1,2,3],"rubric":["Règles de participation (6)","Indices sur l’accès effectif (8)","Limites de l’oraison (6)"],"answer":"Distinguer le droit de participer du coût du déplacement ou de l’absence au travail. Chercher des indices sur les conditions matérielles et sur la présence. L’éloge ne mesure aucun de ces éléments.","rationale":"L’oraison donne accès à un idéal public. Les règles de l’Assemblée et de la citoyenneté servent à discuter la portée de l’égalité annoncée."},
+  "empire-athenien": {"quiz":2,"exercise":[1,2,3],"seminar":[1,2,3],"rubric":["Critères d’autonomie (6)","Cas de Naxos (8)","Limite de la source (6)"],"answer":"Comparer la capacité de quitter l’alliance et la capacité de régler les affaires internes. Naxos documente la contrainte de sortie, tandis qu’il faut d’autres indices sur les institutions locales.","rationale":"Une sortie réprimée montre que l’allié ne décide plus seul de rester. Une contribution acceptée peut encore être compatible avec un accord négocié."},
+  "republique-romaine": {"quiz":0,"exercise":[0,2,3],"seminar":[0,1,2],"rubric":["Mécanisme institutionnel (8)","Exemple situé (8)","Limite (4)"],"answer":"La renommée de Pompée n’explique pas à elle seule sa capacité à commander. Identifier l’attribution du commandement, les ressources obtenues et le mode de décision qui les rend disponibles.","rationale":"Comparer qui vote et comment le choix collectif est calculé permet de distinguer la décision par les citoyens présents à Athènes du vote par groupes dans les comices romains."},
+  "auguste": {"quiz":1,"exercise":[0,1,2,3],"seminar":[0,1,2,3],"rubric":["Institutions de 27 et 23 (8)","Confrontation au texte (8)","Limite du récit (4)"],"answer":"Le Sénat et les magistratures subsistent. Le contrôle de provinces et de forces militaires modifie le poids des acteurs. Lire la prééminence décrite au §34 à la lumière de ces moyens effectifs.","rationale":"Une inscription expose la continuité revendiquée par Auguste. Comparer les institutions maintenues, les compétences cumulées et le commandement réel précise la portée de cette revendication."}
+};
+
+// Retain the original URL as the library key when an institutional reading link is available.
+const historyReferenceDetails = {
+  "https://doi.org/10.1038/nature00879": {"type":"Article","access":"Notice ou résumé en ligne","readUrl":"https://pubmed.ncbi.nlm.nih.gov/12110880/"},
+  "https://doi.org/10.1126/science.1188021": {"type":"Article","access":"Texte en ligne","readUrl":"https://pmc.ncbi.nlm.nih.gov/articles/PMC5100745/"},
+  "https://doi.org/10.1038/nature22336": {"type":"Article","access":"Texte en ligne","readUrl":"https://www.eva.mpg.de/fileadmin/content_files/human_evolution/Homo_Sapiens_presskit/nature22336_Hublin.pdf"},
+  "https://doi.org/10.1038/nature22335": {"type":"Article","access":"Texte en ligne","readUrl":"https://www.eva.mpg.de/fileadmin/content_files/human_evolution/Homo_Sapiens_presskit/nature22335_McPherron.pdf"},
+  "https://doi.org/10.1038/s41586-018-0455-x": {"type":"Article","access":"Texte en ligne","readUrl":"https://pmc.ncbi.nlm.nih.gov/articles/PMC6130845/"},
+  "https://doi.org/10.1038/s41586-021-04275-8": {"type":"Article","access":"Notice ou résumé en ligne","readUrl":"https://www.repository.cam.ac.uk/items/fd6874cc-4e12-401d-b3a5-cfe401fd49e2"},
+  "https://humanorigins.si.edu/evidence/human-family-tree": {"type":"Notice","access":"Notice ou résumé en ligne"},
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC3127884/": {"type":"Article","access":"Texte en ligne"},
+  "https://www.sciencedirect.com/science/article/pii/S0047248422001099": {"type":"Article","access":"Notice ou résumé en ligne","readUrl":"https://pubmed.ncbi.nlm.nih.gov/36116366/"},
+  "https://pubmed.ncbi.nlm.nih.gov/24136960/": {"type":"Article","access":"Notice ou résumé en ligne"},
+  "https://pubmed.ncbi.nlm.nih.gov/29371468/": {"type":"Article","access":"Notice ou résumé en ligne","readUrl":"https://www.lsce.ipsl.fr/en/the-earliest-modern-humans-outside-africa/"},
+  "https://www.usgs.gov/publications/comment-earliest-modern-humans-outside-africa": {"type":"Article","access":"Notice ou résumé en ligne"},
+  "https://www.nature.com/articles/nature22968": {"type":"Article","access":"Notice ou résumé en ligne","readUrl":"https://researchportalplus.anu.edu.au/en/publications/human-occupation-of-northern-australia-by-65000-years-ago/"},
+  "https://www.usgs.gov/publications/independent-age-estimates-resolve-controversy-ancient-human-footprints-white-sands": {"type":"Article","access":"Notice ou résumé en ligne"},
+  "https://doi.org/10.5066/P9E36U4B": {"type":"Jeu de données","access":"Jeu de données en ligne","readUrl":"https://www.usgs.gov/data/data-release-independent-age-estimates-resolve-controversy-ancient-human-footprints-white","rights":"CC0 1.0 pour le jeu de données"},
+  "https://doi.org/10.2307/279653": {"type":"Article","access":"Notice ou résumé en ligne","readUrl":"https://www.cambridge.org/core/journals/american-antiquity/article/abs/willow-smoke-and-dogs-tails-huntergatherer-settlement-systems-and-archaeological-site-formation/89CE96EE412C74E6CBCEA1DB904E88EB"},
+  "https://www.persee.fr/doc/paleo_0153-9345_1991_num_17_1_4538": {"type":"Article","access":"Texte en ligne"},
+  "https://www.nature.com/articles/s41562-016-0043": {"type":"Article","access":"Notice ou résumé en ligne","readUrl":"https://www.repository.cam.ac.uk/items/3c5f7572-22dd-4db1-ac05-e7184808e661"},
+  "https://pubmed.ncbi.nlm.nih.gov/27035951/": {"type":"Article","access":"Texte en ligne","readUrl":"https://pmc.ncbi.nlm.nih.gov/articles/PMC4839398/"},
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC4035951/": {"type":"Article","access":"Texte en ligne"},
+  "https://pubmed.ncbi.nlm.nih.gov/19299619/": {"type":"Article","access":"Notice ou résumé en ligne","readUrl":"https://discovery.ucl.ac.uk/id/eprint/108026/"},
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC2664021/": {"type":"Article","access":"Texte en ligne"},
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC2664064/": {"type":"Article","access":"Notice ou résumé en ligne","readUrl":"https://repository.si.edu/items/e12bb972-89f6-42c6-bbd9-49796ca0ce56"},
+  "https://www.journals.uchicago.edu/doi/full/10.1086/659307": {"type":"Article","access":"Texte en ligne"},
+  "https://researchportalplus.anu.edu.au/en/publications/origins-of-agriculture-at-kuk-swamp-in-the-highlands-of-new-guine/": {"type":"Article","access":"Notice ou résumé en ligne"},
+  "https://whc.unesco.org/en/list/1687": {"type":"Notice","access":"Notice ou résumé en ligne"},
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC6601267/": {"type":"Article","access":"Texte en ligne"},
+  "https://doi.org/10.1017/RDC.2020.41": {"type":"Article","access":"Dépôt institutionnel","readUrl":"https://pure.qub.ac.uk/en/publications/the-intcal20-northern-hemisphere-radiocarbon-age-calibration-curv/","rights":"CC BY 4.0 pour l’article"},
+  "https://historicengland.org.uk/images-books/publications/radiocarbon-dating-chronological-modelling/radiocarbon-dating/": {"type":"Synthèse","access":"Texte en ligne"},
+  "https://www.metmuseum.org/essays/uruk-the-first-city": {"type":"Synthèse","access":"Texte en ligne"},
+  "https://www.metmuseum.org/fr/essays/the-origins-of-writing": {"type":"Synthèse","access":"Texte en ligne"},
+  "https://www.metmuseum.org/art/collection/search/327385": {"type":"Notice","access":"Notice ou résumé en ligne"},
+  "https://openstax.org/books/world-history-volume-1/pages/3-3-ancient-egypt": {"type":"Chapitre","access":"Manuel en ligne","rights":"CC BY-NC-SA 4.0 pour le manuel"},
+  "https://www.metmuseum.org/de/toah/ht/02/afe": {"type":"Synthèse","access":"Notice ou résumé en ligne"},
+  "https://humanities.uct.ac.za/department-historical-studies/our-degrees-undergraduate-studies/africa-question-ancient-pre-colonial-africa-between-past-present": {"type":"Programme","access":"Descriptif de cours en ligne"},
+  "https://egyptianmuseumcairo.eg/artefacts/narmer-palette-collection/": {"type":"Notice","access":"Notice ou résumé en ligne"},
+  "https://isac-idb-static.uchicago.edu/multimedia/88/oimp33.pdf": {"type":"Notice","access":"Notice indexée dans un catalogue PDF"},
+  "https://openstax.org/books/world-history-volume-1/pages/5-4-vedic-india-to-the-fall-of-the-maurya-empire": {"type":"Chapitre","access":"Manuel en ligne","rights":"CC BY-NC-SA 4.0 pour le manuel"},
+  "https://pubmed.ncbi.nlm.nih.gov/22645375/": {"type":"Article","access":"Texte en ligne","readUrl":"https://pmc.ncbi.nlm.nih.gov/articles/PMC3387054/"},
+  "https://doi.org/10.1073/pnas.1704304114": {"type":"Article","access":"Texte en ligne","readUrl":"https://pmc.ncbi.nlm.nih.gov/articles/PMC5488950/"},
+  "https://doi.org/10.1073/pnas.1308937110": {"type":"Article","access":"Texte en ligne","readUrl":"https://pmc.ncbi.nlm.nih.gov/articles/PMC4035951/"},
+  "https://www.britishmuseum.org/sites/default/files/2020-11/British_Museum_Magazine_Autumn2020_reducedsize.pdf": {"type":"Revue de musée","access":"Accès direct à confirmer"},
+  "https://avpreservation.si.edu/spotlight/anyang": {"type":"Notice","access":"Notice et modèle 3D en ligne","readUrl":"https://www.si.edu/object/inscribed-turtle-plastron%3Adpo_3d_230004","rights":"Modèle 3D soumis aux conditions du Smithsonian"},
+  "https://pubmed.ncbi.nlm.nih.gov/11326098/": {"type":"Article","access":"Notice ou résumé en ligne"},
+  "https://servicios-galileo.filos.unam.mx/uploads/temarios/20261083302890005/Garc%C3%ADa_Capistr%C3%A1n_Hugo_Mesoam%C3%A9rica.pdf": {"type":"Programme","access":"Programme indexé, ouverture du PDF à confirmer"},
+  "https://doi.org/10.1017/S0959774311000023": {"type":"Article","access":"Notice ou résumé en ligne","readUrl":"https://www.cambridge.org/core/journals/cambridge-archaeological-journal/article/gender-and-mortuary-ritual-at-ancient-teotihuacan-mexico-a-study-of-intrasocietal-diversity/04CE7E769B0B36F1F1FB525187BEDC3B"},
+  "https://www.hsps.cam.ac.uk/part-i": {"type":"Programme","access":"Descriptif de cours en ligne"},
+  "https://www.cambridge.org/core/books/abs/cambridge-world-history/different-cities-jennejeno-and-african-urbanism/4CDCE74CCE3A6D89C52A283B518F579F": {"type":"Chapitre","access":"Notice ou résumé en ligne"},
+  "https://online.yale.edu/courses/introduction-ancient-greek-history": {"type":"Conférence","access":"Descriptif de cours en ligne"},
+  "https://beta.perseus.tufts.edu/urn%3Acts%3AgreekLit%3Atlg0003.tlg001.perseus-eng6/chapter%3A2.37/": {"type":"Source primaire","access":"Texte en ligne"},
+  "https://beta.perseus.tufts.edu/urn%3Acts%3AgreekLit%3Atlg0003.tlg001.1st1K-eng2/chapter%3A1.98/": {"type":"Source primaire","access":"Texte en ligne"},
+  "https://openstax.org/books/world-history-volume-1/pages/6-4-the-roman-republic": {"type":"Chapitre","access":"Manuel en ligne","rights":"CC BY-NC-SA 4.0 pour le manuel"},
+  "https://openstax.org/books/world-history-volume-1/pages/6-5-the-age-of-augustus": {"type":"Chapitre","access":"Manuel en ligne","rights":"CC BY-NC-SA 4.0 pour le manuel"},
+  "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Augustus/Res_Gestae/home.html": {"type":"Source primaire","access":"Texte en ligne"},
+  "https://ocw.mit.edu/courses/21h-007j-empire-introduction-to-ancient-and-medieval-studies-fall-2012/pages/calendar/": {"type":"Programme","access":"Descriptif de cours en ligne"}
+};
+
+function historyReference(url) {
+  return historyReferenceDetails[url];
+}
+
+function historyReferenceUrl(url) {
+  return historyReference(url)?.readUrl || url;
+}

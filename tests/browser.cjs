@@ -302,9 +302,58 @@ async function verify(browser,viewport) {
   await context.close();
 }
 
+async function verifyHistory(browser, viewport) {
+  const context = await browser.newContext({viewport,isMobile:viewport.width<500,hasTouch:viewport.width<500});
+  const page = await context.newPage();
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  const url = process.env.CAMPUS_URL || 'http://localhost:8765/';
+  await page.goto(url);
+  const lessons = await page.evaluate(() => [histoire,antiquite].flatMap(course => course.lessons.map(
+    (lesson,index) => ({key:course.key,index,sections:lesson.sections.length})
+  )));
+  assert.equal(lessons.length,16);
+  for (const {key,index,sections} of lessons) {
+    await page.evaluate(({key,index}) => showLesson(key==='histoire'?histoire:antiquite,index),{key,index});
+    const plan = page.locator('.lesson-plan');
+    assert.equal(await plan.locator('a[href^="#lesson-section-"]').count(),sections);
+    const last = '#lesson-section-'+(sections-1);
+    await plan.locator('a[href="'+last+'"]').click();
+    assert.equal(await page.locator(last).textContent(),'Synthèse');
+    assert.equal(await page.evaluate(()=>document.activeElement.id),last.slice(1));
+    await page.locator('a[href="#lesson-plan"]').last().click();
+    assert.equal(await page.evaluate(()=>document.activeElement.id),'lesson-plan');
+  }
+
+  await page.evaluate(()=>spaceLesson('histoire','nil','lesson-dossier'));
+  assert.equal(await page.evaluate(()=>document.activeElement.id),'lesson-dossier');
+  await page.evaluate(()=>showLesson(antiquite,3));
+  await page.locator('.lesson-jumps [data-jump="history-quiz"]').click();
+  const quiz = page.locator('#history-quiz');
+  await quiz.getByRole('radio').nth(1).check();
+  await quiz.getByRole('button',{name:'Vérifier ma réponse'}).click();
+  await quiz.getByRole('button',{name:'Relire le passage du cours'}).click();
+  assert.equal(await page.evaluate(()=>document.activeElement.id),'lesson-section-1');
+  await page.locator('#history-done').check();
+  await page.locator('.written-exercise textarea').fill('Comparaison de deux passages et du commandement provincial.');
+  await page.locator('#save-exercise').click();
+
+  await page.waitForFunction(()=>navigator.serviceWorker.controller);
+  await context.setOffline(true);
+  await page.reload();
+  await page.evaluate(()=>showLesson(antiquite,3));
+  await page.locator('.lesson-plan').waitFor();
+  assert.equal(await page.locator('#history-done').isChecked(),true);
+  assert.equal(await page.locator('.written-exercise textarea').inputValue(),'Comparaison de deux passages et du commandement provincial.');
+  assert.equal(await page.locator('.lesson-plan a').count(),7);
+  assert.deepEqual(errors,[]);
+  console.log(`Histoire ${viewport.width}×${viewport.height} · 16 plans, dossier, remédiation, progression, réponse et rechargement hors ligne`);
+  await context.close();
+}
+
 (async()=>{
   const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||undefined});
   try{
-    for(const viewport of [{width:390,height:844},{width:1366,height:768}]){await verify(browser,viewport);await verifyMath(browser,viewport);}
+    for(const viewport of [{width:390,height:844},{width:1366,height:768}]){await verify(browser,viewport);await verifyMath(browser,viewport);await verifyHistory(browser,viewport);}
   }finally{await browser.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;});

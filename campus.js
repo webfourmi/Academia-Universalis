@@ -93,13 +93,35 @@ const campusActivitySections = {
   'Cabinet de recherche':'lesson-exercise'
 };
 
+const historyCampusActivities = {
+  'evolution-humaine': ['Amphithéâtre', 'Laboratoire', 'Musée'],
+  'migrations-humaines': ['Amphithéâtre', 'Laboratoire', 'Musée'],
+  mobilites: ['Amphithéâtre', 'Laboratoire'],
+  neolithiques: ['Amphithéâtre', 'Laboratoire'],
+  'villages-neolithiques': ['Amphithéâtre', 'Laboratoire'],
+  'methodes-archeologiques': ['Amphithéâtre', 'Laboratoire'],
+  uruk: ['Amphithéâtre', 'Musée'],
+  nil: ['Amphithéâtre', 'Musée'],
+  indus: ['Amphithéâtre'],
+  chine: ['Amphithéâtre', 'Musée'],
+  ameriques: ['Amphithéâtre'],
+  comparaison: ['Amphithéâtre', 'Cabinet de recherche'],
+  athenes: ['Amphithéâtre'],
+  'empire-athenien': ['Amphithéâtre'],
+  'republique-romaine': ['Amphithéâtre'],
+  auguste: ['Amphithéâtre', 'Cabinet de recherche']
+};
+
 function courseCampusActivities(course, name) {
   return course.lessons.flatMap(lesson=>{
     const entries=new Map();
     const add=(title,section)=>entries.set(section,{lessonId:lesson.id,title,section});
-    if(lesson.campusSpaces?.includes(name)) add(lesson.title,campusActivitySections[name]);
-    if(name==='Atelier'&&lesson.activity&&!lesson.campusSpaces?.includes('Laboratoire')
-      &&!lesson.campusSpaces?.includes('Cabinet de recherche')) {
+    const historySpaces = course.key === 'histoire' || course.key === 'antiquite'
+      ? historyCampusActivities[lesson.id] : undefined;
+    const spaces = [...(lesson.campusSpaces || []), ...(historySpaces || [])];
+    if(spaces.includes(name)) add(lesson.title,campusActivitySections[name]);
+    if(name==='Atelier'&&lesson.activity&&!spaces.includes('Laboratoire')
+      &&!spaces.includes('Cabinet de recherche')) {
       add(lesson.title,'lesson-exercise');
     }
     if(name==='Séminaires') {
@@ -237,7 +259,9 @@ function libraryCatalog(){
   add({...resource,theme:libraryTheme(resource)},lesson?{courseKey:course.key,lessonId:lesson.id,title:lesson.title,discipline:course.title,year:course.year||1}:null);
  }
  for(const course of courses)for(const lesson of course.lessons)for(const [author,title,year,url,evidence,language] of lesson.sources||[]){
+  const reference = historyReference(url);
   add({author,title,year,url,evidence,language:language||'Non renseignée',region:'Non renseignée',level:'Non renseigné',access:'Accès à vérifier',rights:'Droits à vérifier',theme:libraryTheme({courseKey:course.key})},{courseKey:course.key,lessonId:lesson.id,title:lesson.title,discipline:course.title,year:course.year||1});
+  if(reference && records.has(url)) Object.assign(records.get(url),reference);
  }
  return [...records.values()].map(item=>({...item,type:item.type||(/programme|descriptif/i.test(item.access)?'Programme':/simulation/i.test(item.access)?'Simulation':/vidéo|conférence/i.test(item.access)?'Conférence':'Non classé')})).sort((a,b)=>a.title.localeCompare(b.title,'fr'));
 }
@@ -271,7 +295,7 @@ function showCampusLibrary(){
   v.querySelector('#library-page').textContent=pages?'Page '+(page+1)+' / '+pages:'Aucune référence';
   matches.slice(page*pageSize,(page+1)*pageSize).forEach(r=>{
    const card=document.createElement('article');card.className='card library-record';
-   const h=document.createElement('h3'),a=document.createElement('a');a.href=r.url;a.target='_blank';a.rel='noopener';a.textContent=r.title;h.append(a);card.append(h);
+   const h=document.createElement('h3'),a=document.createElement('a');a.href=r.readUrl||r.url;a.target='_blank';a.rel='noopener';a.textContent=r.title;h.append(a);card.append(h);
    for(const line of [[r.author,r.year,r.language,r.region,r.type,r.level].filter(Boolean).join(' · '),r.evidence,[r.access,r.rights,r.consulted?'Consulté le '+r.consulted:'Date de consultation non renseignée'].filter(Boolean).join(' · ')]){
     const p=document.createElement('p');p.textContent=line||'';card.append(p);
    }
@@ -285,7 +309,7 @@ function showCampusLibrary(){
  }
  search.oninput=resetPage;
  v.querySelector('#library-export').onclick=()=>{
-  const text=matches.map(r=>[r.author,r.year,r.title,r.url,r.access,r.rights].filter(Boolean).join(' · ')).join('\n\n');
+  const text=matches.map(r=>[r.author,r.year,r.title,r.readUrl||r.url,r.access,r.rights].filter(Boolean).join(' · ')).join('\n\n');
   const url=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='academia-bibliographie.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
  };
  draw();
