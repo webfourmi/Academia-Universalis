@@ -8,7 +8,7 @@ function downloadBackup(data, name) {
 }
 
 function exportNotes() {
-  downloadBackup({format:'academia-notes', version:2, notes:S.notes, readingTools:S.readingTools}, 'academia-notes-'+localStudyDate()+'.json');
+  downloadBackup({format:'academia-notes', version:2, notes:S.notes, noteDates:S.noteDates, readingTools:S.readingTools}, 'academia-notes-'+localStudyDate()+'.json');
 }
 
 function backup() {
@@ -50,7 +50,7 @@ async function restore(input) {
   const records = (value,type) => value && typeof value === 'object' &&
     !Array.isArray(value) && Object.values(value).every(entry=>typeof entry === type);
   try {
-    if (!validAuditState(data) || !validLiteraryState(data?.literary) || !validPracticeProjects(data?.practiceProjects) || !validLibraryShelf(data?.libraryShelf) || !validMemoryCards(data?.memoryCards) || !validBookmarks(data?.bookmarks) || !validReadingTools(data?.readingTools) || !validStudyMinutes(data?.studyMinutes) || !validAssessments(data?.assessments) || !validReviews(data?.reviews) ||
+    if (!validNoteDates(data.noteDates) || !validAuditState(data) || !validLiteraryState(data?.literary) || !validPracticeProjects(data?.practiceProjects) || !validLibraryShelf(data?.libraryShelf) || !validMemoryCards(data?.memoryCards) || !validBookmarks(data?.bookmarks) || !validReadingTools(data?.readingTools) || !validStudyMinutes(data?.studyMinutes) || !validAssessments(data?.assessments) || !validReviews(data?.reviews) ||
         !records(data?.done,'boolean') || !records(data.notes,'string') ||
         (data.history !== undefined && !records(data.history,'boolean')) ||
         (data.lessonRevisions !== undefined && (!records(data.lessonRevisions,'number') ||
@@ -91,6 +91,8 @@ async function importNotes(input, parsedData) {
       throw new Error('Format de notes invalide');
     }
 
+    if(!validNoteDates(data.noteDates))throw new Error('Dates invalides');
+    const noteDates={...S.noteDates};
     const merged = new Map(Object.entries(S.notes));
     let added = 0;
     let conflicts = 0;
@@ -101,6 +103,7 @@ async function importNotes(input, parsedData) {
         continue;
       }
       merged.set(key, note);
+      if(data.noteDates?.[key])noteDates[key]=data.noteDates[key];else delete noteDates[key];
       added++;
     }
 
@@ -110,7 +113,7 @@ async function importNotes(input, parsedData) {
     const marks={...existing.marks};
     for(const [key,mark] of Object.entries(incoming?.marks||{})){if(Object.hasOwn(marks,key)){if(JSON.stringify(marks[key])!==JSON.stringify(mark))conflicts++;}else{marks[key]=mark;added++;}}
     if (added) {
-      const next = {...S, notes:Object.fromEntries(merged),readingTools:{...existing,marks}};
+      const next = {...S, notes:Object.fromEntries(merged),noteDates,readingTools:{...existing,marks}};
       localStorage.au = JSON.stringify(next);
       S = next;
     }
@@ -146,7 +149,7 @@ function showNotebook() {
     ${(entries.length||notebookPassages().length) ? `<div class="library-filters"><div><label for="note-year">Année</label><select id="note-year"><option value="">Toutes</option>
       ${years.map((_,index)=>`<option value="${index+1}">Année ${index+1}</option>`).join('')}<option value="0">Autres notes</option></select></div>
       <div><label for="note-subject">Matière</label><select id="note-subject"><option value="">Toutes</option>${subjects.map(subject=>`<option>${e(subject)}</option>`).join('')}</select></div></div>
-      <p id="note-count" role="status"></p>` : '<p>Tes notes de cours et tes brouillons apparaîtront ici.</p>'}
+      <label>Rechercher dans le carnet <input type="search" id="note-search"></label><p id="note-count" role="status"></p>` : '<p>Tes notes de cours et tes brouillons apparaîtront ici.</p>'}
     <div id="notebook-entries">${entries.map(([key,note],index)=>`
       <article class="card note-entry" tabindex="-1" data-note-key="${e(key)}"><h3>${lessonForNote(key)?`<button class="title-action" type="button" data-note-lesson="${index}">${e(noteTitle(key))}</button>`:e(noteTitle(key))}</h3>
       <p class="note-text">${e(note)}</p><button type="button" data-edit-note="${index}">Modifier</button></article>`).join('')}</div>
@@ -159,15 +162,17 @@ function showNotebook() {
     const cards=[...v.querySelectorAll('.note-entry')];
     const filter=()=>{
       let count=0;
+      const query=v.querySelector('#note-search').value.toLocaleLowerCase('fr');
       cards.forEach((card,index)=>{
         const [entryYear,entrySubject]=categories[Number(card.querySelector('[data-edit-note]').dataset.editNote)];
         card.hidden=Boolean((year.value && Number(year.value)!==entryYear)||(subject.value && subject.value!==entrySubject));
+        if(!card.hidden&&query&&!card.textContent.toLocaleLowerCase('fr').includes(query))card.hidden=true;
         if (!card.hidden) count++;
       });
-      for(const card of v.querySelectorAll('[data-passage-entry]')){card.hidden=Boolean((year.value&&Number(year.value)!==Number(card.dataset.year))||(subject.value&&subject.value!==card.dataset.subject));if(!card.hidden)count++;}
+      for(const card of v.querySelectorAll('[data-passage-entry]')){card.hidden=Boolean((year.value&&Number(year.value)!==Number(card.dataset.year))||(subject.value&&subject.value!==card.dataset.subject));if(!card.hidden&&query&&!card.textContent.toLocaleLowerCase('fr').includes(query))card.hidden=true;if(!card.hidden)count++;}
       v.querySelector('#note-count').textContent=count ? `${count} note${count===1?'':'s'}` : 'Aucune note pour ces filtres.';
     };
-    year.onchange=subject.onchange=filter;
+    year.onchange=subject.onchange=filter;v.querySelector('#note-search').oninput=filter;
     filter();
   }
   v.querySelectorAll('[data-note-lesson]').forEach(button=>{
@@ -314,4 +319,8 @@ function unifyNotebookTimeline(){
  panel.remove();
  const cards=[...list.children].sort((a,b)=>(b.dataset.date||'').localeCompare(a.dataset.date||''));
  list.append(...cards);
+}
+
+function validNoteDates(value){
+ return value===undefined||Boolean(value&&typeof value==='object'&&!Array.isArray(value)&&Object.values(value).every(d=>d&&typeof d==='object'&&['createdAt','updatedAt'].every(k=>d[k]===null||typeof d[k]==='string'&&Number.isFinite(Date.parse(d[k])))));
 }
