@@ -41,6 +41,7 @@ function restoreCampusRoute(entry) {
       }
       case 'subject': course(route.year,route.index,route.archives); break;
       case 'session': showStudySession(route.key,route.minutes); break;
+      case 'mathematiques': showMath(route.space); break;
       case 'space': showSpace(route.name); break;
       case 'projects': showWrittenProjects(); break;
       case 'assessment':

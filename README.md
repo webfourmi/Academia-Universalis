@@ -6,7 +6,7 @@ Université personnelle indépendante et cosmopolite, sans diplôme officiel. PW
 
 ## Version et accès
 
-- Version de référence de cette branche : V0.30.3 (sources ouvertes dans un nouvel onglet).
+- Version de référence de cette branche : V0.31.0 (cinq espaces mathématiques interactifs en année 1).
 - [Campus](https://webfourmi.github.io/Academia-Universalis/)
 - [Charte fondatrice](docs/Academia_Universalis_charte.pdf)
 - [Contrôle éditorial](docs/controle-editorial.html)
@@ -52,3 +52,11 @@ Depuis la racine du dépôt, lancer `python3 -m http.server 8000` puis ouvrir ht
 Lancer `node tests/smoke.cjs`. Le scénario navigateur utilise Playwright avec Chromium.
 Le chargement, la navigation et le hors connexion sont vérifiés sur deux dimensions de fenêtre.
 Les temps mesurés en environnement local ne représentent pas les performances sur téléphone réel.
+
+### Mathématiques d’année 1
+
+Accès depuis la carte Mathématiques de l’année 1 ou les espaces du campus. Cette version introduit deux expérimentations, cinq exercices et quatre cartes sur la récurrence, le second degré, la dérivation et les probabilités binomiales.
+
+Le contrôle éditorial a porté sur la concordance avec la charte et la page « Apprendre par la pratique » du programme. Chaque activité indique le résultat attendu, les hypothèses utiles et les limites de l’illustration ou du calcul. Le graphique et la simulation fournissent aussi leurs résultats en texte. Les exercices proposent un indice facultatif, un corrigé après tentative et une question de transfert. Les références OpenStax (Rice University) et MIT OpenCourseWare sont citées par section, avec leurs métadonnées et leur licence. Les textes, exemples et graphiques de ces espaces sont rédigés pour Academia Universalis.
+
+La couverture éditoriale correspond aux activités livrées. Le programme de 36 leçons, son évaluation finale et son étude comparative internationale restent à compléter. Cette version a fait l’objet d’un contrôle interne.
