@@ -110,7 +110,7 @@ const mathDiagnosticItems = [
 
 function mathFoundationSource(key) {
   const [title,url,language,scope,credit] = mathFoundationSources[key];
-  return `<p><a href="${url}" target="_blank" rel="noopener">${title}</a> · ${credit} · ${language} · accès libre, référence citée par lien · ${scope} · consulté le 28/11/2026.</p>`;
+  return `<p><a href="${url}" target="_blank" rel="noopener">${title}</a> · ${credit} · ${language} · accès libre, connexion requise · ${scope} · consulté le 28/11/2026.</p>`;
 }
 
 function showMathFoundationIndex(content) {
@@ -163,33 +163,44 @@ function showMathDiagnostic(content) {
 
 function showMathFoundationLesson(content,lesson) {
   const key='math-'+lesson.id;
-  const reviewKey=key+'-rappel';
-  const review=S.reviews?.[reviewKey];
+  const model=lesson.id==='fondements-1';
+  const cards=model?mathModelCards(lesson):[{key:key+'-rappel',question:lesson.recall[0],answer:lesson.recall[1]}];
   const initial=S.notes[key+'-tentative'] || '';
   content.innerHTML=`<article class="card">
     <p><strong>Prérequis</strong> · ${lesson.prerequisite}</p>
-    <p><strong>Objectif</strong> · ${lesson.objective}</p>
-    ${lesson.sections.map(([title,body])=>`<section><h3>${title}</h3><p>${body}</p></section>`).join('')}
+    ${model?'':'<p>Version de travail · mise en conformité avec la charte en cours.</p>'}
+    ${model?mathModelCourse():`<p><strong>Objectif</strong> · ${lesson.objective}</p>
+    ${lesson.sections.map(([title,body])=>`<section><h3>${title}</h3><p>${body}</p></section>`).join('')}`}
     <h3>Lecture guidée et bibliographie</h3>${mathFoundationSource(lesson.source)}
     ${lesson.id==='fondements-6'?mathSource('recurrence'):''}
+    ${model?mathModelQuizMarkup():''}
     <h3>Exercice rédigé</h3><p>${lesson.prompt}</p>
+    ${model?'<p>Objectif 2 · <a href="#math-section-3" data-math-jump>Section 3</a></p>':''}
     <form data-math-proof><label for="math-reasoning">Mon raisonnement</label><textarea id="math-reasoning" name="reasoning" required maxlength="12000">${e(S.notes[key+'-brouillon'])}</textarea>
     <button type="submit">Comparer au corrigé</button><p role="status"></p></form>
     <section data-math-solution hidden><h4>Corrigé</h4><p>${lesson.solution}</p>
     <details><summary>Retrouver ma première tentative</summary><p data-math-first style="white-space:pre-wrap"></p></details>
     <p>Relis ton raisonnement à partir de ce critère.</p>
+    ${model?'<ul><li>Écritures des impairs correctes.</li><li>Factorisation justifiée.</li><li>Conclusion générale et portée des exemples expliquées.</li></ul><p><a href="#math-section-2" data-math-jump>Revoir la portée de la preuve (section 2)</a></p>':''}
     <label><input type="checkbox" data-math-assessed ${S.done[key]?'checked':''}> ${lesson.criterion}</label>
     <p data-math-assessment-status role="status"></p></section>
     <h3>Problème de transfert</h3><p>${lesson.transfer}</p>
     <label for="math-transfer">Mon essai de transfert</label><textarea id="math-transfer" data-math-transfer maxlength="12000">${e(S.notes[key+'-transfert'])}</textarea>
     <p data-math-transfer-status role="status"></p>
     <details><summary>Consulter le corrigé du transfert</summary><p>${lesson.transferSolution}</p></details>
-    <h3>Révision espacée</h3><p>${lesson.recall[0]}</p>
-    <details><summary>Révéler la réponse</summary><p>${lesson.recall[1]}</p>
-    <button type="button" data-math-recall="yes">Retrouvée de mémoire</button>
-    <button type="button" data-math-recall="no">À revoir</button></details>
-    <p data-math-review-status role="status">${review?'Prochain rappel le '+e(reviewDate(review)):'Carte à découvrir'}</p>
+    ${model?mathModelSeminar():''}
+    <h3>Révision espacée</h3>
+    ${cards.map(({key:cardKey,question,answer},i)=>{
+      const review=S.reviews?.[cardKey];
+      return `<section data-math-card="${i}"><p>${question}</p>
+        <details><summary>Révéler la réponse</summary><p>${answer}</p>
+        <button type="button" data-math-recall="yes">Retrouvée de mémoire</button>
+        <button type="button" data-math-recall="no">À revoir</button></details>
+        <p data-math-review-status role="status">${review?'Prochain rappel le '+e(reviewDate(review)):'Carte à découvrir'}</p></section>`;
+    }).join('')}
+    ${model?'<details><summary>Bilan éditorial</summary><p>Contrôle interne des deux objectifs, des raisonnements, du quiz, du barème et des liens de section. Les documents externes sont facultatifs. Le document d’Euclide est cité par lien, avec reformulation intégrée. Une relecture indépendante reste à réaliser.</p></details>':''}
   </article>`;
+  if(model) bindMathModel(content);
   const form=content.querySelector('[data-math-proof]');
   const reasoning=form.elements.reasoning;
   const status=form.querySelector('[role="status"]');
@@ -221,8 +232,129 @@ function showMathFoundationLesson(content,lesson) {
     content.querySelector('[data-math-transfer-status]').textContent=storeMathRecord('notes',key+'-transfert',transfer.value)?'Essai enregistré.':'Enregistrement impossible.';
   };
   content.querySelectorAll('[data-math-recall]').forEach(button=>button.onclick=()=>{
+    const card=button.closest('[data-math-card]');
+    const reviewKey=cards[Number(card.dataset.mathCard)].key;
     const next=nextMemoryReview(S.reviews?.[reviewKey],button.dataset.mathRecall==='yes',localStudyDate());
-    content.querySelector('[data-math-review-status]').textContent=storeMathRecord('reviews',reviewKey,next)
+    card.querySelector('[data-math-review-status]').textContent=storeMathRecord('reviews',reviewKey,next)
       ? 'Prochain rappel le '+reviewDate(next) : 'Le rappel n’a pas pu être enregistré.';
   });
+}
+
+const mathModelObjectives = [
+  'Classer un énoncé parmi définition, axiome, conjecture et théorème, puis justifier ce classement.',
+  'Expliquer la différence entre des exemples et une preuve générale, puis rédiger une preuve de parité.'
+];
+
+const mathModelQuiz = [
+  [0, 1, '« Un entier pair est un entier de la forme 2k » fixe le sens du mot pair. De quel type d’énoncé s’agit-il ?',
+    ['Définition', 'Axiome', 'Théorème'], 0, 'La phrase précise le sens d’un terme.'],
+  [0, 1, 'Une règle est admise comme point de départ d’une théorie. Quel est son rôle ?',
+    ['Conjecture', 'Axiome', 'Théorème'], 1, 'Un axiome fournit une prémisse que la théorie admet.'],
+  [0, 2, 'Après dix essais, une règle générale semble vraie. Aucune preuve n’a encore été donnée. Quel est son statut ?',
+    ['Théorème', 'Définition', 'Conjecture'], 2, 'Les essais motivent une conjecture. Une démonstration est nécessaire pour en faire un théorème.'],
+  [0, 2, 'La somme de deux entiers pairs a été démontrée paire pour tous les entiers pairs. Quel est désormais le statut de ce résultat ?',
+    ['Conjecture', 'Théorème', 'Axiome'], 1, 'Le résultat découle d’une preuve qui porte sur deux entiers pairs quelconques.'],
+  [1, 3, 'Quelle démarche prouve que la somme de deux entiers impairs est paire ?',
+    ['Vérifier trois sommes', 'Supposer les deux nombres positifs', 'Écrire les deux entiers 2k + 1 et 2m + 1, puis factoriser la somme'], 2,
+    'Les paramètres entiers k et m sont quelconques. La somme vaut 2(k + m + 1), ce qui vérifie la définition.']
+];
+
+function mathModelCards(lesson) {
+  const key='math-'+lesson.id+'-rappel';
+  return [
+    {key,question:lesson.recall[0],answer:lesson.recall[1]},
+    {key:key+'-definition',question:'Quel rôle joue une définition ?',answer:'Elle fixe le sens d’un terme. Par exemple, être pair signifie être de la forme 2k avec k entier.'},
+    {key:key+'-axiome',question:'À quoi reconnaît-on un axiome dans une théorie ?',answer:'Il y est admis comme point de départ pour déduire des résultats.'},
+    {key:key+'-conjecture',question:'Quel statut donner à une règle suggérée par quelques exemples et encore à démontrer ?',answer:'C’est une conjecture.'},
+    {key:key+'-portee',question:'Comment faire apparaître la portée générale d’une preuve de parité ?',answer:'Partir d’entiers quelconques satisfaisant les hypothèses, les écrire avec des paramètres entiers, puis déduire la conclusion sans fixer leurs valeurs.'},
+    {key:key+'-transfert',question:'Quelle expression justifie que deux entiers impairs ont une somme paire ?',answer:'(2k + 1) + (2m + 1) = 2(k + m + 1), où k + m + 1 est entier.'}
+  ];
+}
+
+function mathModelCourse() {
+  return `<section aria-labelledby="math-problem"><h3 id="math-problem">Problématique</h3>
+    <p>Qu’est-ce qui autorise à dire qu’une règle est vraie pour tous les cas ? On suivra un résultat depuis les premiers essais jusqu’à une preuve, puis on examinera un exemple de construction géométrique.</p>
+    <p><strong>Objectifs</strong></p><ol>${mathModelObjectives.map(text=>`<li>${text}</li>`).join('')}</ol>
+    <nav aria-label="Plan de la leçon"><h3>Plan</h3><ol>
+      <li><a href="#math-section-1" data-math-jump>Définir et poser les règles</a></li>
+      <li><a href="#math-section-2" data-math-jump>Passer de l’observation à la preuve</a></li>
+      <li><a href="#math-section-3" data-math-jump>Contrôler la portée d’une preuve</a></li>
+      <li><a href="#math-section-4" data-math-jump>Étudier une construction d’Euclide</a></li>
+      <li><a href="#math-section-5" data-math-jump>Synthèse</a></li>
+    </ol></nav></section>
+    <p><strong>Socle essentiel · 30 à 45 min</strong> · Sections 1 à 3 et synthèse, quiz et exercice rédigé.</p>
+    <section><h3 id="math-section-1" tabindex="-1">1. Définir et poser les règles</h3>
+    <p>Une définition fixe le sens d’un terme. Un entier pair s’écrit 2k et un entier impair s’écrit 2k + 1, avec k entier. Par exemple, −5 = 2 × (−3) + 1 est impair. Une définition permet de reconnaître un objet ou de traduire une propriété en écriture exploitable.</p>
+    <p>Un axiome est un énoncé admis comme point de départ d’une théorie. Il sert de prémisse dans une démonstration. En géométrie euclidienne, on admet par exemple qu’on peut tracer un segment joignant deux points. On rencontre aussi le terme « postulat » pour une règle initiale de ce type.</p></section>
+    <section><h3 id="math-section-2" tabindex="-1">2. Passer de l’observation à la preuve</h3>
+    <p>Les sommes 2 + 4 et 6 + 8 sont paires. Elles suggèrent une conjecture, c’est-à-dire un énoncé proposé dont on cherche une preuve ou une réfutation. Un théorème est un énoncé établi par une démonstration.</p>
+    <p>Prenons deux entiers pairs quelconques a et b. Par définition, il existe des entiers k et m tels que a = 2k et b = 2m. Par distributivité, a + b = 2(k + m). Comme la somme k + m est entière, a + b est pair. Le raisonnement couvre tous les choix de a et b qui satisfont l’hypothèse.</p></section>
+    <section><h3 id="math-section-3" tabindex="-1">3. Contrôler la portée d’une preuve</h3>
+    <p>Avant d’utiliser une preuve, relève ses hypothèses et sa conclusion. La preuve de la section 2 couvre les nombres pairs négatifs, puisque k et m peuvent être négatifs. Pour les impairs, l’écriture de départ change. Entraîne-toi à poser a = 2k + 1 et b = 2m + 1, puis à regrouper les termes constants avant de factoriser par 2.</p>
+    <p>Une preuve universelle explique pourquoi aucun cas autorisé n’échappe à l’argument. Un contre-exemple suffit à réfuter une règle universelle dès lors qu’il satisfait les hypothèses et contredit la conclusion.</p></section>
+    <p><strong>Approfondissement universitaire · 1 h 30 à 2 h au total</strong> · Ajoute l’étude du document, le problème de transfert et le séminaire.</p>
+    <section><h3 id="math-section-4" tabindex="-1">4. Étudier une construction d’Euclide</h3>
+    <p><strong>Document étudié</strong> · Euclide, <cite>Éléments</cite>, livre I, proposition 1. L’édition numérique commentée de David E. Joyce (Clark University) est citée par lien. Le résumé ci-dessous est une reformulation pédagogique. Le texte et les figures de l’édition consultée sont cités par lien.</p>
+    <figure><svg viewBox="0 0 240 160" width="240" style="max-width:100%" role="img" aria-label="Deux cercles de même rayon. A et B sont leurs centres. Le point C est sur les deux cercles. Le triangle ABC relie ces trois points.">
+      <g fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="89" cy="80" r="62"/><circle cx="151" cy="80" r="62"/><path d="M89 80H151L120 26.306Z" stroke-width="2.8"/></g>
+      <g fill="currentColor" font-size="12"><text x="78" y="94">A</text><text x="153" y="94">B</text><text x="116" y="20">C</text></g>
+    </svg><figcaption>Schéma original. Construction idéale à partir du segment AB.</figcaption></figure>
+    <p>À partir d’un segment AB de longueur positive, on trace deux cercles de rayon AB, centrés sur A et B. En choisissant un point commun C, on obtient AC = AB et BC = AB parce que C est sur les deux cercles. On déduit AC = BC et les trois côtés sont donc égaux. La construction illustre le rôle distinct d’une règle de tracé, des définitions et des déductions.</p>
+    <p><strong>Limite</strong> · L’existence du point commun est utilisée. Le dessin peut guider l’intuition. La justification de cette intersection demande un argument supplémentaire dans une formalisation rigoureuse.</p>
+    <p><a href="https://mathcs.clarku.edu/~djoyce/elements/bookI/propI1.html" target="_blank" rel="noopener">Lire la proposition et son commentaire (anglais, connexion requise)</a> · Consulté le 28/11/2026.</p></section>
+    <section><h3 id="math-section-5" tabindex="-1">5. Synthèse</h3>
+    <dl><dt>Définition</dt><dd>Fixe le sens d’un terme.</dd><dt>Axiome</dt><dd>Fournit un point de départ admis dans la théorie.</dd>
+    <dt>Conjecture</dt><dd>Énoncé proposé dont le statut reste à établir.</dd><dt>Théorème</dt><dd>Énoncé établi par une démonstration.</dd></dl>
+    <p>Dans une preuve, indique le domaine, les hypothèses et la conclusion. Vérifie que chaque étape s’applique à tous les cas annoncés.</p></section>
+    <section><h3>Recherche facultative · 3 à 5 h au total</h3>
+    <p>Compare la proposition, les définitions et le commentaire de Joyce. Repère les étapes d’Euclide qui mobilisent une définition ou une règle initiale. Discute ce qu’il faudrait ajouter pour justifier l’existence de C. La recherche externe et cette extension sont facultatives.</p></section>`;
+}
+
+function mathModelQuizMarkup() {
+  return `<section><h3>Quiz de compréhension</h3><form data-math-model-quiz>
+  ${mathModelQuiz.map(([objective,section,question,options],i)=>`<fieldset style="min-inline-size:0"><legend>${i+1}. ${question}</legend>
+    <p>Objectif ${objective+1} · <a href="#math-section-${section}" data-math-jump>Section ${section}</a></p>
+    ${options.map((option,j)=>`<p><label><input required type="radio" name="item${i}" value="${j}"> ${option}</label></p>`).join('')}
+    <p data-math-quiz-feedback role="status"></p></fieldset>`).join('')}
+    <button type="submit">Corriger le quiz</button><p data-math-quiz-score role="status"></p></form></section>`;
+}
+
+function mathModelSeminar() {
+  return `<section><h3>Séminaire · Évaluer une justification</h3>
+  <p><strong>Dossier intégré</strong> · Ana affirme que la somme de deux impairs est paire parce que 3 + 5 = 8 et 5 + 7 = 12. Bilal pose deux entiers impairs quelconques et les écrit 2k + 1 et 2m + 1. Les écritures de parité et la portée des exemples sont traitées aux sections 1 à 3.</p>
+  <p>Compare les deux démarches. Rédige l’argument de Bilal jusqu’à la conclusion, puis explique pourquoi l’hypothèse « deux nombres impairs » est importante en donnant un contre-exemple si l’un des deux est pair.</p>
+  <label for="math-seminar">Ma réponse au séminaire</label><textarea id="math-seminar" maxlength="12000">${e(S.notes['math-fondements-1-seminaire'])}</textarea><p data-math-seminar-status role="status"></p>
+  <details><summary>Corrigé indicatif et barème sur 6</summary>
+    <ol><li>2 points · Deux exemples soutiennent la conjecture. Ils ne vérifient que deux couples (section 2).</li>
+    <li>2 points · Pour k et m entiers quelconques, (2k + 1) + (2m + 1) = 2(k + m + 1), avec k + m + 1 entier (sections 1 et 3).</li>
+    <li>2 points · Par exemple, 2 + 3 = 5. Ce couple montre que la conclusion peut échouer si l’un des deux entiers est pair (section 3).</li></ol>
+    <p>Une autre rédaction ou un autre contre-exemple correct reçoit les mêmes points.</p>
+  </details></section>`;
+}
+
+function bindMathModel(content) {
+  content.querySelectorAll('[data-math-jump]').forEach(link=>link.onclick=event=>{
+    event.preventDefault();
+    const heading=content.querySelector(link.getAttribute('href'));
+    heading.focus();
+    heading.scrollIntoView({block:'start'});
+  });
+  const form=content.querySelector('[data-math-model-quiz]');
+  form.onsubmit=event=>{
+    event.preventDefault();
+    const answers=new FormData(form);
+    const feedback=form.querySelectorAll('[data-math-quiz-feedback]');
+    let score=0;
+    mathModelQuiz.forEach(([,section,,options,expected,explanation],i)=>{
+      const correct=answers.get('item'+i)===String(expected);
+      if(correct) score++;
+      feedback[i].textContent=`${correct?'Correct.':'À revoir.'} ${options[expected]}. ${explanation} Voir section ${section}.`;
+    });
+    form.querySelector('[data-math-quiz-score]').textContent=`${score} / ${mathModelQuiz.length} réponses correctes.`;
+  };
+  const seminar=content.querySelector('#math-seminar');
+  seminar.oninput=()=>{
+    content.querySelector('[data-math-seminar-status]').textContent=storeMathRecord('notes','math-fondements-1-seminaire',seminar.value)
+      ? 'Brouillon enregistré.' : 'Enregistrement impossible.';
+  };
 }

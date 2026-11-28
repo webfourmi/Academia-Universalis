@@ -4,7 +4,7 @@ const antiquite = {
   key: 'antiquite',
   lessons: [
     {
-      id: 'athenes', title: 'Athènes · Délibérer dans une cité inégalitaire',
+      id: 'athenes', campusSpaces: ['Amphithéâtre'], title: 'Athènes · Délibérer dans une cité inégalitaire',
       goal: 'Distinguer les institutions démocratiques et les conditions d’accès à la citoyenneté au Ve siècle avant notre ère.',
       prerequisite: 'Savoir distinguer une institution, une pratique et sa représentation dans une source.',
       sections: [

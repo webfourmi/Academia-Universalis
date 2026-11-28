@@ -35,7 +35,7 @@ function showWrittenProjects() {
       <details><summary>Lire le plan indicatif</summary><p>${project.correction}</p></details>
     </details></article>`).join('');
   v.querySelectorAll('[data-project]').forEach(input => {
-    input.oninput = () => {S.notes['synthese:'+input.dataset.project]=input.value;save();};
+    installSavedAnswer(input,'synthese:'+input.dataset.project);
   });
 }
 
@@ -47,4 +47,18 @@ function noteTitle(key) {
     if (lesson) return lesson.title;
   }
   return key;
+}
+
+function installSavedAnswer(input,key){
+ const preview=document.createElement('div');preview.style.whiteSpace='pre-wrap';
+ const button=document.createElement('button');button.type='button';
+ const status=document.createElement('p');status.setAttribute('role','status');
+ input.after(preview,button,status);
+ let editing=!input.value.trim();
+ function render(){input.hidden=!editing;preview.hidden=editing;preview.textContent=S.notes[key]||'';button.textContent=editing?'Enregistrer':'Modifier';}
+ button.onclick=()=>{if(!editing){editing=true;render();input.focus();return;}
+ const next={...S,notes:{...S.notes,[key]:input.value},noteDates:updatedNoteDates(key)};
+ try{localStorage.au=JSON.stringify(next);S=next;editing=false;render();status.textContent='Réponse enregistrée.';}catch{status.textContent='Enregistrement impossible. Le texte reste dans le champ.';}
+ };
+ render();
 }

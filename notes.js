@@ -8,7 +8,7 @@ function downloadBackup(data, name) {
 }
 
 function exportNotes() {
-  downloadBackup({format:'academia-notes', version:1, notes:S.notes}, 'academia-notes-'+localStudyDate()+'.json');
+  downloadBackup({format:'academia-notes', version:2, notes:S.notes, noteDates:S.noteDates, readingTools:S.readingTools}, 'academia-notes-'+localStudyDate()+'.json');
 }
 
 function backup() {
@@ -50,7 +50,7 @@ async function restore(input) {
   const records = (value,type) => value && typeof value === 'object' &&
     !Array.isArray(value) && Object.values(value).every(entry=>typeof entry === type);
   try {
-    if (!validAuditState(data) || !validLiteraryState(data?.literary) || !validPracticeProjects(data?.practiceProjects) || !validLibraryShelf(data?.libraryShelf) || !validMemoryCards(data?.memoryCards) || !validBookmarks(data?.bookmarks) || !validReadingTools(data?.readingTools) || !validStudyMinutes(data?.studyMinutes) || !validAssessments(data?.assessments) || !validReviews(data?.reviews) ||
+    if (!validNoteDates(data.noteDates) || !validAuditState(data) || !validLiteraryState(data?.literary) || !validPracticeProjects(data?.practiceProjects) || !validLibraryShelf(data?.libraryShelf) || !validMemoryCards(data?.memoryCards) || !validBookmarks(data?.bookmarks) || !validReadingTools(data?.readingTools) || !validStudyMinutes(data?.studyMinutes) || !validAssessments(data?.assessments) || !validReviews(data?.reviews) ||
         !records(data?.done,'boolean') || !records(data.notes,'string') ||
         (data.history !== undefined && !records(data.history,'boolean')) ||
         (data.lessonRevisions !== undefined && (!records(data.lessonRevisions,'number') ||
@@ -84,13 +84,15 @@ async function importNotes(input, parsedData) {
     if (!safeBackupTree(data)) throw new Error('Structure invalide');
     const notes = data?.notes;
     const supported = data?.format === 'academia-notes'
-      ? data.version === 1
+      ? [1,2].includes(data.version)
       : data?.done && typeof data.done === 'object';
     if (!supported || !notes || typeof notes !== 'object' || Array.isArray(notes) ||
         !Object.values(notes).every(note => typeof note === 'string')) {
       throw new Error('Format de notes invalide');
     }
 
+    if(!validNoteDates(data.noteDates))throw new Error('Dates invalides');
+    const noteDates={...S.noteDates};
     const merged = new Map(Object.entries(S.notes));
     let added = 0;
     let conflicts = 0;
@@ -101,11 +103,17 @@ async function importNotes(input, parsedData) {
         continue;
       }
       merged.set(key, note);
+      if(data.noteDates?.[key])noteDates[key]=data.noteDates[key];else delete noteDates[key];
       added++;
     }
 
+    const incoming=data.readingTools;
+    if(incoming!==undefined&&!validReadingTools(incoming))throw new Error('Annotations invalides');
+    const existing=S.readingTools||{theme:'light',size:100,marks:{}};
+    const marks={...existing.marks};
+    for(const [key,mark] of Object.entries(incoming?.marks||{})){if(Object.hasOwn(marks,key)){if(JSON.stringify(marks[key])!==JSON.stringify(mark))conflicts++;}else{marks[key]=mark;added++;}}
     if (added) {
-      const next = {...S, notes:Object.fromEntries(merged)};
+      const next = {...S, notes:Object.fromEntries(merged),noteDates,readingTools:{...existing,marks}};
       localStorage.au = JSON.stringify(next);
       S = next;
     }
@@ -136,30 +144,35 @@ function notebookCategory(key) {
 function showNotebook() {
   const entries = Object.entries(S.notes).filter(([,note])=>note.trim());
   const categories=entries.map(([key])=>notebookCategory(key));
-  const subjects=[...new Set(categories.map(([,subject])=>subject))].sort((a,b)=>a.localeCompare(b,'fr'));
+  const subjects=[...new Set([...categories.map(([,subject])=>subject),...notebookPassages().map(x=>x.target?.course.title.split(' · ')[0]||'Autres notes')])].sort((a,b)=>a.localeCompare(b,'fr'));
   v.innerHTML = `<h2>Mon carnet</h2>
-    ${entries.length ? `<div class="library-filters"><div><label for="note-year">Année</label><select id="note-year"><option value="">Toutes</option>
+    ${(entries.length||notebookPassages().length) ? `<div class="library-filters"><div><label for="note-year">Année</label><select id="note-year"><option value="">Toutes</option>
       ${years.map((_,index)=>`<option value="${index+1}">Année ${index+1}</option>`).join('')}<option value="0">Autres notes</option></select></div>
       <div><label for="note-subject">Matière</label><select id="note-subject"><option value="">Toutes</option>${subjects.map(subject=>`<option>${e(subject)}</option>`).join('')}</select></div></div>
-      <p id="note-count" role="status"></p>` : '<p>Tes notes de cours et tes brouillons apparaîtront ici.</p>'}
+      <label>Rechercher dans le carnet <input type="search" id="note-search"></label><p id="note-count" role="status"></p>` : '<p>Tes notes de cours et tes brouillons apparaîtront ici.</p>'}
     <div id="notebook-entries">${entries.map(([key,note],index)=>`
       <article class="card note-entry" tabindex="-1" data-note-key="${e(key)}"><h3>${lessonForNote(key)?`<button class="title-action" type="button" data-note-lesson="${index}">${e(noteTitle(key))}</button>`:e(noteTitle(key))}</h3>
       <p class="note-text">${e(note)}</p><button type="button" data-edit-note="${index}">Modifier</button></article>`).join('')}</div>
     ${backupControls()}`;
-  if (entries.length) {
+  appendPassageNotebook();
+  unifyNotebookTimeline();
+  if (entries.length||notebookPassages().length) {
     const year=v.querySelector('#note-year');
     const subject=v.querySelector('#note-subject');
     const cards=[...v.querySelectorAll('.note-entry')];
     const filter=()=>{
       let count=0;
+      const query=v.querySelector('#note-search').value.toLocaleLowerCase('fr');
       cards.forEach((card,index)=>{
-        const [entryYear,entrySubject]=categories[index];
+        const [entryYear,entrySubject]=categories[Number(card.querySelector('[data-edit-note]').dataset.editNote)];
         card.hidden=Boolean((year.value && Number(year.value)!==entryYear)||(subject.value && subject.value!==entrySubject));
+        if(!card.hidden&&query&&!card.textContent.toLocaleLowerCase('fr').includes(query))card.hidden=true;
         if (!card.hidden) count++;
       });
+      for(const card of v.querySelectorAll('[data-passage-entry]')){card.hidden=Boolean((year.value&&Number(year.value)!==Number(card.dataset.year))||(subject.value&&subject.value!==card.dataset.subject));if(!card.hidden&&query&&!card.textContent.toLocaleLowerCase('fr').includes(query))card.hidden=true;if(!card.hidden)count++;}
       v.querySelector('#note-count').textContent=count ? `${count} note${count===1?'':'s'}` : 'Aucune note pour ces filtres.';
     };
-    year.onchange=subject.onchange=filter;
+    year.onchange=subject.onchange=filter;v.querySelector('#note-search').oninput=filter;
     filter();
   }
   v.querySelectorAll('[data-note-lesson]').forEach(button=>{
@@ -196,11 +209,12 @@ function showNotebook() {
         return;
       }
       try {
-        const next = {...S,notes:{...S.notes,[key]:input.value}};
+        const next = {...S,notes:{...S.notes,[key]:input.value},noteDates:updatedNoteDates(key)};
         localStorage.au = JSON.stringify(next);
         S = next;
         preview.textContent = input.value;
         closeEditor();
+        showNotebook();
         v.querySelector('#notes-import-status').textContent = 'Note enregistrée.';
       } catch {
         form.querySelector('[role="status"]').textContent = 'Impossible d’enregistrer la note. Ton texte est toujours dans le champ.';
@@ -238,4 +252,75 @@ function showBackup() {
     <p>Pour changer d’appareil, exporte le fichier complet puis importe-le sur l’autre appareil.</p>
     <p>La sauvegarde complète contient tes notes, ta progression et tes évaluations. Tu peux aussi exporter uniquement tes notes.</p>
     ${backupControls()}`;
+}
+
+function notebookPassages(){
+  return Object.entries(S.readingTools?.marks||{}).filter(([,m])=>m.note?.trim()||m.highlight||m.ranges?.length).map(([key,mark])=>{
+    const parts=key.split(':');const section=Number(parts.pop());const lessonId=parts.pop();const courseKey=parts.join(':');
+    return {key,mark,section,target:locateLesson(courseKey,lessonId)};
+  }).sort((a,b)=>(b.mark.updatedAt||'').localeCompare(a.mark.updatedAt||''));
+}
+function appendPassageNotebook(){
+  const panel=document.createElement('section');panel.className='card';
+  panel.innerHTML='<h3>Annotations et surlignages des cours</h3><label>Rechercher <input type="search" data-passage-search></label><div data-passage-list></div>';
+  v.querySelector('#notebook-entries').after(panel);
+  const list=panel.querySelector('[data-passage-list]');
+  const entries=notebookPassages();
+  if(!entries.length)list.textContent='Aucune annotation de passage.';
+  for(const {key,mark,section,target} of entries){
+    const lesson=target?.course.lessons[target.index];
+    const card=document.createElement('article');card.className='card';card.dataset.passageEntry='';card.dataset.date=mark.updatedAt||mark.createdAt||'';card.dataset.noteKey=key;card.dataset.year=target?.course.year||1;card.dataset.subject=target?.course.title.split(' · ')[0]||'Autres notes';card.tabIndex=-1;
+    const heading=document.createElement('h4');heading.textContent=target?target.course.title+' · '+lesson.title:key;card.append(heading);
+    const date=document.createElement('p');date.textContent=mark.createdAt?'Créée le '+new Date(mark.createdAt).toLocaleString('fr-FR'):'Date d’origine inconnue';if(mark.updatedAt)date.textContent+=' · Modifiée le '+new Date(mark.updatedAt).toLocaleString('fr-FR');card.append(date);
+    const label=document.createElement('p');label.textContent=lesson?.sections[section]?.[0]||'Passage non identifié';card.append(label);
+    const note=document.createElement('div');if(mark.rich)note.append(...cleanAnnotation(mark.rich).childNodes);else note.textContent=mark.note;card.append(note);
+    for(const range of mark.ranges||[]){const quote=document.createElement('blockquote');const highlight=document.createElement('mark');highlight.textContent=range.text;quote.append(highlight);card.append(quote);}
+    if(mark.highlight){const p=document.createElement('p');p.textContent='Passage entier surligné';card.append(p);}
+    if(target){const link=document.createElement('button');link.type='button';link.textContent='Revenir au passage annoté / modifier';link.onclick=()=>{showLesson(target.course,target.index,{fromNote:key});jumpToStudySection('lesson-section-'+section);};card.append(link);}
+    const edit=document.createElement('button');edit.type='button';edit.textContent='Modifier ici';card.append(edit);
+    edit.onclick=()=>{
+      if(card.querySelector('.annotation-editor'))return;
+      const editor=document.createElement('div');editor.className='annotation-editor';editor.contentEditable='true';editor.setAttribute('role','textbox');editor.setAttribute('aria-label','Annotation');
+      editor.append(...[...note.childNodes].map(n=>n.cloneNode(true)));
+      const toolbar=document.createElement('div');
+      for(const [label,cmd] of [['Gras','bold'],['Italique','italic']]){
+        const b=document.createElement('button');b.type='button';b.textContent=label;b.onpointerdown=e=>e.preventDefault();b.onclick=()=>{editor.focus();document.execCommand(cmd);};toolbar.append(b);
+      }
+      const commit=document.createElement('button');commit.textContent='Enregistrer';commit.type='button';
+      const cancel=document.createElement('button');cancel.textContent='Annuler';cancel.type='button';
+      const form=document.createElement('div');form.append(toolbar,editor,commit,cancel);card.append(form);edit.hidden=true;editor.focus();
+      cancel.onclick=()=>{form.remove();edit.hidden=false;};
+      commit.onclick=()=>{const clean=cleanAnnotation(editor.innerHTML);const plain=clean.textContent;if(plain.length>10000||clean.innerHTML.length>40000)return;
+        const current=S.readingTools.marks[key];const next={...current,note:plain,rich:clean.innerHTML,createdAt:current.createdAt||null,updatedAt:new Date().toISOString()};
+        if(auditSave({readingTools:{...S.readingTools,marks:{...S.readingTools.marks,[key]:next}}}))showNotebook();
+      };
+    };
+    list.append(card);
+  }
+  panel.querySelector('input').oninput=event=>{const query=event.target.value.toLocaleLowerCase('fr');for(const card of list.children)card.hidden=!card.textContent.toLocaleLowerCase('fr').includes(query);};
+}
+
+function updatedNoteDates(key){
+ const now=new Date().toISOString();const old=S.noteDates?.[key];
+ return {...S.noteDates,[key]:{createdAt:old?.createdAt||(Object.hasOwn(S.notes,key)?null:now),updatedAt:now}};
+}
+function unifyNotebookTimeline(){
+ const list=v.querySelector('#notebook-entries');
+ const passages=v.querySelector('[data-passage-list]');
+ const panel=passages.parentElement;
+ for(const card of list.children){
+  const dates=S.noteDates?.[card.dataset.noteKey];
+  card.dataset.date=dates?.updatedAt||dates?.createdAt||'';
+  const date=document.createElement('p');date.textContent=dates?.createdAt?'Créée le '+new Date(dates.createdAt).toLocaleString('fr-FR'):'Date d’origine inconnue';
+  if(dates?.updatedAt)date.textContent+=' · Modifiée le '+new Date(dates.updatedAt).toLocaleString('fr-FR');
+  card.querySelector('h3').after(date);
+ }
+ for(const card of [...passages.children])list.append(card);
+ panel.remove();
+ const cards=[...list.children].sort((a,b)=>(b.dataset.date||'').localeCompare(a.dataset.date||''));
+ list.append(...cards);
+}
+
+function validNoteDates(value){
+ return value===undefined||Boolean(value&&typeof value==='object'&&!Array.isArray(value)&&Object.values(value).every(d=>d&&typeof d==='object'&&['createdAt','updatedAt'].every(k=>d[k]===null||typeof d[k]==='string'&&Number.isFinite(Date.parse(d[k])))));
 }

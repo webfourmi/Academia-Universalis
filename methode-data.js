@@ -6,7 +6,7 @@ const studyMethods = {
   introduction: 'Trois travaux dirigés transversaux : examiner une affirmation, lire une étude et rédiger une synthèse documentée.',
   lessons: [
     {
-      id: 'verification', title: 'Vérifier une affirmation',
+      id: 'verification', campusSpaces: ["Cabinet de recherche"], title: 'Vérifier une affirmation',
       goal: 'Remonter d’une affirmation secondaire au document qui en permet l’examen.',
       prerequisite: 'Aucun.',
       sections: [
@@ -24,7 +24,7 @@ const studyMethods = {
       sources: [methodologySource]
     },
     {
-      id: 'lecture', title: 'Lire une publication par les preuves',
+      id: 'lecture', campusSpaces: ["Cabinet de recherche"], title: 'Lire une publication par les preuves',
       goal: 'Construire une fiche de lecture qui distingue résultat, interprétation et portée.',
       prerequisite: 'Vérifier une affirmation.',
       sections: [
@@ -42,7 +42,7 @@ const studyMethods = {
       sources: [['A. N. Goring-Morris et A. Belfer-Cohen','Neolithization Processes in the Levant','2011','https://doi.org/10.1086/658860','Exemple de synthèse archéologique mettant en relation des trajectoires régionales.']]
     },
     {
-      id: 'synthese-documentee', title: 'Rédiger une synthèse documentée',
+      id: 'synthese-documentee', campusSpaces: ["Cabinet de recherche"], title: 'Rédiger une synthèse documentée',
       goal: 'Défendre une conclusion proportionnée à deux sources et expliciter le rôle éventuel d’un outil d’IA.',
       prerequisite: 'Lire une publication par les preuves.',
       sections: [

@@ -74,9 +74,22 @@ async function verifyMath(browser,viewport) {
   await open('Comparer au corrigé');
   assert.equal(await page.locator('[data-math-first]').textContent(),'Brouillon conservé hors connexion.');
   await page.locator('[data-math-assessed]').check();
-  await page.getByText('Révéler la réponse').click();
-  await open('Retrouvée de mémoire');
-  assert.match(await page.locator('[data-math-review-status]').innerText(),/Prochain rappel le/);
+  assert.equal(await page.locator('[data-math-card]').count(),6);
+  const card=page.locator('[data-math-card="0"]');
+  await card.getByText('Révéler la réponse').click();
+  await card.getByRole('button',{name:'Retrouvée de mémoire'}).click();
+  assert.match(await card.locator('[data-math-review-status]').innerText(),/Prochain rappel le/);
+  assert.equal(await page.evaluate(()=>memoryPanel().textContent.includes('Quel travail transforme une conjecture en théorème ?')),true);
+  const quiz=page.locator('[data-math-model-quiz]');
+  for(const [i,answer] of [0,1,2,1,0].entries()) {
+    await quiz.locator(`[name=item${i}][value="${answer}"]`).check();
+  }
+  await open('Corriger le quiz');
+  await page.getByText('4 / 5 réponses correctes.').waitFor();
+  await quiz.getByRole('link',{name:'Section 3',exact:true}).click();
+  assert.equal(await page.evaluate(()=>document.activeElement.id),'math-section-3');
+  await page.getByLabel('Ma réponse au séminaire').fill('Deux exemples ne suffisent pas.');
+  assert.equal(await page.evaluate(()=>S.notes['math-fondements-1-seminaire']),'Deux exemples ne suffisent pas.');
   await open('Retour au cycle I');
   await page.getByText('1 / 6 leçons autoévaluées').waitFor();
   await open('Faire le diagnostic');
@@ -229,6 +242,8 @@ async function verify(browser,viewport) {
   for(const select of await exercise.locator('select').all())await select.selectOption('2');
   await exercise.locator('#save-exercise-review').click();
   assert.match(await exercise.locator('[role=status]').innerText(),/réussi en autoévaluation/);
+  assert.equal(await page.locator('#save-exercise').textContent(),'Modifier');
+  await page.locator('#save-exercise').click();
   await exercise.locator('textarea').fill('Une version révisée de ma réponse.');
   await exercise.locator('#save-exercise').click();
   assert.match(await exercise.locator('[role=status]').innerText(),/à relire/);

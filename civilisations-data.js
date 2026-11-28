@@ -1148,7 +1148,7 @@ const civilisations = [
   ]
 },
   {
-    id: 'uruk', title: 'Mésopotamie : Uruk et les premiers comptes',
+    id: 'uruk', campusSpaces: ['Musée'], title: 'Mésopotamie : Uruk et les premiers comptes',
     goal: 'Relier trois catégories de vestiges à des fonctions urbaines et évaluer ce que les tablettes révèlent de la société.',
     prerequisite: 'Néolithiques et domestications.',
     sections: [

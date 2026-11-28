@@ -6,6 +6,11 @@ const mathSpaces = {
   carnet: 'Carnet mathématique'
 };
 
+const mathCampusSpaces = {
+  'Laboratoire':['laboratoire'],
+  'Atelier':['demonstration','problemes']
+};
+
 const mathReferences = {
   derivation: ['Gilbert Strang et Edwin Herman', 'Calculus Volume 1, § 3.1', '2016', 'https://openstax.org/books/calculus-volume-1/pages/3-1-defining-the-derivative', 'Taux de variation, sécante et dérivée'],
   recurrence: ['Eric Lehman, F. Thomson Leighton et Albert R. Meyer', 'Mathematics for Computer Science, § 5.1', '2015', 'https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/mit6_042js15_textbook.pdf', 'Principe de récurrence'],

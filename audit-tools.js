@@ -257,6 +257,10 @@ function writtenExercise(course,lesson) {
     picks.forEach((pick,index)=>pick.value=record?.revision===revision&&record.criteria?String(record.criteria[index]):'');
   };
   redraw(saved);
+  const saveButton=form.querySelector('#save-exercise');
+  let editing=!saved?.answer;
+  function mode(){answer.readOnly=!editing;saveButton.textContent=editing?'Enregistrer ma réponse':'Modifier';}
+  mode();
   function persist(review){
     if(!form.reportValidity())return;
     const text=answer.value.trim();
@@ -278,9 +282,9 @@ function writtenExercise(course,lesson) {
       status.textContent='La réponse dépasse la capacité de stockage prévue pour les exercices.';
       return;
     }
-    if(auditSave({exerciseEvidence}))redraw(record);
+    if(auditSave({exerciseEvidence})){redraw(record);editing=false;mode();}
   }
-  form.onsubmit=event=>{event.preventDefault();persist(false);};
+  form.onsubmit=event=>{event.preventDefault();if(!editing){editing=true;mode();answer.focus();return;}persist(false);};
   form.querySelector('#save-exercise-review').onclick=()=>persist(true);
   return form;
 }
@@ -449,16 +453,12 @@ function academicReviewSheet(key) {
 }
 
 function addDisciplineWorkshops(name) {
-  const choices={
-    Laboratoire:[['physique','intro-physique','Gravité · prédire la période du pendule'],['physique','vitesse-acceleration','Vitesse · prédire le signe et la valeur'],['physique','forces','Forces · comparer la résultante']],
-    Atelier:[['histoire','uruk','Histoire · confronter les notices sur Uruk'],['logique','premisses','Philosophie · dégager une prémisse et formuler une objection'],['litterature','odyssee','Littérature · commenter la ruse racontée par Ulysse']]
-  }[name];
-  if(!choices)return;
+  const cases=campusWorkshopCases.filter(item=>item.kind===name);
+  if(!cases.length)return;
   const panel=document.createElement('section');
   panel.className='card';
-  panel.innerHTML='<h3>Ateliers disciplinaires</h3><ol>'+choices.map(([, , label],i)=>`<li><button class="title-action" data-workshop="${i}">${label}</button></li>`).join('')+'</ol>';
-  panel.querySelectorAll('button').forEach(b=>b.onclick=()=>spaceLesson(...choices[Number(b.dataset.workshop)]));
-  campusWorkshopCases.filter(item=>item.kind===name).forEach((item,index)=>panel.append(workshopActivity(item,index)));
+  panel.innerHTML='<h3>Ateliers disciplinaires</h3>';
+  cases.forEach((item,index)=>panel.append(workshopActivity(item,index)));
   v.append(panel);
 }
 

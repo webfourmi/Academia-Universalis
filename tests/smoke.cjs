@@ -151,3 +151,31 @@ assert.ok(vl(undefined));
 assert.ok(vl({theme:'sepia',size:115,entries:{fable:{status:'reading',impressions:'note',quotes:'',analysis:'',characters:'',position:.5}}}));
 assert.ok(!vl({theme:'bad',size:115,entries:{}}));
 assert.ok(!vl({theme:'dark',size:115,entries:{fable:{status:'read',position:2}}}));
+
+const campusActivityFixture = {
+  historySeminars: { cities: {source: 0, title: 'Comparer deux villes'} },
+  physicsLabSpecs: { forces: [] }
+};
+vm.createContext(campusActivityFixture);
+vm.runInContext(fs.readFileSync('campus.js','utf8'),campusActivityFixture);
+const listCampusActivities = (course,name) =>
+  Array.from(vm.runInContext('courseCampusActivities',campusActivityFixture)(course,name),item=>item.section);
+const sampleHistory = {
+  key: 'histoire',
+  lessons: [
+    {id:'cities',title:'Deux villes',activity:'Comparer deux notices',seminar:'Argumenter',sources:[[]],campusSpaces:['Musée']},
+    {id:'research',title:'Enquêter',activity:'Vérifier une datation',campusSpaces:['Cabinet de recherche']},
+    {id:'lecture',title:'Une lecture',campusSpaces:['Amphithéâtre']}
+  ]
+};
+assert.deepEqual(listCampusActivities(sampleHistory,'Séminaires'),['lesson-seminar','lesson-history-seminar']);
+assert.deepEqual(listCampusActivities(sampleHistory,'Atelier'),['lesson-exercise']);
+assert.deepEqual(listCampusActivities(sampleHistory,'Musée'),['lesson-dossier']);
+assert.deepEqual(listCampusActivities(sampleHistory,'Amphithéâtre'),['lesson-reading']);
+assert.deepEqual(listCampusActivities(sampleHistory,'Cabinet de recherche'),['lesson-exercise']);
+assert.deepEqual(listCampusActivities({key:'physique',lessons:[{id:'forces'}]},'Laboratoire'),['lesson-physics-lab']);
+sampleHistory.lessons.push({id:'night-sky',title:'Le ciel nocturne',campusSpaces:['Observatoire']});
+assert.deepEqual(listCampusActivities(sampleHistory,'Observatoire'),['lesson-reading']);
+sampleHistory.lessons.pop();
+assert.deepEqual(listCampusActivities(sampleHistory,'Observatoire'),[]);
+console.log('Classement et actualisation des activités du campus vérifiés');

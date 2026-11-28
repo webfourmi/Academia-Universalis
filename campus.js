@@ -71,14 +71,92 @@ function showCampus() {
   v.querySelectorAll('[data-space]').forEach(button=>button.onclick=()=>showSpace(button.dataset.space));
 }
 
-function spaceLesson(courseKey, lessonId) {
+function spaceLesson(courseKey, lessonId, section) {
   const course=allStudyCourses().find(item=>item.key===courseKey);
   const index=course?.lessons.findIndex(lesson=>lesson.id===lessonId);
-  if (index>=0) showLesson(course,index);
+  if (index>=0) {
+    showLesson(course,index);
+    if(section) jumpToStudySection(section);
+  }
 }
 
 function spaceButton(courseKey, lessonId, label) {
   return '<h4><button class="title-action" data-course="'+courseKey+'" data-lesson-id="'+lessonId+'">'+label+'</button></h4>';
+}
+
+const campusActivitySections = {
+  'Amphithéâtre':'lesson-reading',
+  'Séminaires':'lesson-seminar',
+  'Laboratoire':'lesson-exercise',
+  'Atelier':'lesson-exercise',
+  'Musée':'lesson-dossier',
+  'Observatoire':'lesson-reading',
+  'Cabinet de recherche':'lesson-exercise'
+};
+
+function courseCampusActivities(course, name) {
+  return course.lessons.flatMap(lesson=>{
+    const entries=new Map();
+    const add=(title,section)=>entries.set(section,{lessonId:lesson.id,title,section});
+    if(lesson.campusSpaces?.includes(name)) add(lesson.title,campusActivitySections[name]);
+    if(name==='Atelier'&&lesson.activity&&!lesson.campusSpaces?.includes('Laboratoire')
+      &&!lesson.campusSpaces?.includes('Cabinet de recherche')) {
+      add(lesson.title,'lesson-exercise');
+    }
+    if(name==='Séminaires') {
+      if(lesson.seminar) add(lesson.title,'lesson-seminar');
+      const seminar=course.key==='histoire'&&historySeminars[lesson.id];
+      if(seminar&&lesson.sources?.[seminar.source]) add(seminar.title,'lesson-history-seminar');
+    }
+    if(name==='Laboratoire'&&course.key==='physique'&&physicsLabSpecs[lesson.id]) {
+      add('Laboratoire virtuel · '+lesson.title,'lesson-physics-lab');
+    }
+    return [...entries.values()];
+  });
+}
+
+function campusCourseActivityPanel(name) {
+  const mathActivities=mathCampusSpaces[name]||[];
+  const groups=allStudyCourses().map(course=>({
+    course, entries:courseCampusActivities(course,name)
+  })).filter(({entries})=>entries.length);
+  const panel=document.createElement('section');
+  panel.className='card';
+  panel.innerHTML='<h3>Activités des cours</h3>';
+  for(const mathSpace of mathActivities) {
+    const button=document.createElement('button');
+    button.type='button';
+    button.className='title-action';
+    button.textContent=mathSpaces[mathSpace]+' · Mathématiques, année 1';
+    button.onclick=()=>showMath(mathSpace);
+    const row=document.createElement('p');
+    row.append(button);
+    panel.append(row);
+  }
+  for(const {course,entries} of groups) {
+    const group=document.createElement('details');
+    const heading=document.createElement('summary');
+    heading.textContent=course.title+' · Année '+(course.year||1)+' ('+entries.length+')';
+    const list=document.createElement('ul');
+    for(const {lessonId,title,section} of entries) {
+      const row=document.createElement('li');
+      const button=document.createElement('button');
+      button.type='button';
+      button.className='title-action';
+      button.textContent=title;
+      button.onclick=()=>spaceLesson(course.key,lessonId,section);
+      row.append(button);
+      list.append(row);
+    }
+    group.append(heading,list);
+    panel.append(group);
+  }
+  if(!groups.length&&!mathActivities.length) {
+    const empty=document.createElement('p');
+    empty.textContent='Aucune activité de cours disponible dans cet espace.';
+    panel.append(empty);
+  }
+  return panel;
 }
 
 function showSpace(name) {
@@ -104,16 +182,17 @@ function showSpace(name) {
   }).join('');
   const activities={
     Planning: '<h3>Ton rythme</h3><p>40 semaines · volumes cibles de travail personnel.</p><label>Heures par semaine <select id="campus-hours">'+[3,6,10].map(hours=>'<option value="'+hours+'" '+(S.hours===hours?'selected':'')+'>'+hours+'</option>').join('')+'</select></label><p>'+S.hours*40+' heures sur l’année au rythme choisi.</p><p>Commence par une leçon, puis réserve une courte séance à la relecture et au rappel actif.</p><button onclick="openGuidedLesson()" '+(!guidedJourney().next?'disabled':'')+'>Ouvrir la prochaine leçon</button><h3>Révisions à faire · calendrier adaptatif</h3>'+(due.length?due.map(button=>'<p>'+button+'</p>').join(''):'<p>Aucune révision à échéance. Répondre au quiz d’une leçon l’inscrit à la révision. Une réponse correcte à échéance espace le rappel suivant. Une erreur rapproche la prochaine révision.</p>')+'<details><summary>Voir le calendrier sur 40 semaines</summary><p>Un ordre conseillé, à adapter à ton rythme. Chaque ligne correspond à une semaine.</p><ol>'+weeklyPlan+'</ol></details>',
-    Amphithéâtre:'<h3>Une conférence et un texte à confronter</h3><p>Regarde une séance du cours de Yale, puis note ce que la source ancienne permet de vérifier et ce qui relève de la synthèse de l’enseignant.</p><p><a target="_blank" rel="noopener" href="https://online.yale.edu/courses/introduction-ancient-greek-history">Yale · Introduction to Ancient Greek History (anglais, en ligne)</a></p>'+spaceButton('antiquite','athenes','Dossier sur Athènes'),
-    Séminaires:'<h3>Argumenter à partir de documents</h3><p>Rédige une thèse, présente deux preuves et traite une objection. Les barèmes et plans indicatifs figurent dans les leçons de synthèse.</p>'+spaceButton('histoire','comparaison','Dissertation sur les premières villes')+' '+spaceButton('antiquite','auguste','Dissertation sur les discours du pouvoir'),
-    Laboratoire:'<h3>Tester un bilan de forces</h3><p>Prévois la résultante pour deux forces opposées. Dans la simulation, fais varier une force à la fois et compare ta prédiction à l’observation. Note les conditions avec et sans frottement.</p><p><a target="_blank" rel="noopener" href="https://phet.colorado.edu/en/simulations/forces-and-motion-basics">Simulation PhET · Forces et mouvement (en ligne)</a></p>'+spaceButton('physique','forces','Forces et mouvement'),
-    Atelier:'<h3>Reconstituer et produire</h3><p>Choisis une tâche. Annote une prémisse implicite ou compose un échange de trois répliques. Vérifie ensuite ta réponse avec le corrigé de la leçon.</p>'+spaceButton('logique','premisses','Atelier d’argumentation')+' '+spaceButton('chinois','saluer','Atelier de mandarin'),
-    Musée:'<h3>Lire une notice d’objet</h3><p>Sépare la matière, la datation et la provenance de l’usage proposé par le catalogue. Pour chaque information, indique si tu l’as observée ou lue dans la notice.</p><p><a target="_blank" rel="noopener" href="https://www.metmuseum.org/fr/essays/the-origins-of-writing">Metropolitan Museum of Art · The Origins of Writing</a></p>'+spaceButton('histoire','uruk','Étudier une tablette d’Uruk'),
-    Observatoire:'<h3>Observer le ciel et documenter une mesure</h3><p>Dans la représentation de la NASA, compare deux planètes en lisant les unités avant d’estimer un rapport de distances. Indique si la vue est à l’échelle ou schématique et garde une trace de la date de consultation.</p><p><a target="_blank" rel="noopener" href="https://science.nasa.gov/solar-system/">NASA · Solar System Exploration (anglais, en ligne)</a></p>'+spaceButton('physique','mesures','Unités et mesures'),
-    'Cabinet de recherche':'<h3>Construire une enquête</h3><ol><li>Formule une question et une hypothèse réfutable.</li><li>Repère une publication primaire et une synthèse. Note auteur, titre, date, accès, droits et proposition soutenue.</li><li>Distingue ce que la source observe de ce qu’elle extrapole et cherche un contre-exemple.</li><li>Si tu utilises une IA, conserve une trace de son rôle et remonte aux documents originaux avant de citer.</li></ol><p><a href="docs/controle-editorial.html">Contrôle éditorial et grille de relecture</a></p>'+spaceButton('methode','verification','Vérifier une affirmation')+' '+spaceButton('methode','lecture','Lire une publication')+' '+spaceButton('methode','synthese-documentee','Rédiger une synthèse documentée')+' '+spaceButton('psychologie','methodes','Concevoir un test causal')
+    Amphithéâtre:'<h3>Une conférence et un texte à confronter</h3><p>Regarde une séance du cours de Yale, puis note ce que la source ancienne permet de vérifier et ce qui relève de la synthèse de l’enseignant.</p><p><a target="_blank" rel="noopener" href="https://online.yale.edu/courses/introduction-ancient-greek-history">Yale · Introduction to Ancient Greek History (anglais, en ligne)</a></p>',
+    Séminaires:'<h3>Argumenter à partir de documents</h3><p>Rédige une thèse, présente deux preuves et traite une objection. Les barèmes et plans indicatifs figurent dans les leçons de synthèse.</p>',
+    Laboratoire:'<h3>Tester un bilan de forces</h3><p>Prévois la résultante pour deux forces opposées. Dans la simulation, fais varier une force à la fois et compare ta prédiction à l’observation. Note les conditions avec et sans frottement.</p><p><a target="_blank" rel="noopener" href="https://phet.colorado.edu/en/simulations/forces-and-motion-basics">Simulation PhET · Forces et mouvement (en ligne)</a></p>',
+    Atelier:'<h3>Reconstituer et produire</h3><p>Choisis un exercice, rédige ta réponse puis compare-la au corrigé de la leçon lorsqu’il est disponible.</p>',
+    Musée:'<h3>Lire une notice d’objet</h3><p>Sépare la matière, la datation et la provenance de l’usage proposé par le catalogue. Pour chaque information, indique si tu l’as observée ou lue dans la notice.</p><p><a target="_blank" rel="noopener" href="https://www.metmuseum.org/fr/essays/the-origins-of-writing">Metropolitan Museum of Art · The Origins of Writing</a></p>',
+    Observatoire:'<h3>Observer le ciel et documenter une mesure</h3><p>Dans la représentation de la NASA, compare deux planètes en lisant les unités avant d’estimer un rapport de distances. Indique si la vue est à l’échelle ou schématique et garde une trace de la date de consultation.</p><p><a target="_blank" rel="noopener" href="https://science.nasa.gov/solar-system/">NASA · Solar System Exploration (anglais, en ligne)</a></p>',
+    'Cabinet de recherche':'<h3>Construire une enquête</h3><ol><li>Formule une question et une hypothèse réfutable.</li><li>Repère une publication primaire et une synthèse. Note auteur, titre, date, accès, droits et proposition soutenue.</li><li>Distingue ce que la source observe de ce qu’elle extrapole et cherche un contre-exemple.</li><li>Si tu utilises une IA, conserve une trace de son rôle et remonte aux documents originaux avant de citer.</li></ol><p><a href="docs/controle-editorial.html">Contrôle éditorial et grille de relecture</a></p>'
   };
   v.innerHTML='<button onclick="go(11)">Retour aux espaces</button><h2>'+name+'</h2><article class="card">'+activities[name]+'</article>';
   v.querySelectorAll('[data-course]').forEach(button=>button.onclick=()=>spaceLesson(button.dataset.course,button.dataset.lessonId));
+  if(Object.hasOwn(campusActivitySections,name))v.querySelector('h2').after(campusCourseActivityPanel(name));
   if(['Séminaires','Laboratoire','Atelier','Cabinet de recherche'].includes(name))v.append(practicePanel(name));
   if(name==='Planning')v.querySelector('article').before(planningPanel());
   addDisciplineWorkshops(name);
@@ -263,7 +342,9 @@ function memoryPanel(){
  const cards=validMemoryCards(S.memoryCards)?S.memoryCards||[]:[];
  const due=entries.filter(x=>reviewDue(x.review)).sort((a,b)=>Number(a.review.correct)-Number(b.review.correct)||reviewDate(a.review).localeCompare(reviewDate(b.review)));
  const personal=cards.filter(x=>!x.review||reviewDue(x.review));
- const builtin=typeof builtinStudyCards==='function'?builtinStudyCards().map(x=>({...x,review:S.reviews?.[x.key]})):[];
+ const lessonCards=typeof builtinStudyCards==='function'?builtinStudyCards():[];
+ const modelCards=typeof mathModelCards==='function'?mathModelCards(mathFoundationLessons[0]):[];
+ const builtin=[...lessonCards,...modelCards].map(x=>({...x,review:S.reviews?.[x.key]}));
  const builtinDue=builtin.filter(x=>x.review&&reviewDue(x.review));
  panel.innerHTML=`<h3>Mémoire adaptative</h3><p>${due.length+personal.length+builtinDue.length} rappels à faire · ${entries.filter(x=>!x.review.correct).length} notions fragiles (dernier quiz incorrect)</p><details><summary>Calendrier des rappels</summary><ul>${entries.slice().sort((a,b)=>reviewDate(a.review).localeCompare(reviewDate(b.review))).map(x=>`<li>${e(reviewDate(x.review))} · ${e(x.lesson.title)} · niveau ${x.review.step+1}/5</li>`).join('')}${builtin.filter(x=>x.review).map(x=>`<li>${e(reviewDate(x.review))} · ${e(x.question)} · niveau ${x.review.step+1}/5</li>`).join('')}${cards.map(x=>`<li>${e(x.review?reviewDate(x.review):localStudyDate())} · ${e(x.question)}</li>`).join('')}</ul></details><div data-memory-session></div><details><summary>Créer une carte personnelle</summary><form><label>Question<textarea name="question" required maxlength="2000"></textarea></label><label>Réponse<textarea name="answer" required maxlength="10000"></textarea></label><label>Depuis mes annotations <select data-annotation><option value="">Choisir une annotation</option></select></label><button>Ajouter la carte</button></form></details><details><summary>Mes cartes personnelles</summary><div data-personal></div></details><p><small>Les niveaux sont des repères de rappel, pas une mesure de maîtrise globale. Intervalles heuristiques inspirés du rappel actif et de la pratique espacée : <a target="_blank" rel="noopener" href="https://pubmed.ncbi.nlm.nih.gov/26173288/">Dunlosky et al., 2013</a>.</small></p>`;
  const form=panel.querySelector('form'),select=panel.querySelector('[data-annotation]');
@@ -337,7 +418,10 @@ function practicePanel(kind){
  const done=document.createElement('label'),check=document.createElement('input');check.type='checkbox';check.checked=p.status==='finished';done.append(check,' Dossier terminé (autoévaluation)');edit.append(done);
  const status=document.createElement('p');status.setAttribute('role','status');
  const saveButton=document.createElement('button');saveButton.textContent='Enregistrer';edit.append(saveButton,status);
- edit.onsubmit=event=>{event.preventDefault();const steps=fields.map(a=>a.value);if(check.checked&&steps.some(s=>!s.trim())){status.textContent='Complète les quatre étapes avant de terminer.';return;}const next={...p,steps,status:check.checked?'finished':'draft'};if(persist((S.practiceProjects||[]).map(x=>x.id===p.id?next:x))){Object.assign(p,next);summary.textContent=p.title+' · '+(p.status==='finished'?'Terminé (auto-déclaré)':'En cours');status.textContent='Dossier enregistré.';}};
+ let editing=!p.steps.some(s=>s.trim());
+ function answerMode(){fields.forEach(a=>a.readOnly=!editing);check.disabled=!editing;saveButton.textContent=editing?'Enregistrer':'Modifier';}
+ answerMode();
+ edit.onsubmit=event=>{event.preventDefault();if(!editing){editing=true;answerMode();fields[0].focus();return;}const steps=fields.map(a=>a.value);if(check.checked&&steps.some(s=>!s.trim())){status.textContent='Complète les quatre étapes avant de terminer.';return;}const next={...p,steps,status:check.checked?'finished':'draft'};if(persist((S.practiceProjects||[]).map(x=>x.id===p.id?next:x))){Object.assign(p,next);summary.textContent=p.title+' · '+(p.status==='finished'?'Terminé (auto-déclaré)':'En cours');status.textContent='Dossier enregistré.';editing=false;answerMode();}};
  const exportButton=document.createElement('button');exportButton.type='button';exportButton.textContent='Exporter le dossier enregistré';exportButton.onclick=()=>{const text=p.title+'\n'+p.kind+'\n\n'+labels.map((label,i)=>label+'\n'+p.steps[i]).join('\n\n');const url=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='academia-dossier.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
  const remove=document.createElement('button');remove.type='button';remove.textContent='Supprimer';remove.onclick=()=>{if(confirm('Supprimer ce dossier ?')&&persist((S.practiceProjects||[]).filter(x=>x.id!==p.id)))redraw();};
  details.append(edit,exportButton,remove);list.append(details);
@@ -367,7 +451,7 @@ function literaryPanel(name,selected){
  const store=()=>{state.entries={...state.entries,[book.id]:entry};msg.textContent=persistLiterary({...state})?"Enregistré sur cet appareil.":"Enregistrement impossible."};
  const sl=el("label","État de lecture ");const status=el("select","",sl);[["todo","À lire"],["reading","En cours"],["read","Terminé"]].forEach(([k,t])=>{el("option",t,status).value=k;});status.value=entry.status;status.onchange=()=>{entry.status=status.value;store();};
  if(name==="Carnet littéraire"){
- [["impressions","Impressions personnelles"],["quotes","Citations et références de pages"],["characters","Personnages et thèmes"],["analysis","Analyse et questions"]].forEach(([k,t])=>{const l=el("label",t);const a=el("textarea","",l);a.rows=5;a.maxLength=20000;a.value=entry[k];a.oninput=()=>{entry[k]=a.value;store();};});
+ [["impressions","Impressions personnelles"],["quotes","Citations et références de pages"],["characters","Personnages et thèmes"],["analysis","Analyse et questions"]].forEach(([k,t])=>{const l=el("label",t);const a=el("textarea","",l);a.rows=5;a.maxLength=20000;a.value=entry[k];const b=el('button',a.value.trim()?'Modifier':'Enregistrer',l);b.type='button';a.readOnly=Boolean(a.value.trim());b.onclick=()=>{if(a.readOnly){a.readOnly=false;b.textContent='Enregistrer';a.focus();return;}const next={...entry,[k]:a.value};const nextState={...state,entries:{...state.entries,[book.id]:next}};if(persistLiterary(nextState)){Object.assign(entry,next);Object.assign(state,nextState);a.readOnly=true;b.textContent='Modifier';msg.textContent='Enregistré sur cet appareil.';}else msg.textContent='Enregistrement impossible.';};});
  btn("Exporter le carnet",()=>{const content=literaryBooks.map(b=>{const e=literaryEntry(state,b.id);return b.title+" · "+b.author+"\n"+e.status+"\n"+e.impressions+"\n"+e.quotes+"\n"+e.characters+"\n"+e.analysis;}).join("\n\n");const u=URL.createObjectURL(new Blob([content],{type:"text/plain;charset=utf-8"}));const a=document.createElement("a");a.href=u;a.download="carnet-litteraire.txt";a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);});
  }else{
  if(book.url){const a=el("a","Consulter la ressource externe (connexion nécessaire)");a.href=book.url;a.target="_blank";a.rel="noopener noreferrer";}
