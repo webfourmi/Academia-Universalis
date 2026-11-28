@@ -6,7 +6,7 @@ Université personnelle indépendante et cosmopolite, sans diplôme officiel. PW
 
 ## Version et accès
 
-- Version de référence de cette branche : V0.31.0 (cinq espaces mathématiques interactifs en année 1).
+- Version de référence de cette branche : V0.32.0 (diagnostic et cycle I de mathématiques).
 - [Campus](https://webfourmi.github.io/Academia-Universalis/)
 - [Charte fondatrice](docs/Academia_Universalis_charte.pdf)
 - [Contrôle éditorial](docs/controle-editorial.html)
@@ -59,4 +59,4 @@ Accès depuis la carte Mathématiques de l’année 1 ou les espaces du campus. 
 
 Le contrôle éditorial a porté sur la concordance avec la charte et la page « Apprendre par la pratique » du programme. Chaque activité indique le résultat attendu, les hypothèses utiles et les limites de l’illustration ou du calcul. Le graphique et la simulation fournissent aussi leurs résultats en texte. Les exercices proposent un indice facultatif, un corrigé après tentative et une question de transfert. Les références OpenStax (Rice University) et MIT OpenCourseWare sont citées par section, avec leurs métadonnées et leur licence. Les textes, exemples et graphiques de ces espaces sont rédigés pour Academia Universalis.
 
-La couverture éditoriale correspond aux activités livrées. Le programme de 36 leçons, son évaluation finale et son étude comparative internationale restent à compléter. Cette version a fait l’objet d’un contrôle interne.
+La couverture éditoriale correspond aux activités livrées. Le cycle I est accessible avec un diagnostic non bloquant, six leçons, des exercices rédigés et des cartes de révision. Les cycles II à VI, l’évaluation finale et l’étude comparative internationale restent à compléter. Cette version a fait l’objet d’un contrôle interne.

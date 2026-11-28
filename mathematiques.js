@@ -79,19 +79,25 @@ function mathProgress() {
 
 function showMath(space = 'accueil') {
   rememberCampusRoute('mathematiques',{space});
-  const names=Object.entries(mathSpaces);
-  v.innerHTML = `<button type="button" onclick="${space === 'accueil' ? 'go(1)' : 'showMath()'}">${space === 'accueil' ? 'Retour à l’année 1' : 'Retour aux mathématiques'}</button>
-    <h2 tabindex="-1">${mathSpaces[space] || 'Mathématiques · Année 1'}</h2>
+  const lesson=mathFoundationLessons.find(item=>item.id===space);
+  const foundations=lesson || space==='diagnostic';
+  const names=Object.entries({'cycle-1':'Cycle I · Fondements',...mathSpaces});
+  const title=lesson?.title || (space==='diagnostic'?'Diagnostic de mathématiques':Object.fromEntries(names)[space]) || 'Mathématiques · Année 1';
+  v.innerHTML = `<button type="button" onclick="${space === 'accueil' ? 'go(1)' : foundations ? "showMath('cycle-1')" : 'showMath()'}">${space === 'accueil' ? 'Retour à l’année 1' : foundations ? 'Retour au cycle I' : 'Retour aux mathématiques'}</button>
+    <h2 tabindex="-1">${title}</h2>
     <p data-math-progress role="status">${mathProgress()}</p>
     <nav class="lesson-jumps" aria-label="Espaces mathématiques">${names.map(([id,name])=>`<button type="button" data-math-space="${id}" ${id===space?'aria-current="page"':''}>${name}</button>`).join('')}</nav>
     <section data-math-content></section>`;
   v.querySelectorAll('[data-math-space]').forEach(button=>button.onclick=()=>showMath(button.dataset.mathSpace));
   const content = v.querySelector('[data-math-content]');
-  if (space === 'laboratoire') showMathLab(content);
+  if (lesson) showMathFoundationLesson(content,lesson);
+  else if (space === 'cycle-1') showMathFoundationIndex(content);
+  else if (space === 'diagnostic') showMathDiagnostic(content);
+  else if (space === 'laboratoire') showMathLab(content);
   else if (space === 'demonstration' || space === 'problemes') showMathExercises(content,space);
   else if (space === 'formulaire') showMathFormulas(content);
   else if (space === 'carnet') showMathNotebook(content);
-  else content.innerHTML = '<p>Explore les sécantes, construis une preuve, résous un problème puis consigne ton raisonnement dans le carnet. Les activités couvrent la récurrence, le second degré, la dérivation et les probabilités binomiales.</p><p>Programme complet de 36 leçons en préparation.</p>';
+  else content.innerHTML = '<p>Explore les sécantes, construis une preuve, résous un problème puis consigne ton raisonnement dans le carnet. Les activités couvrent la récurrence, le second degré, la dérivation et les probabilités binomiales.</p><p>Le cycle I est disponible. Les cycles II à VI sont en préparation.</p>';
   v.querySelector('h2').focus();
 }
 
@@ -220,7 +226,13 @@ function showMathFormulas(content) {
         </details><p role="status">${review?'Prochain rappel le '+e(reviewDate(review)):'Carte à découvrir'}</p>${mathSource(item.id)}`;
       card.querySelectorAll('[data-recalled]').forEach(button=>button.onclick=()=>{
         const next=nextMemoryReview(S.reviews?.[key],button.dataset.recalled==='yes',localStudyDate());
-        card.querySelector('[role="status"]').textContent=storeMathRecord('reviews',key,next)
+        const saved=storeMathRecord('reviews',key,next);
+        if(saved && due.checked && !reviewDue(next)) {
+          draw();
+          due.focus();
+          return;
+        }
+        card.querySelector('[role="status"]').textContent=saved
           ? 'Prochain rappel le '+reviewDate(next) : 'Le rappel n’a pas pu être enregistré.';
       });
       results.append(card);
@@ -238,8 +250,7 @@ function showMathNotebook(content) {
     <p>La sauvegarde complète permet d’exporter et de restaurer le carnet, les exercices réussis et les dates de rappel.</p>
     <button type="button" onclick="go(15)">Exporter ou restaurer mes données</button></article>`;
   const form=content.querySelector('form');
-  form.onsubmit=event=>{
-    event.preventDefault();
+  function persistNotebook() {
     const notes={...S.notes};
     for (const [id,value] of new FormData(form)) notes[`math-carnet-${id}`]=value;
     try {
@@ -249,5 +260,10 @@ function showMathNotebook(content) {
     } catch {
       form.querySelector('[role="status"]').textContent='Le carnet n’a pas pu être enregistré.';
     }
+  }
+  form.oninput=persistNotebook;
+  form.onsubmit=event=>{
+    event.preventDefault();
+    persistNotebook();
   };
 }
