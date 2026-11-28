@@ -453,16 +453,12 @@ function academicReviewSheet(key) {
 }
 
 function addDisciplineWorkshops(name) {
-  const choices={
-    Laboratoire:[['physique','intro-physique','Gravité · prédire la période du pendule'],['physique','vitesse-acceleration','Vitesse · prédire le signe et la valeur'],['physique','forces','Forces · comparer la résultante']],
-    Atelier:[['histoire','uruk','Histoire · confronter les notices sur Uruk'],['logique','premisses','Philosophie · dégager une prémisse et formuler une objection'],['litterature','odyssee','Littérature · commenter la ruse racontée par Ulysse']]
-  }[name];
-  if(!choices)return;
+  const cases=campusWorkshopCases.filter(item=>item.kind===name);
+  if(!cases.length)return;
   const panel=document.createElement('section');
   panel.className='card';
-  panel.innerHTML='<h3>Ateliers disciplinaires</h3><ol>'+choices.map(([, , label],i)=>`<li><button class="title-action" data-workshop="${i}">${label}</button></li>`).join('')+'</ol>';
-  panel.querySelectorAll('button').forEach(b=>b.onclick=()=>spaceLesson(...choices[Number(b.dataset.workshop)]));
-  campusWorkshopCases.filter(item=>item.kind===name).forEach((item,index)=>panel.append(workshopActivity(item,index)));
+  panel.innerHTML='<h3>Ateliers disciplinaires</h3>';
+  cases.forEach((item,index)=>panel.append(workshopActivity(item,index)));
   v.append(panel);
 }
 
