@@ -253,3 +253,55 @@ main { max-width: 1080px; }
 .annotation-editor { min-height: 5rem; border: 1px solid currentColor; border-radius: .5rem; }
 .annotation-editor:focus-visible { outline: 3px solid #bd9448; outline-offset: 2px; }
 #lesson-reading mark { background: #f8e6a1; color: #302a17; border-radius: .12rem; }
+
+/* Carnet commun */
+.study-notebook {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #d7c9ad;
+  border-radius: 16px;
+  background: #fffdf5;
+  box-shadow: 0 6px 20px #233b3614;
+}
+.study-notebook .notebook-cover {
+  padding: 18px 22px 10px;
+  background: #244944;
+  color: #fff8e7;
+  border: 0;
+  border-radius: 15px 15px 0 0;
+}
+.notebook-cover h2 { margin: 0; }
+.study-notebook .notebook-tabs {
+  position: static;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 5px;
+  margin: 0;
+  padding: 6px 10px 0;
+  overflow-x: auto;
+  background: #244944;
+}
+.notebook-tabs button {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  padding: 6px 11px;
+  min-height: 38px;
+  border: 1px solid #cfc0a3;
+  border-radius: 8px 8px 0 0;
+  background: #eae0cb;
+  color: #253c36;
+}
+.notebook-tabs button[aria-pressed="true"] {
+  background: #fffdf5;
+  border-bottom-color: #fffdf5;
+  box-shadow: inset 0 3px #bb8c49;
+}
+.notebook-tabs button:focus-visible { outline-offset: -3px; }
+.notebook-page {
+  padding: 16px clamp(12px, 4vw, 32px);
+  overflow-wrap: anywhere;
+  background: repeating-linear-gradient(#fffdf5 0 27px, #e8e0cd 27px 28px);
+  border-radius: 0 0 15px 15px;
+}
+.notebook-page .card { background: #fffdf5; }
+.notebook-page textarea { background: #fffcf1; }
