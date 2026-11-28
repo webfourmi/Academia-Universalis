@@ -257,6 +257,10 @@ function writtenExercise(course,lesson) {
     picks.forEach((pick,index)=>pick.value=record?.revision===revision&&record.criteria?String(record.criteria[index]):'');
   };
   redraw(saved);
+  const saveButton=form.querySelector('#save-exercise');
+  let editing=!saved?.answer;
+  function mode(){answer.readOnly=!editing;saveButton.textContent=editing?'Enregistrer ma réponse':'Modifier';}
+  mode();
   function persist(review){
     if(!form.reportValidity())return;
     const text=answer.value.trim();
@@ -278,9 +282,9 @@ function writtenExercise(course,lesson) {
       status.textContent='La réponse dépasse la capacité de stockage prévue pour les exercices.';
       return;
     }
-    if(auditSave({exerciseEvidence}))redraw(record);
+    if(auditSave({exerciseEvidence})){redraw(record);editing=false;mode();}
   }
-  form.onsubmit=event=>{event.preventDefault();persist(false);};
+  form.onsubmit=event=>{event.preventDefault();if(!editing){editing=true;mode();answer.focus();return;}persist(false);};
   form.querySelector('#save-exercise-review').onclick=()=>persist(true);
   return form;
 }

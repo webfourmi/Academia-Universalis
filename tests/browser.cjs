@@ -192,6 +192,8 @@ async function verify(browser,viewport) {
   for(const select of await exercise.locator('select').all())await select.selectOption('2');
   await exercise.locator('#save-exercise-review').click();
   assert.match(await exercise.locator('[role=status]').innerText(),/réussi en autoévaluation/);
+  assert.equal(await page.locator('#save-exercise').textContent(),'Modifier');
+  await page.locator('#save-exercise').click();
   await exercise.locator('textarea').fill('Une version révisée de ma réponse.');
   await exercise.locator('#save-exercise').click();
   assert.match(await exercise.locator('[role=status]').innerText(),/à relire/);

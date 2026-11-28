@@ -150,17 +150,17 @@ function showLesson(course, index, {offset,fromNote} = {}) {
       </div>` : ''}
     </article>
     <article class="card lesson">
-      <h3>Dossier commenté</h3><p>${cite(lesson.dossier)}</p>
+      <details class="card"><summary>Dossier commenté</summary><p>${cite(lesson.dossier)}</p></details>
       <h3 id="lesson-exercise" tabindex="-1">Exercice</h3><p>${lesson.activity}</p>
       <div id="written-exercise"></div>
-      <form id="history-quiz" tabindex="-1">
+      <details class="card"><summary>Quiz</summary><form id="history-quiz" tabindex="-1">
         <fieldset><legend>${question}</legend>
           ${options.map((option, n) => `<label class="quiz-option"><input type="radio" name="answer" value="${n}" required> ${option}</label>`).join('')}
         </fieldset>
         <button>Vérifier ma réponse</button>
         <p role="status" id="quiz-result"></p>
       </form>
-      ${lesson.id==='evolution-humaine'?evolutionQuiz():''}
+      ${lesson.id==='evolution-humaine'?evolutionQuiz():''}</details>
       <h3>Séminaire</h3><p>${lesson.seminar}</p>
       <h3>Révision espacée</h3><p>${lesson.review}</p>${migrationFlashcards(lesson)}
       <label for="history-notes">Mes notes</label>
@@ -245,10 +245,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
       feedback.append(' ',link);
     }
   };
-  v.querySelector('#history-notes').oninput = event => {
-    S.notes[noteKey] = event.target.value;
-    save();
-  };
+  installSavedAnswer(v.querySelector('#history-notes'),noteKey);
   v.querySelector('#history-done').onchange = event => {
     S.history ??= {};
     const progressKey = lessonProgressKey(key, lesson.id);
@@ -281,6 +278,7 @@ function openGuidedLesson() {
 function jumpToStudySection(id) {
   const section = document.getElementById(id);
   if (!section) return;
+  for(let parent=section.parentElement;parent;parent=parent.parentElement)if(parent.tagName==='DETAILS')parent.open=true;
   section.focus({preventScroll:true});
   section.scrollIntoView({block:'start'});
 }
@@ -353,6 +351,7 @@ function installReadingTools(course,lesson) {
     const key=course.key+':'+lesson.id+':'+index;
     const mark=prefs.marks[key]||{highlight:false,note:''};
     const controls=passageEditor(paragraph,mark,next=>{
+      const now=new Date().toISOString();const previous=prefs.marks[key];next.createdAt=previous?previous.createdAt||null:now;next.updatedAt=now;
       if(!auditSave({readingTools:{...prefs,marks:{...prefs.marks,[key]:next}}}))return false;
       prefs.marks=S.readingTools.marks;
       return true;
