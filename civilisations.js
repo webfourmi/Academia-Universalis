@@ -130,8 +130,8 @@ const historyLessonPlans = {
   auguste: [[0, 'La transformation des institutions'], [2, 'La continuité dans les discours']],
 };
 
-function renderHistoryLessonPlan(lesson, cite) {
-  const starts = historyLessonPlans[lesson.id] || [[0, 'Cours']];
+function renderLessonPlan(lesson, cite) {
+  const starts = lesson.plan || historyLessonPlans[lesson.id] || [[0, 'Cours']];
   const parts = starts.map(([start, title], part) => ({
     title,
     sections: lesson.sections.slice(start, starts[part + 1]?.[0]).map(([heading, paragraph], offset) => ({
@@ -179,6 +179,16 @@ function historySeminarFeedback(lesson, guidance) {
     </details>`;
 }
 
+function renderPracticeQuiz([question, options]) {
+  return `<form id="lesson-practice-quiz">
+    <fieldset><legend>${e(question)}</legend>${options.map((option, index) =>
+      `<label class="quiz-option"><input type="radio" name="practice-answer" value="${index}" required> ${e(option)}</label>`
+    ).join('')}</fieldset>
+    <button>Vérifier cet exercice</button>
+    <p role="status"></p>
+  </form>`;
+}
+
 function showLesson(course, index, {offset,fromNote} = {}) {
   saveReading();
   const {key, lessons} = course;
@@ -197,7 +207,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
     return refs.map(number => `<a class="citation-ref" id="citation-${++citationIndex}" href="#source-${number}" aria-label="Voir la référence ${number}">[${number}]</a>`).join(' ');
   });
   const overview = lesson.overview ? cite(lesson.overview) : '';
-  const historyPlan = key === 'histoire' || key === 'antiquite' ? renderHistoryLessonPlan(lesson, cite) : null;
+  const lessonPlan = lesson.plan || key === 'histoire' || key === 'antiquite' ? renderLessonPlan(lesson, cite) : null;
   const noteKey = `${key}:${lesson.id}`;
   v.innerHTML = `
     ${fromNote ? '<button type="button" id="return-to-note">Retour à la note</button>' : ''}
@@ -211,8 +221,8 @@ function showLesson(course, index, {offset,fromNote} = {}) {
       <p><strong>Rythme ${level} · ${duration}.</strong> ${guidance}</p>
       <p><strong>Prérequis.</strong> ${lesson.prerequisite}</p>
       ${overview}
-      ${historyPlan?.plan || ''}
-      ${historyPlan?.body || lesson.sections.map(([heading, paragraph],section) => `<h3 id="lesson-section-${section}" tabindex="-1">${heading}</h3><p>${cite(paragraph)}</p>`).join('')}
+      ${lessonPlan?.plan || ''}
+      ${lessonPlan?.body || lesson.sections.map(([heading, paragraph],section) => `<h3 id="lesson-section-${section}" tabindex="-1">${heading}</h3><p>${cite(paragraph)}</p>`).join('')}
       ${evolutionExtras(lesson)}
       ${migrationMap(lesson)}
       ${lesson.diagram ? `<div class="lesson-table" tabindex="0" role="region" aria-label="${e(caption)}">
@@ -234,6 +244,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
         <button>Vérifier ma réponse</button>
         <p role="status" id="quiz-result"></p>
       </form>
+      ${lesson.practiceQuiz ? renderPracticeQuiz(lesson.practiceQuiz) : ''}
       ${lesson.id==='evolution-humaine'?evolutionQuiz(lesson):''}</details>
       ${lesson.seminar ? `<h3 id="lesson-seminar" tabindex="-1">Séminaire</h3><p>${lesson.seminar}</p>${historySeminarFeedback(lesson,assessmentGuide)}` : ''}
       <h3>Révision espacée</h3><p>${lesson.review}</p>${migrationFlashcards(lesson)}
@@ -328,6 +339,14 @@ function showLesson(course, index, {offset,fromNote} = {}) {
       feedback.append(' ',link);
     }
   };
+  v.querySelector('#lesson-practice-quiz')?.addEventListener('submit', event => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const [, choices, correct, explanation] = lesson.practiceQuiz;
+    const selected = Number(new FormData(form).get('practice-answer'));
+    const result = selected === correct ? 'Réponse correcte.' : `Réponse attendue : ${choices[correct]}.`;
+    form.querySelector('[role="status"]').textContent = `${result} ${explanation}`;
+  });
   installSavedAnswer(v.querySelector('#history-notes'),noteKey);
   v.querySelector('#history-done').onchange = event => {
     S.history ??= {};
