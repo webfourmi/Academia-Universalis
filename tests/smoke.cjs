@@ -75,7 +75,7 @@ for(const [fg,bg] of [['f0f3ed','293936'],['a7e4d4','293936'],['233b36','f2f7f5'
 vm.runInContext(fs.readFileSync('civilisations-data.js','utf8'),sandbox);
 assert.equal(vm.runInContext('civilisations.filter(l=>l.id==="evolution-humaine").length',sandbox),1);
 assert.equal(vm.runInContext('civilisations.find(l=>l.id==="evolution-humaine").sources.length',sandbox),7);
-assert.ok(readingSource.includes("function evolutionQuiz()"));
+assert.match(readingSource,/function evolutionQuiz\(/);
 assert.ok(readingSource.includes("function evolutionAnatomy()"));
 
 assert.equal(vm.runInContext('civilisations[1].id',sandbox),'migrations-humaines');
@@ -103,7 +103,7 @@ assert.equal(vm.runInContext('civilisations.find(l=>l.id==="mobilites").sources.
 
 assert.equal(vm.runInContext('civilisations.find(l=>l.id==="neolithiques").flashcards.length',sandbox),28);
 assert.equal(vm.runInContext('civilisations.filter(l=>l.id==="neolithiques").length',sandbox),1);
-assert.equal(vm.runInContext('civilisations.find(l=>l.id==="neolithiques").sources.length',sandbox),5);
+assert.equal(vm.runInContext('civilisations.find(l=>l.id==="neolithiques").sources.length',sandbox),6);
 assert.ok(vm.runInContext('civilisations.find(l=>l.id==="neolithiques").flashcards.every(c=>c.length===2&&c.every(t=>typeof t==="string"&&t.length))',sandbox));
 
 // Execute the actual lesson-specific rendering, not merely a source-string check.
