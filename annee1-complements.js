@@ -102,3 +102,88 @@ mandarinLessons.push(
   ['Quel élément partagent 好 et 妈 ?', ['Le caractère complet.','Le composant 女.','Le ton de leur lecture.'],1,'Les deux caractères contiennent 女, mais sont lus avec des tons différents.'],
   ['Julian K. Wheatley · MIT OpenCourseWare','Learning Chinese · Part I and Character Lessons 1–3','2011','https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/pages/online-textbook/part-i-introduction-units-1-4-character-lessons-1-3/','Leçons de caractères, pinyin, audio et exercices.'])
 );
+
+const psychologyGuides = {
+  methodes: {
+    question: 'Si les personnes qui étudient dans un lieu réussissent mieux, comment savoir si le lieu y contribue ?',
+    quiz: 2,
+    lesson: 'Une variable de confusion est un facteur qui peut contribuer à la fois à l’exposition et au résultat. Le fait de tirer au sort le lieu d’étude limite les différences systématiques entre groupes en moyenne. Il faut encore définir le résultat à mesurer, vérifier le protocole et éviter de confondre l’effet du lieu sur une tâche avec son effet sur toutes les notes. [1]',
+    caseText: 'Dans un relevé fictif, les personnes qui étudient souvent à la bibliothèque réussissent 8 items sur 10 en moyenne, contre 6 sur 10 pour les autres. Le lieu était choisi librement. Les groupes peuvent aussi différer par leur motivation et leur temps de travail.',
+    task: 'Proposez un protocole sur le lieu d’étude. Définissez l’exposition, la mesure, le rôle du tirage au sort et une limite. Utilisez une tâche volontaire sans impact sur les notes.',
+    answer: 'On peut répartir par tirage au sort des volontaires entre deux lieux, garder la même durée et le même matériel, puis administrer le même test. Le tirage au sort réduit la possibilité que la motivation initiale explique à elle seule une différence. Un écart resterait propre aux lieux, aux volontaires et à la tâche étudiés.',
+    synthesis: 'Une association motive une hypothèse. Une expérience compare des conditions manipulées et limite les explications concurrentes. Chaque conclusion garde le périmètre de sa mesure.',
+    terms: [['Affectation aléatoire','Attribution des conditions par tirage au sort.'],['Variable de confusion','Facteur lié à l’exposition et susceptible d’influencer le résultat.'],['Indicateur observable','Mesure concrète retenue pour étudier un phénomène.']]
+  },
+  perception: {
+    question: 'Comment tester l’effet du contexte lorsqu’un signal peut recevoir deux interprétations ?',
+    quiz: 1,
+    lesson: 'Dans un traitement ascendant, les traits du stimulus contribuent à l’interprétation. Dans un traitement descendant, les attentes et le contexte orientent la lecture de ces traits. Une réponse choisie peut toutefois refléter une stratégie de réponse. Pour distinguer ces possibilités, il faut préciser les consignes, les mesures et les limites de la comparaison. [1]',
+    caseText: 'Résultats fictifs. Un même symbole est catégorisé comme lettre par 16 personnes sur 20 entre A et C et par 5 sur 20 entre 12 et 14. Une moitié voit d’abord les lettres, l’autre d’abord les nombres. Les résultats par ordre restent nécessaires pour vérifier le rôle de la première présentation.',
+    task: 'Proposez une comparaison qui distingue l’effet du contexte visuel et celui d’une consigne. Indiquez un résultat attendu et ce que la réponse finale laisse indéterminé.',
+    answer: 'Croiser contexte lettres ou nombres et consigne neutre ou suggestive, en conservant le symbole identique et en variant l’ordre. Un écart entre contextes sous consigne neutre soutient leur effet. Si seules les consignes changent les réponses, elles peuvent orienter la décision sans que la perception elle-même ait changé.',
+    synthesis: 'Maintenir le signal constant permet de tester le contexte. Contrebalancer l’ordre et surveiller la consigne aide à isoler les causes possibles des réponses.',
+    terms: [['Sensation','Détection d’une stimulation par les récepteurs.'],['Perception','Organisation et interprétation d’informations sensorielles.'],['Contrebalancement','Variation de l’ordre des conditions entre participants.']]
+  },
+  memoire: {
+    question: 'Quelle comparaison permet de savoir ce qui reste en mémoire après un délai ?',
+    quiz: 0,
+    lesson: 'Une impression de facilité pendant la révision et une performance à un test différé répondent à des questions différentes. Pour isoler l’effet du rappel actif, choisissez un délai commun, des supports comparables et un test final identique. Répartir les listes et l’ordre entre participants limite leur confusion avec la stratégie étudiée. [1]',
+    caseText: 'Étude authentique [1]. Karpicke et Roediger ont comparé des conditions d’étude et de rappel répété sur des paires de mots en swahili et en anglais. Au test final une semaine plus tard, les conditions conservant le rappel répété ont mieux réussi que celles où les items correctement rappelés étaient retirés des tests suivants. La tâche et le délai délimitent la portée de ce résultat. L’exercice du cours utilise séparément des données fictives.',
+    task: 'Construisez une expérience qui compare relecture et rappel actif. Proposez un test différé et expliquez comment limiter l’effet de l’ordre et de la difficulté des supports.',
+    answer: 'Prévoir deux listes comparables et alterner leur attribution aux stratégies et leur ordre. Garder la durée, le délai et la forme du test final identiques. Comparer les proportions d’items rappelés. Présenter la différence comme liée au protocole testé, puis proposer une réplication avec un autre contenu.',
+    synthesis: 'Un essai sur la mémoire distingue entraînement et mesure finale. Le test différé et les contrôles rendent la comparaison interprétable.',
+    terms: [['Rappel actif','Restitution d’une information sans consulter sa réponse.'],['Rétention différée','Performance mesurée après un délai défini.'],['Point de pourcentage','Différence arithmétique entre deux pourcentages.']]
+  },
+  emotions: {
+    question: 'Que peut-on conclure d’un même changement corporel dans deux situations différentes ?',
+    quiz: 1,
+    lesson: 'Un signal physiologique, l’évaluation de la situation et le vécu déclaré sont des mesures distinctes. Une mesure corporelle identique n’implique pas une expérience identique. Les théories de l’émotion diffèrent par la place qu’elles donnent à ces composantes. Une simple comparaison d’observations ne tranche pas leur ordre causal. [1]',
+    caseText: 'Exemple fictif. Deux élèves présentent la même augmentation du rythme cardiaque avant de parler en public. L’une décrit une appréhension et l’autre de l’enthousiasme. Le rythme cardiaque, la tâche et le ressenti ne sont pas trois mesures du même type.',
+    task: 'Proposez un tableau de trois observations qui permettrait de comparer ces expériences. Pour chaque observation, expliquez ce qu’elle peut apporter et ce qui resterait incertain.',
+    answer: 'Relever un changement de rythme décrit un indice corporel. Une autoévaluation de l’expérience apporte le point de vue de la personne. Demander comment elle anticipe l’événement renseigne sur son interprétation. L’ensemble aide à décrire les différences mais ne démontre pas que l’une des composantes cause les autres.',
+    synthesis: 'L’étude d’une émotion gagne à croiser situation, mesure et expérience déclarée. Une explication causale demande des observations ou des comparaisons supplémentaires.',
+    terms: [['Indice physiologique','Mesure d’un aspect du fonctionnement corporel.'],['Autoévaluation','Appréciation qu’une personne donne de sa propre expérience.'],['Évaluation de la situation','Interprétation de la situation pour la personne concernée.']]
+  },
+  sociale: {
+    question: 'Suivre un groupe implique-t-il de croire qu’il a raison ?',
+    quiz: 1,
+    lesson: 'L’influence informationnelle tient au crédit accordé aux réponses d’autrui. L’influence normative tient aux attentes sociales et à l’anticipation de leur jugement. Les deux influences peuvent coexister. Comparer une réponse publique et une réponse anonyme est informatif si les indices disponibles et la difficulté sont comparables. [1]',
+    caseText: 'Données fictives. Face au même avis majoritaire erroné, 12 personnes sur 20 s’alignent en public et 5 sur 20 en réponse anonyme. Les deux groupes reçoivent les mêmes questions. La confiance initiale dans le groupe n’a pas été mesurée.',
+    task: 'Comparez les réponses et proposez un contrôle pour départager les explications normative et informationnelle. Formulez une conclusion prudente.',
+    answer: 'L’alignement est plus fréquent en public (60 % contre 25 %, soit 35 points). Le contraste est compatible avec une pression normative. On peut aussi mesurer la confiance initiale et varier la fiabilité annoncée de la majorité tout en gardant la difficulté constante. Le résultat fictif ne démontre pas que l’influence informationnelle était absente.',
+    synthesis: 'Un comportement similaire peut avoir plusieurs explications. Modifier un facteur à la fois et recueillir des indices supplémentaires aide à les départager.',
+    terms: [['Conformisme','Alignement d’un comportement ou d’un jugement sur celui du groupe.'],['Influence normative','Alignement lié aux attentes ou au jugement social.'],['Influence informationnelle','Alignement lié au crédit donné aux informations du groupe.']]
+  }
+};
+
+for (const lesson of psychologie) {
+  const guide = psychologyGuides[lesson.id];
+  const sourceTask = lesson.dossier;
+  lesson.diagram ||= ['Repères pour analyser le cas', ['Notion','Définition'], guide.terms];
+  lesson.overview = guide.question;
+  lesson.plan = [[0,'Comprendre les notions'],[2,'Construire et interpréter une comparaison'],[4,'Synthèse et glossaire']];
+  lesson.sections.push(
+    ['Application et limites',guide.lesson],
+    ['Synthèse et glossaire',guide.synthesis+' '+guide.terms.map(([term,definition])=>term+' — '+definition).join(' ')]
+  );
+  lesson.dossier = guide.caseText;
+  lesson.research = sourceTask+' Proposez une variante qui permet de départager deux explications. Précisez les résultats attendus et les limites.';
+  lesson.seminar = guide.task;
+  lesson.assessmentGuide = {
+    quiz: guide.quiz,
+    exercise: [0,1,2,3],
+    seminar: [1,2,3],
+    rubric: ['5 points · Distinguer les notions et préciser la question.','6 points · Justifier la comparaison et les mesures retenues.','5 points · Interpréter les résultats ou préciser une prédiction.','4 points · Discuter une explication concurrente ou une limite.'],
+    answer: guide.answer
+  };
+  lesson.flashcards ||= [];
+  lesson.flashcards.push(
+    ...guide.terms.map(([term,definition])=>['Que signifie « '+term.toLowerCase()+' » ?',definition]),
+    [guide.question,guide.synthesis]
+  );
+  lesson.revision = (lesson.revision ?? 1) + 1;
+}
+
+const retrievalStudy = psychologie.find(lesson=>lesson.id==='memoire').sources[0];
+retrievalStudy[3] = 'https://learninglab.psych.purdue.edu/downloads/2008/2008_Karpicke_Roediger_Science.pdf';
+retrievalStudy[4] = 'Article original publié dans Science, copie consultable à Purdue University. DOI 10.1126/science.1152408, anglais, consulté le 28/11/2026.';
