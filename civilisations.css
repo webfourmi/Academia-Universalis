@@ -247,3 +247,9 @@ main { max-width: 1080px; }
 .planning-agenda li > div { display: flex; align-items: center; gap: .6rem; font-size: .9rem; font-weight: 600; }
 .planning-agenda li span { color: #17483e; background: #e5f2ee; border-radius: 6px; padding: .05rem .4rem; }
 .planning-agenda .title-action { white-space: normal; overflow-wrap: anywhere; text-align: start; }
+
+.annotation-toolbar { display: flex; flex-wrap: wrap; gap: .4rem; margin-block: .5rem; }
+.annotation-editor, [data-note-preview] { white-space: pre-wrap; overflow-wrap: anywhere; padding: .65rem; margin-block: .6rem; }
+.annotation-editor { min-height: 5rem; border: 1px solid currentColor; border-radius: .5rem; }
+.annotation-editor:focus-visible { outline: 3px solid #bd9448; outline-offset: 2px; }
+#lesson-reading mark { background: #f8e6a1; color: #302a17; border-radius: .12rem; }

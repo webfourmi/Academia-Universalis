@@ -67,6 +67,45 @@ async function verify(browser,viewport) {
     const item=studyItems().find(i=>i.lesson.quiz);
     showLesson(item.course,item.index);
   });
+  const passage=page.locator('.passage-tools').first();
+  await passage.locator('summary').click();
+  const selectText=async (locator,start,end)=>locator.evaluate((root,[a,b])=>{
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+    const node=walker.nextNode();
+    const range=document.createRange();
+    range.setStart(node,a);
+    range.setEnd(node,b);
+    const selection=window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    return range.toString();
+  },[start,end]);
+  const paragraph=page.locator('#lesson-section-0 + p');
+  const highlighted=await selectText(paragraph,0,5);
+  await passage.getByRole('button',{name:'Surligner la sélection'}).click();
+  assert.equal(await paragraph.locator('mark').innerText(),highlighted);
+  assert.equal(await paragraph.evaluate(p=>p.classList.contains('passage-highlight')),false);
+  const note=passage.getByRole('textbox',{name:'Annotation personnelle'});
+  await note.fill('Une annotation à relire.');
+  for(const format of ['bold','italic','highlight']){
+    await selectText(note,0,3);
+    await passage.locator('[data-format='+format+']').click();
+  }
+  await passage.getByRole('button',{name:'Enregistrer l’annotation'}).click();
+  const preview=passage.locator('[data-note-preview]');
+  assert.equal(await preview.locator('b,strong').innerText(),'Une');
+  assert.equal(await preview.locator('i,em').innerText(),'Une');
+  assert.equal(await preview.locator('mark').innerText(),'Une');
+  await page.evaluate(()=>{
+    const item=studyItems().find(i=>i.lesson.quiz);
+    showLesson(item.course,item.index);
+  });
+  await passage.locator('summary').click();
+  assert.equal(await paragraph.locator('mark').innerText(),highlighted);
+  await passage.getByRole('button',{name:'Modifier l’annotation'}).click();
+  assert.equal(await note.innerText(),'Une annotation à relire.');
+  await passage.getByRole('button',{name:'Effacer les surlignages'}).click();
+  assert.equal(await paragraph.locator('mark').count(),0);
   const exercise=page.locator('.written-exercise');
   await exercise.locator('textarea').fill('Une réponse rédigée avec une justification.');
   await exercise.locator('#save-exercise').click();

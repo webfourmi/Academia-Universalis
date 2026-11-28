@@ -322,7 +322,10 @@ function validReadingTools(value) {
   return value===undefined || Boolean(value && typeof value==='object' && !Array.isArray(value) &&
     ['light','sepia','dark'].includes(value.theme) && [100,115,130,150].includes(value.size) &&
     value.marks && typeof value.marks==='object' && !Array.isArray(value.marks) &&
-    Object.values(value.marks).every(mark=>mark && typeof mark==='object' && typeof mark.highlight==='boolean' && typeof mark.note==='string' && mark.note.length<=10000));
+    Object.values(value.marks).every(mark=>mark && typeof mark==='object' && typeof mark.highlight==='boolean' && typeof mark.note==='string' && mark.note.length<=10000 &&
+      (mark.rich===undefined||typeof mark.rich==='string'&&mark.rich.length<=40000) &&
+      (mark.ranges===undefined||Array.isArray(mark.ranges)&&mark.ranges.length<=100&&mark.ranges.every(range=>
+        range&&Number.isInteger(range.start)&&range.start>=0&&typeof range.text==='string'&&range.text.length>0&&range.text.length<=20000))));
 }
 function installReadingTools(course,lesson) {
   const article=v.querySelector('#lesson-reading');
@@ -349,10 +352,11 @@ function installReadingTools(course,lesson) {
     const paragraph=heading.nextElementSibling;if(!paragraph||paragraph.tagName!=='P')return;
     const key=course.key+':'+lesson.id+':'+index;
     const mark=prefs.marks[key]||{highlight:false,note:''};
-    const controls=document.createElement('details');controls.className='passage-tools';
-    controls.innerHTML='<summary>Annoter ce passage</summary><label><input type="checkbox"> Surligner le passage</label><label>Annotation personnelle<textarea maxlength="10000" rows="3"></textarea></label><button type="button">Enregistrer</button>';
-    const check=controls.querySelector('input'),note=controls.querySelector('textarea');check.checked=mark.highlight;note.value=mark.note;paragraph.classList.toggle('passage-highlight',mark.highlight);
-    controls.querySelector('button').onclick=()=>{prefs.marks[key]={highlight:check.checked,note:note.value};paragraph.classList.toggle('passage-highlight',check.checked);persist();};
+    const controls=passageEditor(paragraph,mark,next=>{
+      if(!auditSave({readingTools:{...prefs,marks:{...prefs.marks,[key]:next}}}))return false;
+      prefs.marks=S.readingTools.marks;
+      return true;
+    });
     const bookmark=document.createElement('button');bookmark.type='button';
     const entry={courseKey:course.key,lessonId:lesson.id,section:index,title:heading.textContent};
     function refresh(){const active=(S.bookmarks||[]).some(b=>sameBookmark(b,entry));bookmark.textContent=active?'Retirer le signet':'Ajouter un signet';bookmark.setAttribute('aria-pressed',String(active));}
@@ -360,6 +364,193 @@ function installReadingTools(course,lesson) {
     controls.append(bookmark);refresh();
     paragraph.after(controls);
   });
+}
+
+function cleanAnnotation(html) {
+  const input=document.createElement('template');
+  input.innerHTML=html;
+  const result=document.createElement('div');
+  const allowed=new Set(['B','STRONG','I','EM','MARK','BR','DIV','P']);
+  function copy(source,target){
+    for(const node of source.childNodes){
+      if(node.nodeType===Node.TEXT_NODE){target.append(node.data);continue;}
+      if(node.nodeType!==Node.ELEMENT_NODE||['SCRIPT','STYLE'].includes(node.tagName))continue;
+      if(!allowed.has(node.tagName)){copy(node,target);continue;}
+      const element=document.createElement(node.tagName);
+      copy(node,element);
+      target.append(element);
+    }
+  }
+  copy(input.content,result);
+  return result;
+}
+
+function selectedPassage(paragraph) {
+  const selection=window.getSelection();
+  if(!selection?.rangeCount||selection.isCollapsed)return null;
+  const range=selection.getRangeAt(0);
+  if(!paragraph.contains(range.startContainer)||!paragraph.contains(range.endContainer))return null;
+  const before=document.createRange();
+  before.selectNodeContents(paragraph);
+  before.setEnd(range.startContainer,range.startOffset);
+  return {start:before.toString().length,text:range.toString()};
+}
+
+function paintPassage(paragraph,mark) {
+  for(const span of paragraph.querySelectorAll('mark[data-course-highlight]'))span.replaceWith(...span.childNodes);
+  paragraph.normalize();
+  paragraph.classList.toggle('passage-highlight',mark.highlight);
+  const content=paragraph.textContent;
+  const intervals=(mark.ranges||[]).filter(({start,text})=>content.slice(start,start+text.length)===text)
+    .map(({start,text})=>[start,start+text.length]).sort((a,b)=>a[0]-b[0]);
+  const merged=[];
+  for(const interval of intervals){
+    const last=merged.at(-1);
+    if(last&&interval[0]<=last[1])last[1]=Math.max(last[1],interval[1]);
+    else merged.push(interval);
+  }
+  const walker=document.createTreeWalker(paragraph,NodeFilter.SHOW_TEXT);
+  const nodes=[];
+  let offset=0;
+  for(let node=walker.nextNode();node;node=walker.nextNode()){
+    nodes.push([node,offset]);
+    offset+=node.length;
+  }
+  for(const [node,start] of nodes){
+    const end=start+node.length;
+    for(const [left,right] of [...merged].reverse()){
+      if(left>=end||right<=start)continue;
+      const range=document.createRange();
+      range.setStart(node,Math.max(0,left-start));
+      range.setEnd(node,Math.min(end,right)-start);
+      const highlight=document.createElement('mark');
+      highlight.dataset.courseHighlight='';
+      range.surroundContents(highlight);
+    }
+  }
+}
+
+function passageEditor(paragraph,initial,persist) {
+  let mark=initial;
+  const controls=document.createElement('details');
+  controls.className='passage-tools';
+  controls.innerHTML=`<summary></summary>
+    <p>Sélectionne quelques mots dans le texte du cours, puis touche « Surligner la sélection ».</p>
+    <div class="annotation-toolbar"><button type="button" data-add-highlight>Surligner la sélection</button><button type="button" data-clear-highlight>Effacer les surlignages</button></div>
+    <div data-note-preview></div><div data-note-form>
+      <div class="annotation-toolbar" role="group" aria-label="Mise en forme de l’annotation">
+        <button type="button" data-format="bold"><strong>Gras</strong></button>
+        <button type="button" data-format="italic"><em>Italique</em></button>
+        <button type="button" data-format="highlight">Surligner</button>
+      </div>
+      <div contenteditable="true" class="annotation-editor" role="textbox" aria-label="Annotation personnelle" aria-multiline="true"></div>
+      <button type="button" data-save-note>Enregistrer l’annotation</button>
+      <button type="button" data-cancel-note>Annuler</button>
+    </div><button type="button" data-edit-note>Modifier l’annotation</button><p role="status"></p>`;
+  const summary=controls.querySelector('summary');
+  const editor=controls.querySelector('[contenteditable]');
+  const preview=controls.querySelector('[data-note-preview]');
+  const form=controls.querySelector('[data-note-form]');
+  const edit=controls.querySelector('[data-edit-note]');
+  const cancel=controls.querySelector('[data-cancel-note]');
+  const add=controls.querySelector('[data-add-highlight]');
+  const clear=controls.querySelector('[data-clear-highlight]');
+  const status=controls.querySelector('[role=status]');
+  let editorRange;
+  let courseRange;
+  const saved=()=>Boolean(mark.note);
+  function renderNote(editing){
+    summary.textContent=saved()?'Annotation du passage':'Annoter ce passage';
+    edit.hidden=editing;
+    form.hidden=!editing;
+    preview.hidden=editing;
+    cancel.hidden=!saved();
+    preview.replaceChildren();
+    if(mark.rich)preview.append(...cleanAnnotation(mark.rich).childNodes);
+    else preview.textContent=mark.note;
+    if(editing)editor.replaceChildren(...[...preview.childNodes].map(node=>node.cloneNode(true)));
+    editorRange=null;
+  }
+  function renderHighlights(){
+    paintPassage(paragraph,mark);
+    clear.hidden=!(mark.highlight||mark.ranges?.length);
+  }
+  function save(next,message){
+    if(!persist(next)){status.textContent='Enregistrement impossible.';return false;}
+    mark=next;
+    status.textContent=message;
+    return true;
+  }
+  renderNote(!saved());
+  renderHighlights();
+  edit.onclick=()=>{renderNote(true);editor.focus();};
+  cancel.onclick=()=>{renderNote(false);edit.focus();};
+  editor.addEventListener('focusout',()=>{
+    const selection=window.getSelection();
+    if(selection?.rangeCount&&editor.contains(selection.getRangeAt(0).commonAncestorContainer)){
+      editorRange=selection.getRangeAt(0).cloneRange();
+    }
+  });
+  const toolbar=controls.querySelectorAll('[data-format]');
+  for(const button of toolbar){
+    button.onpointerdown=event=>{
+      const selection=window.getSelection();
+      if(selection?.rangeCount&&editor.contains(selection.anchorNode)&&editor.contains(selection.focusNode)){
+        editorRange=selection.getRangeAt(0).cloneRange();
+        event.preventDefault();
+      }
+    };
+    button.onclick=()=>{
+      editor.focus();
+      const selection=window.getSelection();
+      if(editorRange&&editor.contains(editorRange.commonAncestorContainer)){
+        selection.removeAllRanges();
+        selection.addRange(editorRange);
+      }
+      if(button.dataset.format!=='highlight')document.execCommand(button.dataset.format);
+      else if(selection.rangeCount&&!selection.isCollapsed&&editor.contains(selection.getRangeAt(0).commonAncestorContainer)){
+        const range=selection.getRangeAt(0);
+        const highlight=document.createElement('mark');
+        highlight.append(range.extractContents());
+        range.insertNode(highlight);
+        selection.selectAllChildren(highlight);
+      }else status.textContent='Sélectionne le texte de ton annotation à surligner.';
+      editorRange=null;
+    };
+  }
+  editor.addEventListener('paste',event=>{
+    event.preventDefault();
+    document.execCommand('insertText',false,event.clipboardData.getData('text/plain'));
+  });
+  controls.querySelector('[data-save-note]').onclick=()=>{
+    const clean=cleanAnnotation(editor.innerHTML);
+    const note=editor.innerText.trim();
+    if(note.length>10000||clean.innerHTML.length>40000){status.textContent='L’annotation est trop longue.';return;}
+    if(save({...mark,note,rich:note?clean.innerHTML:''},'Annotation enregistrée.')){
+      renderNote(!saved());
+      if(saved())edit.focus();
+    }
+  };
+  const capture=()=>{courseRange=selectedPassage(paragraph);};
+  paragraph.addEventListener('pointerup',capture);
+  summary.addEventListener('pointerdown',()=>{courseRange=selectedPassage(paragraph)||courseRange;});
+  add.onpointerdown=event=>{
+    courseRange=selectedPassage(paragraph)||courseRange;
+    if(courseRange)event.preventDefault();
+  };
+  add.onclick=()=>{
+    const range=selectedPassage(paragraph)||courseRange;
+    courseRange=null;
+    if(!range?.text.trim()){status.textContent='Sélectionne d’abord des mots dans ce passage du cours.';return;}
+    const ranges=mark.ranges||[];
+    if(ranges.length>=100){status.textContent='Ce passage contient déjà 100 surlignages.';return;}
+    if(save({...mark,highlight:false,ranges:[...ranges,range]},'Sélection surlignée.')){
+      window.getSelection()?.removeAllRanges();
+      renderHighlights();
+    }
+  };
+  clear.onclick=()=>{if(save({...mark,highlight:false,ranges:[]},'Surlignages effacés.'))renderHighlights();};
+  return controls;
 }
 
 function sameBookmark(a,b){return a.courseKey===b.courseKey&&a.lessonId===b.lessonId&&a.section===b.section;}
