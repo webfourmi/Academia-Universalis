@@ -67,6 +67,17 @@ async function verify(browser,viewport) {
     const item=studyItems().find(i=>i.lesson.quiz);
     showLesson(item.course,item.index);
   });
+  const source=page.locator('li[id^="source-"] a').first();
+  const sourceURL=await source.getAttribute('href');
+  const lessonHeading=await page.locator('#view h2').innerText();
+  await context.route(sourceURL,route=>route.fulfill({contentType:'text/html',body:'<title>Source de test</title>'}));
+  const popupPromise=page.waitForEvent('popup');
+  await source.click();
+  const popup=await popupPromise;
+  await popup.waitForLoadState();
+  assert.equal(await popup.title(),'Source de test');
+  assert.equal(await page.locator('#view h2').innerText(),lessonHeading);
+  await popup.close();
   const passage=page.locator('.passage-tools').first();
   await passage.locator('summary').click();
   const selectText=async (locator,start,end)=>locator.evaluate((root,[a,b])=>{
@@ -147,6 +158,7 @@ async function verify(browser,viewport) {
   await packPage.goto(packURL);
   await packPage.getByRole('heading',{name:'Sommaire'}).waitFor();
   assert.ok(await packPage.locator('article').count()>0);
+  assert.equal(await packPage.locator('article a[href^="http"]').first().getAttribute('target'),'_blank');
   await packPage.close();
   await page.evaluate(()=>showCourse(allStudyCourses().find(course=>course.key==='physique')));
   await page.locator('[data-remove-pack]').click();

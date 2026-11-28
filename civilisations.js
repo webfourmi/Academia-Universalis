@@ -45,7 +45,7 @@ function showCourse(course) {
       <li class="card lesson-card"><h3><button class="title-action lesson-title" type="button" data-lesson="${index}"><span class="lesson-name" title="${e(lesson.title)}">${e(lesson.title)}</span>${lessonStatus(key,lesson)}</button></h3><p>${e(lesson.goal)}</p></li>`).join('')}</ol>
     ${key === 'histoire' ? '<article class="card"><h3><button class="title-action" onclick="showCourse(antiquite)">Deuxième cycle · Grèce et Rome</button></h3></article>' : ''}
     ${key === 'antiquite' ? '<p><button onclick="showCivilisations()">Retour au premier cycle d’histoire</button></p>' : ''}
-    ${links.map(([url, label]) => `<p><a href="${url}">${label}</a></p>`).join('')}`;
+    ${links.map(([url, label]) => `<p><a href="${url}" target="_blank" rel="noopener">${label}</a></p>`).join('')}`;
   v.querySelector('.lesson-list').before(offlineCourseControls(course));
   v.querySelectorAll('[data-lesson]').forEach(button => {
     button.addEventListener('click', () => showLesson(course, Number(button.dataset.lesson)));
@@ -130,7 +130,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
   v.innerHTML = `
     ${fromNote ? '<button type="button" id="return-to-note">Retour à la note</button>' : ''}
     <button id="history-back">${key === 'histoire' ? 'Retour au cycle d’histoire' : 'Retour au parcours'}</button>
-    <h2 class="reading-title" tabindex="-1">${lesson.title}</h2><details class="card"><summary>Qualité éditoriale · ${editorialStatus(lesson)}</summary><p>Contrôle automatique de structure, sans validation scientifique indépendante attestée.</p><ul>${editorialChecks(lesson).map(([label,ok])=>`<li>${ok?"Présent":"À vérifier"} : ${e(label)}</li>`).join("")}</ul><a href="docs/controle-editorial.html">Protocole éditorial</a></details>
+    <h2 class="reading-title" tabindex="-1">${lesson.title}</h2><details class="card"><summary>Qualité éditoriale · ${editorialStatus(lesson)}</summary><p>Contrôle automatique de structure, sans validation scientifique indépendante attestée.</p><ul>${editorialChecks(lesson).map(([label,ok])=>`<li>${ok?"Présent":"À vérifier"} : ${e(label)}</li>`).join("")}</ul><a href="docs/controle-editorial.html" target="_blank" rel="noopener">Protocole éditorial</a></details>
     <nav class="lesson-jumps" aria-label="Sommaire de la leçon">
       <button type="button" data-jump="lesson-reading">Cours</button><button type="button" data-jump="lesson-exercise">Exercice</button><button type="button" data-jump="history-quiz">Quiz</button><button type="button" data-jump="history-notes">Notes</button>
     </nav>
@@ -182,7 +182,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
       <h3>Bibliographie</h3>
       <ol>${lesson.sources.map(([author, title, year, url, evidence, language], sourceIndex) => `
         <li id="source-${sourceIndex+1}" tabindex="-1">${author} (${year}). <a href="${url}" target="_blank" rel="noopener">${title}</a>
-        <br><small>${evidence} · ${language || 'anglais'} · consulté le ${course.year ? '27/11/2026' : '26/11/2026'}. Lien externe.</small><div class="source-return"></div></li>`).join('')}</ol>
+        <br><small>${evidence} · ${language || 'anglais'} · consulté le ${course.year ? '27/11/2026' : '26/11/2026'}. S’ouvre dans un nouvel onglet.</small><div class="source-return"></div></li>`).join('')}</ol>
     </article>
     <nav aria-label="Navigation des leçons">
       ${index > 0 ? '<button id="history-prev">Leçon précédente</button>' : ''}

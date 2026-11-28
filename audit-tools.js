@@ -422,7 +422,7 @@ function showTransversalAtlas() {
 
 function showCampusLife() {
   v.innerHTML=`<button onclick="go(11)">Retour aux espaces</button><h2>Vie du campus</h2><p>Sélection éditoriale de la V0.30</p>
-    <article class="card"><h3>Conférence de la semaine</h3><p>Choisis une séance de Yale sur la Grèce antique et formule une question à partir d’un document cité par l’enseignant.</p><a href="https://online.yale.edu/courses/introduction-ancient-greek-history">Yale · Introduction to Ancient Greek History</a></article>
+    <article class="card"><h3>Conférence de la semaine</h3><p>Choisis une séance de Yale sur la Grèce antique et formule une question à partir d’un document cité par l’enseignant.</p><a target="_blank" rel="noopener" href="https://online.yale.edu/courses/introduction-ancient-greek-history">Yale · Introduction to Ancient Greek History</a></article>
     <article class="card"><h3>Grand livre du mois</h3><p>Lis le récit d’Ulysse et relève les passages qui peuvent infléchir le jugement de son auditoire.</p><button onclick="spaceLesson('litterature','odyssee')">L’Odyssée · dossier et éditions</button></article>
     <article class="card"><h3>Séminaire</h3><p>Quels critères permettent de comparer l’urbanisation de deux sociétés ? Prépare une thèse et une objection à partir du dossier.</p><button onclick="spaceLesson('histoire','comparaison')">Comparer les civilisations</button></article>
     <article class="card"><h3>Découverte scientifique</h3><p>Compare les indices et leurs limites dans le dossier sur les migrations humaines. Repère la publication qui fonde chaque datation.</p><button id="campus-discovery">Étudier les migrations humaines</button></article>`;
@@ -478,7 +478,7 @@ function offlineCourseDocument(course) {
     const [caption,columns,rows]=lesson.diagram||[];
     const table=lesson.diagram?`<table><caption>${text(caption)}</caption><thead><tr>${columns.map(col=>`<th scope="col">${text(col)}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>`<tr>${row.map(cell=>`<td>${text(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table>`:'';
     const quiz=lesson.quiz?`<h3>Quiz</h3><p>${text(lesson.quiz[0])}</p><ol>${lesson.quiz[1].map(option=>`<li>${text(option)}</li>`).join('')}</ol><details><summary>Réponse</summary><p>${text(lesson.quiz[1][lesson.quiz[2]])} · ${text(lesson.quiz[3])}</p></details>`:'';
-    const sources=(lesson.sources||[]).map(([author,title,year,url])=>`<li>${text(author)} · ${text(title)} (${text(year)})${/^https?:\/\//i.test(url)?` · <a href="${e(url)}">${e(url)}</a>`:''}</li>`).join('');
+    const sources=(lesson.sources||[]).map(([author,title,year,url])=>`<li>${text(author)} · ${text(title)} (${text(year)})${/^https?:\/\//i.test(url)?` · <a href="${e(url)}" target="_blank" rel="noopener">${e(url)}</a>`:''}</li>`).join('');
     return `<article id="lecon-${index+1}"><h2>${text(lesson.title)}</h2><p>${text(lesson.goal)}</p><p>${text(lesson.overview)}</p>
       ${lesson.sections.map(([title,body])=>`<h3>${text(title)}</h3><p>${text(body)}</p>`).join('')}${table}
       ${lesson.dossier?`<h3>Dossier</h3><p>${text(lesson.dossier)}</p>`:''}
