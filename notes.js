@@ -152,6 +152,7 @@ function showNotebook() {
       <p class="note-text">${e(note)}</p><button type="button" data-edit-note="${index}">Modifier</button></article>`).join('')}</div>
     ${backupControls()}`;
   appendPassageNotebook();
+  unifyNotebookTimeline();
   if (entries.length||notebookPassages().length) {
     const year=v.querySelector('#note-year');
     const subject=v.querySelector('#note-subject');
@@ -159,11 +160,11 @@ function showNotebook() {
     const filter=()=>{
       let count=0;
       cards.forEach((card,index)=>{
-        const [entryYear,entrySubject]=categories[index];
+        const [entryYear,entrySubject]=categories[Number(card.querySelector('[data-edit-note]').dataset.editNote)];
         card.hidden=Boolean((year.value && Number(year.value)!==entryYear)||(subject.value && subject.value!==entrySubject));
         if (!card.hidden) count++;
       });
-      for(const card of v.querySelectorAll('[data-passage-list] article')){card.hidden=Boolean((year.value&&Number(year.value)!==Number(card.dataset.year))||(subject.value&&subject.value!==card.dataset.subject));if(!card.hidden)count++;}
+      for(const card of v.querySelectorAll('[data-passage-entry]')){card.hidden=Boolean((year.value&&Number(year.value)!==Number(card.dataset.year))||(subject.value&&subject.value!==card.dataset.subject));if(!card.hidden)count++;}
       v.querySelector('#note-count').textContent=count ? `${count} note${count===1?'':'s'}` : 'Aucune note pour ces filtres.';
     };
     year.onchange=subject.onchange=filter;
@@ -203,11 +204,12 @@ function showNotebook() {
         return;
       }
       try {
-        const next = {...S,notes:{...S.notes,[key]:input.value}};
+        const next = {...S,notes:{...S.notes,[key]:input.value},noteDates:updatedNoteDates(key)};
         localStorage.au = JSON.stringify(next);
         S = next;
         preview.textContent = input.value;
         closeEditor();
+        showNotebook();
         v.querySelector('#notes-import-status').textContent = 'Note enregistrée.';
       } catch {
         form.querySelector('[role="status"]').textContent = 'Impossible d’enregistrer la note. Ton texte est toujours dans le champ.';
@@ -262,7 +264,7 @@ function appendPassageNotebook(){
   if(!entries.length)list.textContent='Aucune annotation de passage.';
   for(const {key,mark,section,target} of entries){
     const lesson=target?.course.lessons[target.index];
-    const card=document.createElement('article');card.className='card';card.dataset.noteKey=key;card.dataset.year=target?.course.year||1;card.dataset.subject=target?.course.title.split(' · ')[0]||'Autres notes';card.tabIndex=-1;
+    const card=document.createElement('article');card.className='card';card.dataset.passageEntry='';card.dataset.date=mark.updatedAt||mark.createdAt||'';card.dataset.noteKey=key;card.dataset.year=target?.course.year||1;card.dataset.subject=target?.course.title.split(' · ')[0]||'Autres notes';card.tabIndex=-1;
     const heading=document.createElement('h4');heading.textContent=target?target.course.title+' · '+lesson.title:key;card.append(heading);
     const date=document.createElement('p');date.textContent=mark.createdAt?'Créée le '+new Date(mark.createdAt).toLocaleString('fr-FR'):'Date d’origine inconnue';if(mark.updatedAt)date.textContent+=' · Modifiée le '+new Date(mark.updatedAt).toLocaleString('fr-FR');card.append(date);
     const label=document.createElement('p');label.textContent=lesson?.sections[section]?.[0]||'Passage non identifié';card.append(label);
@@ -291,4 +293,25 @@ function appendPassageNotebook(){
     list.append(card);
   }
   panel.querySelector('input').oninput=event=>{const query=event.target.value.toLocaleLowerCase('fr');for(const card of list.children)card.hidden=!card.textContent.toLocaleLowerCase('fr').includes(query);};
+}
+
+function updatedNoteDates(key){
+ const now=new Date().toISOString();const old=S.noteDates?.[key];
+ return {...S.noteDates,[key]:{createdAt:old?.createdAt||(Object.hasOwn(S.notes,key)?null:now),updatedAt:now}};
+}
+function unifyNotebookTimeline(){
+ const list=v.querySelector('#notebook-entries');
+ const passages=v.querySelector('[data-passage-list]');
+ const panel=passages.parentElement;
+ for(const card of list.children){
+  const dates=S.noteDates?.[card.dataset.noteKey];
+  card.dataset.date=dates?.updatedAt||dates?.createdAt||'';
+  const date=document.createElement('p');date.textContent=dates?.createdAt?'Créée le '+new Date(dates.createdAt).toLocaleString('fr-FR'):'Date d’origine inconnue';
+  if(dates?.updatedAt)date.textContent+=' · Modifiée le '+new Date(dates.updatedAt).toLocaleString('fr-FR');
+  card.querySelector('h3').after(date);
+ }
+ for(const card of [...passages.children])list.append(card);
+ panel.remove();
+ const cards=[...list.children].sort((a,b)=>(b.dataset.date||'').localeCompare(a.dataset.date||''));
+ list.append(...cards);
 }
