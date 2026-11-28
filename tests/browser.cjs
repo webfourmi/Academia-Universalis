@@ -431,9 +431,39 @@ async function verifyLiterature(browser, viewport) {
   await context.close();
 }
 
+async function verifyPhysics(browser, viewport) {
+  const context = await browser.newContext({viewport, isMobile: viewport.width < 500, hasTouch: viewport.width < 500});
+  const page = await context.newPage();
+  await page.goto(process.env.CAMPUS_URL || 'http://localhost:8765/');
+  const openLesson = index => page.evaluate(i => showLesson(firstYearCourses[3], i), index);
+  for (let index=0; index<11; index++) {
+    await openLesson(index);
+    const plan=page.locator('.lesson-plan');
+    await plan.locator('a[href="#lesson-section-0"]').click();
+    assert.equal(await page.evaluate(()=>document.activeElement.id),'lesson-section-0');
+    await page.getByText('Barème et pistes de réponse',{exact:true}).click();
+    await page.getByRole('heading',{name:'Barème sur 20'}).waitFor();
+  }
+  await openLesson(7);
+  await page.locator('summary').filter({hasText:/^Quiz$/}).click();
+  const quiz=page.locator('#history-quiz');
+  await quiz.getByRole('radio').first().check();
+  await quiz.getByRole('button',{name:'Vérifier ma réponse'}).click();
+  await quiz.getByRole('button',{name:'Relire le passage du cours'}).click();
+  assert.equal(await page.evaluate(()=>document.activeElement.id),'lesson-section-0');
+  await page.locator('#history-done').check();
+  await page.waitForFunction(()=>navigator.serviceWorker.controller);
+  await context.setOffline(true);
+  await page.reload();
+  await openLesson(7);
+  assert.equal(await page.locator('#history-done').isChecked(),true);
+  assert.match(await page.locator('#lesson-dossier').textContent(),/caisse/);
+  await context.close();
+}
+
 (async()=>{
   const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||undefined});
   try{
-    for(const viewport of [{width:390,height:844},{width:1366,height:768}]){await verify(browser,viewport);await verifyMath(browser,viewport);await verifyHistory(browser,viewport);await verifyPhilosophy(browser,viewport);await verifyLiterature(browser,viewport);}
+    for(const viewport of [{width:390,height:844},{width:1366,height:768}]){await verify(browser,viewport);await verifyMath(browser,viewport);await verifyHistory(browser,viewport);await verifyPhilosophy(browser,viewport);await verifyLiterature(browser,viewport);await verifyPhysics(browser,viewport);}
   }finally{await browser.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;});

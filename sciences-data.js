@@ -1192,3 +1192,107 @@ Object.assign(firstYearCourses, {
   3: {title: 'Physique · Mesurer et expliquer le mouvement', introduction: 'Passer des mesures aux bilans de forces et d’énergie.', key: 'physique', lessons: physique},
   4: {title: 'Psychologie · Observer et tester', introduction: 'Concevoir des comparaisons sur la perception et la mémoire.', key: 'psychologie', lessons: psychologie}
 });
+
+const physicsGuides = {
+  'intro-physique': {
+    question: 'Comment distinguer une prédiction réussie d’une preuve que le modèle marche toujours ?',
+    parts: [[0,'Observer et formuler un modèle'],[4,'Mettre le modèle à l’épreuve']],
+    quiz: 3, exercise: [2,3,4], seminar: [3,4,5],
+    caseText: 'Données fictives pour dix oscillations à faible amplitude : 9,2 s pour un fil de 20 cm et 17,8 s pour 80 cm. Les périodes correspondantes, 0,92 et 1,78 s, se comparent aux prédictions 0,90 et 1,79 s. Le chronométrage manuel et le repérage du centre de l’objet peuvent contribuer aux écarts. [1]',
+    task: 'Comparez les périodes du dossier à la prévision. Expliquez le choix de chronométrer dix oscillations et proposez un contrôle qui distinguerait un effet de longueur d’un effet d’amplitude.',
+    answer: 'Les écarts sont +0,02 s et −0,01 s par période. Chronométrer dix périodes réduit l’effet d’un même décalage absolu des instants de départ et d’arrêt sur une période estimée. Il faut comparer les longueurs avec une amplitude similaire, puis varier l’amplitude à longueur fixe. Sans estimation des incertitudes, ces écarts ne quantifient pas à eux seuls la qualité de l’accord.',
+    synthesis: 'Un modèle formule une prédiction sous des hypothèses. Une mesure a un protocole et une incertitude. L’accord s’apprécie dans les conditions testées.'
+  },
+  mesures: {
+    question: 'Des mesures très proches peuvent-elles toutes être décalées ?',
+    parts: [[0,'Unités et dimensions'],[3,'Dispersion, résolution et biais'],[7,'Documents et mesures de gravité']],
+    quiz: 4, exercise: [1,3,4,5], seminar: [3,4,9],
+    caseText: 'Exemple fictif de cinq lectures en centimètres : 15,0 ; 15,1 ; 15,2 ; 15,1 ; 15,1. La demi-étendue décrit leur dispersion. Une règle dont le zéro ajoute 0,2 cm à chaque lecture déplacerait la moyenne sans modifier cette dispersion. Le tableau de Tate intégré au cours permet ensuite de comparer ce cas à des données authentiques. [4]',
+    task: 'Calculez la moyenne et la demi-étendue en mètres. Corrigez les lectures si la règle ajoute 0,2 cm, puis expliquez comment un étalon permettrait de détecter ce biais.',
+    answer: 'La moyenne brute vaut 0,151 m et la demi-étendue 0,001 m. Après correction, la moyenne vaut 0,149 m et la demi-étendue reste 0,001 m. La comparaison à une longueur de référence teste un décalage commun que les répétitions seules ne révèlent pas.',
+    synthesis: 'Exprimer le résultat dans une unité connue, quantifier la dispersion et rechercher séparément les biais. La demi-étendue n’est pas un bilan complet d’incertitude.'
+  },
+  'maths-physicien': {
+    question: 'Deux mouvements peuvent-ils avoir la même vitesse moyenne et évoluer différemment ?',
+    parts: [[0,'Échelles, proportions et vecteurs'],[4,'Lire une pente et une aire']],
+    quiz: 4, exercise: [1,2,4], seminar: [3,4,5],
+    caseText: 'Pour t = 0, 1, 2 et 3 s, le modèle A donne 2, 5, 8 et 11 m et le modèle B donne 2, 3, 6 et 11 m. Ces valeurs sont calculées, pas mesurées. Dans A, chaque seconde ajoute 3 m. Dans B, les déplacements successifs sont 1, 3 et 5 m. [2]',
+    task: 'Comparez les pentes sur chaque intervalle puis sur l’ensemble du dossier. Proposez un instant de mesure permettant de distinguer les modèles et expliquez pourquoi les extrémités seules ne suffisent pas.',
+    answer: 'Les pentes de A sont 3, 3 et 3 m/s. Celles de B sont 1, 3 et 5 m/s. L’intervalle total donne 9/3 = 3 m/s dans les deux cas. À 1 s, les positions prédites diffèrent de 2 m. Une mesure suffisamment précise à cet instant peut départager les modèles.',
+    synthesis: 'La pente de x(t) est une variation de position par durée. Une pente moyenne peut cacher des changements locaux que des points intermédiaires révèlent.'
+  },
+  referentiels: {
+    question: 'Comment le même objet peut-il être immobile et en mouvement sans contradiction ?',
+    parts: [[0,'Choisir un système et un point de vue'],[4,'Transformer les coordonnées']],
+    quiz: 2, exercise: [2,3,4], seminar: [2,4,5],
+    caseText: 'On choisit les axes du quai A et du train B parallèles et positifs dans le sens du train. Les origines coïncident à t = 0. À t = 3 s, le train roulant uniformément à 2 m/s a déplacé son origine de +6 m dans A. Pour un objet repéré à xA = 8 m, xB = 8 − 6 = 2 m. [1]',
+    task: 'Dans le modèle du dossier, un sac reste à xB = 2 m. Donnez xA à 0 et 3 s puis les vitesses dans les deux référentiels. Précisez ce qui changerait si les origines ne coïncidaient pas au départ.',
+    answer: 'Le sac est à 2 puis 8 m dans A, et reste à 2 m dans B. Les vitesses valent +2 m/s dans A et 0 dans B. Si B était initialement décalé, on ajouterait ce décalage lors du passage de B vers A. La différence des vitesses ne changerait pas.',
+    synthesis: 'Une position dépend de l’origine et de l’orientation. Dans le modèle de translation, on retranche la position de l’origine mobile avant de lire la coordonnée relative.'
+  },
+  'vitesse-acceleration': {
+    question: 'Pourquoi une accélération négative peut-elle augmenter la rapidité ?',
+    parts: [[0,'Mesurer les variations de position'],[3,'Lire les signes et les graphiques'],[7,'Documents et gravimétrie']],
+    quiz: 3, exercise: [1,3,4,5], seminar: [1,3,4,5],
+    caseText: 'Sur un axe orienté vers la droite, un mobile a v = −2 m/s à t = 0 et une accélération constante a = −1 m/s². Sa vitesse après 2 s vaut −4 m/s. Il se déplace vers les abscisses décroissantes et sa rapidité passe de 2 à 4 m/s. [1]',
+    task: 'Comparez le cas intégré à un mobile qui commence à +2 m/s avec la même accélération. Décrivez signes, rapidité et sens du mouvement juste avant puis juste après 2 s.',
+    answer: 'Dans le second cas, v = 2 − t en m/s pour t en secondes. Avant 2 s, le mobile avance dans le sens positif en ralentissant. À 2 s sa vitesse s’annule. Après, elle devient négative et sa rapidité augmente. Dans le premier cas, vitesse et accélération négatives font croître la rapidité dès le début.',
+    synthesis: 'La rapidité est la norme de la vitesse. Sur un axe, tant que v ne s’annule pas, le signe de v par rapport à celui de a indique si la rapidité croît ou décroît.'
+  },
+  'prevoir-mouvement': {
+    question: 'Comment tester une prévision avec une mesure écartée de l’ajustement ?',
+    parts: [[0,'Choisir un modèle de mouvement'],[3,'Prédire, tester et interpréter'],[7,'Documents et mesure expérimentale']],
+    quiz: 2, exercise: [1,2,3,4], seminar: [2,3,4,5],
+    caseText: 'Série fictive pour t = 0, 1, 2 et 3 s : x = 0, 0,10, 0,40 et 0,90 m. Le modèle x = 0,10 t² conduit à a = 0,20 m/s². À 4 s, la mesure réservée vaut fictivement 1,55 m avec une tolérance illustrative de ±0,06 m. [1]',
+    task: 'Expliquez pourquoi un mouvement uniforme ne convient pas aux quatre points d’ajustement. Calculez la prévision à 4 s et le résidu mesure moins prévision, puis interprétez avec la tolérance fournie.',
+    answer: 'Les déplacements sur des durées égales, 0,10, 0,30 et 0,50 m, varient. La prévision vaut 1,60 m et le résidu vaut −0,05 m. Il reste dans la tolérance illustrative. Le test soutient la compatibilité de ce modèle avec ce point et ne permet pas une extrapolation illimitée.',
+    synthesis: 'Expliciter le domaine du modèle, séparer ajustement et test, puis interpréter le résidu en fonction de la précision des mesures.'
+  },
+  forces: {
+    question: 'Comment prévoir l’évolution d’une vitesse à partir des forces sur un système ?',
+    parts: [[0,'Identifier le système et projeter les forces'],[2,'Interpréter le signe de l’accélération']],
+    quiz: 2, exercise: [0,1,2], seminar: [0,1,2,3],
+    extension: ['Appliquer la deuxième loi dans un référentiel inertiel','La relation ΣF = ma vaut pour un système de masse constante dans un référentiel inertiel. On représente les forces extérieures sur le système, puis on les projette sur un axe orienté. Si un chariot de 3 kg reçoit 5 N à droite et 11 N à gauche, la résultante horizontale vaut −6 N en prenant la droite positive. L’accélération vaut −2 m/s². Un chariot avançant vers la droite ralentit tant que sa vitesse reste positive. Une résultante nulle conserve la vitesse, qui peut être non nulle. [1]'],
+    caseText: 'Deux chariots isolés des autres forces horizontales se repoussent. Pendant un instant du contact, la force sur A, de 2 kg, vaut +6 N et celle sur B, de 3 kg, vaut −6 N. Les valeurs sont fictives. Chaque force agit sur un système distinct. [1]',
+    task: 'Effectuez un bilan horizontal pour chacun des chariots, calculez les accélérations, puis expliquez en quoi changer la masse changerait le résultat pour une force donnée.',
+    answer: 'A : +6/2 = +3 m/s². B : −6/3 = −2 m/s². Les forces de contact de sens opposés agissent sur deux systèmes distincts et ne s’annulent pas dans le bilan d’un chariot isolé. À force donnée, la norme de l’accélération diminue quand la masse augmente.',
+    synthesis: 'Système — objet ou ensemble étudié. Résultante — somme vectorielle des forces extérieures. Dans un référentiel inertiel, l’accélération est orientée comme la résultante.'
+  },
+  energie: {
+    question: 'Comment retrouver la rapidité finale à partir du travail des forces ?',
+    parts: [[0,'Comparer les états et les travaux'],[2,'Choisir une méthode de calcul']],
+    quiz: 0, exercise: [0,1,2], seminar: [0,1,2,3],
+    extension: ['Retrouver le résultat par deux méthodes','Pour une force constante parallèle au déplacement, son travail vaut +Fd si elle est dans le même sens, −Fd si elle est opposée et zéro si elle est perpendiculaire. Le théorème de l’énergie cinétique donne Kf = Ki + ΣW, avec K = mv²/2. Pour une accélération constante en ligne droite, le bilan des forces donne a et l’équation vf² = vi² + 2aΔx donne la même norme finale. Le travail s’exprime en joules, avec 1 J = 1 N·m. [1]'],
+    caseText: 'Cas calculé : une caisse de 2 kg se déplace à 4 m/s et subit une force de 2 N opposée au déplacement sur 3 m. Les autres forces sont perpendiculaires à la trajectoire ou de travail nul. Le déplacement reste dans le même sens. [1]',
+    task: 'Trouvez la rapidité finale par bilan d’énergie puis par bilan des forces et cinématique à accélération constante. Expliquez la signification du travail négatif.',
+    answer: 'Ki = 16 J, le travail vaut −6 J et Kf = 10 J, donc la rapidité vaut √10 ≈ 3,16 m/s. La force horizontale nette donne a = −1 m/s². Alors vf² = 16 + 2(−1)×3 = 10 m²/s². Le travail net négatif traduit une baisse d’énergie cinétique.',
+    synthesis: 'Travail — contribution d’une force sur un déplacement. Énergie cinétique — mv²/2. Le bilan énergétique fournit une norme de vitesse. Le sens demande une information supplémentaire.'
+  },
+  ondes: {
+    question: 'Comment relier le passage de crêtes à leur distance sur une image ?',
+    parts: [[0,'Mesurer l’onde dans le temps et l’espace'],[2,'Distinguer et prévoir les mouvements']],
+    quiz: 0, exercise: [0,1], seminar: [0,1,2,3],
+    caseText: 'Exemple calculé : une crête parcourt 1,2 m en 0,4 s. Deux crêtes passent devant le même repère à 0,25 s d’intervalle. Un flotteur oscille localement au passage de la vague. [1]',
+    task: 'Calculez la vitesse de la crête, la fréquence et la longueur d’onde, puis expliquez ce que mesure le flotteur.',
+    answer: 'La célérité vaut 3 m/s, la fréquence 4 Hz et la longueur d’onde 0,75 m. Le passage périodique renseigne sur l’oscillation locale, tandis que suivre une crête renseigne sur la propagation.',
+    synthesis: 'La période se mesure à position fixe. La longueur d’onde se mesure à instant fixe. La célérité vaut λ/T.'
+  },
+  relativite: {
+    question: 'Quelle horloge mesure le temps propre entre deux événements ?',
+    parts: [[0,'Choisir les événements et les horloges'],[2,'Calculer et interpréter une durée']],
+    quiz: 0, exercise: [0,1,2], seminar: [0,2,3],
+    caseText: 'Exemple idéalisé : deux émissions au même endroit dans un véhicule sont séparées par 8 s sur son horloge. Le véhicule se déplace à 0,60 c par rapport à un référentiel inertiel extérieur. [1]',
+    task: 'Calculez l’intervalle extérieur entre les émissions et expliquez pourquoi ce calcul ne prédit pas la durée séparant les réceptions à distance.',
+    answer: 'Le facteur γ vaut 1,25 et l’intervalle extérieur vaut 10 s. Les durées de propagation peuvent différer entre les deux émissions et leurs réceptions. Ce sont des paires d’événements distinctes.',
+    synthesis: 'Une horloge au repos au lieu commun des deux événements mesure leur temps propre. Le calcul dépend des événements choisis et du référentiel.'
+  },
+  puissance: {
+    question: 'Comment comparer deux machines qui fournissent le même travail à des rythmes différents ?',
+    parts: [[0,'Calculer la puissance moyenne'],[2,'Préciser le système et les transferts']],
+    quiz: 0, exercise: [0,1,2], seminar: [0,1,2],
+    caseText: 'Deux appareils fournissent chacun un travail mécanique utile de 900 J. Le premier opère en 15 s, le second en 30 s. Les valeurs sont fictives. [1]',
+    task: 'Comparez leurs puissances moyennes utiles et expliquez si vous pouvez déduire des données le pic de puissance ou la consommation électrique.',
+    answer: 'Les puissances moyennes sont 60 et 30 W. Une moyenne ne détermine pas la puissance maximale. La consommation électrique exige de connaître la puissance absorbée au cours de l’opération ou de disposer d’un bilan des pertes.',
+    synthesis: 'La puissance moyenne rapporte un travail à une durée. Préciser le transfert étudié et distinguer moyenne, maximum et puissance absorbée.'
+  }
+};

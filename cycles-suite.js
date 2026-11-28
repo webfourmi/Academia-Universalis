@@ -64,6 +64,33 @@ physique.push(consolidationLesson('puissance','Physique · Travail et puissance'
 'Le travail utile vaut mgh = 588,6 J pour les deux. Les puissances moyennes valent environ 98 W et 49 W. Sans pertes, ces nombres se rapportent au transfert mécanique utile; ils ne donnent pas la consommation électrique d’un appareil réel.',
 ['Pour le même travail, que se passe-t-il si le temps double ?', ['La puissance moyenne est multipliée par deux.', 'La puissance moyenne est divisée par deux.', 'Le travail est multiplié par quatre.'],1,'La puissance moyenne est le quotient du travail par la durée.'],powerSource));
 
+
+for (const lesson of physique) {
+  const guide = physicsGuides[lesson.id];
+  if (guide.extension) lesson.sections.push(guide.extension);
+  lesson.overview = guide.question;
+  lesson.plan = [...guide.parts,[lesson.sections.length,'Synthèse']];
+  lesson.sections.push(['Synthèse des acquis',guide.synthesis]);
+  lesson.research = lesson.dossier;
+  lesson.dossier = guide.caseText;
+  lesson.seminar = guide.task;
+  lesson.assessmentGuide = {
+    quiz: guide.quiz,
+    exercise: guide.exercise,
+    seminar: guide.seminar,
+    rubric: ['5 points · Identifier le système, les données et les hypothèses utiles.','6 points · Justifier les étapes de la démarche et indiquer les unités pertinentes.','6 points · Interpréter le résultat et répondre à la comparaison demandée.','3 points · Préciser les limites du modèle ou du test.'],
+    answer: guide.answer
+  };
+  lesson.flashcards ||= [];
+  lesson.flashcards.push([guide.question,guide.synthesis]);
+  lesson.revision = (lesson.revision ?? 1) + 1;
+  for (const source of lesson.sources) {
+    if (source[3] === 'https://doi.org/10.6028/jres.072C.001') {
+      source[3] = 'https://nvlpubs.nist.gov/nistpubs/jres/72C/jresv72Cn1p1_A1b.pdf';
+    }
+  }
+}
+
 const libraryAdditions = [
   ['Europe',splitSource,'premier cycle','support de cours en PDF','Support institutionnel cité par lien','ia','fuite'],
   ['Amériques',formationSource,'premier cycle','chapitre public','Licence indiquée par OpenStax et exceptions indiquées dans le manuel','archeologie','site'],
