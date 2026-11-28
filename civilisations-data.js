@@ -71,7 +71,7 @@ const civilisations = [
     1,
     "Plusieurs lignées ont coexisté et parfois échangé des gènes."
   ],
-  "seminar": "400 à 600 mots : pourquoi la marche progressive est-elle trompeuse ? Barème sur 20 : exactitude 6, parentés 5, preuves 5, argumentation 4. Corrigé indicatif : divergence depuis un ancêtre commun, coexistence des lignées, évolution en mosaïque, fossiles et génétique avec leurs limites.",
+  "seminar": "400 à 600 mots : Pourquoi l’évolution humaine ressemble-t-elle davantage à un arbre avec plusieurs branches qu’à une échelle dont les étapes se succèdent jusqu’à Homo sapiens ? Appuyez votre réponse sur un exemple du cours. Barème sur 20 : exactitude 6, parentés 5, preuves 5, argumentation 4. Corrigé indicatif : divergence depuis un ancêtre commun, coexistence des lignées, évolution en mosaïque, fossiles et génétique avec leurs limites.",
   "review": "J+2 : définir divergence et mosaïque. J+7 : expliquer les deux datations et leurs limites. J+30 : reconstruire une chronologie et expliquer les échanges génétiques.",
   "sources": [
     [
