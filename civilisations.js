@@ -64,9 +64,9 @@ return '<h3>Atlas : observer les documents scientifiques</h3><p>Notices consult�
 function evolutionAnatomy(){
 return '<figure class="history-overview"><svg viewBox="0 0 340 150" width="100%" role="img" aria-label="Comparaison schématique de deux formes de boîte crânienne"><g fill="none" stroke="currentColor" stroke-width="2"><path d="M20 85 Q5 20 85 25 Q145 25 145 75 L125 95 L125 116 L90 116 L70 96 Z"/><path d="M190 85 Q165 12 235 12 Q300 12 305 75 L285 95 L285 116 L250 116 L230 96 Z"/><path d="M82 89 L112 89 M242 89 L272 89"/></g><g fill="currentColor" font-size="10" text-anchor="middle"><text x="83" y="135">Forme allongée</text><text x="247" y="135">Forme plus globulaire</text></g></svg><figcaption>Schéma conceptuel, non métrique, non reproduction de fossiles : évolution en mosaïque de la face et de la boîte crânienne. Voir Hublin et al. [3].</figcaption></figure>';
 }
-function evolutionQuiz(){
+function evolutionQuiz(lesson){
 const qs=[['Que date la thermoluminescence du silex ?',['La dernière chauffe suffisante','La naissance du fabricant','La formation de la roche'],0,'Le signal est réinitialisé par une chauffe suffisante.'],['Quel est le recouvrement des deux intervalles publiés ?',['254 000–349 000','281 000–318 000','286 000–315 000'],1,'Le maximum des bornes basses et le minimum des bornes hautes donnent 281 000–318 000.'],['Que signifie évolution en mosaïque ?',['Tous les caractères changent ensemble','Les caractères évoluent à des rythmes différents','Les espèces suivent une échelle'],1,'La face et la boîte crânienne peuvent évoluer différemment.'],['Que démontre le génome étudié par Slon et al. ?',['Une origine unique de Sapiens','Une filiation directe de tous les humains','Une reproduction entre Néandertaliens et Denisoviens'],2,'Cet individu avait une mère néandertalienne et un père denisovien.']];
-return '<h3>Quiz complémentaire</h3>'+qs.map(([q,opts,a,why],i)=>'<fieldset><legend>'+e(q)+'</legend>'+opts.map((o,j)=>'<label class="quiz-option"><input type="radio" name="evo-extra-'+i+'" value="'+j+'"> '+e(o)+'</label>').join('')+'<button type="button" data-evo-answer="'+a+'" data-evo-why="'+e(why)+'">Vérifier</button><p role="status"></p></fieldset>').join('');
+return '<h3>Quiz complémentaire</h3>'+qs.map(([q,opts,a,why],i)=>'<fieldset><legend>'+e(q)+'</legend>'+opts.map((o,j)=>'<label class="quiz-option"><input type="radio" name="evo-extra-'+i+'" value="'+j+'"> '+e(o)+'</label>').join('')+'<button type="button" data-evo-answer="'+a+'" data-evo-why="'+e(why)+'">Vérifier</button><p role="status"></p>'+historySectionLinks(lesson, [[4],[4],[3],[5]][i], 'Passage du cours.')+'</fieldset>').join('');
 }
 
 function migrationCardDefinitions(){return [["Que prouve une occupation datée ?","Une présence locale, pas une filiation ni un itinéraire."],["Où se trouve Dmanisi ?","Dans le Caucase, en Géorgie."],["Âge des occupations de Dmanisi selon l’étude de 2022 ?","Environ 1,80–1,76 Ma."],["Volume endocrânien de D4500 ?","546 cm³."],["Que désigne le Sahul ?","Australie et Nouvelle-Guinée réunies lors des bas niveaux marins."],["Quel fossile a été découvert à Misliya ?","Un maxillaire attribué à Homo sapiens."],["Datation proposée de Misliya ?","194–177 ka, estimation discutée."],["Datation proposée de Madjedbebe ?","Environ 65 ka, estimation discutée."],["Que trouve-t-on à White Sands ?","Des empreintes humaines datées vers 23–21 ka."],["Que mesure la luminescence OSL ?","Le temps depuis la dernière exposition lumineuse des grains."],["Quel biais affecte les graines aquatiques ?","Le carbone ancien peut augmenter leur âge apparent."],["1,80 Ma équivaut à combien de ka ?","1 800 ka."]];}
@@ -158,13 +158,35 @@ function renderHistoryLessonPlan(lesson, cite) {
   return {plan, body};
 }
 
+function historyQuiz(lesson) {
+  const guidance = historyAssessmentGuidance[lesson.id];
+  const [question, options, answer, rationale] = lesson.quiz;
+  return [question, options, answer, guidance?.rationale || rationale];
+}
+
+function historySectionLinks(lesson, indices, label) {
+  if (!indices?.length) return '';
+  return `<p><strong>${label}</strong> ${indices.map(index =>
+    `<a href="#lesson-section-${index}" data-plan-link>${e(lesson.sections[index][0])}</a>`).join(' · ')}</p>`;
+}
+
+function historySeminarFeedback(lesson, guidance) {
+  if (!guidance) return '';
+  return `${historySectionLinks(lesson, guidance.seminar, 'Passages pour préparer le séminaire.')}
+    <details><summary>Barème et pistes de réponse</summary>
+      <h4>Barème sur 20</h4><ul>${guidance.rubric.map(criterion=>`<li>${e(criterion)}</li>`).join('')}</ul>
+      <p>${e(guidance.answer)}</p>
+    </details>`;
+}
+
 function showLesson(course, index, {offset,fromNote} = {}) {
   saveReading();
   const {key, lessons} = course;
   const lesson = lessons[index];
   rememberCampusRoute('lesson',{key,id:lesson.id,...(fromNote?{fromNote}:{})});
   const [caption, columns, rows] = lesson.diagram || [];
-  const [question, options, answer, rationale] = lesson.quiz;
+  const [question, options, answer, rationale] = historyQuiz(lesson);
+  const assessmentGuide = historyAssessmentGuidance[lesson.id];
   const candidate = key === 'histoire' ? historySeminars[lesson.id] : undefined;
   const seminar = candidate && lesson.sources?.[candidate.source] ? candidate : undefined;
   const [level, duration, guidance] = studyLevels[studyLevel()];
@@ -203,6 +225,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
     <article class="card lesson">
       <details class="card"><summary>Dossier commenté</summary><p id="lesson-dossier" tabindex="-1">${cite(lesson.dossier)}</p></details>
       <h3 id="lesson-exercise" tabindex="-1">Exercice</h3><p>${lesson.activity}</p>
+      ${historySectionLinks(lesson, assessmentGuide?.exercise, 'Passages pour préparer l’exercice.')}
       <div id="written-exercise"></div>
       <details class="card"><summary>Quiz</summary><form id="history-quiz" tabindex="-1">
         <fieldset><legend>${question}</legend>
@@ -211,8 +234,8 @@ function showLesson(course, index, {offset,fromNote} = {}) {
         <button>Vérifier ma réponse</button>
         <p role="status" id="quiz-result"></p>
       </form>
-      ${lesson.id==='evolution-humaine'?evolutionQuiz():''}</details>
-      ${lesson.seminar ? `<h3 id="lesson-seminar" tabindex="-1">Séminaire</h3><p>${lesson.seminar}</p>` : ''}
+      ${lesson.id==='evolution-humaine'?evolutionQuiz(lesson):''}</details>
+      ${lesson.seminar ? `<h3 id="lesson-seminar" tabindex="-1">Séminaire</h3><p>${lesson.seminar}</p>${historySeminarFeedback(lesson,assessmentGuide)}` : ''}
       <h3>Révision espacée</h3><p>${lesson.review}</p>${migrationFlashcards(lesson)}
       <label for="history-notes">Mes notes</label>
       <textarea id="history-notes">${e(S.notes[noteKey])}</textarea>
@@ -222,6 +245,8 @@ function showLesson(course, index, {offset,fromNote} = {}) {
       <details>
         <summary>Approfondissement universitaire</summary>
         <h3 id="lesson-history-seminar" tabindex="-1">${seminar.title}</h3>
+        ${historySectionLinks(lesson, assessmentGuide?.seminar, 'Passages pour préparer le séminaire.')}
+        <p>Les dossiers intégrés permettent de préparer ce travail. La lecture guidée approfondit leur analyse.</p>
         ${seminar.method.map(paragraph => `<p>${cite(paragraph)}</p>`).join('')}
         <p><a href="${lesson.sources[seminar.source][3]}" target="_blank" rel="noopener">Lecture guidée · ${lesson.sources[seminar.source][1]}</a></p>
         <h3>Travail écrit</h3><p>${seminar.task}</p>
@@ -342,6 +367,8 @@ function jumpToStudySection(id) {
 }
 
 function quizReadingTarget(lesson) {
+  const index = historyAssessmentGuidance[lesson.id]?.quiz;
+  if (Number.isInteger(index) && lesson.sections[index]) return 'lesson-section-'+index;
   const words = text=>[...new Set(searchableText(text).match(/[a-z]{5,}/g)||[])];
   const [question,options,answer,rationale] = lesson.quiz;
   const terms = words([question,options[answer],rationale].join(' '));
