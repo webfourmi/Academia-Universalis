@@ -43,6 +43,7 @@ body { padding-bottom: calc(5.3rem + env(safe-area-inset-bottom)); }
 .library-filters label { display: grid; gap: .25rem; max-width: 100%; }
 .library-filters input, .library-filters select { box-sizing: border-box; max-width: 100%; }
 .note-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.seminar-answer textarea { display: block; width: 100%; box-sizing: border-box; }
 .note-entry textarea { width: 100%; box-sizing: border-box; min-height: 7rem; }
 .note-entry label { display: block; }
 a, button, input, textarea { scroll-margin-bottom: 6rem; }

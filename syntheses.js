@@ -42,9 +42,11 @@ function showWrittenProjects() {
 function noteTitle(key) {
   const project = writtenProjects.find(item => key==='synthese:'+item.id);
   if (project) return project.title;
-  for (const course of allStudyCourses()) {
-    const lesson = course.lessons.find(item => key===course.key+':'+item.id);
-    if (lesson) return lesson.title;
+  const target = lessonForNote(key);
+  if (target) {
+    if (key.endsWith(':seminaire-approfondi')) return 'Séminaire approfondi · '+target.lesson.title;
+    if (key.endsWith(':seminaire')) return 'Séminaire · '+target.lesson.title;
+    return target.lesson.title;
   }
   return key;
 }

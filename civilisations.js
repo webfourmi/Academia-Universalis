@@ -189,6 +189,42 @@ function renderPracticeQuiz([question, options]) {
   </form>`;
 }
 
+function updateSeminarWordCount(field) {
+  const words = field.value.match(/[\p{L}\p{N}][\p{L}\p{M}\p{N}]*(?:[’'‑-][\p{L}\p{M}\p{N}]+)*/gu);
+  const count = words?.length ?? 0;
+  field.nextElementSibling.textContent = `${count} ${count > 1 ? 'mots' : 'mot'}`;
+}
+
+function seminarAnswer(id, key) {
+  return `<div class="seminar-answer" data-seminar-key="${e(key)}">
+    <label for="${id}">Ma réponse au séminaire</label>
+    <textarea id="${id}" rows="7" maxlength="12000" aria-describedby="${id}-count"></textarea>
+    <p id="${id}-count"></p>
+    <p role="status"></p>
+  </div>`;
+}
+
+function bindSeminarAnswers(view) {
+  view.querySelectorAll('[data-seminar-key]').forEach(panel => {
+    const key = panel.dataset.seminarKey;
+    const field = panel.querySelector('textarea');
+    const status = panel.querySelector('[role="status"]');
+    field.value = S.notes[key] ?? "";
+    updateSeminarWordCount(field);
+    field.oninput = () => {
+      updateSeminarWordCount(field);
+      const next = {...S, notes: {...S.notes, [key]: field.value}, noteDates: updatedNoteDates(key)};
+      try {
+        localStorage.au = JSON.stringify(next);
+        S = next;
+        status.textContent = 'Brouillon enregistré.';
+      } catch {
+        status.textContent = 'Enregistrement impossible.';
+      }
+    };
+  });
+}
+
 function showLesson(course, index, {offset,fromNote} = {}) {
   saveReading();
   const {key, lessons} = course;
@@ -248,7 +284,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
       </form>
       ${lesson.practiceQuiz ? renderPracticeQuiz(lesson.practiceQuiz) : ''}
       ${lesson.id==='evolution-humaine'?evolutionQuiz(lesson):''}</details>
-      ${lesson.seminar ? `<h3 id="lesson-seminar" tabindex="-1">Séminaire</h3><p>${lesson.seminar}</p>${historySeminarFeedback(lesson,assessmentGuide)}` : ''}
+      ${lesson.seminar ? `<h3 id="lesson-seminar" tabindex="-1">Séminaire</h3><p>${lesson.seminar}</p>${seminarAnswer("seminar-answer", noteKey+":seminaire")}${historySeminarFeedback(lesson,assessmentGuide)}` : ''}
       ${lesson.research ? `<details class="card"><summary>Recherche facultative</summary><p>${cite(lesson.research)}</p><p>Les lectures externes nécessitent une connexion.</p></details>` : ''}
       <h3>Révision espacée</h3><p>${lesson.review}</p>${migrationFlashcards(lesson)}
       <label for="history-notes">Mes notes</label>
@@ -263,7 +299,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
         <p>Les dossiers intégrés permettent de préparer ce travail. La lecture guidée approfondit leur analyse.</p>
         ${seminar.method.map(paragraph => `<p>${cite(paragraph)}</p>`).join('')}
         <p><a href="${e(historyReferenceUrl(lesson.sources[seminar.source][3]))}" target="_blank" rel="noopener">Lecture guidée · ${lesson.sources[seminar.source][1]}</a></p>
-        <h3>Travail écrit</h3><p>${seminar.task}</p>
+        <h3>Travail écrit</h3><p>${seminar.task}</p>${seminarAnswer("advanced-seminar-answer", noteKey+":seminaire-approfondi")}
         <h3>Barème sur 20</h3><ul>${seminar.rubric.map(criterion => `<li>${criterion}</li>`).join('')}</ul>
         <details><summary>Consulter le corrigé ou le plan indicatif</summary><p>${seminar.answer}</p></details>
       </details>
@@ -289,6 +325,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
     });
   });
   v.querySelectorAll('[data-evo-answer]').forEach(button=>button.onclick=()=>{const field=button.closest('fieldset');const selected=field.querySelector('input:checked');field.querySelector('[role=status]').textContent=selected?((selected.value===button.dataset.evoAnswer?'Correct. ':'À revoir. ')+button.dataset.evoWhy):'Choisissez une réponse.';});
+  bindSeminarAnswers(v);
   bindMigrationMap(v);
   bindMigrationFlashcards(v,course,lesson);
   if(course.key==='physique')bindPhysicsLab(v,lesson);

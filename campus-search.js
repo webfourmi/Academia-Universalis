@@ -18,8 +18,10 @@ function locateLesson(courseKey,lessonId) {
 }
 
 function lessonForNote(key) {
-  const [courseKey,lessonId] = key.split(':');
-  if (key === courseKey+':'+lessonId) return locateLesson(courseKey,lessonId);
+  const [courseKey,lessonId,kind,...rest] = key.split(':');
+  if (!rest.length && (kind === undefined || kind === 'seminaire' || kind === 'seminaire-approfondi')) {
+    return locateLesson(courseKey,lessonId);
+  }
 }
 
 function saveReading() {
