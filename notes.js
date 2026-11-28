@@ -8,7 +8,7 @@ function downloadBackup(data, name) {
 }
 
 function exportNotes() {
-  downloadBackup({format:'academia-notes', version:1, notes:S.notes}, 'academia-notes-'+localStudyDate()+'.json');
+  downloadBackup({format:'academia-notes', version:2, notes:S.notes, readingTools:S.readingTools}, 'academia-notes-'+localStudyDate()+'.json');
 }
 
 function backup() {
@@ -84,7 +84,7 @@ async function importNotes(input, parsedData) {
     if (!safeBackupTree(data)) throw new Error('Structure invalide');
     const notes = data?.notes;
     const supported = data?.format === 'academia-notes'
-      ? data.version === 1
+      ? [1,2].includes(data.version)
       : data?.done && typeof data.done === 'object';
     if (!supported || !notes || typeof notes !== 'object' || Array.isArray(notes) ||
         !Object.values(notes).every(note => typeof note === 'string')) {
@@ -104,8 +104,13 @@ async function importNotes(input, parsedData) {
       added++;
     }
 
+    const incoming=data.readingTools;
+    if(incoming!==undefined&&!validReadingTools(incoming))throw new Error('Annotations invalides');
+    const existing=S.readingTools||{theme:'light',size:100,marks:{}};
+    const marks={...existing.marks};
+    for(const [key,mark] of Object.entries(incoming?.marks||{})){if(Object.hasOwn(marks,key)){if(JSON.stringify(marks[key])!==JSON.stringify(mark))conflicts++;}else{marks[key]=mark;added++;}}
     if (added) {
-      const next = {...S, notes:Object.fromEntries(merged)};
+      const next = {...S, notes:Object.fromEntries(merged),readingTools:{...existing,marks}};
       localStorage.au = JSON.stringify(next);
       S = next;
     }
