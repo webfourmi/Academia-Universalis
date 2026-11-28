@@ -7,31 +7,35 @@ const civilisations = [
   "sections": [
     [
       "Parentés",
-      "Humains, chimpanzés et bonobos partagent un ancêtre commun. Les humains ne descendent pas des chimpanzés actuels. L’évolution est ramifiée, non une marche vers la perfection. [1]"
+      "Humains, chimpanzés et bonobos partagent un ancêtre commun. Les humains ne descendent pas des chimpanzés actuels. L’évolution est ramifiée, non une marche vers la perfection. [1] Imaginez une bifurcation : deux populations issues d’une même population ancestrale suivent des trajectoires différentes. Chaque branche peut à son tour se diviser, se maintenir ou disparaître. Les espèces actuelles se situent aux extrémités des branches survivantes. On peut donc représenter un proche parent à côté d’une lignée, sans le placer sur le chemin qui mène à cette lignée."
     ],
     [
       "Les preuves",
-      "Fossiles, empreintes, outils et ADN ancien apportent des indices complémentaires. Un outil ne permet pas toujours d’identifier son fabricant. La conservation différentielle limite les inférences."
+      "Fossiles, empreintes, outils et ADN ancien apportent des indices complémentaires. Un outil ne permet pas toujours d’identifier son fabricant. La conservation différentielle limite les inférences. Commencez par nommer la trace, puis la conclusion qu’elle autorise. Une mâchoire permet de comparer des caractères anatomiques, tandis qu’un fragment de génome permet de tester certaines parentés. Des outils dans une même couche que des os peuvent éclairer leur contexte, sous réserve que la couche n’ait pas mêlé plusieurs épisodes. Une région où l’ADN se conserve mal peut être sous-représentée dans les études génétiques."
     ],
     [
       "Chronologie indicative",
-      "En millions d’années avant le présent : Sahelanthropus 7–6 ; Orrorin 6,1–5,7 ; Ardipithecus kadabba 5,8–5,2 ; A. ramidus 4,4 ; Australopithecus anamensis 4,2–3,8 ; A. afarensis 3,85–2,95 ; A. africanus 3,3–2,1 ; Paranthropus boisei 2,3–1,2 ; Homo habilis 2,4–1,4 ; H. erectus 1,89–0,11 ; H. heidelbergensis 0,7–0,2 (classification discutée) ; Néandertal 0,4–0,04 ; H. naledi 0,335–0,236 ; H. floresiensis 0,1–0,06 ; H. sapiens environ 0,3 à aujourd’hui. Intervalles fossiles arrondis, non dates exactes de spéciation. [7]"
+      "En millions d’années avant le présent : Sahelanthropus 7–6 ; Orrorin 6,1–5,7 ; Ardipithecus kadabba 5,8–5,2 ; A. ramidus 4,4 ; Australopithecus anamensis 4,2–3,8 ; A. afarensis 3,85–2,95 ; A. africanus 3,3–2,1 ; Paranthropus boisei 2,3–1,2 ; Homo habilis 2,4–1,4 ; H. erectus 1,89–0,11 ; H. heidelbergensis 0,7–0,2 (classification discutée) ; Néandertal 0,4–0,04 ; H. naledi 0,335–0,236 ; H. floresiensis 0,1–0,06 ; H. sapiens environ 0,3 à aujourd’hui. Intervalles fossiles arrondis, non dates exactes de spéciation. [7] Sur la frise, comparez la position et la longueur des barres. Le chevauchement entre Néandertal et les premiers Sapiens indique un chevauchement dans le temps. Pour inférer une rencontre, il faut aussi établir une proximité géographique et, si possible, une preuve indépendante. L’absence de barre au-delà d’une limite indique ici une limite des observations disponibles."
     ],
     [
       "Jebel Irhoud : anatomie",
-      "Les fossiles marocains associent une face relativement moderne et une boîte crânienne plus allongée. Cette évolution en mosaïque soutient une attribution à une phase ancienne de Sapiens. [3]"
+      "Les fossiles marocains associent une face relativement moderne et une boîte crânienne plus allongée. Cette évolution en mosaïque soutient une attribution à une phase ancienne de Sapiens. [3] La morphologie du visage et celle de la boîte crânienne sont deux séries de caractères. Leur combinaison à Irhoud montre que des caractères associés aux humains actuels ont pu apparaître à des rythmes différents. L’étude d’Hublin et de ses collègues porte sur cette attribution anatomique. Elle répond à une autre question que celle du laboratoire chargé de la datation. [3]"
     ],
     [
       "Jebel Irhoud : datation",
-      "La thermoluminescence des silex chauffés mesure le temps depuis leur dernière chauffe : 315 000 ± 34 000 ans. La résonance de spin électronique couplée aux séries de l’uranium sur une dent donne 286 000 ± 32 000 ans. Le contexte stratigraphique relie les silex aux fossiles. [4]"
+      "La thermoluminescence des silex chauffés mesure le temps depuis leur dernière chauffe : 315 000 ± 34 000 ans. La résonance de spin électronique couplée aux séries de l’uranium sur une dent donne 286 000 ± 32 000 ans. Le contexte stratigraphique relie les silex aux fossiles. [4] Exemple résolu avec des valeurs fictives : 100 ± 10 ka donne l’intervalle 90–110 ka et 108 ± 6 ka donne 102–114 ka. La borne basse commune est la plus grande des deux bornes basses (102) et la borne haute commune la plus petite des bornes hautes (110). Le recouvrement est donc 102–110 ka. Il montre une compatibilité des intervalles, tandis que le lien entre les événements dépend de ce que chaque méthode date et du contexte de fouille. Appliquez ensuite la même méthode aux estimations du tableau."
     ],
     [
       "Populations et échanges",
-      "Les génomes anciens montrent des échanges entre Sapiens et Néandertal ; un individu avait une mère néandertalienne et un père denisovien. [2, 5] Omo I possède une ancienneté minimale liée à une éruption datée de 233 000 ± 22 000 ans. [6] Une origine africaine ne désigne pas un lieu de naissance unique."
+      "Les génomes anciens montrent des échanges entre Sapiens et Néandertal ; un individu avait une mère néandertalienne et un père denisovien. [2, 5] Omo I possède une ancienneté minimale liée à une éruption datée de 233 000 ± 22 000 ans. [6] Une origine africaine ne désigne pas un lieu de naissance unique. Une origine à l’échelle africaine peut être étudiée comme une histoire de populations présentant des caractères et des âges différents. Pour l’étayer, on confronte plusieurs sites et on explicite les lacunes géographiques du registre fossile. De même, les échanges génétiques indiqués ici relient des populations déjà différenciées et complètent l’image d’un arbre ramifié. [2, 5, 6]"
     ],
     [
       "Glossaire",
       "Phylogénie : relations évolutives. Stratigraphie : relations entre couches. Taphonomie : transformations des restes après la mort. Introgression : transfert génétique par hybridation et croisements ultérieurs. Évolution en mosaïque : rythmes différents selon les caractères."
+    ],
+    [
+      "Synthèse",
+      "Pour défendre une hypothèse sur les origines humaines, distinguez la parenté, la coexistence et les échanges entre lignées. À Jebel Irhoud, l’anatomie permet une attribution, tandis que les datations situent des matériaux et des événements. L’accord de plusieurs indices renforce une interprétation à condition de respecter leurs limites."
     ]
   ],
   "diagram": [
@@ -54,7 +58,7 @@ const civilisations = [
       ]
     ]
   ],
-  "dossier": "Comparez les résumés [3] et [4] : distinguez attribution anatomique et datation. Les publications originales ne sont pas toutes intégralement accessibles.",
+  "dossier": "Deux notices intégrées : Hublin et ses collègues décrivent une face relativement moderne associée à une boîte crânienne allongée [3]. Richter et ses collègues datent les silex chauffés associés aux fossiles, avec une estimation de 315 000 ± 34 000 ans [4]. Classez les observations selon qu’elles éclairent l’attribution anatomique ou la datation. Les articles originaux prolongent l’exercice.",
   "activity": "Calculez les intervalles des deux datations. Se recouvrent-ils ? Pourquoi un silex ne date-t-il pas directement un fossile ? Pourquoi ne peut-on identifier un lieu de naissance unique de Sapiens ?",
   "correction": "Recouvrement : 281 000–318 000 ans. Le silex date une chauffe, son association dépend de la stratigraphie. Le registre fossile incomplet ne permet pas d’identifier le premier individu ni une origine géographique unique.",
   "quiz": [
@@ -126,7 +130,8 @@ const civilisations = [
       "Chronologie indicative",
       "anglais"
     ]
-  ]
+  ],
+  "overview": "<p><strong>Introduction.</strong> Les fossiles ne livrent que des fragments de populations dispersées dans le temps et l’espace. Comment passer de ces fragments à une histoire des parentés humaines ? On examinera d’abord les indices de parenté et de coexistence, puis on dissociera, à Jebel Irhoud, l’identification des fossiles de la mesure de leur âge.</p>"
 },
 {
   "id": "migrations-humaines",
@@ -136,35 +141,39 @@ const civilisations = [
   "sections": [
     [
       "Une histoire de populations",
-      "Une dispersion désigne une extension géographique, non un voyage unique. Une présence archéologique établit une occupation, non la continuité d'une population ni son ascendance. Problématique : comment reconstruire des déplacements sans témoignages écrits ?"
+      "Une dispersion désigne une extension géographique, non un voyage unique. Une présence archéologique établit une occupation, non la continuité d'une population ni son ascendance. Problématique : comment reconstruire des déplacements sans témoignages écrits ? Distinguez trois affirmations qui exigent chacune des preuves différentes : une population était présente dans un lieu, elle est arrivée par tel trajet, ses descendants sont restés dans la région. Une carte de sites répond d’abord à la première. Pour identifier un itinéraire, il faudrait relier des occupations successives dans l’espace et le temps et écarter les scénarios concurrents."
     ],
     [
       "Dmanisi : premiers Homo en Eurasie",
-      "En Géorgie, les outils des couches anciennes ont été datés en 2011 entre 1,85 et 1,78 million d'années ; les fossiles de couches ultérieures avoisinent 1,77 million d'années. Une étude de 2022 situe les occupations vers 1,80–1,76 Ma. Les estimations évoluent avec les méthodes. [1, 2]"
+      "En Géorgie, les outils des couches anciennes ont été datés en 2011 entre 1,85 et 1,78 million d'années ; les fossiles de couches ultérieures avoisinent 1,77 million d'années. Une étude de 2022 situe les occupations vers 1,80–1,76 Ma. Les estimations évoluent avec les méthodes. [1, 2] Pour comparer des dates, utilisez une unité commune : 1 Ma vaut 1 000 ka. Exemple résolu : 1,75 Ma × 1 000 = 1 750 ka. Dans le dossier de Dmanisi, distinguez les outils des niveaux les plus anciens et les fossiles provenant de niveaux ultérieurs. La présence d’un site à une date donnée fournit une borne pour la présence locale. La date du premier départ d’Afrique reste une autre question. [1, 2]"
     ],
     [
       "Le crâne D4500",
-      "Associé à la mandibule D2600, ce crâne présente un volume endocrânien de 546 cm³ et une face projetée vers l'avant. Les cinq crânes du site documentent une diversité anatomique. Les auteurs proposent une seule lignée évolutive pour les premiers Homo : c'est une interprétation taxonomique, non une certitude. [3]"
+      "Associé à la mandibule D2600, ce crâne présente un volume endocrânien de 546 cm³ et une face projetée vers l'avant. Les cinq crânes du site documentent une diversité anatomique. Les auteurs proposent une seule lignée évolutive pour les premiers Homo : c'est une interprétation taxonomique, non une certitude. [3] La capacité endocrânienne donne une mesure approximative du volume qu’occupait le cerveau. Avec D4500, elle sert à tester une hypothèse simple : un volume élevé était-il indispensable à une présence ancienne hors d’Afrique ? Le crâne fragilise cette condition supposée. À lui seul, il ne précise ni l’itinéraire ni les techniques qui ont rendu cette présence possible. [3]"
     ],
     [
       "Sapiens au Levant",
-      "Une étude de 2018 propose 177–194 milliers d'années pour le maxillaire Misliya-1. Sharp et Paces contestent l'interprétation de certaines mesures uranium-thorium. Une date de présence ne suffit pas à démontrer une filiation avec les populations actuelles. [4, 5]"
+      "Une étude de 2018 propose 177–194 milliers d'années pour le maxillaire Misliya-1. Sharp et Paces contestent l'interprétation de certaines mesures uranium-thorium. Une date de présence ne suffit pas à démontrer une filiation avec les populations actuelles. [4, 5] Placez la plage 177–194 ka sur une droite des âges : 194 ka représente la borne la plus ancienne. Comparez ensuite avec une seconde plage, dans la même unité, avant de parler d’antériorité. La discussion sur Misliya porte aussi sur les matériaux et événements datés. La chronologie et l’identification du fossile doivent donc être examinées ensemble, avec leurs incertitudes respectives. [4, 5]"
     ],
     [
       "Sahul",
-      "Lorsque les mers étaient plus basses, Australie et Nouvelle-Guinée formaient le Sahul. Des traversées maritimes restaient nécessaires. À Madjedbebe, des outils et des sédiments datés par luminescence ont conduit les chercheurs à proposer une occupation vers 65 000 ans ; cette ancienneté demeure discutée. [6]"
+      "Lorsque les mers étaient plus basses, Australie et Nouvelle-Guinée formaient le Sahul. Des traversées maritimes restaient nécessaires. À Madjedbebe, des outils et des sédiments datés par luminescence ont conduit les chercheurs à proposer une occupation vers 65 000 ans ; cette ancienneté demeure discutée. [6] Sur la carte, distinguez l’étendue du Sahul aux basses mers, l’emplacement du site et un itinéraire hypothétique. Le contexte maritime rend les franchissements plausibles et nécessaires pour atteindre le Sahul, mais la position du site ne permet pas de choisir un point de départ, une traversée précise ou un type d’embarcation. [6]"
     ],
     [
       "Amériques",
-      "À White Sands, des empreintes humaines sont associées à des couches datées vers 23–21 milliers d'années. La datation de graines aquatiques pouvait être biaisée par du carbone ancien. Des mesures indépendantes sur pollen terrestre et sédiments confortent cette estimation. Elles ne fixent pas la route d'arrivée. [7]"
+      "À White Sands, des empreintes humaines sont associées à des couches datées vers 23–21 milliers d'années. La datation de graines aquatiques pouvait être biaisée par du carbone ancien. Des mesures indépendantes sur pollen terrestre et sédiments confortent cette estimation. Elles ne fixent pas la route d'arrivée. [7] Une plante aquatique peut incorporer du carbone dont une partie est plus ancienne que la plante elle-même. Sa datation peut alors vieillir artificiellement l’horizon. À White Sands, les chercheurs ont testé ce problème avec du pollen terrestre et avec la luminescence de sédiments. Comparer ces résultats revient à comparer des méthodes dont les biais ne sont pas identiques. [7, 8]"
     ],
     [
       "Méthodes et limites",
-      "La stratigraphie ordonne les dépôts ; le paléomagnétisme rapproche des inversions du champ terrestre de chronologies calibrées ; la luminescence mesure le temps depuis la dernière exposition à la lumière des grains étudiés. Le radiocarbone date du carbone organique et dépend de sa provenance. La génétique peut renseigner des parentés et des mélanges, mais non restituer seule un itinéraire exact."
+      "La stratigraphie ordonne les dépôts ; le paléomagnétisme rapproche des inversions du champ terrestre de chronologies calibrées ; la luminescence mesure le temps depuis la dernière exposition à la lumière des grains étudiés. Le radiocarbone date du carbone organique et dépend de sa provenance. La génétique peut renseigner des parentés et des mélanges, mais non restituer seule un itinéraire exact. Application à la carte du cours : notez pour chacun des quatre points le nom, la date ou la plage, la nature de la preuve et une limite. Une légende doit préciser que les contours sont schématiques. Sans donnée reliant des points, évitez les flèches de déplacement. Pour comparer deux sites, exprimez leurs dates dans la même unité et précisez quels événements elles représentent."
     ],
     [
       "Glossaire",
       "Dispersion : extension géographique d'une population. Sahul : continent réunissant Australie et Nouvelle-Guinée en période de bas niveau marin. Taphonomie : transformations des vestiges. Effet réservoir : biais lié à du carbone ancien. OSL : luminescence stimulée optiquement. Ma : million d'années ; ka : millier d'années."
+    ],
+    [
+      "Synthèse",
+      "Comparer des dispersions suppose de convertir les unités, d’identifier ce que date chaque méthode et de replacer la trace dans son contexte. Une occupation datée établit une présence locale. L’itinéraire, la continuité et la filiation exigent chacun des indices supplémentaires."
     ]
   ],
   "diagram": [
@@ -277,51 +286,55 @@ const civilisations = [
       "Données CC0 ; consultation 27/11/2026",
       "anglais"
     ]
-  ]
+  ],
+  "overview": "<p><strong>Introduction.</strong> Des outils en Géorgie, une mâchoire au Levant, des sédiments dans le Sahul et des empreintes au Nouveau-Mexique offrent quatre façons d’attester une présence. Comment comparer des traces aussi différentes pour discuter d’une dispersion ? Pour chaque site, relevez le matériau daté, l’événement auquel il est relié et la portée de la conclusion.</p>"
 },
   {
-    
   "id": "mobilites",
   "title": "Chasseurs-cueilleurs et mobilités",
   "goal": "Distinguer mobilité résidentielle et logistique, interpréter trois indices archéologiques et défendre une hypothèse réfutable.",
   "prerequisite": "Les premières migrations humaines ; distinguer observation et interprétation.",
-  "overview": "Pourquoi se déplacer, pourquoi revenir, pourquoi rester ? Étude essentielle : 40 min ; parcours universitaire : 2 h ; recherche : 4 h.",
+  "overview": "<p><strong>Introduction.</strong> Des foyers, des outils et des dents d’animaux révèlent des activités accomplies en des lieux et à des moments différents. Comment reconstituer la durée d’un séjour et distinguer un camp occupé longtemps d’un site revisité ? La leçon combine les échelles de mobilité de Binford et une étude archéologique de la saison de chasse à Hayonim.</p><p>Pourquoi se déplacer, pourquoi revenir, pourquoi rester ? Étude essentielle : 40 min ; parcours universitaire : 2 h ; recherche : 4 h.</p>",
   "sections": [
     [
       "Habiter un territoire",
-      "La subsistance par chasse, pêche et collecte ne détermine pas une forme unique de résidence. Un territoire comprend des lieux de séjour, de prélèvement, de rencontre et de circulation. Les déplacements peuvent répondre aux variations des ressources, aux relations sociales ou aux besoins techniques. Un campement n’est qu’une partie de ce système."
+      "La subsistance par chasse, pêche et collecte ne détermine pas une forme unique de résidence. Un territoire comprend des lieux de séjour, de prélèvement, de rencontre et de circulation. Les déplacements peuvent répondre aux variations des ressources, aux relations sociales ou aux besoins techniques. Un campement n’est qu’une partie de ce système. Pour raisonner à l’échelle d’un territoire, séparez le lieu d’habitation, le lieu de prélèvement et le lieu où les ressources sont préparées ou consommées. Un ensemble d’os découvert dans le lieu d’habitation n’implique pas que la chasse se soit pratiquée sur place. Les déplacements de personnes, de matériaux et de denrées posent donc des questions distinctes."
     ],
     [
       "Deux échelles de mobilité",
-      "Binford distingue les déplacements de résidence et les sorties spécialisées depuis une base. Dans le premier cas, le groupe déplace son lieu de vie ; dans le second, certains membres rapportent des ressources. Ces stratégies se combinent : elles ne constituent ni deux peuples figés ni deux stades d’évolution. [1]"
+      "Binford distingue les déplacements de résidence et les sorties spécialisées depuis une base. Dans le premier cas, le groupe déplace son lieu de vie ; dans le second, certains membres rapportent des ressources. Ces stratégies se combinent : elles ne constituent ni deux peuples figés ni deux stades d’évolution. [1] Exemple fictif : plusieurs foyers quittent leur vallée pour un séjour saisonnier en altitude. C’est un déplacement résidentiel. Deux personnes quittent ensuite ce camp et y rapportent des matières premières. Cette sortie est logistique. La recherche de vestiges doit porter sur la relation entre ces lieux, car un seul site peut conserver surtout la trace d’une des deux activités. [1]"
     ],
     [
       "Calendriers et stockage",
-      "Le stockage peut différer la consommation et rendre avantageux le retour à un lieu. Mais il nécessite du travail, de la protection et des contenants adaptés. Une ressource abondante à une saison ne garantit pas sa disponibilité annuelle. Les décisions dépendent aussi du coût du transport et des risques."
+      "Le stockage peut différer la consommation et rendre avantageux le retour à un lieu. Mais il nécessite du travail, de la protection et des contenants adaptés. Une ressource abondante à une saison ne garantit pas sa disponibilité annuelle. Les décisions dépendent aussi du coût du transport et des risques. Construisez un calendrier avec trois colonnes : moment où la ressource est disponible, moment où elle est transportée et moment où elle est consommée. Un stockage peut dissocier ces moments. Ainsi, un déchet de consommation ne donne pas à lui seul la saison de récolte. Le calendrier constitue une hypothèse à confronter à des traces indépendantes."
     ],
     [
       "Le Levant à la fin du Pléistocène",
-      "Le Natoufien précède les premières sociétés agricoles du Levant. Des séjours prolongés sont compatibles avec une alimentation principalement issue de ressources sauvages. Le degré de mobilité varie selon les sites et les moments : une architecture durable ne suffit pas à démontrer une résidence continue."
+      "Le Natoufien précède les premières sociétés agricoles du Levant. Des séjours prolongés sont compatibles avec une alimentation principalement issue de ressources sauvages. Le degré de mobilité varie selon les sites et les moments : une architecture durable ne suffit pas à démontrer une résidence continue. Le Natoufien fournit un contre-exemple à une succession simple qui ferait de l’agriculture la condition préalable de tout séjour prolongé. Sur un site donné, comparez la fréquence des réfections, la continuité des dépôts et les indices saisonniers. Un bâtiment entretenu suggère un investissement durable, compatible aussi avec des retours réguliers."
     ],
     [
       "Étude originale : Hayonim",
-      "Lieberman (1991) analyse les couches de cément des dents de gazelles de Hayonim pour estimer leur saison de mort. L’étude propose une fréquentation sur plusieurs saisons. Elle repose sur la relation entre croissance dentaire et cycle annuel, ainsi que sur la qualité de conservation et du contexte. Une accumulation de visites distinctes reste à examiner. [2]"
+      "Lieberman (1991) analyse les couches de cément des dents de gazelles de Hayonim pour estimer leur saison de mort. L’étude propose une fréquentation sur plusieurs saisons. Elle repose sur la relation entre croissance dentaire et cycle annuel, ainsi que sur la qualité de conservation et du contexte. Une accumulation de visites distinctes reste à examiner. [2] Dans l’étude, la dent sert à estimer la saison de mort de la gazelle, à partir de la relation entre croissance du cément et cycle annuel. Présentez d’abord cette observation biologique. Pour en faire un indice de résidence, il faut ensuite relier la chasse, l’apport de la carcasse et le dépôt à une même séquence. Plusieurs saisons représentées sont compatibles avec plusieurs modalités d’occupation. [2]"
     ],
     [
       "Comparer les preuves",
-      "Un mur renseigne sur l’investissement ; une pierre distante sur la circulation ; une dent sur un événement biologique. Aucun indice isolé ne démontre à lui seul un calendrier résidentiel. Les couches remaniées et les dépôts mêlés peuvent produire une fausse impression de continuité."
+      "Un mur renseigne sur l’investissement ; une pierre distante sur la circulation ; une dent sur un événement biologique. Aucun indice isolé ne démontre à lui seul un calendrier résidentiel. Les couches remaniées et les dépôts mêlés peuvent produire une fausse impression de continuité. Exemple fictif : sur dix dents provenant d’un même dépôt, quatre sont attribuées à l’automne. La proportion est 4 ÷ 10 × 100, soit 40 % des dents étudiées. Ce résultat décrit l’échantillon. Si l’on ajoute des dents d’une autre couche, le total peut agréger deux occupations. Pour départager fréquentation longue et visites séparées, comparez les couches et recherchez des indices saisonniers indépendants."
     ],
     [
       "Réseaux sociaux et ethnographie",
-      "Migliano et ses collègues ont mesuré les contacts de proximité chez des Agta et BaYaka contemporains. Les liens non familiaux peuvent favoriser les échanges de connaissances. Cette enquête constitue une comparaison méthodologique, non une observation de la préhistoire ; elle ne permet pas de transposer directement les pratiques actuelles aux populations anciennes. [3]"
+      "Migliano et ses collègues ont mesuré les contacts de proximité chez des Agta et BaYaka contemporains. Les liens non familiaux peuvent favoriser les échanges de connaissances. Cette enquête constitue une comparaison méthodologique, non une observation de la préhistoire ; elle ne permet pas de transposer directement les pratiques actuelles aux populations anciennes. [3] L’ethnographie peut suggérer des relations à tester. Par exemple, si des contacts hors parenté facilitent des échanges, on peut chercher si la circulation d’une matière première s’accorde avec plusieurs réseaux plausibles. Le matériau seul laisse ouvertes des possibilités comme le déplacement, l’échange direct ou un transfert par étapes. [3]"
     ],
     [
       "Climat : tester plutôt que supposer",
-      "Une étude isotopique des dents de gazelles de deux sites de Galilée indique que le Dryas récent (environ 12 900 à 11 500 ans BP) y fut plus frais, sans preuve de diminution locale de la disponibilité en eau. Un changement climatique global ne se traduit donc pas partout par les mêmes contraintes. [4]"
+      "Une étude isotopique des dents de gazelles de deux sites de Galilée indique que le Dryas récent (environ 12 900 à 11 500 ans BP) y fut plus frais, sans preuve de diminution locale de la disponibilité en eau. Un changement climatique global ne se traduit donc pas partout par les mêmes contraintes. [4] Posez une prédiction testable avant d’attribuer la mobilité au climat. Une hypothèse de pénurie d’eau suppose des indices locaux compatibles avec une telle baisse, à rapprocher de la chronologie des occupations. L’étude de Galilée illustre l’intérêt de tester séparément température et disponibilité en eau. [4]"
     ],
     [
       "Glossaire",
       "Mobilité résidentielle : déplacement du lieu de vie. Mobilité logistique : sortie spécialisée. Saisonnalité : distribution annuelle d’un phénomène. Cément : tissu recouvrant la racine dentaire. Taphonomie : transformations entre dépôt et observation. Palimpseste : superposition d’événements difficiles à séparer. Analogie ethnographique : comparaison contrôlée avec des pratiques documentées. BP : avant 1950."
+    ],
+    [
+      "Synthèse",
+      "Une dent peut renseigner une saison de chasse, un foyer une activité et un bâtiment un investissement. Pour reconstruire un calendrier de résidence, reliez les traces au sein de chaque couche, puis confrontez au moins deux scénarios et précisez l’observation qui permettrait de les départager."
     ]
   ],
   "diagram": [
@@ -354,7 +367,7 @@ const civilisations = [
       ]
     ]
   ],
-  "dossier": "Document authentique : Lieberman [2], figure 1 (carte des sites) et illustrations de la méthode dentaire dans l’article original, accessible sur Persée. Observer les documents dans leur contexte ; aucune reproduction locale sans licence vérifiée. Question : que mesure la dent directement ? Corrigé : un signal biologique servant à estimer une saison, non la durée de présence humaine. Comparer ensuite le résumé et les figures de Migliano [3], accessibles selon les droits de l’éditeur.",
+  "dossier": "Document authentique : Lieberman [2], figure 1 (carte des sites) et illustrations de la méthode dentaire dans l’article original, accessible sur Persée. Observer les documents dans leur contexte ; aucune reproduction locale sans licence vérifiée. Question : que mesure la dent directement ? Corrigé : un signal biologique servant à estimer une saison, non la durée de présence humaine. Comparer ensuite le résumé et les figures de Migliano [3], accessibles selon les droits de l’éditeur. Pour l’activité obligatoire, retenez la chaîne expliquée dans le cours : dépôt de cément → indice de saison de mort → hypothèse de chasse → scénario d’occupation à vérifier. Les mesures du laboratoire sont fictives.",
   "activity": "Laboratoire sur données fictives : une couche A contient 8 dents attribuées à l’automne ; une couche B, indépendante, contient 6 dents attribuées au printemps. Les deux couches comportent des traces de foyer. 1. Calculer la proportion automnale de l’ensemble. 2. Proposer deux scénarios. 3. Identifier une preuve complémentaire et un biais. 4. Expliquer pourquoi le regroupement des couches est risqué.",
   "correction": "1. 8/14 = 57,1 %. 2. Résidence prolongée avec activités variables, ou visites distinctes en automne et au printemps. 3. Chercher plusieurs séries saisonnières dans un contexte stratigraphique fin ; contrôler le remaniement et la conservation différentielle. 4. Le total efface la séparation des événements. Ces nombres sont inventés pour l’exercice et ne proviennent pas de Hayonim.",
   "quiz": [
@@ -485,55 +498,57 @@ const civilisations = [
       "EN"
     ]
   ]
-
-  },
+},
   {
-    
   "id": "neolithiques",
   "title": "Néolithiques et domestications",
   "goal": "Distinguer collecte, culture, domestication et agriculture ; comparer quatre régions ; interpréter une série archéobotanique quantitative.",
   "prerequisite": "Chasseurs-cueilleurs et mobilités ; savoir calculer un pourcentage.",
-  "overview": "Comment les pratiques humaines modifient-elles les populations vivantes ? Essentiel : 40 min ; universitaire : 2 h ; recherche : 4 h.",
+  "overview": "<p><strong>Introduction.</strong> En passant du Proche-Orient au bas Yangzi, au Mexique et à la Nouvelle-Guinée, on change de plantes, de paysages et d’archives. Comment reconnaître une transformation des pratiques et une domestication lorsque les témoins diffèrent d’un site à l’autre ? La leçon établit des critères comparables et montre leurs limites.</p><p>Comment les pratiques humaines modifient-elles les populations vivantes ? Essentiel : 40 min ; universitaire : 2 h ; recherche : 4 h.</p>",
   "sections": [
     [
       "Des néolithisations au pluriel",
-      "Le terme Néolithique désigne des configurations historiques variables. La poterie, la résidence durable, la production alimentaire et les outils polis ne constituent pas partout un ensemble simultané. La transition est étudiée régionalement, sans hiérarchie entre sociétés."
+      "Le terme Néolithique désigne des configurations historiques variables. La poterie, la résidence durable, la production alimentaire et les outils polis ne constituent pas partout un ensemble simultané. La transition est étudiée régionalement, sans hiérarchie entre sociétés. Pour comparer deux régions, fixez une seule variable à la fois : présence de plantes, transformation de leurs caractères, aménagement du milieu ou dépendance de l’alimentation. Les dates correspondant à ces variables peuvent être différentes pour une même région. C’est à partir de cette distinction qu’on parlera de plusieurs néolithisations."
     ],
     [
       "Quatre concepts",
-      "Collecter consiste à prélever des ressources ; cultiver implique de favoriser la croissance des plantes ; domestiquer implique une transformation héréditaire de populations sous influence humaine ; une économie agricole repose principalement sur la production cultivée. Une plante cultivée peut encore présenter des caractères sauvages. [1]"
+      "Collecter consiste à prélever des ressources ; cultiver implique de favoriser la croissance des plantes ; domestiquer implique une transformation héréditaire de populations sous influence humaine ; une économie agricole repose principalement sur la production cultivée. Une plante cultivée peut encore présenter des caractères sauvages. [1] Exemple de raisonnement : une graine dans un foyer atteste qu’une plante est parvenue jusqu’au site. Une préparation répétée du sol peut étayer une hypothèse de culture. Une série de caractères héréditaires devenant plus fréquents apporte un autre type de preuve, utile pour discuter la domestication. La place de ces plantes dans l’alimentation exige des données supplémentaires. [1]"
     ],
     [
       "Sélection et transmission",
-      "Lorsqu'une récolte favorise certains individus et que ceux-ci fournissent les semences suivantes, leur caractère héréditaire peut devenir plus fréquent. La sélection n'implique pas nécessairement un projet conscient. Chez certaines céréales, la rétention des graines facilite leur récolte mais limite leur dispersion naturelle."
+      "Lorsqu'une récolte favorise certains individus et que ceux-ci fournissent les semences suivantes, leur caractère héréditaire peut devenir plus fréquent. La sélection n'implique pas nécessairement un projet conscient. Chez certaines céréales, la rétention des graines facilite leur récolte mais limite leur dispersion naturelle. Lors de la récolte de certaines céréales, les grains qui se détachent spontanément peuvent tomber avant le passage du récolteur. Les plants dont les grains restent fixés peuvent alors contribuer davantage aux semences conservées. Si le caractère est transmis, plusieurs cycles peuvent modifier sa fréquence. Le mécanisme proposé doit être confronté aux échantillons et aux pratiques possibles."
     ],
     [
       "Proche-Orient : plantes et animaux",
-      "Les céréales, légumineuses et troupeaux ont des histoires distinctes. La synthèse de Zeder situe des pratiques de gestion de populations encore morphologiquement sauvages vers 11 500 ans calendaires BP ou auparavant. Les trajectoires concernent plusieurs secteurs du Proche-Orient plutôt qu'un unique village fondateur. [5]"
+      "Les céréales, légumineuses et troupeaux ont des histoires distinctes. La synthèse de Zeder situe des pratiques de gestion de populations encore morphologiquement sauvages vers 11 500 ans calendaires BP ou auparavant. Les trajectoires concernent plusieurs secteurs du Proche-Orient plutôt qu'un unique village fondateur. [5] Pour étudier une plante ou un troupeau, organisez les observations dans l’ordre suivant : première présence attestée, premiers indices de gestion, indices de transformation biologique. La série repose sur des sites différents et sur des couches successives. Ce cadre explique pourquoi une date de gestion ne vaut pas à elle seule date de domestication. [5]"
     ],
     [
       "Chine : Tianluoshan",
-      "Dans le Zhejiang, Fuller et ses collègues comparent des bases d'épillets de riz. Entre environ 6 900 et 6 600 ans avant le présent, le caractère de rétention des grains devient plus fréquent : 27 % puis 39 %. La part des restes de riz parmi les restes végétaux passe de 8 % à 24 %. Ces deux indicateurs ne mesurent pas la même chose. [2]"
+      "Dans le Zhejiang, Fuller et ses collègues comparent des bases d'épillets de riz. Entre environ 6 900 et 6 600 ans avant le présent, le caractère de rétention des grains devient plus fréquent : 27 % puis 39 %. La part des restes de riz parmi les restes végétaux passe de 8 % à 24 %. Ces deux indicateurs ne mesurent pas la même chose. [2] Exemple résolu sur des chiffres fictifs : un caractère passe de 20 % à 30 %. L’écart est 30 − 20 = 10 points de pourcentage. La hausse relative, rapportée à la valeur de départ, vaut 10 ÷ 20 × 100 = 50 %. À Tianluoshan, calculez séparément ces deux grandeurs pour les deux indicateurs. Le nombre de restes dépend aussi de leur conservation, du prélèvement et du traitement des plantes. Il ne mesure donc pas directement leur apport calorique. [2]"
     ],
     [
       "Mexique : Xihuatoxtla",
-      "Dans le bassin du Balsas, des résidus microscopiques conservés sur des outils et dans des sédiments renseignent sur la présence précoce du maïs, vers 8 700 ans calendaires BP au moins. Les dates concernent le contexte étudié : elles ne désignent pas la première plante domestiquée. [3, 4]"
+      "Dans le bassin du Balsas, des résidus microscopiques conservés sur des outils et dans des sédiments renseignent sur la présence précoce du maïs, vers 8 700 ans calendaires BP au moins. Les dates concernent le contexte étudié : elles ne désignent pas la première plante domestiquée. [3, 4] Comparez ce dossier à celui de Tianluoshan : à Xihuatoxtla on étudie des microrestes dans un contexte stratifié, tandis que l’évolution de la proportion des bases d’épillets est au centre du dossier sur le riz. La présence d’une plante, la fréquence d’un caractère et la dépendance alimentaire se discutent avec des séries différentes. [2, 3, 4]"
     ],
     [
       "Afrique occidentale et Nouvelle-Guinée",
-      "La synthèse comparative de Fuller aborde le mil perlé africain et les cultures à multiplication végétative des régions tropicales. Les tubercules et plantes reproduites par fragments posent des problèmes différents des céréales : les critères fondés sur la dispersion des graines ne sont pas universels. [1] Le dossier de Kuk en Nouvelle-Guinée mérite une lecture complémentaire ; son article original n’a pas pu être vérifié lors de cette révision."
+      "La synthèse comparative de Fuller aborde le mil perlé africain et les cultures à multiplication végétative des régions tropicales. Les tubercules et plantes reproduites par fragments posent des problèmes différents des céréales : les critères fondés sur la dispersion des graines ne sont pas universels. [1] À Kuk, Denham et ses collègues associent stratigraphie, datations et microrestes végétaux. Ils interprètent des aménagements en buttes vers 6 950–6 440 ans calendaires BP comme des indices de culture. Comparez cette archive du sol avec celle des bases d’épillets à Tianluoshan : la première renseigne d’abord sur la gestion du milieu et la seconde sur des caractères du riz. Dans les deux cas, la datation doit porter sur un contexte associé aux traces. [2, 6]"
     ],
     [
       "Domestication animale",
-      "La gestion des troupeaux peut être étudiée par les profils de mortalité selon l'âge et le sexe, les changements morphologiques et les données génétiques. Un profil de mortalité peut aussi dépendre de pratiques de chasse ou de conservation différentielle : croiser les preuves est indispensable. Un animal apprivoisé ne constitue pas à lui seul une population domestiquée."
+      "La gestion des troupeaux peut être étudiée par les profils de mortalité selon l'âge et le sexe, les changements morphologiques et les données génétiques. Un profil de mortalité peut aussi dépendre de pratiques de chasse ou de conservation différentielle : croiser les preuves est indispensable. Un animal apprivoisé ne constitue pas à lui seul une population domestiquée. Un profil dominé par certaines classes d’âge peut être compatible avec la sélection des animaux abattus dans un troupeau, mais aussi avec une chasse sélective. Pour trancher, comparez plusieurs couches et recherchez si les différences de taille, de sexe ou de morphologie appuient la même interprétation. [5]"
     ],
     [
       "Conséquences et causalité",
-      "La production alimentaire peut modifier le travail saisonnier, la densité de population, le stockage, les maladies et les paysages. Ces effets varient selon les contextes ; ni la croissance démographique ni les inégalités ne constituent une conséquence automatique à une date unique. Pour tester une cause, formuler une prédiction et chercher des données susceptibles de la réfuter."
+      "La production alimentaire peut modifier le travail saisonnier, la densité de population, le stockage, les maladies et les paysages. Ces effets varient selon les contextes ; ni la croissance démographique ni les inégalités ne constituent une conséquence automatique à une date unique. Pour tester une cause, formuler une prédiction et chercher des données susceptibles de la réfuter. Pour tester si la production alimentaire entraîne une occupation plus dense, définissez d’abord un indice de densité indépendant des restes de plantes. Comparez ensuite des séquences de datation compatibles. Une hausse observée dans un habitat particulier ne permet pas de généraliser à tous les environnements ou d’isoler un effet unique."
     ],
     [
       "Glossaire",
       "Archéobotanique : étude des vestiges végétaux. Phytolithe : structure minérale formée dans une plante. Amidon : réserve glucidique végétale. Épillet : unité florale des graminées. Rachis : axe portant les épillets. Sélection : variation du succès reproductif de caractères héréditaires. Multiplication végétative : reproduction à partir de parties de plante. Cal BP : années calendaires avant 1950."
+    ],
+    [
+      "Synthèse",
+      "Les néolithisations regroupent des trajectoires régionales. Distinguez collecte, culture, domestication et dépendance alimentaire, puis associez chaque affirmation à l’indice qui peut l’étayer. Comparez les preuves avec des unités explicites et signalez leurs différences de conservation et d’échantillonnage."
     ]
   ],
   "diagram": [
@@ -740,49 +755,60 @@ const civilisations = [
       "https://www.journals.uchicago.edu/doi/full/10.1086/659307",
       "Synthèse ; résumé consulté",
       "EN"
+    ],
+    [
+      "Denham et al.",
+      "Origins of agriculture at Kuk Swamp in the Highlands of New Guinea",
+      "2003",
+      "https://researchportalplus.anu.edu.au/en/publications/origins-of-agriculture-at-kuk-swamp-in-the-highlands-of-new-guine/",
+      "Correspondance entre aménagements du marais, microrestes et datations.",
+      "anglais"
     ]
   ]
-
-  },
+},
   {
   "id": "villages-neolithiques",
   "title": "Villages et premières sociétés agricoles",
   "revision": 1,
   "goal": "Comparer deux habitats, interpréter les indices de santé et discuter les modèles d'organisation sociale.",
   "prerequisite": "Néolithiques et domestications.",
-  "overview": "Problématique : vivre ensemble transforme-t-il nécessairement la société ? 40 minutes / 2 heures / 4 heures.",
+  "overview": "<p><strong>Introduction.</strong> Jéricho conserve des ouvrages collectifs et Çatalhöyük une longue succession de maisons et de sépultures. Que permettent ces vestiges de comprendre de l’habitat, de la santé et de l’organisation sociale ? On partira des traces de résidence, avant d’examiner les interprétations politiques et démographiques qu’elles peuvent soutenir.</p><p>Problématique : vivre ensemble transforme-t-il nécessairement la société ? 40 minutes / 2 heures / 4 heures.</p>",
   "sections": [
     [
       "Habiter durablement",
-      "La sédentarité est une durée de résidence, non une absence de déplacements. Un village peut réunir des foyers qui exploitent des territoires éloignés. Les maisons, leurs reconstructions et leurs dépôts renseignent sur la durée d'occupation."
+      "La sédentarité est une durée de résidence, non une absence de déplacements. Un village peut réunir des foyers qui exploitent des territoires éloignés. Les maisons, leurs reconstructions et leurs dépôts renseignent sur la durée d'occupation. Ne confondez pas la durée d’un bâtiment avec la durée du séjour de ses occupants. L’alternance entre sols, épisodes d’entretien et reconstructions est un indice plus précis qu’un bâtiment pris isolément. La recherche peut ainsi discuter une présence durable, même lorsqu’une partie des habitants continue de se déplacer."
     ],
     [
       "Jéricho",
-      "Tell es-Sultan se situe près d'une source permanente dans la vallée du Jourdain. Les dépôts remontent vers 10 500 avant notre ère. Au IXe–VIIIe millénaire, mur, fossé et tour témoignent d'un travail collectif. Leur fonction précise ne se déduit pas de leur seule monumentalité. [1]"
+      "Tell es-Sultan se situe près d'une source permanente dans la vallée du Jourdain. Les dépôts remontent vers 10 500 avant notre ère. Au IXe–VIIIe millénaire, mur, fossé et tour témoignent d'un travail collectif. Leur fonction précise ne se déduit pas de leur seule monumentalité. [1] La tour, le mur et le fossé donnent des indices de construction et de coordination. Pour distinguer les fonctions envisagées, il faudrait comparer la relation entre les ouvrages, leur accès, le relief et les dépôts associés. Une réalisation collective peut mobiliser un groupe sans que nous connaissions la forme de l’autorité qui l’organise. [1]"
     ],
     [
       "Çatalhöyük",
-      "Sur le plateau anatolien, le tell étudié couvre environ 13 hectares et conserve une succession de dépôts atteignant près de 21 mètres. L'étude bioarchéologique situe son occupation entre 7100 et 5950 cal BCE. Une surface cumulée ne donne pas directement la population simultanée. [2]"
+      "Sur le plateau anatolien, le tell étudié couvre environ 13 hectares et conserve une succession de dépôts atteignant près de 21 mètres. L'étude bioarchéologique situe son occupation entre 7100 et 5950 cal BCE. Une surface cumulée ne donne pas directement la population simultanée. [2] Une maison reconstruite sur un même emplacement augmente l’épaisseur des dépôts sans ajouter deux maisons simultanées. Pour estimer la population d’une phase, il faudrait isoler les bâtiments contemporains et expliciter une hypothèse sur le nombre d’occupants de chacun. [2]"
     ],
     [
       "Maison et société",
-      "Les bâtiments et sépultures permettent d'étudier les groupes domestiques. Une proximité funéraire ne prouve pas une parenté biologique. Les différences de mobilier peuvent refléter l'âge, les pratiques rituelles ou les ressources, sans établir seules une hiérarchie politique."
+      "Les bâtiments et sépultures permettent d'étudier les groupes domestiques. Une proximité funéraire ne prouve pas une parenté biologique. Les différences de mobilier peuvent refléter l'âge, les pratiques rituelles ou les ressources, sans établir seules une hiérarchie politique. Pour interpréter une sépulture sous une habitation, distinguez le lieu de dépôt, les personnes qui ont organisé les funérailles et les relations entre les personnes enterrées. Des individus inhumés au même endroit peuvent appartenir à un groupe domestique, à un ensemble rituel ou à des épisodes distincts. L’espace seul ne donne pas leur généalogie. [2]"
     ],
     [
       "Santé et démographie",
-      "Larsen et ses collègues distinguent trois phases d'occupation. Leur synthèse relie croissance et densité de population à des contraintes sanitaires et à une charge de travail accrue. Il s'agit d'une trajectoire locale, non d'une loi universelle. [2]"
+      "Larsen et ses collègues distinguent trois phases d'occupation. Leur synthèse relie croissance et densité de population à des contraintes sanitaires et à une charge de travail accrue. Il s'agit d'une trajectoire locale, non d'une loi universelle. [2] Exemple résolu : de 9000 à 8600 avant notre ère, les valeurs diminuent quand le temps avance. La durée est donc 9000 − 8600 = 400 ans. Appliquez cette méthode aux phases de Çatalhöyük données dans l’exercice. Dans l’étude, la part des jeunes parmi certains individus inhumés varie entre phases. Les chercheurs la rapprochent de la natalité, mais les rites, la mortalité et la préservation influencent aussi l’ensemble observé. [2]"
     ],
     [
       "Mesurer les mobilités",
-      "La géométrie des os longs peut renseigner sur les contraintes mécaniques. Les signatures isotopiques et les traces d'usure dentaire des animaux complètent l'étude des pratiques pastorales. Chaque indicateur demande une interprétation contextualisée. [2]"
+      "La géométrie des os longs peut renseigner sur les contraintes mécaniques. Les signatures isotopiques et les traces d'usure dentaire des animaux complètent l'étude des pratiques pastorales. Chaque indicateur demande une interprétation contextualisée. [2] Distinguez la mobilité liée au travail des changements de résidence. Les os longs aident à discuter les efforts répétés, tandis qu’un changement dans les signatures des animaux peut éclairer des pratiques de pâturage. Une hausse de l’effort ou de la distance parcourue ne démontre pas que tout le village s’est déplacé. [2]"
     ],
     [
       "Comparer sans hiérarchiser",
-      "Jéricho et Çatalhöyük ne sont ni contemporains à toutes leurs phases ni représentatifs de tous les villages agricoles. Distinguer organisation collective, spécialisation du travail et institution politique. La comparaison avec les foyers chinois et américains de la leçon précédente ouvre des hypothèses plutôt qu'une chronologie universelle."
+      "Jéricho et Çatalhöyük ne sont ni contemporains à toutes leurs phases ni représentatifs de tous les villages agricoles. Distinguer organisation collective, spécialisation du travail et institution politique. La comparaison avec les foyers chinois et américains de la leçon précédente ouvre des hypothèses plutôt qu'une chronologie universelle. Pour comparer les deux sites, choisissez le même axe, par exemple le travail collectif. À Jéricho, examinez la construction monumentale. À Çatalhöyük, examinez les reconstructions de maisons et la densité des dépôts. Les traces offrent des échelles différentes. Votre conclusion doit porter sur une forme de coordination précisément décrite, avec une limite propre à chaque dossier."
     ],
     [
       "Glossaire",
       "Tell : accumulation de dépôts d'occupation. Bioarchéologie : étude contextualisée des restes humains. Groupe domestique : unité de vie et de coopération. Isotope : variante d'un élément chimique. Monumentalité : construction de dimensions ou d'investissement remarquables."
+    ],
+    [
+      "Synthèse",
+      "Les bâtiments documentent des investissements et des usages. Les sépultures documentent un échantillon de pratiques funéraires et renseignent indirectement la population. Les rapprochements entre architecture, démographie et politique exigent des phases bien définies et des preuves distinctes."
     ]
   ],
   "diagram": [
@@ -926,47 +952,51 @@ const civilisations = [
   "title": "Méthodes archéologiques : de la trace à la preuve",
   "goal": "Construire une chronologie relative, interpréter une datation et distinguer observation, hypothèse et conclusion.",
   "prerequisite": "Leçons 1 à 5.",
-  "overview": "Comment produire une preuve à partir d'un contexte incomplet ? 40 minutes / 2 heures / 4 heures.",
+  "overview": "<p><strong>Introduction.</strong> Un charbon découvert dans une fosse fournit une mesure, mais la question de recherche peut concerner le moment où la fosse a été creusée. Comment relier l’âge d’un matériau à un événement archéologique ? On construira une chronologie relative, puis on examinera les datations et leurs limites.</p><p>Comment produire une preuve à partir d'un contexte incomplet ? 40 minutes / 2 heures / 4 heures.</p>",
   "sections": [
     [
       "Enquête et contexte",
-      "Une question de recherche détermine les données à recueillir. Le contexte associe position, unité stratigraphique, relations et circonstances de découverte. Un objet isolé perd une partie de sa valeur informative."
+      "Une question de recherche détermine les données à recueillir. Le contexte associe position, unité stratigraphique, relations et circonstances de découverte. Un objet isolé perd une partie de sa valeur informative. Avant tout prélèvement, écrivez l’événement que vous cherchez à situer : construction, usage, abandon, dépôt ou perturbation. Un même lieu peut en conserver plusieurs. Chaque échantillon doit rester associé à l’unité et aux relations observées qui justifient son emploi."
     ],
     [
       "Stratigraphie",
-      "Dans une succession non perturbée, les dépôts supérieurs sont postérieurs aux dépôts inférieurs. Une fosse coupe des couches préexistantes ; son remplissage lui est postérieur. Enregistrer les relations plutôt que supposer que la profondeur seule suffit."
+      "Dans une succession non perturbée, les dépôts supérieurs sont postérieurs aux dépôts inférieurs. Une fosse coupe des couches préexistantes ; son remplissage lui est postérieur. Enregistrer les relations plutôt que supposer que la profondeur seule suffit. Exemple fictif : une fosse recoupe deux sols superposés. Le sol inférieur précède le sol supérieur, puis vient le creusement, puis le comblement. Si la fosse contient un objet plus ancien que les deux sols, l’ordre des unités ne change pas. L’objet peut avoir été déplacé lors du comblement. Construisez d’abord l’ordre des événements, puis discutez la place des objets."
     ],
     [
       "Fouille et documentation",
-      "La fouille transforme irréversiblement le contexte. Plans, coupes, photographies avec échelle, coordonnées, fiches et inventaires permettent de documenter les observations. Le prélèvement doit répondre à une question et limiter les contaminations."
+      "La fouille transforme irréversiblement le contexte. Plans, coupes, photographies avec échelle, coordonnées, fiches et inventaires permettent de documenter les observations. Le prélèvement doit répondre à une question et limiter les contaminations. Pour qu’un autre chercheur puisse contrôler le raisonnement, consignez l’observation et son interprétation séparément. Exemple : une limite sombre coupe le sol sur le plan de coupe est une observation. Cette limite correspond à un creusement est une interprétation à confronter à la forme et au remplissage."
     ],
     [
       "Taphonomie",
-      "Les processus naturels et humains modifient les assemblages entre dépôt et découverte. Les matériaux organiques disparaissent plus facilement dans certains milieux ; une absence observée ne prouve pas l'absence passée."
+      "Les processus naturels et humains modifient les assemblages entre dépôt et découverte. Les matériaux organiques disparaissent plus facilement dans certains milieux ; une absence observée ne prouve pas l'absence passée. Un matériau résiduel a été produit ou déposé une première fois avant d’être redéposé dans une unité plus récente. Un élément intrusif est entré dans un contexte déjà formé. Un vieux charbon résiduel peut fournir une borne d’ancienneté, sous réserve d’une association démontrée, tandis qu’une racine intrusive peut rajeunir artificiellement l’image du dépôt."
     ],
     [
       "Radiocarbone",
-      "Le carbone 14 décroît après la cessation des échanges de carbone d'un organisme. Une mesure conventionnelle n'est pas directement une date calendaire. La calibration corrige notamment les variations passées du carbone atmosphérique. [1, 2]"
+      "Le carbone 14 décroît après la cessation des échanges de carbone d'un organisme. Une mesure conventionnelle n'est pas directement une date calendaire. La calibration corrige notamment les variations passées du carbone atmosphérique. [1, 2] Distinguez trois opérations : mesurer un signal, le convertir en âges calendaires possibles, l’attribuer à un événement. Pour un charbon, le signal renseigne le carbone du bois. Le rapport entre ce bois, son utilisation et le dépôt se défend à partir du matériau et de la stratigraphie. [1, 2]"
     ],
     [
       "Choisir la courbe",
-      "IntCal20 couvre les échantillons terrestres de l'hémisphère Nord jusqu'à 55 000 années calendaires BP. Les échantillons marins demandent une autre courbe et une correction du réservoir local lorsque pertinente. [1, 2]"
+      "IntCal20 couvre les échantillons terrestres de l'hémisphère Nord jusqu'à 55 000 années calendaires BP. Les échantillons marins demandent une autre courbe et une correction du réservoir local lorsque pertinente. [1, 2] Le choix dépend de la provenance du carbone. Pour un échantillon terrestre pertinent de l’hémisphère Nord, IntCal20 est une référence dans sa plage de couverture. Pour des ressources marines, la calibration doit tenir compte du réservoir marin. De l’eau douce contenant du carbone ancien peut aussi fausser l’âge apparent, comme dans le cas de White Sands étudié dans le cours sur les migrations. [1, 2]"
     ],
     [
       "Lire une date",
-      "Publier code laboratoire, mesure brute, incertitude, courbe utilisée et intervalles calibrés. Des intervalles disjoints peuvent être nécessaires. Historic England donne un exemple à trois plages totalisant 95 % de probabilité. [2]"
+      "Publier code laboratoire, mesure brute, incertitude, courbe utilisée et intervalles calibrés. Des intervalles disjoints peuvent être nécessaires. Historic England donne un exemple à trois plages totalisant 95 % de probabilité. [2] Exemple fictif : deux plages portent 60 % et 35 % de probabilité. Leur somme vaut 95 %, sans rendre plausibles les années situées dans le creux entre elles. Une moyenne unique peut tomber dans ce creux. Dans l’exercice sur GrA-24663, conservez les trois plages et leurs poids et indiquez qu’il s’agit des bornes arrondies selon le protocole de Historic England. [2]"
     ],
     [
       "Datations complémentaires",
-      "La dendrochronologie compare des séries de cernes ; la luminescence peut dater la dernière exposition à la lumière de grains minéraux dans des conditions adaptées. La méthode doit dater l'événement pertinent, non simplement un matériau associé."
+      "La dendrochronologie compare des séries de cernes ; la luminescence peut dater la dernière exposition à la lumière de grains minéraux dans des conditions adaptées. La méthode doit dater l'événement pertinent, non simplement un matériau associé. Pour choisir entre des méthodes, comparez l’événement que chacune éclaire. Les cernes d’un bois donnent des repères de croissance. La luminescence d’un sédiment peut renseigner la dernière exposition des grains à la lumière avant l’enfouissement. Un résultat indépendant est utile s’il teste le rapport entre le matériau et l’événement étudié."
     ],
     [
       "Argumentation et éthique",
-      "Une hypothèse doit rendre compte des observations et rester révisable. Chercher des preuves indépendantes, signaler les données manquantes, respecter les autorisations de fouille, la conservation et le traitement digne des restes humains."
+      "Une hypothèse doit rendre compte des observations et rester révisable. Chercher des preuves indépendantes, signaler les données manquantes, respecter les autorisations de fouille, la conservation et le traitement digne des restes humains. Pour le dossier de synthèse, prenez deux études puis formulez pour chacune cinq éléments : contexte, méthode, résultat, incertitude, hypothèse alternative. Exemple de comparaison : Jebel Irhoud met en relation silex chauffés, dent et couches, tandis que White Sands met à l’épreuve un âge tiré de graines aquatiques par des mesures indépendantes. Terminez en précisant quelle donnée changerait votre conclusion."
     ],
     [
       "Glossaire",
       "Unité stratigraphique : événement ou dépôt individualisé. Intrusion : élément introduit après formation du contexte. Résidualité : matériau ancien redéposé. Calibration : conversion probabiliste vers le calendrier. Terminus post quem : date après laquelle un événement peut avoir eu lieu."
+    ],
+    [
+      "Synthèse",
+      "Situez d’abord la trace dans son contexte et ordonnez les événements. Choisissez ensuite une méthode adaptée au matériau, conservez les plages et incertitudes, puis justifiez le lien entre la mesure et l’événement que vous cherchez à dater."
     ]
   ],
   "diagram": [
