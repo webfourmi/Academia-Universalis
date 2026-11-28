@@ -99,6 +99,25 @@ async function verifyMath(browser,viewport) {
   assert.equal(await page.evaluate(()=>S.notes['math-fondements-1-seminaire']),'Deux exemples ne suffisent pas.');
   await open('Retour au cycle I');
   await page.getByText('1 / 6 leçons autoévaluées').waitFor();
+  for (const id of ['fondements-2','fondements-3','fondements-4','fondements-5','fondements-6']) {
+    await page.locator(`[data-math-open="${id}"]`).click();
+    const plan=page.getByRole('navigation',{name:'Plan de la leçon'});
+    assert.equal(await plan.getByRole('link').count(),5);
+    await plan.getByRole('link').last().click();
+    assert.equal(await page.evaluate(()=>document.activeElement.id),'math-section-5');
+    const lessonQuiz=page.locator('[data-math-model-quiz]');
+    for(const question of await lessonQuiz.locator('fieldset').all()) {
+      await question.getByRole('radio').first().check();
+    }
+    await open('Corriger le quiz');
+    assert.equal(await lessonQuiz.locator('[data-math-quiz-feedback]').filter({hasText:/Voir section/}).count(),3);
+    await page.getByLabel('Ma réponse au séminaire').fill('Démarche et justification.');
+    await open('Retour au cycle I');
+    await page.locator(`[data-math-open="${id}"]`).click();
+    assert.equal(await page.getByLabel('Ma réponse au séminaire').inputValue(),'Démarche et justification.');
+    await open('Retour au cycle I');
+  }
+
   await open('Faire le diagnostic');
   assert.equal(await page.locator('[name=q0][value="1"]').isChecked(),true);
   await open('Mes notes de maths');
