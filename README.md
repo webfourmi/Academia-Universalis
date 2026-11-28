@@ -6,7 +6,7 @@ Université personnelle indépendante et cosmopolite, sans diplôme officiel. PW
 
 ## Version et accès
 
-- Version de référence de cette branche : V0.34.1 (mise à jour du cycle I de Mathématiques selon la charte du 28 novembre).
+- Version de référence de cette branche : V0.34.2 (mise à jour du cycle I de Littérature selon la charte du 28 novembre).
 - [Campus](https://webfourmi.github.io/Academia-Universalis/)
 - [Charte fondatrice](docs/Academia_Universalis_charte.pdf)
 - [Contrôle éditorial](docs/controle-editorial.html)

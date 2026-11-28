@@ -1438,3 +1438,98 @@ firstYearCourses[2].introduction="Cycle I : six leçons de littérature mondiale
 // Approfondissements universitaires du cycle I.
 const literaryDeepening=[["intro-litterature",[["Expérience et jugement","Une réaction affective à une œuvre est une donnée de lecture, non une preuve de sa valeur universelle. Distinguer réaction, hypothèse interprétative et jugement argumenté. Le cours OpenLearn propose de travailler ces dimensions."],["Canon et enquête","Comparer deux tables des matières d’anthologies de dates différentes. La présence ou l’absence d’un auteur est observable ; les raisons de cette sélection nécessitent d’autres documents. Ne pas déduire une intention individuelle de la seule absence."]],["Open University","Approaching prose fiction","2018","https://www.open.edu/openlearn/history-the-arts/literature/approaching-prose-fiction/?active-tab=description-tab","Cours gratuit, anglais, consulté le 27 novembre 2026 ; analyse narrative et conventions critiques.","anglais"],"Comparer deux anthologies : relever trois différences, proposer deux explications concurrentes, indiquer les archives nécessaires pour les départager."],["genres-litteraires",[["Genre et contrat de lecture","Un texte présenté comme témoignage suscite des attentes de véracité différentes d’un roman. Cela ne signifie pas que le témoignage reproduit mécaniquement le réel."],["Analyse comparative","Le dialogue peut appartenir au roman, au théâtre ou au récit oral. Il faut examiner plusieurs indices : organisation, support, fonction et contexte de réception."]],["Open University","Approaching prose fiction","2018","https://www.open.edu/openlearn/history-the-arts/literature/approaching-prose-fiction/?active-tab=description-tab","Cours gratuit, anglais, consulté le 27 novembre 2026 ; analyse narrative et conventions critiques.","anglais"],"Comparer une scène dialoguée et un récit qui rapporte les mêmes paroles ; analyser la différence entre les informations données au lecteur et au spectateur."],["odyssee",[["Dossier de recherche : Polyphème","La thèse de V. Kleitsika (Université de Lille, 2023) étudie les réécritures de l’épisode. Dans le chant IX, rapprocher les vers 366, 408–412 et 502–535 : le nom caché empêche l’identification, puis le nom révélé permet à Polyphème de préciser sa malédiction. La maîtrise du langage a donc des effets opposés selon la situation."],["Interprétation concurrente","La révélation du nom peut être lue comme affirmation de prestige héroïque ou comme imprudence. Ces lectures ne s’excluent pas. Étudier les avertissements des compagnons et les conséquences narratives avant de conclure."]],["V. Kleitsika","Réécrire l’ivresse de Polyphème après Homère","2023","https://pepite-depot.univ-lille.fr/LIBRE/EDSHS/2023/2023ULILH022.pdf","Thèse de doctorat, Université de Lille ; analyse du nom au chant IX ; consultée le 27 novembre 2026 (extrait indexé).","français"],"Relire les vers indiqués dans une édition gratuite ; construire un tableau locuteur, destinataire, savoir, effet de la parole. Distinguer les faits narratifs de leur interprétation."],["fable",[["Microanalyse","Dans la réponse de l’agneau, la formule de conséquence logique relie la position en aval à l’impossibilité de troubler l’eau du loup. L’argument spatial est précis, mais le loup change de grief plutôt que de répondre."],["Morale et récit","La maxime initiale peut décrire une pratique du pouvoir plutôt que prescrire une conduite morale. Tester cette lecture contre le dénouement sans supposer que le narrateur approuve le loup."]],["Open University","Approaching prose fiction","2018","https://www.open.edu/openlearn/history-the-arts/literature/approaching-prose-fiction/?active-tab=description-tab","Cours gratuit, anglais, consulté le 27 novembre 2026 ; analyse narrative et conventions critiques.","anglais"],"Comparer la maxime initiale et le dernier vers. Rédiger deux lectures concurrentes, puis montrer pourquoi la critique de la force arbitraire est compatible avec le récit."],["japon-heian",[["Histoire de la critique","Evelyne Lesigne-Audoly étudie la réception de Sei Shōnagon chez les historiens littéraires de l’époque Meiji. Son objet est le jugement critique moderne, non la reconstitution de la personnalité de l’autrice. Comparer les critères de jugement avant de les reprendre à son compte."],["Établir un texte","La transmission manuscrite et les éditions commentées rendent nécessaire l’identification d’une version. L’article signale notamment l’importance historique de l’édition de Kitamura Kigin de 1674. Une traduction est fondée sur des choix éditoriaux qu’il convient de connaître."]],["Evelyne Lesigne-Audoly","Que vaut Sei Shōnagon ?","2013","https://doi.org/10.4000/ebisu.1103","Ebisu 50, p. 43–67 ; réception à l’époque Meiji ; métadonnées et extrait consultés le 27 novembre 2026.","français"],"Dans l’article, relever deux jugements historiques sur l’œuvre, identifier qui les porte et distinguer leur contexte des caractéristiques du texte."],["commentaire-litteraire",[["Paragraphe argumenté","Une proposition locale doit être reliée à la problématique. Présenter l’indice, expliquer son fonctionnement puis sa portée ; indiquer la limite si plusieurs lectures demeurent possibles."],["Révision critique","Relire le devoir en surlignant séparément preuves et interprétations. Une affirmation sans preuve doit être justifiée ou atténuée ; une citation sans analyse doit être exploitée ou supprimée."]],["Open University","Approaching prose fiction","2018","https://www.open.edu/openlearn/history-the-arts/literature/approaching-prose-fiction/?active-tab=description-tab","Cours gratuit, anglais, consulté le 27 novembre 2026 ; analyse narrative et conventions critiques.","anglais"],"Commenter la fable en deux paragraphes : logique de l’agneau puis déplacement des accusations. Conclure en distinguant efficacité argumentative et pouvoir de décision."]];
 for(const [id,sections,source,task] of literaryDeepening){const l=litterature.find(x=>x.id===id);l.sections.push(...sections);l.sources.push(source);l.dossier=(l.dossier||'')+'\nApprofondissement : '+task;}
+
+const literatureGuides = {
+  'intro-litterature': {
+    question: 'Qu’est-ce qui change quand une histoire passe de la voix à la page ?',
+    plan: [[0,'Écriture, oralité et transmission'],[4,'Auteur, canon et réception']],
+    quiz: 2, exercise: [2,3,6], seminar: [2,3,6],
+    caseText: 'Reprends l’histoire de la voyageuse et de la graine. Imagine une conteuse qui suspend la phrase avant de révéler ce que la voyageuse tient, puis une édition qui détache cette révélation sur une nouvelle ligne. Dans le premier cas, l’attente dépend du silence et de l’auditoire. Dans le second, la disposition de la page fixe un parcours que le lecteur peut reprendre.',
+    synthesis: 'L’oralité engage une voix, un auditoire et des variantes. L’écriture fixe certains choix et permet la relecture. La comparaison commence par une différence observable avant de proposer un effet.',
+    task: 'À partir de l’histoire intégrée de la graine, défends une réponse nuancée à cette question : une œuvre peut-elle rester reconnaissable quand sa mise en voix change ?',
+    answer: 'La succession des actions peut rendre l’histoire reconnaissable. Le silence, l’intonation ou l’interrogation modifient toutefois l’attente et le rôle du public. Il faut donc distinguer la continuité de l’intrigue et la singularité de chaque performance.',
+    terms: [['Performance','Réalisation d’une œuvre en présence d’un auditoire.'],['Transcription','Fixation écrite d’une parole qui sélectionne ce qu’elle conserve.']]
+  },
+  'genres-litteraires': {
+    question: 'Quels indices permettent de reconnaître un genre et que faire quand ils se combinent ?',
+    plan: [[0,'Repérer les conventions'],[4,'Comparer et reconnaître les formes hybrides']],
+    quiz: 4, exercise: [1,2,3,6], seminar: [1,2,3,6,8],
+    caseText: 'Le récit « Lina ouvrit la porte et s’arrêta » nomme l’action à travers une voix narrative. La scène « LINA. Ouvre ! (Elle frappe.) » distribue la parole et le geste entre la réplique et la didascalie. Sur scène, le bruit de la porte peut transmettre une information que le récit donne par un verbe.',
+    synthesis: 'Un genre organise des attentes à partir de conventions. Le récit, les vers et la représentation peuvent se combiner. Justifie le classement par des indices précis et indique sa limite.',
+    task: 'Compare le récit et la scène du dossier. Relève trois indices formels et explique ce que chaque forme permet de faire percevoir. Propose ensuite un cas qui mêlerait leurs conventions.',
+    answer: 'Le verbe d’action relève d’une voix narrative. La réplique attribue une parole et la didascalie propose un geste. Un récit peut intégrer des échanges directs et une scène peut inclure la narration d’un événement passé.',
+    terms: [['Genre','Ensemble de conventions de forme et d’usage.'],['Didascalie','Indication liée à la mise en scène, distincte de la réplique.']]
+  },
+  odyssee: {
+    question: 'Comment un même mot peut-il tromper un personnage et informer le lecteur ?',
+    plan: [[0,'Cadre et distribution du savoir'],[4,'Tradition épique et interprétations']],
+    quiz: 2, exercise: [1,2,3], seminar: [0,1,2,3,7],
+    caseText: 'Dans le chant IX, Ulysse raconte aux Phéaciens comment il s’est fait appeler Personne. Après avoir été aveuglé, Polyphème appelle les autres Cyclopes. Sa réponse leur fait comprendre qu’aucun agresseur ne l’attaque. Le public du récit connaît le faux nom. Plus tard, Ulysse révèle son vrai nom, ce qui permet à Polyphème de s’adresser à Poséidon contre lui. Cette reformulation suit le chant IX. [1]',
+    synthesis: 'Le récit est enchâssé parce qu’Ulysse raconte ses aventures à l’intérieur du récit principal. L’écart de savoir explique l’ironie. La révélation du nom permet de mettre en tension la ruse et le désir de reconnaissance.',
+    task: 'À partir des scènes du dossier, explique comment le récit construit d’abord l’image d’un héros ingénieux puis permet de la discuter. Compare le faux nom et le nom révélé.',
+    answer: 'Le faux nom exploite l’écart entre ce que savent les voisins et les auditeurs. Le vrai nom rend à Ulysse le mérite de l’action mais donne à Polyphème de quoi l’identifier. La comparaison s’appuie sur les effets des deux paroles et laisse ouverte la motivation exacte d’Ulysse.',
+    terms: [['Récit enchâssé','Récit inséré dans un récit qui l’encadre.'],['Ironie dramatique','Effet lié à une information dont dispose le public et qui échappe à un personnage.']]
+  },
+  fable: {
+    question: 'Pourquoi les arguments de l’Agneau échouent-ils alors qu’ils répondent aux accusations ?',
+    plan: [[0,'Les accusations et leur mise à l’épreuve'],[3,'Versification, morale et interprétation']],
+    quiz: 2, exercise: [1,2,3], seminar: [0,1,2,7],
+    caseText: 'La Fontaine ouvre la fable par « La raison du plus fort est toujours la meilleure ». L’Agneau réfute le reproche de troubler l’eau en indiquant sa position en aval. Le Loup passe ensuite à des griefs qui concernent d’autres personnes. Le dernier vers, « Sans autre forme de procès », confronte la prétention de juger au dénouement. Les deux citations proviennent de la fable I, 10. [1]',
+    synthesis: 'L’Agneau répond à des griefs vérifiables. Le Loup change le motif de l’accusation et décide de l’issue. La place de la morale invite à relire ce contraste.',
+    task: 'Imagine que la maxime soit placée après le dénouement. Compare l’effet de cette variante et de la fable, en interprétant le dernier vers et le déplacement d’une accusation.',
+    answer: 'Au début, la maxime oriente l’attention vers le rapport de force. À la fin, elle ferait davantage figure de bilan après la scène. Dans les deux versions, le dernier vers et la succession des griefs soutiennent une lecture critique de l’arbitraire.',
+    terms: [['Morale','Formulation générale qui oriente la lecture de la fable.'],['Grief','Fait ou conduite invoqués comme motif d’accusation.']]
+  },
+  'japon-heian': {
+    question: 'Comment comparer des formes littéraires sans confondre une œuvre et ses illustrations ultérieures ?',
+    plan: [[0,'Situer et comparer les formes'],[4,'Distinguer texte, traduction et réception']],
+    quiz: 4, exercise: [1,2,4,6], seminar: [1,2,4,6,7],
+    caseText: 'Pour travailler les formes, compare deux exemples inventés. A : « Choses qu’on remarque à l’aube : une porte entrouverte, l’encre encore humide. » B : « Elle entrouvrit la porte et trouva la lettre dont l’encre n’avait pas séché. Elle décida de revenir. » Le catalogue du Met présente des œuvres produites au fil de la réception du Genji. Le dossier distingue ces objets des deux exemples inventés et du texte de l’époque de Heian. [1]',
+    synthesis: 'Une liste peut organiser une perception par juxtaposition. Un récit peut construire une évolution en reliant des actions. Une illustration postérieure renseigne sur l’histoire de la réception et demande une datation propre.',
+    task: 'Compare les deux exemples du dossier puis explique pourquoi une illustration tardive du Genji ne suffit pas pour attester un usage de Heian.',
+    answer: 'A juxtapose des perceptions sous une même rubrique. B relie la découverte à une décision. Les exemples illustrent des procédés et ne représentent pas l’ensemble des œuvres. L’illustration doit être étudiée dans son contexte de production avant de servir de preuve pour une autre période.',
+    terms: [['Fragment','Unité brève dont l’organisation peut relever de la juxtaposition.'],['Réception','Ensemble des lectures, usages et transformations d’une œuvre au fil du temps.']]
+  },
+  'commentaire-litteraire': {
+    question: 'Comment transformer une impression de lecture en interprétation que l’on peut discuter ?',
+    plan: [[0,'Construire une lecture à partir d’indices'],[4,'Rédiger, relire et nuancer']],
+    quiz: 3, exercise: [0,2,3,6], seminar: [1,2,3,6,7,8],
+    caseText: 'Passage original : « La maison attendait. Chaque soir, la lampe restait éteinte. » D’abord, nomme les indices : le verbe associé à la maison et la répétition introduite par « chaque soir ». Ensuite, explique comment ces indices suggèrent une attente prolongée. Le passage ne donne pas la cause de l’absence. Une autre lecture pourrait insister sur l’habitude plutôt que sur la perte.',
+    synthesis: 'Un commentaire articule un indice, une explication de son effet et une thèse. Une interprétation gagne en précision quand elle reconnaît ce que le passage laisse ouvert.',
+    task: 'Rédige deux paragraphes sur le passage intégré. Défends une interprétation, appuie-la sur deux indices, puis examine une autre lecture sans inventer la cause de l’absence.',
+    answer: 'La personnification prête à la maison une disposition humaine. La répétition donne une durée à l’attente. L’extinction de la lampe peut suggérer l’absence d’une personne ou une routine. La première lecture devient défendable si l’on explique le lien avec le verbe « attendait », tout en laissant la cause ouverte.',
+    terms: [['Indice textuel','Élément repérable qui peut soutenir une interprétation.'],['Contre-lecture','Interprétation concurrente évaluée à partir des mêmes indices.']]
+  },
+  achebe: {
+    question: 'Que perd-on quand toute une histoire devient un détail dans le récit d’un observateur ?',
+    plan: [[0,'Voix et communauté'],[2,'Point de vue et pouvoir de résumer']],
+    quiz: 2, exercise: [1,2,3], seminar: [0,1,2,3],
+    caseText: 'Dans le dernier chapitre de Things Fall Apart, le commissaire envisage de réduire la trajectoire d’Okonkwo à une place minime dans le livre qu’il projette. Le lecteur, qui a suivi cette trajectoire et rencontré les voix de la communauté tout au long du roman, peut mesurer l’écart entre les deux échelles. Le dossier reformule les scènes et ne reproduit pas le roman. [2]',
+    synthesis: 'Le changement d’échelle devient visible par contraste entre les scènes développées et le projet de résumé final. Étudier cette différence revient à demander qui sélectionne les faits et à quel effet.',
+    task: 'Compare l’échelle du récit sur Okonkwo et celle du livre projeté par le commissaire. Explique comment le lecteur peut mettre en cause ce projet à partir du dossier intégré.',
+    answer: 'Le roman donne à lire des scènes et des relations que l’écrit projeté ne retiendrait qu’à peine. Le contraste rend observable la réduction du point de vue. On peut analyser cette réduction à partir de la structure narrative, sans supposer que toutes les voix de la communauté sont identiques.',
+    terms: [['Point de vue','Position à partir de laquelle une information est sélectionnée ou interprétée.'],['Échelle narrative','Place qu’un récit accorde à un événement ou à une trajectoire.']]
+  }
+};
+
+for (const lesson of litterature) {
+  const guide = literatureGuides[lesson.id];
+  const synthesis = lesson.sections.length;
+  const optionalReading = lesson.dossier;
+  lesson.overview = guide.question;
+  lesson.plan = [...guide.plan,[synthesis,'Synthèse et glossaire']];
+  lesson.dossier = guide.caseText;
+  lesson.sections.push(['Synthèse et glossaire',guide.synthesis+' '+guide.terms.map(([term,definition])=>term+' — '+definition).join(' ')]);
+  lesson.research = optionalReading;
+  lesson.seminar = guide.task;
+  lesson.assessmentGuide = {
+    quiz: guide.quiz,
+    exercise: guide.exercise,
+    seminar: guide.seminar,
+    rubric: ['6 points · Appuyer l’analyse sur des indices précis du dossier.','6 points · Expliquer l’effet des choix de forme ou de narration.','5 points · Justifier la comparaison et en expliciter une limite.','3 points · Organiser la réponse et identifier les supports utilisés.'],
+    answer: guide.answer
+  };
+  lesson.flashcards ||= [];
+  lesson.flashcards.push(...guide.terms.map(([term,definition])=>['Que signifie « '+term.toLowerCase()+' » ?',definition]));
+  lesson.revision = (lesson.revision ?? 1) + 1;
+}

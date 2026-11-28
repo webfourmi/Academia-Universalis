@@ -196,7 +196,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
   rememberCampusRoute('lesson',{key,id:lesson.id,...(fromNote?{fromNote}:{})});
   const [caption, columns, rows] = lesson.diagram || [];
   const [question, options, answer, rationale] = historyQuiz(lesson);
-  const assessmentGuide = historyAssessmentGuidance[lesson.id];
+  const assessmentGuide = lesson.assessmentGuide || historyAssessmentGuidance[lesson.id];
   const candidate = key === 'histoire' ? historySeminars[lesson.id] : undefined;
   const seminar = candidate && lesson.sources?.[candidate.source] ? candidate : undefined;
   const [level, duration, guidance] = studyLevels[studyLevel()];
@@ -221,6 +221,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
       <p><strong>Rythme ${level} · ${duration}.</strong> ${guidance}</p>
       <p><strong>Prérequis.</strong> ${lesson.prerequisite}</p>
       ${overview}
+      ${lesson.research ? '<p><strong>Essentiel (30–45 min)</strong> · Cours, dossier et quiz. <strong>Universitaire (1 h 30–2 h)</strong> · Ajouter l’exercice et le séminaire. <strong>Recherche (3–5 h)</strong> · Ajouter l’activité facultative.</p>' : ''}
       ${lessonPlan?.plan || ''}
       ${lessonPlan?.body || lesson.sections.map(([heading, paragraph],section) => `<h3 id="lesson-section-${section}" tabindex="-1">${heading}</h3><p>${cite(paragraph)}</p>`).join('')}
       ${evolutionExtras(lesson)}
@@ -239,6 +240,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
       <div id="written-exercise"></div>
       <details class="card"><summary>Quiz</summary><form id="history-quiz" tabindex="-1">
         <fieldset><legend>${question}</legend>
+          ${Number.isInteger(assessmentGuide?.quiz) ? historySectionLinks(lesson,[assessmentGuide.quiz],'Objectif de la leçon · Passage pour préparer le quiz.') : ''}
           ${options.map((option, n) => `<label class="quiz-option"><input type="radio" name="answer" value="${n}" required> ${option}</label>`).join('')}
         </fieldset>
         <button>Vérifier ma réponse</button>
@@ -247,6 +249,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
       ${lesson.practiceQuiz ? renderPracticeQuiz(lesson.practiceQuiz) : ''}
       ${lesson.id==='evolution-humaine'?evolutionQuiz(lesson):''}</details>
       ${lesson.seminar ? `<h3 id="lesson-seminar" tabindex="-1">Séminaire</h3><p>${lesson.seminar}</p>${historySeminarFeedback(lesson,assessmentGuide)}` : ''}
+      ${lesson.research ? `<details class="card"><summary>Recherche facultative</summary><p>${cite(lesson.research)}</p><p>Les lectures externes nécessitent une connexion.</p></details>` : ''}
       <h3>Révision espacée</h3><p>${lesson.review}</p>${migrationFlashcards(lesson)}
       <label for="history-notes">Mes notes</label>
       <textarea id="history-notes">${e(S.notes[noteKey])}</textarea>
@@ -335,7 +338,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
       const link = document.createElement('button');
       link.type = 'button';
       link.textContent = 'Relire le passage du cours';
-      link.onclick = ()=>jumpToStudySection(quizReadingTarget(lesson));
+      link.onclick = ()=>jumpToStudySection(Number.isInteger(assessmentGuide?.quiz) ? `lesson-section-${assessmentGuide.quiz}` : quizReadingTarget(lesson));
       feedback.append(' ',link);
     }
   };
