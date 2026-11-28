@@ -57,7 +57,7 @@ function installSavedAnswer(input,key){
  let editing=!input.value.trim();
  function render(){input.hidden=!editing;preview.hidden=editing;preview.textContent=S.notes[key]||'';button.textContent=editing?'Enregistrer':'Modifier';}
  button.onclick=()=>{if(!editing){editing=true;render();input.focus();return;}
- const next={...S,notes:{...S.notes,[key]:input.value}};
+ const next={...S,notes:{...S.notes,[key]:input.value},noteDates:updatedNoteDates(key)};
  try{localStorage.au=JSON.stringify(next);S=next;editing=false;render();status.textContent='Réponse enregistrée.';}catch{status.textContent='Enregistrement impossible. Le texte reste dans le champ.';}
  };
  render();
