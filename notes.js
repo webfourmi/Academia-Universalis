@@ -264,6 +264,24 @@ function appendPassageNotebook(){
     for(const range of mark.ranges||[]){const quote=document.createElement('blockquote');const highlight=document.createElement('mark');highlight.textContent=range.text;quote.append(highlight);card.append(quote);}
     if(mark.highlight){const p=document.createElement('p');p.textContent='Passage entier surligné';card.append(p);}
     if(target){const link=document.createElement('button');link.type='button';link.textContent='Revenir au passage annoté / modifier';link.onclick=()=>{showLesson(target.course,target.index,{fromNote:key});jumpToStudySection('lesson-section-'+section);};card.append(link);}
+    const edit=document.createElement('button');edit.type='button';edit.textContent='Modifier ici';card.append(edit);
+    edit.onclick=()=>{
+      if(card.querySelector('.annotation-editor'))return;
+      const editor=document.createElement('div');editor.className='annotation-editor';editor.contentEditable='true';editor.setAttribute('role','textbox');editor.setAttribute('aria-label','Annotation');
+      editor.append(...[...note.childNodes].map(n=>n.cloneNode(true)));
+      const toolbar=document.createElement('div');
+      for(const [label,cmd] of [['Gras','bold'],['Italique','italic']]){
+        const b=document.createElement('button');b.type='button';b.textContent=label;b.onpointerdown=e=>e.preventDefault();b.onclick=()=>{editor.focus();document.execCommand(cmd);};toolbar.append(b);
+      }
+      const commit=document.createElement('button');commit.textContent='Enregistrer';commit.type='button';
+      const cancel=document.createElement('button');cancel.textContent='Annuler';cancel.type='button';
+      const form=document.createElement('div');form.append(toolbar,editor,commit,cancel);card.append(form);edit.hidden=true;editor.focus();
+      cancel.onclick=()=>{form.remove();edit.hidden=false;};
+      commit.onclick=()=>{const clean=cleanAnnotation(editor.innerHTML);const plain=clean.textContent;if(plain.length>10000||clean.innerHTML.length>40000)return;
+        const current=S.readingTools.marks[key];const next={...current,note:plain,rich:clean.innerHTML,createdAt:current.createdAt||null,updatedAt:new Date().toISOString()};
+        if(auditSave({readingTools:{...S.readingTools,marks:{...S.readingTools.marks,[key]:next}}}))showNotebook();
+      };
+    };
     list.append(card);
   }
   panel.querySelector('input').oninput=event=>{const query=event.target.value.toLocaleLowerCase('fr');for(const card of list.children)card.hidden=!card.textContent.toLocaleLowerCase('fr').includes(query);};
