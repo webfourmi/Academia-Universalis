@@ -1,3 +1,32 @@
+function gradedSeminars(catalog) {
+  const seminars = [];
+  for (const course of catalog) {
+    course.lessons.forEach((lesson, index) => {
+      const key = `${course.key}:${lesson.id}`;
+      const add = (suffix, title, section) => {
+        const grades = S.seminarGrades?.[key+suffix];
+        if (grades) seminars.push({title, course:course.title, grades, max:20, open:() => {
+          showLesson(course, index);
+          jumpToStudySection(section);
+        }});
+      };
+      if (lesson.seminar) add(':seminaire', lesson.title, 'lesson-seminar');
+      const advanced = course.key === 'histoire' && historySeminars[lesson.id];
+      if (advanced && lesson.sources?.[advanced.source]) {
+        add(':seminaire-approfondi', advanced.title, 'lesson-history-seminar');
+      }
+    });
+  }
+  for (const lesson of mathFoundationLessons) {
+    const grades = S.seminarGrades?.[`math-${lesson.id}-seminaire`];
+    if (grades) seminars.push({title:lesson.title, course:'Mathématiques', grades, max:6, open:() => {
+      showMath(lesson.id);
+      jumpToStudySection('math-seminar');
+    }});
+  }
+  return seminars;
+}
+
 function showProgress() {
   const catalog = allStudyCourses();
   const yearCards = years.map((title,index) => {
@@ -18,10 +47,20 @@ function showProgress() {
   const due = studied.filter(item=>reviewDue(item.review));
   const correct = studied.filter(item=>item.review.correct).length;
   const options = assessmentOptions();
+  const seminars = gradedSeminars(catalog);
+  const format = new Intl.NumberFormat('fr-FR', {maximumSignificantDigits:15});
+  const score = (grade, max) => grade === undefined ? '—' : `${format.format(grade)} / ${max}`;
   v.innerHTML=`<h2>Progression et évaluations</h2>
     <p>Retrouve tes leçons terminées, tes scores et les révisions en attente.</p>
     <button type="button" id="jump-to-assessment">Aller aux évaluations</button>
     <section class="card"><h3>Résultats des quiz</h3><p>${studied.length ? `${correct} / ${studied.length} bonnes réponses au dernier essai de chaque quiz travaillé.` : 'Les résultats apparaîtront après ton premier quiz.'}</p></section>
+    <section class="card"><h3>Notes des séminaires</h3>
+      ${seminars.length ? `<div class="lesson-table"><table>
+        <thead><tr><th scope="col">Séminaire</th><th scope="col">Premier rendu</th><th scope="col">Après révision</th></tr></thead>
+        <tbody>${seminars.map(({title,course,grades,max},index) => `<tr><th scope="row"><button type="button" class="title-action" data-graded-seminar="${index}">${e(title)}</button><br><small>${e(course)}</small></th>
+          <td>${score(grades.first,max)}</td><td>${score(grades.revised,max)}</td></tr>`).join('')}</tbody>
+      </table></div>` : '<p>Les notes apparaissent ici après leur enregistrement dans un séminaire.</p>'}
+    </section>
     <section class="card"><h3>À revoir aujourd’hui</h3>
       ${due.length ? due.map(({course,lesson},index)=>`<h4><button class="title-action" data-review="${index}">${e(lesson.title)}</button></h4><p>${e(course.title)}</p>`).join('') : '<p>Aucune révision à échéance.</p>'}
     </section>
@@ -33,6 +72,9 @@ function showProgress() {
     heading.focus({preventScroll:true});
     heading.scrollIntoView({block:'center'});
   };
+  v.querySelectorAll('[data-graded-seminar]').forEach(button => {
+    button.onclick = seminars[Number(button.dataset.gradedSeminar)].open;
+  });
   v.querySelectorAll('[data-assessment]').forEach(button=>{
     button.onclick=()=>showAssessment(options.find(entry=>entry.key===button.dataset.assessment));
   });

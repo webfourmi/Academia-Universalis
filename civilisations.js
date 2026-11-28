@@ -195,13 +195,56 @@ function updateSeminarWordCount(field) {
   field.nextElementSibling.textContent = `${count} ${count > 1 ? 'mots' : 'mot'}`;
 }
 
+function seminarGradeForm(key, max) {
+  const grades = S.seminarGrades?.[key];
+  return `<form class="seminar-grades" data-seminar-grades="${e(key)}" data-max="${max}">
+    <fieldset><legend>Notes du séminaire sur ${max}</legend>
+      <label>Premier rendu <input type="number" name="first" min="0" max="${max}" step="any" value="${e(grades?.first)}"></label>
+      <label>Après correction et révision <input type="number" name="revised" min="0" max="${max}" step="any" value="${e(grades?.revised)}"></label>
+      <button type="submit">Enregistrer les notes</button>
+      <p role="status"></p>
+    </fieldset>
+  </form>`;
+}
+
+function validSeminarGrades(grades) {
+  const isRecord = value => value && typeof value === 'object' && !Array.isArray(value);
+  return grades === undefined || (isRecord(grades) && Object.values(grades).every(entry =>
+    isRecord(entry) && Object.keys(entry).length > 0 && Object.entries(entry).every(([stage, grade]) =>
+      ['first', 'revised'].includes(stage) && Number.isFinite(grade) && grade >= 0 && grade <= 20)));
+}
+
+function bindSeminarGrades(view) {
+  view.querySelectorAll('[data-seminar-grades]').forEach(form => {
+    form.onsubmit = event => {
+      event.preventDefault();
+      const status = form.querySelector('[role="status"]');
+      const key = form.dataset.seminarGrades;
+      const max = Number(form.dataset.max);
+      const scores = {};
+      for (const stage of ['first', 'revised']) {
+        const input = form.elements[stage];
+        if (!input.validity.valid) {
+          status.textContent = `Saisissez une note entre 0 et ${max}.`;
+          return;
+        }
+        if (input.value !== '') scores[stage] = input.valueAsNumber;
+      }
+      const seminarGrades = {...S.seminarGrades};
+      if (Object.keys(scores).length) seminarGrades[key] = scores;
+      else delete seminarGrades[key];
+      status.textContent = auditSave({seminarGrades}) ? 'Notes enregistrées dans la progression.' : 'Enregistrement impossible.';
+    };
+  });
+}
+
 function seminarAnswer(id, key) {
   return `<div class="seminar-answer" data-seminar-key="${e(key)}">
     <label for="${id}">Ma réponse au séminaire</label>
     <textarea id="${id}" rows="7" maxlength="12000" aria-describedby="${id}-count"></textarea>
     <p id="${id}-count"></p>
     <p role="status"></p>
-  </div>`;
+  </div>${seminarGradeForm(key, 20)}`;
 }
 
 function bindSeminarAnswers(view) {
@@ -326,6 +369,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
   });
   v.querySelectorAll('[data-evo-answer]').forEach(button=>button.onclick=()=>{const field=button.closest('fieldset');const selected=field.querySelector('input:checked');field.querySelector('[role=status]').textContent=selected?((selected.value===button.dataset.evoAnswer?'Correct. ':'À revoir. ')+button.dataset.evoWhy):'Choisissez une réponse.';});
   bindSeminarAnswers(v);
+  bindSeminarGrades(v);
   bindMigrationMap(v);
   bindMigrationFlashcards(v,course,lesson);
   if(course.key==='physique')bindPhysicsLab(v,lesson);

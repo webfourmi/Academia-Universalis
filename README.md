@@ -6,7 +6,7 @@ Université personnelle indépendante et cosmopolite, sans diplôme officiel. PW
 
 ## Version et accès
 
-- Version de référence de cette branche : V0.34.4 (brouillons de séminaire et compteur de mots).
+- Version de référence de cette branche : V0.34.5 (notes des séminaires et suivi avant et après révision).
 - [Campus](https://webfourmi.github.io/Academia-Universalis/)
 - [Charte fondatrice](docs/Academia_Universalis_charte.pdf)
 - [Contrôle éditorial](docs/controle-editorial.html)

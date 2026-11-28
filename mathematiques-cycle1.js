@@ -201,6 +201,7 @@ function showMathFoundationLesson(content,lesson) {
     <details><summary>Bilan éditorial</summary><p>Contrôle interne des raisonnements, des renvois et de la couverture des objectifs. Les lectures externes sont facultatives. ${model?'La proposition d’Euclide est citée par lien et reformulée dans le cours.':'Les tableaux et les cas calculés sont des supports pédagogiques originaux. Les lectures mathématiques sont citées par lien.'} Relecture indépendante à organiser.</p></details>
   </article>`;
   bindMathAssessments(content,quiz,key);
+  bindSeminarGrades(content);
   const form=content.querySelector('[data-math-proof]');
   const reasoning=form.elements.reasoning;
   const status=form.querySelector('[role="status"]');
@@ -332,6 +333,7 @@ function mathModelSeminar() {
   <p><strong>Dossier intégré</strong> · Ana affirme que la somme de deux impairs est paire parce que 3 + 5 = 8 et 5 + 7 = 12. Bilal pose deux entiers impairs quelconques et les écrit 2k + 1 et 2m + 1. Les écritures de parité et la portée des exemples sont traitées aux sections 1 à 3.</p>
   <p>Compare les deux démarches. Rédige l’argument de Bilal jusqu’à la conclusion, puis explique pourquoi l’hypothèse « deux nombres impairs » est importante en donnant un contre-exemple si l’un des deux est pair.</p>
   <label for="math-seminar">Ma réponse au séminaire</label><textarea id="math-seminar" aria-describedby="math-seminar-count" maxlength="12000">${e(S.notes['math-fondements-1-seminaire'])}</textarea><p id="math-seminar-count"></p><p data-math-seminar-status role="status"></p>
+  ${seminarGradeForm('math-fondements-1-seminaire', 6)}
   <details><summary>Corrigé indicatif et barème sur 6</summary>
     <ol><li>2 points · Deux exemples soutiennent la conjecture. Ils ne vérifient que deux couples (section 2).</li>
     <li>2 points · Pour k et m entiers quelconques, (2k + 1) + (2m + 1) = 2(k + m + 1), avec k + m + 1 entier (sections 1 et 3).</li>
@@ -479,6 +481,7 @@ function mathFoundationSeminar(key,guide) {
     <label for="math-seminar">Ma réponse au séminaire</label><textarea id="math-seminar" aria-describedby="math-seminar-count" maxlength="12000">${e(S.notes[key+'-seminaire'])}</textarea>
     <p id="math-seminar-count"></p>
     <p data-math-seminar-status role="status"></p>
+    ${seminarGradeForm(key+'-seminaire', 6)}
     <details><summary>Corrigé indicatif et barème sur 6</summary><ol>
       ${rubric.map(item=>`<li>2 points · ${item}</li>`).join('')}
     </ol><p>Toute démarche équivalente, explicitement justifiée, vaut les mêmes points.</p></details></section>`;
