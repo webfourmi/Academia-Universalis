@@ -110,6 +110,54 @@ function evolutionExtras(lesson){
  return evolutionAnatomy()+evolutionFossils()+'<h3>Chronologie graphique</h3><figure class="history-overview">'+timeline(7)+'<figcaption>Intervalles fossiles indicatifs, non filiations. Source : Smithsonian [7].</figcaption><details><summary>Zoom sur le dernier million d’années</summary>'+timeline(1)+'</details></figure>';
 }
 
+// Each part names its first section by the existing zero-based section index.
+const historyLessonPlans = {
+  'evolution-humaine': [[0, 'Parentés et preuves'], [3, 'Jebel Irhoud et les populations humaines']],
+  'migrations-humaines': [[0, 'Les premières dispersions du genre Homo'], [3, 'Les dispersions de Sapiens et leurs preuves']],
+  mobilites: [[0, 'Échelles et rythmes de mobilité'], [3, 'Études de cas et interprétation des traces']],
+  neolithiques: [[0, 'Définir et reconnaître la domestication'], [3, 'Comparer les trajectoires régionales'], [8, 'Conséquences et limites']],
+  'villages-neolithiques': [[0, 'Deux formes d’habitat durable'], [3, 'Vie sociale, santé et mobilité']],
+  'methodes-archeologiques': [[0, 'Contexte, stratigraphie et conservation'], [4, 'Datations et argumentation']],
+  uruk: [[0, 'La ville et son approvisionnement'], [2, 'Comptes et échelles de comparaison']],
+  nil: [[0, 'Le milieu et la formation du royaume'], [2, 'Frontières, royauté et travail']],
+  indus: [[0, 'Formes et techniques urbaines'], [2, 'Archives lacunaires et transformations']],
+  chine: [[0, 'Régions et temporalités'], [2, 'Archives divinatoires et preuves']],
+  ameriques: [[0, 'Sites, contextes et chronologies'], [2, 'Habitat et coordination du travail']],
+  comparaison: [[0, 'Choisir les critères et les terrains'], [2, 'Argumenter à partir de preuves incomplètes']],
+  athenes: [[0, 'La cité et ses institutions'], [2, 'Participation et représentation politique']],
+  'empire-athenien': [[0, 'Les mécanismes de l’alliance'], [2, 'Les indices de domination']],
+  'republique-romaine': [[0, 'Institutions et conflits'], [2, 'Expansion et compétition politique']],
+  auguste: [[0, 'La transformation des institutions'], [2, 'La continuité dans les discours']],
+};
+
+function renderHistoryLessonPlan(lesson, cite) {
+  const starts = historyLessonPlans[lesson.id] || [[0, 'Cours']];
+  const parts = starts.map(([start, title], part) => ({
+    title,
+    sections: lesson.sections.slice(start, starts[part + 1]?.[0]).map(([heading, paragraph], offset) => ({
+      heading, paragraph, index: start + offset
+    }))
+  }));
+
+  const plan = `<details class="card lesson-plan" open>
+    <summary id="lesson-plan" tabindex="-1">Plan du cours</summary>
+    <ol>${parts.map(({title, sections}, part) => `<li>
+      <a href="#lesson-part-${part}" data-plan-link>${e(title)}</a>
+      <ol style="list-style:none;padding-inline-start:1rem" role="list">${sections.map(({heading, index}, offset) => `<li>
+        <a href="#lesson-section-${index}" data-plan-link>${part + 1}.${offset + 1} ${e(heading)}</a>
+      </li>`).join('')}</ol>
+    </li>`).join('')}</ol>
+  </details>`;
+
+  const body = parts.map(({title, sections}, part) => `<section aria-labelledby="lesson-part-${part}">
+    <h3 id="lesson-part-${part}" tabindex="-1">${part + 1}. ${e(title)}</h3>
+    ${sections.map(({heading, paragraph, index}) => `<h3 role="heading" aria-level="4" id="lesson-section-${index}" tabindex="-1">${heading}</h3><p>${cite(paragraph)}</p>`).join('')}
+    <p><a href="#lesson-plan" data-plan-link>Retour au plan du cours</a></p>
+  </section>`).join('');
+
+  return {plan, body};
+}
+
 function showLesson(course, index, {offset,fromNote} = {}) {
   saveReading();
   const {key, lessons} = course;
@@ -126,6 +174,8 @@ function showLesson(course, index, {offset,fromNote} = {}) {
     if (refs.some(number => !lesson.sources[number-1])) return match;
     return refs.map(number => `<a class="citation-ref" id="citation-${++citationIndex}" href="#source-${number}" aria-label="Voir la référence ${number}">[${number}]</a>`).join(' ');
   });
+  const overview = lesson.overview ? cite(lesson.overview) : '';
+  const historyPlan = key === 'histoire' || key === 'antiquite' ? renderHistoryLessonPlan(lesson, cite) : null;
   const noteKey = `${key}:${lesson.id}`;
   v.innerHTML = `
     ${fromNote ? '<button type="button" id="return-to-note">Retour à la note</button>' : ''}
@@ -138,8 +188,9 @@ function showLesson(course, index, {offset,fromNote} = {}) {
       <p><strong>Objectif.</strong> ${lesson.goal}</p>
       <p><strong>Rythme ${level} · ${duration}.</strong> ${guidance}</p>
       <p><strong>Prérequis.</strong> ${lesson.prerequisite}</p>
-      ${lesson.overview ? cite(lesson.overview) : ''}
-      ${lesson.sections.map(([heading, paragraph],section) => `<h3 id="lesson-section-${section}" tabindex="-1">${heading}</h3><p>${cite(paragraph)}</p>`).join('')}
+      ${overview}
+      ${historyPlan?.plan || ''}
+      ${historyPlan?.body || lesson.sections.map(([heading, paragraph],section) => `<h3 id="lesson-section-${section}" tabindex="-1">${heading}</h3><p>${cite(paragraph)}</p>`).join('')}
       ${evolutionExtras(lesson)}
       ${migrationMap(lesson)}
       ${lesson.diagram ? `<div class="lesson-table" tabindex="0" role="region" aria-label="${e(caption)}">
@@ -190,6 +241,13 @@ function showLesson(course, index, {offset,fromNote} = {}) {
     </nav>`;
   v.querySelectorAll('[data-jump]').forEach(button=>{
     button.onclick=()=>jumpToStudySection(button.dataset.jump);
+  });
+  v.querySelectorAll('[data-plan-link]').forEach(link=>{
+    link.addEventListener('click',event=>{
+      if(event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)return;
+      event.preventDefault();
+      jumpToStudySection(link.hash.slice(1));
+    });
   });
   v.querySelectorAll('[data-evo-answer]').forEach(button=>button.onclick=()=>{const field=button.closest('fieldset');const selected=field.querySelector('input:checked');field.querySelector('[role=status]').textContent=selected?((selected.value===button.dataset.evoAnswer?'Correct. ':'À revoir. ')+button.dataset.evoWhy):'Choisissez une réponse.';});
   bindMigrationMap(v);
