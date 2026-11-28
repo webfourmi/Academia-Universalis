@@ -1267,31 +1267,32 @@ const physicsGuides = {
     task: 'Trouvez la rapidité finale par bilan d’énergie puis par bilan des forces et cinématique à accélération constante. Expliquez la signification du travail négatif.',
     answer: 'Ki = 16 J, le travail vaut −6 J et Kf = 10 J, donc la rapidité vaut √10 ≈ 3,16 m/s. La force horizontale nette donne a = −1 m/s². Alors vf² = 16 + 2(−1)×3 = 10 m²/s². Le travail net négatif traduit une baisse d’énergie cinétique.',
     synthesis: 'Travail — contribution d’une force sur un déplacement. Énergie cinétique — mv²/2. Le bilan énergétique fournit une norme de vitesse. Le sens demande une information supplémentaire.'
+  },
+  ondes: {
+    question: 'Comment relier le passage de crêtes à leur distance sur une image ?',
+    parts: [[0,'Mesurer l’onde dans le temps et l’espace'],[2,'Distinguer et prévoir les mouvements']],
+    quiz: 0, exercise: [0,1], seminar: [0,1,2,3],
+    caseText: 'Exemple calculé : une crête parcourt 1,2 m en 0,4 s. Deux crêtes passent devant le même repère à 0,25 s d’intervalle. Un flotteur oscille localement au passage de la vague. [1]',
+    task: 'Calculez la vitesse de la crête, la fréquence et la longueur d’onde, puis expliquez ce que mesure le flotteur.',
+    answer: 'La célérité vaut 3 m/s, la fréquence 4 Hz et la longueur d’onde 0,75 m. Le passage périodique renseigne sur l’oscillation locale, tandis que suivre une crête renseigne sur la propagation.',
+    synthesis: 'La période se mesure à position fixe. La longueur d’onde se mesure à instant fixe. La célérité vaut λ/T.'
+  },
+  relativite: {
+    question: 'Quelle horloge mesure le temps propre entre deux événements ?',
+    parts: [[0,'Choisir les événements et les horloges'],[2,'Calculer et interpréter une durée']],
+    quiz: 0, exercise: [0,1,2], seminar: [0,2,3],
+    caseText: 'Exemple idéalisé : deux émissions au même endroit dans un véhicule sont séparées par 8 s sur son horloge. Le véhicule se déplace à 0,60 c par rapport à un référentiel inertiel extérieur. [1]',
+    task: 'Calculez l’intervalle extérieur entre les émissions et expliquez pourquoi ce calcul ne prédit pas la durée séparant les réceptions à distance.',
+    answer: 'Le facteur γ vaut 1,25 et l’intervalle extérieur vaut 10 s. Les durées de propagation peuvent différer entre les deux émissions et leurs réceptions. Ce sont des paires d’événements distinctes.',
+    synthesis: 'Une horloge au repos au lieu commun des deux événements mesure leur temps propre. Le calcul dépend des événements choisis et du référentiel.'
+  },
+  puissance: {
+    question: 'Comment comparer deux machines qui fournissent le même travail à des rythmes différents ?',
+    parts: [[0,'Calculer la puissance moyenne'],[2,'Préciser le système et les transferts']],
+    quiz: 0, exercise: [0,1,2], seminar: [0,1,2],
+    caseText: 'Deux appareils fournissent chacun un travail mécanique utile de 900 J. Le premier opère en 15 s, le second en 30 s. Les valeurs sont fictives. [1]',
+    task: 'Comparez leurs puissances moyennes utiles et expliquez si vous pouvez déduire des données le pic de puissance ou la consommation électrique.',
+    answer: 'Les puissances moyennes sont 60 et 30 W. Une moyenne ne détermine pas la puissance maximale. La consommation électrique exige de connaître la puissance absorbée au cours de l’opération ou de disposer d’un bilan des pertes.',
+    synthesis: 'La puissance moyenne rapporte un travail à une durée. Préciser le transfert étudié et distinguer moyenne, maximum et puissance absorbée.'
   }
 };
-
-for (const lesson of physique) {
-  const guide = physicsGuides[lesson.id];
-  if (guide.extension) lesson.sections.push(guide.extension);
-  lesson.overview = guide.question;
-  lesson.plan = [...guide.parts,[lesson.sections.length,'Synthèse']];
-  lesson.sections.push(['Synthèse des acquis',guide.synthesis]);
-  lesson.research = lesson.dossier;
-  lesson.dossier = guide.caseText;
-  lesson.seminar = guide.task;
-  lesson.assessmentGuide = {
-    quiz: guide.quiz,
-    exercise: guide.exercise,
-    seminar: guide.seminar,
-    rubric: ['5 points · Identifier le système, les données et les hypothèses utiles.','6 points · Justifier les étapes de la démarche et indiquer les unités pertinentes.','6 points · Interpréter le résultat et répondre à la comparaison demandée.','3 points · Préciser les limites du modèle ou du test.'],
-    answer: guide.answer
-  };
-  lesson.flashcards ||= [];
-  lesson.flashcards.push([guide.question,guide.synthesis]);
-  lesson.revision = (lesson.revision ?? 1) + 1;
-  for (const source of lesson.sources) {
-    if (source[3] === 'https://doi.org/10.6028/jres.072C.001') {
-      source[3] = 'https://nvlpubs.nist.gov/nistpubs/jres/72C/jresv72Cn1p1_A1b.pdf';
-    }
-  }
-}

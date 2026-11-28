@@ -436,7 +436,7 @@ async function verifyPhysics(browser, viewport) {
   const page = await context.newPage();
   await page.goto(process.env.CAMPUS_URL || 'http://localhost:8765/');
   const openLesson = index => page.evaluate(i => showLesson(firstYearCourses[3], i), index);
-  for (let index=0; index<8; index++) {
+  for (let index=0; index<11; index++) {
     await openLesson(index);
     const plan=page.locator('.lesson-plan');
     await plan.locator('a[href="#lesson-section-0"]').click();
@@ -444,6 +444,7 @@ async function verifyPhysics(browser, viewport) {
     await page.getByText('Barème et pistes de réponse',{exact:true}).click();
     await page.getByRole('heading',{name:'Barème sur 20'}).waitFor();
   }
+  await openLesson(7);
   await page.locator('summary').filter({hasText:/^Quiz$/}).click();
   const quiz=page.locator('#history-quiz');
   await quiz.getByRole('radio').first().check();
