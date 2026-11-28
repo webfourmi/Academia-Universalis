@@ -125,7 +125,7 @@ function showMathFoundationIndex(content) {
     <button type="button" data-math-open="diagnostic">Faire le diagnostic</button>
     <p>${done} / ${mathFoundationLessons.length} leçons autoévaluées</p>
     <ol>${lessons}</ol>
-    <p>Pour une séance, lis le cours puis rédige l’exercice. Pour approfondir, fais le problème de transfert avant d’ouvrir son corrigé et consulte la lecture associée.</p></article>`;
+    <p>Pour une séance, lis le cours, fais le quiz puis rédige l’exercice. Le parcours universitaire ajoute le transfert et le séminaire. Chaque leçon propose aussi une recherche facultative.</p></article>`;
   content.querySelectorAll('[data-math-open]').forEach(button=>button.onclick=()=>showMath(button.dataset.mathOpen));
 }
 
@@ -164,18 +164,18 @@ function showMathDiagnostic(content) {
 function showMathFoundationLesson(content,lesson) {
   const key='math-'+lesson.id;
   const model=lesson.id==='fondements-1';
-  const cards=model?mathModelCards(lesson):[{key:key+'-rappel',question:lesson.recall[0],answer:lesson.recall[1]}];
+  const guide=mathFoundationGuides[lesson.id];
+  const quiz=model ? mathModelQuiz : guide.quiz;
+  const cards=mathFoundationCards(lesson);
   const initial=S.notes[key+'-tentative'] || '';
   content.innerHTML=`<article class="card">
     <p><strong>Prérequis</strong> · ${lesson.prerequisite}</p>
-    ${model?'':'<p>Version de travail · mise en conformité avec la charte en cours.</p>'}
-    ${model?mathModelCourse():`<p><strong>Objectif</strong> · ${lesson.objective}</p>
-    ${lesson.sections.map(([title,body])=>`<section><h3>${title}</h3><p>${body}</p></section>`).join('')}`}
+    ${model ? mathModelCourse() : mathFoundationCourse(lesson,guide)}
     <h3>Lecture guidée et bibliographie</h3>${mathFoundationSource(lesson.source)}
     ${lesson.id==='fondements-6'?mathSource('recurrence'):''}
-    ${model?mathModelQuizMarkup():''}
+    ${mathModelQuizMarkup(quiz)}
     <h3>Exercice rédigé</h3><p>${lesson.prompt}</p>
-    ${model?'<p>Objectif 2 · <a href="#math-section-3" data-math-jump>Section 3</a></p>':''}
+    <p>${model?'Objectif 2':'Objectifs 1 et 2'} · ${mathSectionLinks(model?[3]:guide.exercise)}</p>
     <form data-math-proof><label for="math-reasoning">Mon raisonnement</label><textarea id="math-reasoning" name="reasoning" required maxlength="12000">${e(S.notes[key+'-brouillon'])}</textarea>
     <button type="submit">Comparer au corrigé</button><p role="status"></p></form>
     <section data-math-solution hidden><h4>Corrigé</h4><p>${lesson.solution}</p>
@@ -188,7 +188,7 @@ function showMathFoundationLesson(content,lesson) {
     <label for="math-transfer">Mon essai de transfert</label><textarea id="math-transfer" data-math-transfer maxlength="12000">${e(S.notes[key+'-transfert'])}</textarea>
     <p data-math-transfer-status role="status"></p>
     <details><summary>Consulter le corrigé du transfert</summary><p>${lesson.transferSolution}</p></details>
-    ${model?mathModelSeminar():''}
+    ${model ? mathModelSeminar() : mathFoundationSeminar(key,guide)}
     <h3>Révision espacée</h3>
     ${cards.map(({key:cardKey,question,answer},i)=>{
       const review=S.reviews?.[cardKey];
@@ -198,9 +198,9 @@ function showMathFoundationLesson(content,lesson) {
         <button type="button" data-math-recall="no">À revoir</button></details>
         <p data-math-review-status role="status">${review?'Prochain rappel le '+e(reviewDate(review)):'Carte à découvrir'}</p></section>`;
     }).join('')}
-    ${model?'<details><summary>Bilan éditorial</summary><p>Contrôle interne des deux objectifs, des raisonnements, du quiz, du barème et des liens de section. Les documents externes sont facultatifs. Le document d’Euclide est cité par lien, avec reformulation intégrée. Une relecture indépendante reste à réaliser.</p></details>':''}
+    <details><summary>Bilan éditorial</summary><p>Contrôle interne des raisonnements, des renvois et de la couverture des objectifs. Les lectures externes sont facultatives. ${model?'La proposition d’Euclide est citée par lien et reformulée dans le cours.':'Les tableaux et les cas calculés sont des supports pédagogiques originaux. Les lectures mathématiques sont citées par lien.'} Relecture indépendante à organiser.</p></details>
   </article>`;
-  if(model) bindMathModel(content);
+  bindMathAssessments(content,quiz,key);
   const form=content.querySelector('[data-math-proof]');
   const reasoning=form.elements.reasoning;
   const status=form.querySelector('[role="status"]');
@@ -259,6 +259,14 @@ const mathModelQuiz = [
     'Les paramètres entiers k et m sont quelconques. La somme vaut 2(k + m + 1), ce qui vérifie la définition.']
 ];
 
+function mathFoundationCards(lesson) {
+  if (lesson.id === 'fondements-1') return mathModelCards(lesson);
+  const key='math-'+lesson.id+'-rappel';
+  return [lesson.recall,...mathFoundationGuides[lesson.id].terms].map(([question,answer],i)=>({
+    key:key+(i ? '-notion-'+i : ''),question,answer
+  }));
+}
+
 function mathModelCards(lesson) {
   const key='math-'+lesson.id+'-rappel';
   return [
@@ -294,7 +302,7 @@ function mathModelCourse() {
     <p>Une preuve universelle explique pourquoi aucun cas autorisé n’échappe à l’argument. Un contre-exemple suffit à réfuter une règle universelle dès lors qu’il satisfait les hypothèses et contredit la conclusion.</p></section>
     <p><strong>Approfondissement universitaire · 1 h 30 à 2 h au total</strong> · Ajoute l’étude du document, le problème de transfert et le séminaire.</p>
     <section><h3 id="math-section-4" tabindex="-1">4. Étudier une construction d’Euclide</h3>
-    <p><strong>Document étudié</strong> · Euclide, <cite>Éléments</cite>, livre I, proposition 1. L’édition numérique commentée de David E. Joyce (Clark University) est citée par lien. Le résumé ci-dessous est une reformulation pédagogique. Le texte et les figures de l’édition consultée sont cités par lien.</p>
+    <p><strong>Document étudié</strong> · Euclide, <cite>Éléments</cite>, livre I, proposition 1. L’édition numérique commentée de David E. Joyce (Clark University) est citée par lien. Le résumé ci-dessous est une reformulation pédagogique. </p>
     <figure><svg viewBox="0 0 240 160" width="240" style="max-width:100%" role="img" aria-label="Deux cercles de même rayon. A et B sont leurs centres. Le point C est sur les deux cercles. Le triangle ABC relie ces trois points.">
       <g fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="89" cy="80" r="62"/><circle cx="151" cy="80" r="62"/><path d="M89 80H151L120 26.306Z" stroke-width="2.8"/></g>
       <g fill="currentColor" font-size="12"><text x="78" y="94">A</text><text x="153" y="94">B</text><text x="116" y="20">C</text></g>
@@ -310,9 +318,9 @@ function mathModelCourse() {
     <p>Compare la proposition, les définitions et le commentaire de Joyce. Repère les étapes d’Euclide qui mobilisent une définition ou une règle initiale. Discute ce qu’il faudrait ajouter pour justifier l’existence de C. La recherche externe et cette extension sont facultatives.</p></section>`;
 }
 
-function mathModelQuizMarkup() {
+function mathModelQuizMarkup(quiz) {
   return `<section><h3>Quiz de compréhension</h3><form data-math-model-quiz>
-  ${mathModelQuiz.map(([objective,section,question,options],i)=>`<fieldset style="min-inline-size:0"><legend>${i+1}. ${question}</legend>
+  ${quiz.map(([objective,section,question,options],i)=>`<fieldset style="min-inline-size:0"><legend>${i+1}. ${question}</legend>
     <p>Objectif ${objective+1} · <a href="#math-section-${section}" data-math-jump>Section ${section}</a></p>
     ${options.map((option,j)=>`<p><label><input required type="radio" name="item${i}" value="${j}"> ${option}</label></p>`).join('')}
     <p data-math-quiz-feedback role="status"></p></fieldset>`).join('')}
@@ -332,7 +340,7 @@ function mathModelSeminar() {
   </details></section>`;
 }
 
-function bindMathModel(content) {
+function bindMathAssessments(content,quiz,key) {
   content.querySelectorAll('[data-math-jump]').forEach(link=>link.onclick=event=>{
     event.preventDefault();
     const heading=content.querySelector(link.getAttribute('href'));
@@ -345,16 +353,130 @@ function bindMathModel(content) {
     const answers=new FormData(form);
     const feedback=form.querySelectorAll('[data-math-quiz-feedback]');
     let score=0;
-    mathModelQuiz.forEach(([,section,,options,expected,explanation],i)=>{
+    quiz.forEach(([,section,,options,expected,explanation],i)=>{
       const correct=answers.get('item'+i)===String(expected);
       if(correct) score++;
       feedback[i].textContent=`${correct?'Correct.':'À revoir.'} ${options[expected]}. ${explanation} Voir section ${section}.`;
     });
-    form.querySelector('[data-math-quiz-score]').textContent=`${score} / ${mathModelQuiz.length} réponses correctes.`;
+    form.querySelector('[data-math-quiz-score]').textContent=`${score} / ${quiz.length} réponses correctes.`;
   };
   const seminar=content.querySelector('#math-seminar');
   seminar.oninput=()=>{
-    content.querySelector('[data-math-seminar-status]').textContent=storeMathRecord('notes','math-fondements-1-seminaire',seminar.value)
+    content.querySelector('[data-math-seminar-status]').textContent=storeMathRecord('notes',key+'-seminaire',seminar.value)
       ? 'Brouillon enregistré.' : 'Enregistrement impossible.';
   };
+}
+
+const mathFoundationGuides = {
+  'fondements-2': {
+    question: 'Pourquoi une opération familière peut-elle faire sortir d’un ensemble de nombres ?',
+    objectives: ['Identifier le plus petit ensemble contenant un nombre donné après simplification.', 'Justifier une stabilité ou la réfuter par un contre-exemple admissible.'],
+    exercise: [1, 2],
+    method: ['Choisir le domaine avant de calculer', 'La fermeture doit être vérifiée pour tous les couples autorisés. Pour démontrer la stabilité de ℚ par addition, écris a/b + c/d = (ad + bc)/(bd). Les deux termes du quotient sont entiers et bd ≠ 0. Pour réfuter une stabilité, un seul résultat extérieur suffit. La division exige toujours un deuxième opérande non nul.'],
+    table: [['Addition dans ℕ','2 + 3 = 5','La somme de deux naturels est toujours naturelle.'],['Soustraction dans ℕ','2 − 3 = −1','Ce résultat extérieur réfute la stabilité.'],['Division dans ℤ','1 ÷ 2 = 1/2','Le diviseur est autorisé, mais le quotient sort de ℤ.']],
+    quiz: [
+      [0,1,'Quel est le plus petit ensemble qui contient −12/4 ?',['ℕ','ℤ','ℚ'],1,'La fraction vaut −3, entier négatif.'],
+      [1,2,'Quel calcul réfute la stabilité de ℕ par soustraction ?',['4 − 2','0 − 1','2 + 1'],1,'Les deux opérandes sont naturels et le résultat −1 ne l’est pas.'],
+      [1,4,'Pourquoi la somme de deux rationnels reste-t-elle rationnelle ?',['Le dénominateur commun bd est non nul','Toute somme est entière','Les dénominateurs sont forcément égaux'],0,'La mise au même dénominateur donne un quotient d’entiers dont le dénominateur est non nul.']
+    ],
+    seminar: ['Un corrigé annonce que 0,75 appartient seulement à ℝ, que la soustraction est interne dans ℕ et que le produit de rationnels est rationnel. Examine séparément les trois affirmations.', ['0,75 = 3/4. Son plus petit ensemble dans la chaîne est ℚ (section 1).','0 − 1 = −1 réfute la stabilité par soustraction (section 2).','Le produit ac/bd est rationnel puisque a, b, c et d sont entiers et bd ≠ 0 (sections 2 et 4).']],
+    research: 'À partir de la lecture Exo7, distingue les propriétés du produit dans ℝ et celles de la division restreinte aux diviseurs non nuls. Rédige un tableau et justifie deux propriétés.',
+    terms: [['Ensemble ℚ','Quotients d’entiers a/b avec b non nul.'],['Opération interne','Opération définie sur tous les couples d’un ensemble et dont les résultats y restent.'],['Distributivité','Dans ℝ, a(b + c) = ab + ac.']]
+  },
+  'fondements-3': {
+    question: 'Comment déterminer si un tableau de correspondances définit une application, et ce qu’elle atteint ?',
+    objectives: ['Déterminer union, intersection et différence à partir d’ensembles donnés.', 'Contrôler l’existence et l’unicité des images, puis l’injectivité et la surjectivité.'],
+    exercise: [1, 2, 3],
+    method: ['Contrôler une correspondance dans les deux sens', 'Sur A = {a, b, c} et B = {1, 2, 3}, lis une fois chaque ligne du tableau. Après avoir constaté une image unique par élément de A, compte les antécédents par élément de B. Une image répétée réfute l’injectivité et une valeur de B absente des images réfute la surjectivité. Modifier B en {1, 2} rend cette application surjective, mais ne supprime pas la collision.'],
+    table: [['a','1','1 possède deux antécédents.'],['b','1','La collision entre a et b réfute l’injectivité.'],['c','2','Aucune ligne ne donne 3 comme image.']],
+    quiz: [
+      [0,1,'Pour A = {1,2} et B = {2,4}, que vaut A ∩ B ?',['{1,2,4}','{2}','{4}'],1,'Seul 2 appartient simultanément à A et à B.'],
+      [1,2,'Quand une relation de A vers B est-elle une application ?',['Chaque a de A a exactement une image dans B','Chaque b a un antécédent unique','Deux images par a sont nécessaires'],0,'L’existence et l’unicité concernent les éléments de départ.'],
+      [1,4,'Quel changement rend la correspondance du tableau surjective sans la rendre injective ?',['Ajouter 4 à l’arrivée','Retirer 1 de l’arrivée','Prendre {1,2} comme ensemble d’arrivée'],2,'Chaque valeur restante est atteinte, et a et b ont toujours la même image.']
+    ],
+    seminar: ['Soit f de {0,1,2} vers {4,5,6}, donnée par f(0)=4, f(1)=5 et f(2)=4. Justifie que f est une application, détermine les propriétés qui échouent, puis modifie une image pour rendre f bijective.', ['Chaque élément initial possède exactement une image dans l’ensemble d’arrivée (section 2).','0 et 2 ont la même image, et 6 n’est jamais atteint (sections 3 et 4).','Poser f(2)=6 donne trois images distinctes et couvre l’arrivée (sections 3 et 4).']],
+    research: 'Dessine deux diagrammes inspirés des définitions Exo7 : une injection non surjective et une surjection non injective. Explique pourquoi un ensemble d’arrivée explicite est indispensable.',
+    terms: [['Intersection','Ensemble des éléments communs aux deux ensembles.'],['Image d’une application','Ensemble des valeurs effectivement atteintes.'],['Bijection','Application injective et surjective.']]
+  },
+  'fondements-4': {
+    question: 'Comment contester précisément une affirmation contenant « tous », « il existe » ou « si » ?',
+    objectives: ['Nier une proposition quantifiée sans changer les domaines.', 'Distinguer implication, réciproque et contraposée à partir de leur sens.'],
+    exercise: [1, 2, 3],
+    method: ['Chercher le cas qui décide', 'Pour nier « pour tout a de A, il existe b de B avec b > a », cherche un a dans A tel qu’aucun b de B ne soit plus grand. Avec A = {1,3} et B = {2,3}, a = 3 suffit, car les deux valeurs de B sont inférieures ou égales à 3. Pour réfuter P ⇒ Q, cherche le cas P vrai et Q faux indiqué dans le tableau.'],
+    table: [['P vraie','Q vraie','P ⇒ Q vraie.'],['P vraie','Q fausse','P ⇒ Q fausse.'],['P fausse','Q vraie ou fausse','P ⇒ Q vraie dans les deux cas.']],
+    quiz: [
+      [0,1,'Quel ordre permet de choisir m = n + 1 ?',['Il existe m tel que, pour tout n, m > n','Pour tout n, il existe m tel que m > n','Pour tout m, pour tout n, m > n'],1,'m peut dépendre de n lorsqu’il est quantifié après n.'],
+      [0,2,'Quelle est la négation de « tout entier de A est strictement positif » ?',['Tout entier de A est négatif','Un entier de A vaut nécessairement zéro','Il existe un entier de A inférieur ou égal à zéro'],2,'On échange ∀ et ∃, puis on nie strictement positif.'],
+      [1,3,'Quelle formule est la contraposée de P ⇒ Q ?',['¬Q ⇒ ¬P','Q ⇒ P','¬P ⇒ ¬Q'],0,'La contraposée inverse l’ordre et nie les deux propositions.']
+    ],
+    seminar: ['Dans A = {1,4} et B = {2,3}, examine « tout a admet un b > a ». Écris sa négation et un témoin. Pour l’implication « multiple de 10 ⇒ multiple de 5 », écris la contraposée puis réfute la réciproque.', ['La négation est ∃a ∈ A, ∀b ∈ B, b ≤ a. Le témoin a = 4 convient (sections 2 et 4).','Si n n’est pas multiple de 5, alors n n’est pas multiple de 10 (section 3).','La réciproque échoue pour n = 5, multiple de 5 mais pas de 10 (section 3).']],
+    research: 'Compare la table de vérité du cours avec celle d’Exo7. Construis les quatre lignes pour l’implication et sa contraposée, puis explique leur équivalence ligne par ligne.',
+    terms: [['Quantificateur universel','∀x affirme la propriété pour chaque élément du domaine.'],['Quantificateur existentiel','∃x affirme qu’au moins un élément du domaine possède la propriété.'],['Réciproque','De P ⇒ Q, on obtient Q ⇒ P en inversant hypothèse et conclusion.']]
+  },
+  'fondements-5': {
+    question: 'Quelle méthode choisir pour démontrer une implication ou réfuter une règle universelle ?',
+    objectives: ['Construire une preuve directe ou une preuve par contraposée ou par l’absurde.', 'Construire un contre-exemple qui respecte les hypothèses et contredit la conclusion.'],
+    exercise: [1, 2, 3],
+    method: ['Rédiger et contrôler le point de départ', 'Pour prouver que n² impair entraîne n impair, le départ direct n = 2k + 1 supposerait déjà la conclusion. Par contraposée, on prend n pair, n = 2k. Alors n² = 4k² = 2(2k²), donc n² est pair. Par l’absurde, on ajoute à cette hypothèse n² impair et on obtient une contradiction. Le même calcul peut servir aux deux raisonnements si le rôle des hypothèses est correctement annoncé. Rappel : tout entier est pair ou impair par division euclidienne par 2. Dans le transfert, un carré d’un entier pair vaut 4m². Il ne peut différer d’un autre multiple de 4 de seulement 2.'],
+    table: [['Preuve directe','Supposer P','Déduire Q.'],['Contraposée','Supposer ¬Q','Déduire ¬P.'],['Absurde','Supposer P et ¬Q','Déduire une contradiction.']],
+    quiz: [
+      [0,1,'Comment commencer une preuve directe de « divisible par 4 ⇒ pair » ?',['Écrire n = 4k pour un entier k','Écrire n = 2k + 1','Supposer n pair'],0,'La preuve directe traduit l’hypothèse de départ.'],
+      [0,2,'Que suppose une preuve par l’absurde de P ⇒ Q ?',['Q seule','P et ¬Q','¬P et Q'],1,'On combine l’hypothèse et la négation de la conclusion.'],
+      [1,3,'Quel nombre réfute « tout entier positif impair est premier » ?',['2','7','9'],2,'9 est positif, impair et composé.']
+    ],
+    seminar: ['Prouve de deux manières que n² impair entraîne n impair, puis teste la règle « tout entier composé est pair ». Explique le rôle de chaque hypothèse et donne un contre-exemple si nécessaire.', ['Par contraposée, n = 2k entraîne n² = 2(2k²), pair (sections 2 et 4).','Par l’absurde, supposer n² impair et n pair donne n² pair et impair (sections 2 et 4).','9 est composé (3 × 3) et impair. C’est un contre-exemple admissible (section 3).']],
+    research: 'Compare deux démonstrations du chapitre Exo7. Pour chacune, écris le domaine, les hypothèses et la conclusion, puis explique le choix de méthode sans reprendre le texte.',
+    terms: [['Contraposée','Preuve de ¬Q ⇒ ¬P pour établir P ⇒ Q.'],['Raisonnement par l’absurde','On suppose les hypothèses et le contraire de la conclusion pour obtenir une contradiction.'],['Contre-exemple','Cas autorisé qui satisfait l’hypothèse et contredit la conclusion.']]
+  },
+  'fondements-6': {
+    question: 'Comment prouver une formule pour tous les rangs sans vérifier une infinité de cas ?',
+    objectives: ['Rédiger une récurrence complète et annoncer son domaine de validité.', 'Repérer le rôle du premier rang et distinguer des essais d’une preuve.'],
+    exercise: [1, 2, 3],
+    method: ['Choisir la bonne expression au rang suivant', 'Pour une somme, isole son dernier terme. Si Tₙ = 2 + 4 + ⋯ + 2n, alors Tₙ₊₁ = Tₙ + 2(n + 1). Une fois l’hypothèse de récurrence substituée, factorise jusqu’à obtenir la formule attendue au rang n + 1. Pour une inégalité, vérifie aussi le signe des multiplicateurs et les conditions du rang.'],
+    table: [['Motif','1, 3, 6','Ces premiers calculs suggèrent une formule.'],['Initialisation','S₁ = 1','Le premier rang est prouvé directement.'],['Hérédité','Sₙ₊₁ = Sₙ + n + 1','On déduit la propriété au rang suivant.']],
+    quiz: [
+      [0,2,'Pour prouver une propriété pour tout n ≥ 1, quels contrôles sont nécessaires ?',['P(1) et l’hérédité pour tout n ≥ 1','L’hérédité seule','P(1), P(2) et P(3) seulement'],0,'Le premier rang démarre la chaîne et l’hérédité la prolonge.'],
+      [1,3,'Si P(n) signifie n ≥ 10, que constate-t-on à partir de 1 ?',['P(1) est vraie','L’hérédité est vraie mais P(1) est fausse','L’hérédité échoue pour n = 10'],1,'Dès que la propriété est vraie, elle reste vraie, mais la chaîne ne peut pas démarrer à 1.'],
+      [0,4,'Quel terme ajouter à Tₙ = 2 + 4 + ⋯ + 2n pour obtenir Tₙ₊₁ ?',['2n','n + 1','2(n + 1)'],2,'Le nouveau dernier terme est le double du rang n + 1.']
+    ],
+    seminar: ['Les premières sommes 1, 1+3 et 1+3+5 valent 1, 4 et 9. Établis la formule Uₙ = n² pour les n premiers impairs positifs, puis explique pourquoi les trois essais ne suffisent pas.', ['Au premier rang, U₁ = 1 = 1² (section 2).','Si Uₙ = n², alors Uₙ₊₁ = n² + (2n + 1) = (n + 1)², pour un n ≥ 1 arbitraire (sections 2 et 4).','Les essais suggèrent la règle. L’initialisation et l’hérédité la prouvent pour chaque n ≥ 1 (sections 1 à 3).']],
+    research: 'Compare la récurrence sur les sommes avec une preuve par récurrence de la lecture du MIT. Repère le rang initial, l’hypothèse utilisée et la transition.',
+    terms: [['Initialisation','Vérification directe de la propriété au premier rang annoncé.'],['Hérédité','Pour un rang arbitraire autorisé, preuve de P(n) ⇒ P(n + 1).'],['Conjecture','Énoncé suggéré par l’exploration et qui reste à établir.']]
+  }
+};
+
+function mathSectionLinks(sections) {
+  return sections.map(section=>`<a href="#math-section-${section}" data-math-jump>Section ${section}</a>`).join(' · ');
+}
+
+function mathFoundationCourse(lesson,guide) {
+  const synthese = ['Synthèse et glossaire',lesson.objective];
+  const sections = [...lesson.sections,guide.method,synthese];
+  const renderSection = ([title,body],index)=>`<section><h3 id="math-section-${index+1}" tabindex="-1">${index+1}. ${title}</h3>
+    <p>${body}</p>${index===3?`<div class="lesson-table" tabindex="0" role="region" aria-label="Cas commentés">
+      <table><caption>Tableau pédagogique original</caption><thead><tr><th scope="col">Cas</th><th scope="col">Repère</th><th scope="col">Interprétation</th></tr></thead>
+      <tbody>${guide.table.map(([label,example,meaning])=>`<tr><th scope="row">${label}</th><td>${example}</td><td>${meaning}</td></tr>`).join('')}</tbody></table></div>`:''}
+    ${index===4?`<dl>${guide.terms.map(([term,definition])=>`<dt>${term}</dt><dd>${definition}</dd>`).join('')}</dl>`:''}</section>`;
+  return `<h3>Introduction et problématique</h3><p>${guide.question}</p>
+    <h3>Objectifs</h3><ol>${guide.objectives.map(objective=>`<li>${objective}</li>`).join('')}</ol>
+    <nav aria-label="Plan de la leçon"><h3>Plan</h3><ol>
+      <li>Notions du socle<ol>${sections.slice(0,3).map(([title],i)=>`<li><a href="#math-section-${i+1}" data-math-jump>1.${i+1} ${title}</a></li>`).join('')}</ol></li>
+      <li><a href="#math-section-4" data-math-jump>${guide.method[0]}</a></li>
+      <li><a href="#math-section-5" data-math-jump>Synthèse et glossaire</a></li>
+    </ol></nav>
+    <p><strong>Socle essentiel · 30 à 45 min</strong> · Lis le cours, puis fais le quiz et l’exercice rédigé.</p>
+    ${sections.map(renderSection).join('')}
+    <p><strong>Approfondissement universitaire · 1 h 30 à 2 h au total</strong> · Ajoute le transfert et le séminaire.</p>
+    <details><summary>Recherche facultative · 3 à 5 h au total</summary><p>${guide.research}</p></details>`;
+}
+
+function mathFoundationSeminar(key,guide) {
+  const [prompt,rubric]=guide.seminar;
+  return `<section><h3>Séminaire · Justifier une démarche</h3>
+    <p><strong>Dossier intégré</strong> · ${prompt}</p><p>Repères · ${mathSectionLinks([1,2,3,4])}</p>
+    <label for="math-seminar">Ma réponse au séminaire</label><textarea id="math-seminar" maxlength="12000">${e(S.notes[key+'-seminaire'])}</textarea>
+    <p data-math-seminar-status role="status"></p>
+    <details><summary>Corrigé indicatif et barème sur 6</summary><ol>
+      ${rubric.map(item=>`<li>2 points · ${item}</li>`).join('')}
+    </ol><p>Toute démarche équivalente, explicitement justifiée, vaut les mêmes points.</p></details></section>`;
 }
