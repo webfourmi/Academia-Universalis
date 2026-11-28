@@ -15,12 +15,13 @@ function assessmentOptions() {
   const assessments = catalog.map(course => ({
     key: course.key,
     title: course.title,
-    items: course.lessons.map((lesson, index) => ({course, lesson, index, quiz: lesson.quiz}))
+    items: course.lessons.map((lesson, index) => ({course, lesson, index, quiz: historyQuiz(lesson), readingTarget: historyAssessmentGuidance[lesson.id] ? quizReadingTarget(lesson) : null}))
   }));
   const items = synthesisQuestions.map(([key, id, ...quiz]) => {
     const course = catalog.find(entry => entry.key === key);
     const index = course.lessons.findIndex(lesson => lesson.id === id);
-    return {course, lesson: course.lessons[index], index, quiz};
+    const readingTarget = key === 'histoire' ? 'lesson-section-5' : key === 'antiquite' ? 'lesson-section-1' : null;
+    return {course, lesson: course.lessons[index], index, quiz, readingTarget};
   });
   return [...assessments, {key:'synthese',title:'Bilan transversal de l’Année 1',items}];
 }
@@ -89,14 +90,17 @@ function showAssessmentResult(assessment, selections) {
   v.innerHTML = `<button onclick="showAssessments()">Retour aux évaluations</button><h2 tabindex="-1">Résultat · ${title}</h2>
     <p role="status"><strong>${score} sur ${total}</strong> · Meilleur résultat : ${best}/${total}</p>
     ${score < total ? '<p>Les leçons liées aux réponses à reprendre sont inscrites au planning de révision à partir de J+2.</p>' : ''}
-    <ol>${items.map(({course, lesson, index, quiz}, position) => `
+    <ol>${items.map(({course, lesson, index, quiz, readingTarget}, position) => `
       <li class="card"><h3>${quiz[0]}</h3><p>${selections[position]===quiz[2]?'Réponse correcte.':'À revoir.'} <strong>${quiz[1][quiz[2]]}</strong></p>
-      <p>${quiz[3]}</p><h4><button class="title-action" data-course="${course.key}" data-index="${index}">${e(lesson.title)}</button></h4></li>`).join('')}</ol>
+      <p>${quiz[3]}</p><h4><button class="title-action" data-course="${course.key}" data-index="${index}" data-reading-target="${readingTarget || ''}">${e(lesson.title)}</button></h4></li>`).join('')}</ol>
     <button id="retry-assessment">Refaire le bilan</button>`;
   v.querySelector('h2').focus();
   v.querySelector('#retry-assessment').onclick = () => showAssessment(assessment);
   v.querySelectorAll('[data-course]').forEach(button => {
-    button.onclick = () => showLesson(campusCatalog().find(course => course.key===button.dataset.course), Number(button.dataset.index));
+    button.onclick = () => {
+      showLesson(campusCatalog().find(course => course.key===button.dataset.course), Number(button.dataset.index));
+      if (button.dataset.readingTarget) jumpToStudySection(button.dataset.readingTarget);
+    };
   });
 }
 
