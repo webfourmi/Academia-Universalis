@@ -353,6 +353,7 @@ function installReadingTools(course,lesson) {
     const key=course.key+':'+lesson.id+':'+index;
     const mark=prefs.marks[key]||{highlight:false,note:''};
     const controls=passageEditor(paragraph,mark,next=>{
+      const now=new Date().toISOString();const previous=prefs.marks[key];next.createdAt=previous?previous.createdAt||null:now;next.updatedAt=now;
       if(!auditSave({readingTools:{...prefs,marks:{...prefs.marks,[key]:next}}}))return false;
       prefs.marks=S.readingTools.marks;
       return true;
