@@ -146,6 +146,7 @@ function showNotebook() {
       <article class="card note-entry" tabindex="-1" data-note-key="${e(key)}"><h3>${lessonForNote(key)?`<button class="title-action" type="button" data-note-lesson="${index}">${e(noteTitle(key))}</button>`:e(noteTitle(key))}</h3>
       <p class="note-text">${e(note)}</p><button type="button" data-edit-note="${index}">Modifier</button></article>`).join('')}</div>
     ${backupControls()}`;
+  appendPassageNotebook();
   if (entries.length) {
     const year=v.querySelector('#note-year');
     const subject=v.querySelector('#note-subject');
@@ -238,4 +239,32 @@ function showBackup() {
     <p>Pour changer d’appareil, exporte le fichier complet puis importe-le sur l’autre appareil.</p>
     <p>La sauvegarde complète contient tes notes, ta progression et tes évaluations. Tu peux aussi exporter uniquement tes notes.</p>
     ${backupControls()}`;
+}
+
+function notebookPassages(){
+  return Object.entries(S.readingTools?.marks||{}).filter(([,m])=>m.note?.trim()||m.highlight||m.ranges?.length).map(([key,mark])=>{
+    const parts=key.split(':');const section=Number(parts.pop());const lessonId=parts.pop();const courseKey=parts.join(':');
+    return {key,mark,section,target:locateLesson(courseKey,lessonId)};
+  }).sort((a,b)=>(b.mark.updatedAt||'').localeCompare(a.mark.updatedAt||''));
+}
+function appendPassageNotebook(){
+  const panel=document.createElement('section');panel.className='card';
+  panel.innerHTML='<h3>Annotations et surlignages des cours</h3><label>Rechercher <input type="search" data-passage-search></label><div data-passage-list></div>';
+  v.querySelector('#notebook-entries').after(panel);
+  const list=panel.querySelector('[data-passage-list]');
+  const entries=notebookPassages();
+  if(!entries.length)list.textContent='Aucune annotation de passage.';
+  for(const {key,mark,section,target} of entries){
+    const lesson=target?.course.lessons[target.index];
+    const card=document.createElement('article');card.className='card';card.dataset.noteKey=key;card.tabIndex=-1;
+    const heading=document.createElement('h4');heading.textContent=target?target.course.title+' · '+lesson.title:key;card.append(heading);
+    const date=document.createElement('p');date.textContent=mark.createdAt?'Créée le '+new Date(mark.createdAt).toLocaleString('fr-FR'):'Date d’origine inconnue';if(mark.updatedAt)date.textContent+=' · Modifiée le '+new Date(mark.updatedAt).toLocaleString('fr-FR');card.append(date);
+    const label=document.createElement('p');label.textContent=lesson?.sections[section]?.[0]||'Passage non identifié';card.append(label);
+    const note=document.createElement('div');if(mark.rich)note.append(...cleanAnnotation(mark.rich).childNodes);else note.textContent=mark.note;card.append(note);
+    for(const range of mark.ranges||[]){const quote=document.createElement('blockquote');const highlight=document.createElement('mark');highlight.textContent=range.text;quote.append(highlight);card.append(quote);}
+    if(mark.highlight){const p=document.createElement('p');p.textContent='Passage entier surligné';card.append(p);}
+    if(target){const link=document.createElement('button');link.type='button';link.textContent='Revenir au passage annoté / modifier';link.onclick=()=>{showLesson(target.course,target.index,{fromNote:key});jumpToStudySection('lesson-section-'+section);};card.append(link);}
+    list.append(card);
+  }
+  panel.querySelector('input').oninput=event=>{const query=event.target.value.toLocaleLowerCase('fr');for(const card of list.children)card.hidden=!card.textContent.toLocaleLowerCase('fr').includes(query);};
 }
