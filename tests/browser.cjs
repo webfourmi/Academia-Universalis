@@ -1,6 +1,74 @@
 const assert = require('node:assert/strict');
 const {chromium} = require('playwright');
 
+async function verifyMath(browser,viewport) {
+  const context=await browser.newContext({viewport,isMobile:viewport.width<500,hasTouch:viewport.width<500});
+  const page=await context.newPage();
+  const errors=[];
+  page.on('pageerror',error=>errors.push(error.message));
+  page.on('dialog',dialog=>dialog.accept());
+  await page.goto(process.env.CAMPUS_URL || 'http://localhost:8765/');
+  await page.evaluate(()=>go(1));
+  await page.getByRole('button',{name:'Mathématiques',exact:true}).click();
+  const open=name=>page.getByRole('button',{name,exact:true}).click();
+  await open('Laboratoire mathématique');
+  await page.locator('[name=gap]').selectOption('-0.1');
+  assert.match(await page.locator('[data-lab-result]').innerText(),/sécante 1,9/);
+  await open('Simuler 1 000 séries');
+  assert.match(await page.locator('[data-simulation-result]').innerText(),/théorique 38,4 %/);
+  await open('Atelier de démonstration');
+  const proof=page.locator('[data-math-exercise=recurrence]');
+  await proof.locator('input').first().check();
+  await proof.getByRole('button').click();
+  assert.match(await proof.locator('..').getByRole('status').innerText(),/à revoir/);
+  assert.match(await page.locator('[data-math-progress]').innerText(),/^0 sur 5/);
+  await proof.locator('input').last().check();
+  await proof.getByRole('button').click();
+  await proof.getByRole('button').click();
+  assert.match(await page.locator('[data-math-progress]').innerText(),/^1 sur 5/);
+  await open('Cabinet des problèmes');
+  const problem=page.locator('[data-math-exercise=binomiale]');
+  await problem.locator('input').nth(1).check();
+  await problem.getByRole('button').click();
+  await page.goBack();
+  await page.getByRole('heading',{name:'Atelier de démonstration'}).waitFor();
+  await open('Formulaire intelligent');
+  await page.getByRole('searchbox').fill('discriminant');
+  assert.equal(await page.locator('[data-formulas] article').count(),1);
+  await page.getByText('Afficher la formule et ses hypothèses').click();
+  await open('Retrouvée de mémoire');
+  assert.match(await page.locator('[data-formulas] [role=status]').innerText(),/Prochain rappel le/);
+  await open('Carnet mathématique');
+  await page.getByLabel('Conjectures').fill('Je teste la somme des impairs.');
+  await open('Enregistrer le carnet');
+  await open('Exporter ou restaurer mes données');
+  const download=page.waitForEvent('download');
+  await open('Exporter ma sauvegarde');
+  const file=await download;
+  await page.evaluate(()=>{delete S.notes['math-carnet-conjectures']; delete S.done['math-recurrence']; delete S.reviews['math-formule-discriminant']; save();});
+  await page.locator('input[onchange="restore(this)"]').setInputFiles(await file.path());
+  await page.getByText('Sauvegarde restaurée.').waitFor();
+  await page.waitForFunction(()=>navigator.serviceWorker.controller);
+  await context.setOffline(true);
+  await page.reload();
+  await page.evaluate(()=>go(1));
+  await open('Mathématiques');
+  assert.match(await page.locator('[data-math-progress]').innerText(),/^2 sur 5/);
+  await open('Carnet mathématique');
+  assert.equal(await page.getByLabel('Conjectures').inputValue(),'Je teste la somme des impairs.');
+  await open('Formulaire intelligent');
+  assert.equal(await page.getByText(/Prochain rappel le/).count(),1);
+  await open('Laboratoire mathématique');
+  await page.getByText(/Pente de la sécante/).waitFor();
+  await open('Atelier de démonstration');
+  await open('Cabinet des problèmes');
+  assert.equal(await page.locator('[data-math-exercise]').count(),3);
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+  assert.deepEqual(errors,[]);
+  console.log(`Mathématiques ${viewport.width}×${viewport.height} · cinq espaces, progression, restauration et hors connexion`);
+  await context.close();
+}
+
 async function verify(browser,viewport) {
   const context=await browser.newContext({viewport, isMobile:viewport.width<500, hasTouch:viewport.width<500});
   const page=await context.newPage();
@@ -174,6 +242,6 @@ async function verify(browser,viewport) {
 (async()=>{
   const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||undefined});
   try{
-    for(const viewport of [{width:390,height:844},{width:1366,height:768}])await verify(browser,viewport);
+    for(const viewport of [{width:390,height:844},{width:1366,height:768}]){await verify(browser,viewport);await verifyMath(browser,viewport);}
   }finally{await browser.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;});

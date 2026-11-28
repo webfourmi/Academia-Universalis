@@ -7,6 +7,7 @@ const campusResources = [
 ];
 
 const campusSpaces = {
+  'Mathématiques': 'Expérimenter, démontrer, résoudre des problèmes et réviser les formules.',
   'Salon de lecture': 'Lire les œuvres et retrouver les éditions gratuites.',
   'Carnet littéraire': 'Conserver ses impressions, citations et analyses.',
   'Qualité scientifique': 'Consulter les contrôles structurels des leçons et les vérifications restant à effectuer.',
@@ -81,6 +82,7 @@ function spaceButton(courseKey, lessonId, label) {
 }
 
 function showSpace(name) {
+  if(name==='Mathématiques'){showMath();return;}
   rememberCampusRoute('space',{name});
   if(name==='Salon de lecture'||name==='Carnet littéraire'){literaryPanel(name);return;}
   if(name==='Projets universitaires'){showPractice(name);return;}

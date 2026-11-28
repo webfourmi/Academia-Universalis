@@ -25,6 +25,7 @@ function showProgress() {
     <section class="card"><h3>À revoir aujourd’hui</h3>
       ${due.length ? due.map(({course,lesson},index)=>`<h4><button class="title-action" data-review="${index}">${e(lesson.title)}</button></h4><p>${e(course.title)}</p>`).join('') : '<p>Aucune révision à échéance.</p>'}
     </section>
+    <section class="card"><h3><button class="title-action" type="button" onclick="showMath()">Mathématiques</button></h3><p>${mathProgress()}</p></section>
     <h3>Leçons terminées</h3><div class="grid">${yearCards}</div>
     ${assessmentSection(options)}`;
   v.querySelector('#jump-to-assessment').onclick=()=>{
