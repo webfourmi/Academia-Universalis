@@ -138,7 +138,7 @@ function showNotebook() {
   const categories=entries.map(([key])=>notebookCategory(key));
   const subjects=[...new Set([...categories.map(([,subject])=>subject),...notebookPassages().map(x=>x.target?.course.title.split(' · ')[0]||'Autres notes')])].sort((a,b)=>a.localeCompare(b,'fr'));
   v.innerHTML = `<h2>Mon carnet</h2>
-    ${entries.length ? `<div class="library-filters"><div><label for="note-year">Année</label><select id="note-year"><option value="">Toutes</option>
+    ${(entries.length||notebookPassages().length) ? `<div class="library-filters"><div><label for="note-year">Année</label><select id="note-year"><option value="">Toutes</option>
       ${years.map((_,index)=>`<option value="${index+1}">Année ${index+1}</option>`).join('')}<option value="0">Autres notes</option></select></div>
       <div><label for="note-subject">Matière</label><select id="note-subject"><option value="">Toutes</option>${subjects.map(subject=>`<option>${e(subject)}</option>`).join('')}</select></div></div>
       <p id="note-count" role="status"></p>` : '<p>Tes notes de cours et tes brouillons apparaîtront ici.</p>'}
@@ -147,7 +147,7 @@ function showNotebook() {
       <p class="note-text">${e(note)}</p><button type="button" data-edit-note="${index}">Modifier</button></article>`).join('')}</div>
     ${backupControls()}`;
   appendPassageNotebook();
-  if (entries.length) {
+  if (entries.length||notebookPassages().length) {
     const year=v.querySelector('#note-year');
     const subject=v.querySelector('#note-subject');
     const cards=[...v.querySelectorAll('.note-entry')];
