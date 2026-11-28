@@ -150,7 +150,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
       </div>` : ''}
     </article>
     <article class="card lesson">
-      <details class="card"><summary>Dossier commenté</summary><p>${cite(lesson.dossier)}</p></details>
+      <details class="card"><summary>Dossier commenté</summary><p id="lesson-dossier" tabindex="-1">${cite(lesson.dossier)}</p></details>
       <h3 id="lesson-exercise" tabindex="-1">Exercice</h3><p>${lesson.activity}</p>
       <div id="written-exercise"></div>
       <details class="card"><summary>Quiz</summary><form id="history-quiz" tabindex="-1">
@@ -161,7 +161,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
         <p role="status" id="quiz-result"></p>
       </form>
       ${lesson.id==='evolution-humaine'?evolutionQuiz():''}</details>
-      <h3>Séminaire</h3><p>${lesson.seminar}</p>
+      ${lesson.seminar ? `<h3 id="lesson-seminar" tabindex="-1">Séminaire</h3><p>${lesson.seminar}</p>` : ''}
       <h3>Révision espacée</h3><p>${lesson.review}</p>${migrationFlashcards(lesson)}
       <label for="history-notes">Mes notes</label>
       <textarea id="history-notes">${e(S.notes[noteKey])}</textarea>
@@ -170,7 +170,7 @@ function showLesson(course, index, {offset,fromNote} = {}) {
     ${seminar ? `<article class="card lesson">
       <details>
         <summary>Approfondissement universitaire</summary>
-        <h3>${seminar.title}</h3>
+        <h3 id="lesson-history-seminar" tabindex="-1">${seminar.title}</h3>
         ${seminar.method.map(paragraph => `<p>${cite(paragraph)}</p>`).join('')}
         <p><a href="${lesson.sources[seminar.source][3]}" target="_blank" rel="noopener">Lecture guidée · ${lesson.sources[seminar.source][1]}</a></p>
         <h3>Travail écrit</h3><p>${seminar.task}</p>
@@ -593,6 +593,16 @@ function glossaryPanel(){
  input.oninput=draw;draw();return panel;
 }
 
+const physicsLabSpecs={
+ 'intro-physique':['Longueur du pendule (m)',0.2,0.8,0.1,0.4,'Période (s)','À petite amplitude, prévoir l’effet d’une longueur quadruplée.','T = 2π√(L/g) ; g = 9,81 m/s².'],
+ 'forces':['Force appliquée vers la droite (N)',0,20,1,6,'Accélération (m/s²)','Prévoir l’accélération d’un chariot de 2 kg sans frottement.','Dans ce modèle, la force horizontale résultante vaut F et a = F/m.'],
+ 'mesures':['Biais ajouté (cm)',-0.5,0.5,0.1,0,'Moyenne (cm)','Prévoir si un biais modifie la demi-étendue.','Lectures fictives : 15,0 ; 15,1 ; 15,2 cm. Demi-étendue constante : 0,1 cm.'],
+ 'maths-physicien':['Pente (m/s)',-3,3,0.5,1,'Position (m)','Prévoir le signe de la pente.','x = 2 + pt.'],
+ 'referentiels':['Vitesse du repère (m/s)',-3,3,0.5,2,'Position relative (m)','Prévoir la position dans le repère mobile à 3 s.','xB = 8 − Ut ; objet fixe dans A.'],
+ 'vitesse-acceleration':['Accélération (m/s²)',-3,3,0.5,2,'Vitesse (m/s)','Prévoir le signe de la vitesse à 3 s.','v = at ; vitesse initiale nulle.'],
+ 'prevoir-mouvement':['Accélération (m/s²)',-3,3,0.5,2,'Position (m)','Prévoir la position à 3 s.','x = t + ½at² ; x₀ = 0 m, v₀ = 1 m/s.']
+};
+
 function physicsModel(id,p,t){
  if(id==='intro-physique')return 2*Math.PI*Math.sqrt(p/9.81);
  if(id==='mesures')return 15.1+p;
@@ -603,17 +613,8 @@ function physicsModel(id,p,t){
  return t+0.5*p*t*t;
 }
 function bindPhysicsLab(v,lesson){
- const specs={
- 'intro-physique':['Longueur du pendule (m)',0.2,0.8,0.1,0.4,'Période (s)','À petite amplitude, prévoir l’effet d’une longueur quadruplée.','T = 2π√(L/g) ; g = 9,81 m/s².'],
- 'forces':['Force appliquée vers la droite (N)',0,20,1,6,'Accélération (m/s²)','Prévoir l’accélération d’un chariot de 2 kg sans frottement.','Dans ce modèle, la force horizontale résultante vaut F et a = F/m.'],
- 'mesures':['Biais ajouté (cm)',-0.5,0.5,0.1,0,'Moyenne (cm)','Prévoir si un biais modifie la demi-étendue.','Lectures fictives : 15,0 ; 15,1 ; 15,2 cm. Demi-étendue constante : 0,1 cm.'],
- 'maths-physicien':['Pente (m/s)',-3,3,0.5,1,'Position (m)','Prévoir le signe de la pente.','x = 2 + pt.'],
- 'referentiels':['Vitesse du repère (m/s)',-3,3,0.5,2,'Position relative (m)','Prévoir la position dans le repère mobile à 3 s.','xB = 8 − Ut ; objet fixe dans A.'],
- 'vitesse-acceleration':['Accélération (m/s²)',-3,3,0.5,2,'Vitesse (m/s)','Prévoir le signe de la vitesse à 3 s.','v = at ; vitesse initiale nulle.'],
- 'prevoir-mouvement':['Accélération (m/s²)',-3,3,0.5,2,'Position (m)','Prévoir la position à 3 s.','x = t + ½at² ; x₀ = 0 m, v₀ = 1 m/s.']
- };
- const s=specs[lesson.id];if(!s)return;
- const root=document.createElement('section');root.className='card';root.innerHTML='<h3>Laboratoire virtuel</h3><p></p><p></p><label>'+s[0]+' <input type="range" min="'+s[1]+'" max="'+s[2]+'" step="'+s[3]+'" value="'+s[4]+'"></label><p data-param></p><label>Votre prédiction numérique à t = 3 s (ou résultat indépendant du temps) <input type="number" step="any"></label><button type="button">Comparer au modèle</button><p role="status"></p><figure><svg viewBox="0 0 320 180" width="100%" role="img"></svg><figcaption></figcaption></figure><p>Modèle idéal, données calculées et non mesures expérimentales.</p>';
+ const s=physicsLabSpecs[lesson.id];if(!s)return;
+ const root=document.createElement('section');root.className='card';root.innerHTML='<h3 id="lesson-physics-lab" tabindex="-1">Laboratoire virtuel</h3><p></p><p></p><label>'+s[0]+' <input type="range" min="'+s[1]+'" max="'+s[2]+'" step="'+s[3]+'" value="'+s[4]+'"></label><p data-param></p><label>Votre prédiction numérique à t = 3 s (ou résultat indépendant du temps) <input type="number" step="any"></label><button type="button">Comparer au modèle</button><p role="status"></p><figure><svg viewBox="0 0 320 180" width="100%" role="img"></svg><figcaption></figcaption></figure><p>Modèle idéal, données calculées et non mesures expérimentales.</p>';
  root.querySelectorAll('p')[0].textContent=s[6];root.querySelectorAll('p')[1].textContent=s[7];
  const range=root.querySelector('input[type=range]'), guess=root.querySelector('input[type=number]'), status=root.querySelector('[role=status]'), svg=root.querySelector('svg');
  function draw(){

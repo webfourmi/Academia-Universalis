@@ -152,7 +152,7 @@ const physique = [
     ]
   },
   {
-    "id": "mesures",
+    "id": "mesures", campusSpaces: ["Observatoire"],
     "title": "Grandeurs, unités et incertitudes",
     "goal": "Convertir les unités, calculer une moyenne et distinguer dispersion et biais.",
     "prerequisite": "Calcul élémentaire.",
@@ -1133,7 +1133,7 @@ const physique = [
 
 const psychologie = [
   {
-    id: 'methodes', title: 'Méthodes · D’une association à un test causal',
+    id: 'methodes', campusSpaces: ["Cabinet de recherche"], title: 'Méthodes · D’une association à un test causal',
     goal: 'Proposer une explication concurrente à une corrélation et concevoir une expérience simple.',
     prerequisite: 'Aucun.',
     sections: [
